@@ -1,0 +1,296 @@
+in/in barter-exchange/jj markets/nns ,/punct agents/nns seek/vbp to/to swap/vb their/prp$ items/nns with/in one/cd another/dt ,/punct in/in order/nn to/to improve/vb their/prp$ own/jj utilities/nns ./punct
+these/dt swaps/nns consist/vbp of/in cycles/nns of/in agents/nns ,/punct with/in each/dt agent/nn receiving/vbg the/dt item/nn of/in the/dt next/jj agent/nn in/in the/dt cycle/nn ./punct
+we/prp focus/vbp mainly/rb on/in the/dt upcoming/jj national/jj kidney-exchange/nn market/nn ,/punct where/wrb patients/nns with/in kidney/nn disease/nn can/md obtain/vb compatible/jj donors/nns by/in swapping/vbg their/prp$ own/jj willing/jj but/cc incompatible/jj donors/nns ./punct
+with/in over/in 70,000/cd patients/nns already/rb waiting/vbg for/in a/dt cadaver/nn kidney/nn in/in the/dt us/nnp ,/punct this/dt market/nn is/vbz seen/vbn as/in the/dt only/jj ethical/jj way/nn to/to significantly/rb reduce/vb the/dt 4,000/cd deaths/nns per/in year/nn attributed/vbd to/to kidney/nn disease/nn ./punct
+the/dt clearing/nn problem/nn involves/vbz finding/vbg a/dt social/jj welfare/nn maximizing/vbg exchange/nn when/wrb the/dt maximum/nn length/nn of/in a/dt cycle/nn is/vbz fixed/vbn ./punct
+long/jj cycles/nns are/vbp forbidden/vbn ,/punct since/in ,/punct for/in incentive/nn reasons/nns ,/punct all/dt transplants/nns in/in a/dt cycle/nn must/md be/vb performed/vbn simultaneously/rb ./punct
+also/rb ,/punct in/in barter-exchanges/nns generally/rb ,/punct more/jjr agents/nns are/vbp affected/vbn if/in one/cd drops/vbz out/in of/in a/dt longer/rbr cycle/nn ./punct
+we/prp prove/vbp that/in the/dt clearing/nn problem/nn with/in this/dt cycle-length/nn constraint/nn is/vbz np-hard/jj ./punct
+solving/vbg it/prp exactly/rb is/vbz one/cd of/in the/dt main/jj challenges/nns in/in establishing/vbg a/dt national/jj kidney/nn exchange/nn ./punct
+we/prp present/vbp the/dt first/jj algorithm/nn capable/jj of/in clearing/vbg these/dt markets/nns on/in a/dt nationwide/jj scale/nn ./punct
+the/dt key/nn is/vbz incremental/jj problem/nn formulation/nn ./punct
+we/prp adapt/vbp two/cd paradigms/nns for/in the/dt task/nn :/punct constraint/nn generation/nn and/cc column/nn generation/nn ./punct
+for/in each/dt ,/punct we/prp develop/vbp techniques/nns that/wdt dramatically/rb improve/vbp both/cc runtime/vbp and/cc memory/nn usage/nn ./punct
+we/prp conclude/vbp that/in column/nn generation/nn scales/nns drastically/rb better/jjr than/in constraint/nn generation/nn ./punct
+our/prp$ algorithm/nn also/rb supports/vbz several/jj generalizations/nns ,/punct as/in demanded/vbn by/in real-world/jj kidney/nn exchanges/nns ./punct
+our/prp$ algorithm/nn replaced/vbd cplex/nnp as/in the/dt clearing/nn algorithm/nn of/in the/dt alliance/nnp for/in paired/nnp donation/nnp ,/punct one/cd of/in the/dt leading/vbg kidney/nn exchanges/nns ./punct
+the/dt match/nn runs/nns are/vbp conducted/vbn every/dt two/cd weeks/nns and/cc transplants/nns based/vbn on/in our/prp$ optimizations/nns have/vbp already/rb been/vbn conducted/vbn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp j.4/nnp [/punct computer/nnp applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nnp ;/punct f.2/nn [/punct analysis/nn of/in algorithms/nns and/cc problem/nnp complexity/nnp ]/punct :/punct [/punct general/nnp ]/punct general/nnp terms/nns algorithms/nns ,/punct economics/nnp 1/cd ./punct
+introduction/nn the/dt role/nn of/in kidneys/nns is/vbz to/to filter/nn waste/nn from/in blood/nn ./punct
+kidney/nn failure/nn results/vbz in/in accumulation/nn of/in this/dt waste/nn ,/punct which/wdt leads/vbz to/to death/nn in/in months/nns ./punct
+one/cd treatment/nn option/nn is/vbz dialysis/nn ,/punct in/in which/wdt the/dt patient/nn goes/vbz to/to a/dt hospital/nn to/to have/vb his/her/vbn blood/nn filtered/vbn by/in an/dt external/jj machine/nn ./punct
+several/jj visits/nns are/vbp required/vbn per/in week/nn ,/punct and/cc each/dt takes/vbz several/jj hours/nns ./punct
+the/dt quality/nn of/in life/nn on/in dialysis/nn can/md be/vb extremely/rb low/jj ,/punct and/cc in/in fact/nn many/jj patients/nns opt/vbp to/to withdraw/vb from/in dialysis/nn ,/punct leading/vbg to/to a/dt natural/jj death/nn ./punct
+only/rb 12/cd %/punct of/in dialysis/nn patients/nns survive/vbp 10/cd years/nns [/punct 23/cd ]/punct ./punct
+instead/rb ,/punct the/dt preferred/jj treatment/nn is/vbz a/dt kidney/nn transplant/nn ./punct
+kidney/nn transplants/nns are/vbp by/in far/rb the/dt most/rbs common/jj transplant/nn ./punct
+unfortunately/rb ,/punct the/dt demand/nn for/in kidneys/nns far/rb outstrips/vbz supply/nn ./punct
+in/in the/dt united/nnp states/nnps in/in 2005/cd ,/punct 4,052/cd people/nns died/vbd waiting/vbg for/in a/dt life-saving/jj kidney/nn transplant/nn ./punct
+during/in this/dt time/nn ,/punct almost/rb 30,000/cd people/nns were/vbd added/vbn to/to the/dt national/jj waiting/vbg list/nn ,/punct while/in only/rb 9,913/cd people/nns left/vbd the/dt list/nn after/in receiving/vbg a/dt deceaseddonor/nn kidney/nn ./punct
+the/dt waiting/vbg list/nn currently/rb has/vbz over/in 70,000/cd people/nns ,/punct and/cc the/dt median/jj waiting/vbg time/nn ranges/nns from/in 2/cd to/to 5/cd years/nns ,/punct depending/vbg on/in blood/nn type.1/nn for/in many/jj patients/nns with/in kidney/nn disease/nn ,/punct the/dt best/jjs option/nn is/vbz to/to find/vb a/dt living/nn donor/nn ,/punct that/wdt is/vbz ,/punct a/dt healthy/jj person/nn willing/jj to/to donate/vb one/cd of/in his/her/jj two/cd kidneys/nns ./punct
+although/in there/ex are/vbp marketplaces/nns for/in buying/vbg and/cc selling/vbg living-donor/jj kidneys/nns ,/punct the/dt commercialization/nn of/in human/jj organs/nns is/vbz almost/rb universally/rb regarded/vbn as/in unethical/jj ,/punct and/cc the/dt practice/nn is/vbz often/rb explicitly/rb illegal/jj ,/punct such/jj as/in in/in the/dt us/nnp ./punct
+however/rb ,/punct in/in most/jjs countries/nns ,/punct live/vbp donation/nn is/vbz legal/jj ,/punct provided/vbd it/prp occurs/vbz as/in a/dt gift/nn with/in no/dt financial/jj compensation/nn ./punct
+in/in 2005/cd ,/punct there/ex were/vbd 6,563/cd live/jj donations/nns in/in the/dt us/nnp ./punct
+the/dt number/nn of/in live/jj donations/nns would/md have/vb been/vbn much/rb higher/jjr if/in it/prp were/vbd not/rb for/in the/dt fact/nn that/in ,/punct frequently/rb ,/punct a/dt potential/jj donor/nn 1/cd data/nn from/in the/dt united/nnp network/nnp for/in organ/nnp sharing/vbg [/punct 21/cd ]/punct ./punct
+295/cd and/cc his/prp$ intended/jj recipient/jj are/vbp blood-type/jj or/cc tissue-type/nn incompatible/jj ./punct
+in/in the/dt past/nn ,/punct the/dt incompatible/jj donor/nn was/vbd sent/vbn home/nn ,/punct leaving/vbg the/dt patient/nn to/to wait/vb for/in a/dt deceased-donor/jj kidney/nn ./punct
+however/rb ,/punct there/ex are/vbp now/rb a/dt few/jj regional/jj kidney/nn exchanges/nns in/in the/dt united/nnp states/nnps ,/punct in/in which/wdt patients/nns can/md swap/vb their/prp$ incompatible/jj donors/nns with/in each/dt other/jj ,/punct in/in order/nn to/to each/dt obtain/vb a/dt compatible/jj donor/nn ./punct
+these/dt markets/nns are/vbp examples/nns of/in barter/jj exchanges/nns ./punct
+in/in a/dt barter-exchange/jj market/nn ,/punct agents/nns (/punct patients/nns )/punct seek/vbp to/to swap/vb their/prp$ items/nns (/punct incompatible/jj donors/nns )/punct with/in each/dt other/jj ./punct
+these/dt swaps/nns consist/vbp of/in cycles/nns of/in agents/nns ,/punct with/in each/dt agent/nn receiving/vbg the/dt item/nn of/in the/dt next/jj agent/nn in/in the/dt cycle/nn ./punct
+barter/nnp exchanges/nns are/vbp ubiquitous/jj :/punct examples/nns include/vbp peerflix/nnp (/punct dvds/nns )/punct [/punct 11/cd ]/punct ,/punct read/vb it/prp swap/vb it/prp (/punct books/nns )/punct [/punct 12/cd ]/punct ,/punct and/cc intervac/nnp (/punct holiday/nn houses/nns )/punct [/punct 9/cd ]/punct ./punct
+for/in many/jj years/nns ,/punct there/ex has/vbz even/rb been/vbn a/dt large/jj shoe/nn exchange/nn in/in the/dt united/nnp states/nnps [/punct 10/cd ]/punct ./punct
+people/nns with/in different-sized/jj feet/nns use/vbp this/dt to/to avoid/vb having/vbg to/to buy/vb two/cd pairs/nns of/in shoes/nns ./punct
+leg/nn amputees/nns have/vbp a/dt separate/jj exchange/nn to/to share/vb the/dt cost/nn of/in buying/vbg a/dt single/jj pair/nn of/in shoes/nns ./punct
+we/prp can/md encode/vb a/dt barter/jj exchange/nn market/nn as/in a/dt directed/vbn graph/nn g/nn =/punct (/punct v/nn ,/punct e/nn )/punct in/in the/dt following/jj way/nn ./punct
+construct/vb one/cd vertex/nn for/in each/dt agent/nn ./punct
+add/vb a/dt weighted/jj edge/nn e/sym from/in one/cd agent/nn vi/ls to/to another/dt vj/nn ,/punct if/in vi/ls wants/vbz the/dt item/nn of/in vj/nn ./punct
+the/dt weight/nn we/prp of/in e/sym represents/vbz the/dt utility/nn to/to vi/ls of/in obtaining/vbg vj/nn ''/'' s/nns item/nn ./punct
+a/dt cycle/nn c/nn in/in this/dt graph/nn represents/vbz a/dt possible/jj swap/nn ,/punct with/in each/dt agent/nn in/in the/dt cycle/nn obtaining/vbg the/dt item/nn of/in the/dt next/jj agent/nn ./punct
+the/dt weight/nn wc/nn of/in a/dt cycle/nn c/nn is/vbz the/dt sum/nn of/in its/prp$ edge/nn weights/nns ./punct
+an/dt exchange/nn is/vbz a/dt collection/nn of/in disjoint/nn cycles/nns ./punct
+the/dt weight/nn of/in an/dt exchange/nn is/vbz the/dt sum/nn of/in its/prp$ cycle/nn weights/nns ./punct
+a/dt social/jj welfare/nn maximizing/vbg exchange/nn is/vbz one/cd with/in maximum/nn weight/nn ./punct
+figure/nnp 1/cd illustrates/vbz an/dt example/nn market/nn with/in 5/cd agents/nns ,/punct {/punct v1/nn ,/punct v2/nn ,/punct ./punct
+./punct
+./punct
+,/punct v5/nn }/punct ,/punct in/in which/wdt all/dt edges/nns have/vbp weight/nn 1/cd ./punct
+the/dt market/nn has/vbz 4/cd cycles/nns ,/punct c1/nn =/punct v1/nn ,/punct v2/nn ,/punct c2/nn =/punct v2/nn ,/punct v3/nn ,/punct c3/nn =/punct v3/nn ,/punct v4/nn and/cc c4/nn =/punct v1/nn ,/punct v2/nn ,/punct v3/nn ,/punct v4/nn ,/punct v5/nn ,/punct and/cc two/cd (/punct inclusion/nn )/punct maximal/jj exchanges/nns ,/punct namely/rb m1/nn =/punct {/punct c4/nn }/punct and/cc m2/nn =/punct {/punct c1/nn ,/punct c3/nn }/punct ./punct
+exchange/nnp m1/nn has/vbz both/dt maximum/jj weight/nn and/cc maximum/nn cardinality/nn (/punct i.e./fw ,/punct it/prp includes/vbz the/dt most/rbs edges/vertices/jj )/punct ./punct
+v1/nn v2/nn v3/nn v4/nn v5/nn e1/nn e3/nn e5/nn c1/nn c2/nn c3/nn e8/nn e7/nn e6e4e2/nn c4/nn figure/nn 1/cd :/punct example/nnp barter/jj exchange/nn market/nn ./punct
+the/dt clearing/nn problem/nn is/vbz to/to find/vb a/dt maximum-weight/jj exchange/nn consisting/vbg of/in cycles/nns with/in length/nn at/in most/jjs some/dt small/jj constant/jj l./nn this/dt cycle-length/jj constraint/nn arises/vbz naturally/rb for/in several/jj reasons/nns ./punct
+for/in example/nn ,/punct in/in a/dt kidney/nn exchange/nn ,/punct all/dt operations/nns in/in a/dt cycle/nn have/vbp to/to be/vb performed/vbn simultaneously/rb ;/punct otherwise/rb a/dt donor/nn might/md back/vb out/rp after/in his/prp$ incompatible/jj partner/nn has/vbz received/vbn a/dt kidney/nn ./punct
+(/punct one/cd can/md not/rb write/vb a/dt binding/nn contract/nn to/to donate/vb an/dt organ/nn ./punct
+)/punct this/dt gives/vbz rise/nn to/to a/dt logistical/jj constraint/nn on/in cycle/nn size/nn :/punct even/rb if/in all/dt the/dt donors/nns are/vbp operated/vbn on/in first/jj and/cc the/dt same/jj personnel/nns and/cc facilities/nns are/vbp used/vbn to/to then/rb operate/vb on/in the/dt donees/nns ,/punct a/dt k-cycle/nn requires/vbz between/in 3k/nn and/cc 6k/jj doctors/nns ,/punct around/in 4k/nn nurses/nns ,/punct and/cc almost/rb 2k/jj operating/nn rooms/nns ./punct
+due/jj to/to such/jj resource/nn constraints/nns ,/punct the/dt upcoming/jj national/jj kidney/nn exchange/nn market/nn will/md likely/rb allow/vb only/rb cycles/nns of/in length/nn 2/cd and/cc 3/cd ./punct
+another/dt motivation/nn for/in short/jj cycles/nns is/vbz that/in if/in the/dt cycle/nn fails/vbz to/to exchange/nn ,/punct fewer/jjr agents/nns are/vbp affected/vbn ./punct
+for/in example/nn ,/punct last-minute/jj testing/nn in/in a/dt kidney/nn exchange/nn often/rb reveals/vbz new/jj incompatibilities/nns that/wdt were/vbd not/rb detected/vbn in/in the/dt initial/jj testing/nn (/punct based/vbn on/in which/wdt the/dt compatibility/nn graph/nn was/vbd constructed/vbn )/punct ./punct
+more/rbr generally/rb ,/punct an/dt agent/nn may/md drop/vb out/in of/in a/dt cycle/nn if/in his/prp$ preferences/nns have/vbp changed/vbn ,/punct or/cc he/she/jj simply/rb fails/vbz to/to fulfill/vb his/prp$ obligations/nns (/punct such/jj as/in sending/vbg a/dt book/nn to/to another/dt agent/nn in/in the/dt cycle/nn )/punct due/jj to/to forgetfulness/nn ./punct
+in/in section/nn 3/cd ,/punct we/prp show/vbp that/in (/punct the/dt decision/nn version/nn of/in )/punct the/dt clearing/nn problem/nn is/vbz np-complete/jj for/in l/nn ≥/cd 3/cd ./punct
+one/cd approach/nn then/rb might/md be/vb to/to look/vb for/in a/dt good/jj heuristic/nn or/cc approximation/nn algorithm/nn ./punct
+however/rb ,/punct for/in two/cd reasons/nns ,/punct we/prp aim/vbp for/in an/dt exact/jj algorithm/nn based/vbn on/in an/dt integer-linear/jj program/nn (/punct ilp/nnp )/punct formulation/nn ,/punct which/wdt we/prp solve/vbp using/vbg specialized/vbn tree/nn search/nn ./punct
+•/nnp first/nnp ,/punct any/dt loss/nn of/in optimality/nn could/md lead/vb to/to unnecessary/jj patient/nn deaths/nns ./punct
+•/nnp second/nnp ,/punct an/dt attractive/jj feature/nn of/in using/vbg an/dt ilp/nn formulation/nn is/vbz that/in it/prp allows/vbz one/cd to/to easily/rb model/vb a/dt number/nn of/in variations/nns on/in the/dt objective/nn ,/punct and/cc to/to add/vb additional/jj constraints/nns to/to the/dt problem/nn ./punct
+for/in example/nn ,/punct if/in 3-cycles/nns are/vbp believed/vbn to/to be/vb more/rbr likely/jj to/to fail/vb than/in 2-cycles/jj ,/punct then/rb one/cd can/md simply/rb give/vb them/prp a/dt weight/nn that/wdt is/vbz appropriately/rb lower/jjr than/in 3/2/cd the/dt weight/nn of/in a/dt 2-cycle/nn ./punct
+or/cc ,/punct if/in for/in various/jj (/punct e.g./fw ,/punct ethical/jj )/punct reasons/nns one/cd requires/vbz a/dt maximum/nn cardinality/nn exchange/nn ,/punct one/cd can/md at/in least/jjs in/in a/dt second/jj pass/nn find/vb the/dt solution/nn (/punct out/in of/in all/dt maximum/nn cardinality/nn solutions/nns )/punct that/dt has/vbz the/dt fewest/jjs 3-cycles/nns ./punct
+other/jj variations/nns one/cd can/md solve/vb for/in include/vbp finding/vbg various/jj forms/nns of/in fault/nn tolerant/jj (/punct non-disjoint/jj )/punct collections/nns of/in cycles/nns in/in the/dt event/nn that/wdt certain/jj pairs/nns that/wdt were/vbd thought/vbn to/to be/vb compatible/jj turn/nn out/rp to/to be/vb incompatible/jj after/in all/dt ./punct
+in/in this/dt paper/nn ,/punct we/prp present/vbp the/dt first/jj algorithm/nn capable/jj of/in clearing/vbg these/dt markets/nns on/in a/dt nationwide/jj scale/nn ./punct
+straight-forward/jj ilp/nn encodings/nns are/vbp too/rb large/jj to/to even/rb construct/vb on/in current/jj hardware/nn -/punct not/rb to/to talk/vb about/in solving/vbg them/prp ./punct
+the/dt key/jj then/rb is/vbz incremental/jj problem/nn formulation/nn ./punct
+we/prp adapt/vbp two/cd paradigms/nns for/in the/dt task/nn :/punct constraint/nn generation/nn and/cc column/nn generation/nn ./punct
+for/in each/dt ,/punct we/prp develop/vbp a/dt host/nn of/in (/punct mainly/rb problemspecific/jj )/punct techniques/nns that/wdt dramatically/rb improve/vbp both/cc runtime/vbp and/cc memory/nn usage/nn ./punct
+several/jj recent/jj papers/nns have/vbp used/vbn simulations/nns and/cc marketclearing/nn algorithms/nns to/to explore/vb the/dt impact/nn of/in a/dt national/jj using/vbg edmond/nnp ''/'' s/vbz maximum-matching/jj algorithm/nn ,/punct shows/vbz that/in a/dt national/jj pairwise-exchange/nn market/nn (/punct using/vbg length-2/nn cycles/nns only/rb )/punct would/md result/vb in/in more/jjr transplants/nns ,/punct reduced/vbd waiting/vbg time/nn ,/punct and/cc savings/nns of/in $/punct 750/cd million/cd in/in heath/nn care/nn costs/nns over/in 5/cd years/nns ./punct
+those/dt results/nns are/vbp conservative/jj in/in two/cd ways/nns ./punct
+firstly/rb ,/punct the/dt simulated/jj market/nn contained/vbd only/rb 4,000/cd initial/jj patients/nns ,/punct with/in 250/cd patients/nns added/vbd every/dt 3/cd months/nns ./punct
+it/prp has/vbz been/vbn reported/vbn to/to us/prp that/in the/dt market/nn could/md be/vb almost/rb double/rb this/dt size/nn ./punct
+secondly/rb ,/punct the/dt exchanges/nns were/vbd restricted/jj to/to length-2/nn cycles/nns (/punct because/in that/dt is/vbz all/dt that/wdt can/md be/vb modeled/vbn as/in maximum/nn matching/nn ,/punct and/cc solved/vbd using/vbg edmonds/nnp ''/'' s/vbz algorithm/nn )/punct ./punct
+allowing/vbg length-3/nn cycles/nns leads/vbz to/to additional/jj significant/jj gains/nns ./punct
+this/dt has/vbz been/vbn demonstrated/vbn on/in kidney/nn exchange/nn markets/nns with/in 100/cd patients/nns by/in using/vbg cplex/nnp to/to solve/vb an/dt integer-program/jj encoding/nn of/in the/dt clearing/nn problem/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp present/vbp an/dt alternative/jj algorithm/nn for/in this/dt integer/nn program/nn that/wdt can/md clear/vb markets/nns with/in over/in 10,000/cd patients/nns (/punct and/cc that/dt same/jj number/nn of/in willing/jj donors/nns )/punct ./punct
+improvement/nn in/in the/dt size/nn of/in the/dt exchange/nn ./punct
+(/punct furthermore/rb ,/punct in/in a/dt simplified/vbn theoretical/jj model/nn ,/punct any/dt kidney/nn exchange/nn can/md whilst/in this/dt does/vbz not/rb hold/vb for/in general/jj barter/nn exchanges/nns ,/punct or/cc even/rb for/in all/dt kidney/nn exchange/nn markets/nns ,/punct in/in section/nn 5.2.3/cd we/prp make/vbp use/nn of/in the/dt observation/nn that/in short/jj cycles/nns suffice/vbp to/to dramatically/rb increase/vb the/dt speed/nn of/in our/prp$ algorithm/nn ./punct
+at/in a/dt high-level/jj ,/punct the/dt clearing/nn problem/nn for/in barter/jj exchanges/nns is/vbz similar/jj to/to the/dt clearing/nn problem/nn (/punct aka/nn winner/nn determination/nn problem/nn )/punct in/in combinatorial/jj auctions/nns ./punct
+in/in both/dt settings/nns ,/punct the/dt idea/nn is/vbz to/to gather/vb all/pdt the/dt pertinent/jj information/nn about/in the/dt agents/nns into/in a/dt central/jj clearing/nn point/nn and/cc to/to run/vb a/dt centralized/jj clearing/nn algorithm/nn to/to determine/vb the/dt allocation/nn ./punct
+both/dt problems/nns are/vbp np-hard/jj ./punct
+both/dt are/vbp best/rbs solved/vbn using/vbg tree/nn search/nn techniques/nns ./punct
+since/in 1999/cd ,/punct significant/jj work/nn has/vbz been/vbn done/vbn in/in computer/nn science/nn and/cc operations/nns research/nn on/in faster/jjr optimal/jj tree/nn search/nn algorithms/nns for/in clearing/vbg combinatorial/jj auctions/nns ./punct
+(/punct for/in a/dt recent/jj review/nn ,/punct see/vb ./punct
+)/punct however/rb ,/punct the/dt kidney/nn cycle/nn size/nn )/punct is/vbz different/jj from/in the/dt combinatorial/jj auction/nn clearing/nn problem/nn in/in significant/jj ways/nns ./punct
+the/dt most/rbs important/jj difference/nn is/vbz that/in the/dt natural/jj formulations/nns of/in the/dt combinatorial/jj bottleneck/nn in/in practice/nn ./punct
+in/in contrast/nn ,/punct the/dt natural/jj formulations/nns cubic/jj space/nn in/in the/dt number/nn of/in patients/nns to/to even/rb model/vb ,/punct and/cc therefore/rb memory/nn becomes/vbz a/dt bottleneck/nn much/rb before/in time/nn does/vbz when/wrb using/vbg standard/jj tree/nn search/nn ,/punct such/jj as/in branch-andcut/nn in/in cplex/nnp ,/punct to/to tackle/vb the/dt problem/nn ./punct
+(/punct on/in a/dt 1gb/nn computer/nn and/cc a/dt realistic/jj standard/jj instance/nn generator/nn ,/punct discussed/vbn later/rb ,/punct cplex/nnp 10.010/cd runs/vbz out/in of/in memory/nn on/in five/cd of/in the/dt ten/cd 900patient/jj instances/nns and/cc ten/cd of/in the/dt ten/cd 1,000-patient/jj instances/nns that/in we/prp generated/vbd ./punct
+)/punct therefore/rb ,/punct the/dt approaches/nns that/wdt have/vbp been/vbn developed/vbn for/in combinatorial/jj auctions/nns can/md not/rb handle/vb the/dt kidney/nn exchange/nn problem/nn ./punct
+discusses/vbz the/dt process/nn by/in which/wdt we/prp generate/vbp realistic/jj kidney/nn exchange/nn market/nn data/nns ,/punct in/in order/nn to/to benchmark/nn the/dt clearing/nn algorithms/nns ./punct
+section/nn 3/cd contains/vbz a/dt proof/nn that/in the/dt market/nn clearing/nn decision/nn problem/nn is/vbz np-complete/jj ./punct
+sections/nns 4/cd and/cc 5/cd each/dt contain/vbp an/dt ilp/nn formulation/nn of/in the/dt clearing/nn problem/nn ./punct
+we/prp also/rb detail/nn in/in those/dt sections/nns our/prp$ techniques/nns used/vbn to/to solve/vb those/dt programs/nns on/in large/jj instances/nns ./punct
+section/nn 6/cd presents/vbz experiments/nns on/in the/dt various/jj techniques/nns ./punct
+section/nn 7/cd discusses/vbz recent/jj fielding/nn of/in our/prp$ algorithm/nn ./punct
+finally/rb ,/punct we/prp present/vbp our/prp$ conclusions/nns in/in section/nn 8/cd ,/punct and/cc suggest/vbp future/jj research/nn directions/nns ./punct
+we/prp test/vbp the/dt algorithms/nns on/in simulated/jj kidney/nn exchange/nn markets/nns ,/punct which/wdt are/vbp generated/vbn by/in a/dt process/nn described/vbn in/in saidman/nnp et/fw al../fw this/dt process/nn is/vbz based/vbn on/in the/dt extensive/jj nationwide/jj data/nns maintained/vbn by/in the/dt united/nnp network/nnp for/in organ/nnp sharing/vbg (/punct unos/nnp )/punct ,/punct so/in it/prp generates/vbz a/dt realistic/jj instance/nn distribution/nn ./punct
+several/jj papers/nns have/vbp used/vbn variations/nns of/in this/dt process/nn to/to demonstrate/vb the/dt effectiveness/nn of/in a/dt national/jj kidney/nn exchange/nn (/punct extrapolating/vbg from/in small/jj instances/nns or/cc restricting/vbg the/dt clearing/nn to/to 2-cycles/jj )/punct ./punct
+briefly/rb ,/punct the/dt process/nn involves/vbz generating/vbg patients/nns with/in a/dt random/jj blood/nn type/nn ,/punct sex/nn ,/punct and/cc probability/nn of/in being/vbg tissue-type/nn incompatible/jj with/in a/dt randomly/rb chosen/vbn donor/nn ./punct
+these/dt probabilities/nns are/vbp based/vbn on/in actual/jj real-world/jj population/nn data/nns ./punct
+each/dt patient/nn is/vbz assigned/vbn a/dt potential/jj donor/nn with/in a/dt random/jj blood/nn type/nn and/cc relation/nn to/to the/dt patient/nn ./punct
+if/in the/dt patient/nn and/cc potential/jj donor/nn are/vbp incompatible/jj ,/punct the/dt two/cd are/vbp entered/vbn into/in the/dt market/nn ./punct
+blood/nn type/nn and/cc tissue/nn type/nn information/nn is/vbz then/rb used/vbn to/to decide/vb on/in which/wdt patients/nns and/cc donors/nns are/vbp compatible/jj ./punct
+one/cd complication/nn ,/punct handled/vbn by/in the/dt generator/nn ,/punct is/vbz that/in if/in the/dt patient/nn is/vbz female/jj ,/punct and/cc she/prp has/vbz had/vbd a/dt child/nn with/in her/prp$ potential/jj donor/nn ,/punct then/rb the/dt probability/nn that/in the/dt two/cd are/vbp incompatible/jj increases/nns ./punct
+(/punct this/dt is/vbz because/in the/dt mother/nn develops/vbz antibodies/nns to/to her/prp$ partner/nn during/in pregnancy/nn ./punct
+)/punct finally/rb ,/punct although/in our/prp$ algorithms/nns can/md handle/vb more/jjr general/jj weight/nn functions/nns ,/punct patients/nns have/vbp a/dt utility/nn of/in 1/cd for/in compatible/jj donors/nns ,/punct since/in their/prp$ survival/nn probability/nn is/vbz not/rb affected/vbn by/in the/dt choice/nn of/in donor/nn ./punct
+this/dt means/vbz that/in the/dt maximum-weight/jj exchange/nn has/vbz maximum/nn cardinality/nn ./punct
+maximum-cardinality/nn exchange/nn in/in the/dt kidney-exchange/jj market/nn ./punct
+the/dt lower/jjr bounds/nns were/vbd found/vbn by/in clearing/vbg the/dt market/nn with/in length-2/nn cycles/nns only/rb ,/punct while/in the/dt upper/jj bounds/nns had/vbd no/dt restriction/nn on/in cycle/nn length/nn ./punct
+for/in each/dt market/nn size/nn ,/punct the/dt bounds/nns were/vbd computed/vbn over/in 10/cd randomly/rb generated/vbn markets/nns ./punct
+note/vb markets/nns -/punct in/in one/cd 5000/cd patient/nn market/nn ,/punct less/jjr than/in 1000/cd patients/nns were/vbd in/in the/dt maximum-cardinality/jj exchange/nn ./punct
+in/in this/dt section/nn ,/punct we/prp prove/vbp that/in (/punct the/dt decision/nn version/nn of/in )/punct the/dt market/nn clearing/nn problem/nn with/in short/jj cycles/nns is/vbz np-complete/jj ./punct
+cover/nn containing/vbg cycles/nns of/in length/nn at/in most/jjs l/nn is/vbz np-complete/jj ./punct
+nphardness/nn ,/punct we/prp reduce/vbp from/in 3d-matching/nn ,/punct which/wdt is/vbz the/dt m/nn of/in t/nn with/in size/nn q./nnp one/cd straightforward/jj idea/nn is/vbz to/to construct/vb a/dt tripartite/jj graph/nn (/punct yb/nn ,/punct zc/nn )/punct ,/punct and/cc (/punct zc/nn ,/punct xa/nn )/punct for/in each/dt triple/jj ti/nn =/punct {/punct xa/nn ,/punct yb/nn ,/punct zc/nn }/punct ∈/cd t./nnp however/rb ,/punct it/prp is/vbz not/rb too/rb hard/jj to/to see/vb that/in this/dt encoding/vbg fails/vbz because/in a/dt perfect/jj cycle/nn cover/nn may/md include/vb a/dt cycle/nn with/in no/dt corresponding/jj triple/jj ./punct
+instead/rb then/rb ,/punct we/prp use/vbp the/dt following/jj reduction/nn ./punct
+given/vbn an/dt instance/nn of/in 3d-matching/nn ,/punct construct/nn one/cd vertex/nn for/in each/dt in/in garey/nnp and/cc johnson/nnp [/punct 5/cd ,/punct pp/nn 68-69/cd ]/punct ./punct
+note/vb that/in the/dt gadgets/nns construction/nn can/md be/vb done/vbn in/in polynomial/jj time/nn ./punct
+.../: .../: .../: construction/nn admits/vbz a/dt perfect/jj cycle/nn cover/nn by/in short/jj cycles/nns ./punct
+if/in lengthl/nn cycles/nns containing/vbg xa/nn ,/punct yb/nn and/cc zc/nn respectively/rb ./punct
+also/rb add/vb the/dt all/dt vertices/nns are/vbp covered/vbn ,/punct since/in m/nn partitions/nns x/nn ×/cd y/nn ×/cd z./nnp conversely/rb ,/punct suppose/vbp we/prp have/vbp a/dt perfect/jj cover/nn by/in short/jj cycles/nns ./punct
+note/vb that/in the/dt construction/nn only/rb has/vbz short/jj cycles/nns of/in lengths/nns 3/cd and/cc l/nn ,/punct and/cc no/dt short/jj cycle/nn involves/vbz distinct/jj vertices/nns from/in two/cd different/jj gadgets/nns ./punct
+it/prp is/vbz easy/jj to/to see/vb then/rb that/in in/in a/dt perfect/jj cover/nn ,/punct each/dt gadget/nn ti/nn contributes/vbz cycles/nns exists/vbz a/dt perfect/jj 3d-matching/nn in/in the/dt original/jj instance/nn ./punct
+problem/nn as/in an/dt ilp/nn with/in one/cd variable/nn for/in each/dt edge/nn ./punct
+this/dt encoding/nn is/vbz based/vbn on/in the/dt following/vbg classical/jj algorithm/nn for/in solving/vbg the/dt directed/jj cycle/nn cover/nn problem/nn with/in no/dt cycle-length/jj constraints/nns ./punct
+with/in one/cd vertex/nn for/in each/dt agent/nn ,/punct and/cc one/cd vertex/nn for/in each/dt item/nn ./punct
+own/jj item/nn ./punct
+at/in this/dt point/nn ,/punct the/dt encoding/nn is/vbz a/dt perfect/jj matching/nn ./punct
+now/rb ,/punct for/in each/dt edge/nn e/sym =/punct (/punct vi/ls ,/punct vj/nn )/punct in/in the/dt original/jj market/nn ,/punct add/vb vj/nn ./punct
+perfect/nnp matchings/nns in/in this/dt encoding/vbg correspond/vbp exactly/rb with/in cycle/nn covers/vbz ,/punct since/in whenever/wrb an/dt agent/nn ''/'' s/nns item/nn is/vbz taken/vbn ,/punct it/prp must/md receive/vb some/dt other/jj agent/nn ''/'' s/nns item/nn ./punct
+it/prp follows/vbz that/in the/dt unrestricted/jj clearing/nn problem/nn can/md be/vb solved/vbn in/in polynomial/jj time/nn by/in finding/vbg a/dt maximum-weight/jj perfect/jj matching/nn ./punct
+alternatively/rb ,/punct we/prp can/md solve/vb the/dt problem/nn by/in encoding/vbg it/prp as/in an/dt ilp/nn with/in one/cd variable/nn for/in each/dt edge/nn in/in the/dt original/jj market/nn graph/nn g./nnp this/dt ilp/nn ,/punct given/vbn below/in ,/punct has/vbz the/dt advantage/nn that/in it/prp can/md be/vb extended/vbn naturally/rb to/to deal/vb with/in cycle/nn length/nn constraints/nns ./punct
+therefore/rb ,/punct for/in the/dt rest/nn of/in this/dt section/nn ,/punct this/dt is/vbz the/dt approach/nn we/prp will/md pursue/vb ./punct
+are/vbp satisfied/jj ./punct
+to/to see/vb that/in we/prp only/rb need/vbp to/to make/vb the/dt following/vbg changes/nns to/to the/dt ilp/nnp ./punct
+for/in each/dt length-l/nn path/nn (/punct throughout/in the/dt which/wdt precludes/vbz path/nn p/nn from/in being/vbg in/in any/dt feasible/jj solution/nn ./punct
+unfortunately/rb ,/punct in/in a/dt market/nn with/in only/jj 1000/cd patients/nns ,/punct the/dt we/prp can/md not/rb even/rb construct/vb this/dt ilp/nn without/in running/vbg out/rb of/in memory/nn ./punct
+therefore/rb ,/punct we/prp use/vbp a/dt tree/nn search/nn with/in an/dt incremental/jj formulation/nn approach/nn ./punct
+specifically/rb ,/punct we/prp use/vbp cplex/nnp ,/punct though/in we/prp add/vbp constraints/nns as/in cutting/vbg planes/nns during/in the/dt tree/nn search/nn process/nn ./punct
+we/prp begin/vbp with/in only/rb a/dt small/jj subset/nn of/in the/dt constraints/nns in/in the/dt ilp/nnp ./punct
+since/in this/dt ilp/nn is/vbz small/jj ,/punct cplex/nnp can/md solve/vb its/prp$ lp/nn relaxation/nn ./punct
+we/prp then/rb check/vbp whether/in any/dt of/in the/dt missing/vbg constraints/nns are/vbp violated/vbn by/in the/dt fractional/jj solution/nn ./punct
+if/in so/rb ,/punct we/prp generate/vbp a/dt set/nn of/in these/dt constraints/nns ,/punct add/vb them/prp to/to the/dt ilp/nnp ,/punct and/cc repeat/nn ./punct
+even/rb once/rb all/dt constraints/nns are/vbp satisfied/jj ,/punct there/ex may/md be/vb no/dt integral/jj solution/nn matching/vbg the/dt fractional/jj upper/jj bound/vbn ,/punct and/cc even/rb if/in there/ex were/vbd ,/punct the/dt lp/nn solver/nn might/md not/rb find/vb it/prp ./punct
+in/in these/dt cases/nns ,/punct cplex/nnp branches/nns on/in a/dt variable/jj (/punct we/prp used/vbd cplex/nnp ''/'' s/vbz default/nn branching/vbg strategy/nn )/punct ,/punct and/cc generates/vbz one/cd new/jj search/nn node/nn corresponding/vbg to/to each/dt of/in the/dt children/nns ./punct
+at/in each/dt node/nn of/in the/dt search/nn tree/nn that/wdt is/vbz visited/vbn ,/punct this/dt process/nn of/in solving/vbg the/dt lp/nn and/cc adding/vbg constraints/nns is/vbz repeated/vbn ./punct
+clearly/rb ,/punct this/dt approach/nn yields/vbz an/dt optimal/jj solution/nn once/in the/dt tree/nn search/nn finishes/nns ./punct
+we/prp still/rb need/vbp to/to explain/vb the/dt details/nns of/in the/dt constraint/nn seeder/nn (/punct i.e./fw ,/punct selecting/vbg which/wdt constraints/nns to/to begin/vb with/in )/punct and/cc the/dt constraint/nn generation/nn (/punct i.e./fw ,/punct selecting/vbg which/wdt violated/vbd constraints/nns to/to include/vb )/punct ./punct
+we/prp describe/vbp these/dt briefly/nn in/in the/dt next/jj two/cd subsections/nns ,/punct respectively/rb ./punct
+the/dt main/jj constraint/nn seeder/nn we/prp developed/vbd forbids/vbz any/dt path/nn from/in its/prp$ head/nn to/to its/prp$ tail/nn ./punct
+while/in it/prp is/vbz computationally/rb expensive/jj to/to find/vb these/dt constraints/nns ,/punct their/prp$ addition/nn focuses/vbz the/dt search/nn away/rb from/in paths/nns that/wdt can/md not/rb be/vb in/in the/dt final/jj solution/nn ./punct
+constraints/nns from/in the/dt ilp/nnp ./punct
+we/prp experimented/vbd with/in several/jj constraint/nn generators/nns ./punct
+in/in each/dt ,/punct given/vbn a/dt fractional/jj solution/nn ,/punct we/prp construct/vbp the/dt subgraph/nn of/in edges/nns with/in positive/jj value/nn ./punct
+this/dt graph/nn is/vbz much/rb smaller/jjr than/in the/dt original/jj graph/nn ,/punct so/in we/prp can/md perform/vb the/dt following/vbg computations/nns efficiently/rb ./punct
+in/in our/prp$ first/jj constraint/nn generator/nn ,/punct we/prp simply/rb search/vb for/in length-l/jj paths/nns with/in value/nn sum/nn more/jjr than/in l/nn −/cd 1/cd ./punct
+for/in any/dt as/in many/jj as/in |c|/jj violating/vbg paths/nns ./punct
+in/in our/prp$ second/jj constraint/nn generator/nn ,/punct we/prp only/rb add/vbp one/cd constraint/nn for/in such/jj cycles/nns :/punct the/dt sum/nn of/in edges/nns in/in the/dt cycle/nn can/md be/vb at/in most/jjs |c|/jj (/punct l/nn −/cd 1/cd )/punct /l/nn ./punct
+this/dt generator/nn made/vbd the/dt algorithm/nn slower/jjr ,/punct so/in we/prp went/vbd in/in the/dt other/jj direction/nn in/in developing/vbg our/prp$ final/jj generator/nn ./punct
+it/prp adds/vbz one/cd constraint/nn per/in violating/vbg path/nn p/nn ,/punct and/cc furthermore/rb ,/punct it/prp adds/vbz a/dt constraint/nn for/in each/dt path/nn with/in the/dt same/jj interior/jj vertices/nns (/punct not/rb counting/vbg the/dt endpoints/nns )/punct as/in p./nn this/dt improved/vbd the/dt overall/jj speed/nn ./punct
+it/prp turned/vbd out/rp that/in even/rb with/in these/dt improvements/nns ,/punct the/dt edge/nn formulation/nn approach/nn can/md not/rb clear/vb a/dt kidney/nn exchange/nn with/in 100/cd vertices/nns in/in the/dt time/nn the/dt cycle/nn formulation/nn (/punct described/vbn later/rb in/in section/nn 5/cd )/punct can/md clear/vb one/cd with/in 10,000/cd vertices/nns ./punct
+in/in other/jj words/nns ,/punct column/nn generation/nn based/vbn approaches/nns turned/vbd out/rp to/to be/vb drastically/rb better/jjr than/in constraint/nn generation/nn based/vbn approaches/nns ./punct
+therefore/rb ,/punct in/in the/dt rest/nn of/in the/dt paper/nn ,/punct we/prp will/md focus/vb on/in the/dt cycle/nn formulation/nn and/cc the/dt column/nn generation/nn based/vbn approaches/nns ./punct
+problem/nn as/in an/dt ilp/nn with/in one/cd variable/nn for/in each/dt cycle/nn ./punct
+this/dt encoding/nn is/vbz based/vbn on/in the/dt following/vbg classical/jj algorithm/nn for/in solving/vbg the/dt directed/jj cycle/nn cover/nn problem/nn when/wrb cycles/nns have/vbp length/nn 2./fw easy/jj to/to see/vb that/dt matchings/nns in/in this/dt new/jj graph/nn correspond/vbp to/to cycle/nn covers/nns by/in length-2/nn cycles/nns in/in the/dt original/jj market/nn graph/nn ./punct
+hence/rb ,/punct the/dt market/nn clearing/nn problem/nn with/in l/nn =/punct 2/cd can/md matching/vbg ./punct
+we/prp can/md generalize/vb this/dt encoding/vbg for/in arbitrary/jj l./nn let/vb c/nn (/punct l/nn )/punct the/dt following/vbg ilp/nn finds/vbz the/dt maximum-weight/jj cycle/nn cover/nn by/in in/in this/dt section/nn ,/punct we/prp consider/vbp the/dt merits/nns of/in the/dt edge/nn formulation/nn and/cc cycle/nn formulation/nn ./punct
+the/dt edge/nn formulation/nn can/md be/vb solved/vbn in/in polynomial/jj time/nn when/wrb there/ex are/vbp no/dt constraints/nns on/in the/dt cycle/nn size/nn ./punct
+the/dt cycle/nn formulation/nn can/md be/vb solved/vbn in/in polynomial/jj time/nn when/wrb the/dt cycle/nn size/nn is/vbz at/in most/jjs 2./fw relaxation/nn of/in these/dt formulations/nns to/to provide/vb upper/jj bounds/nns on/in the/dt optimal/jj solution/nn ./punct
+these/dt bounds/nns help/vbp prune/vb subtrees/nns and/cc guide/vb the/dt search/nn in/in the/dt usual/jj ways/nns ./punct
+interior/jj vertices/nns (/punct not/rb counting/vbg the/dt endpoints/nns )/punct ,/punct the/dt value/nn sum/nn of/in these/dt interior/jj vertices/nns is/vbz at/in most/jjs l−1/nn ./punct
+now/rb ,/punct for/in any/dt cycle/nn v∈p/jj v/ls =/punct l−1/nn ./punct
+the/dt converse/nn of/in this/dt theorem/nn is/vbz not/rb true/jj ./punct
+consider/vb a/dt graph/nn relaxation/nn of/in the/dt cycle/nn formulation/nn has/vbz optimal/jj value/nn 0/cd ,/punct since/in formulation/nn has/vbz a/dt solution/nn of/in size/nn n/2/nn ,/punct with/in each/dt edge/nn having/vbg value/nn 1/2/cd ./punct
+hence/rb ,/punct the/dt cycle/nn formulation/nn is/vbz tighter/jjr than/in the/dt edge/nn formulation/nn ./punct
+additionally/rb ,/punct for/in a/dt graph/nn with/in m/nn edges/nns ,/punct the/dt edge/nn )/punct ./punct
+3/cd grows/vbz with/in the/dt size/nn of/in the/dt market/nn ./punct
+with/in one/cd variable/jj per/in cycle/nn in/in the/dt cycle/nn formulation/nn ,/punct cplex/nnp can/md not/rb even/rb clear/jj markets/nns with/in 1,000/cd patients/nns without/in running/vbg out/rb of/in memory/nn (/punct see/vbp figure/nnp 6/cd )/punct ./punct
+to/to address/vb this/dt problem/nn ,/punct we/prp used/vbd an/dt incremental/jj formulation/nn approach/nn ./punct
+the/dt first/jj step/nn in/in lp-guided/jj tree/nn search/nn is/vbz to/to solve/vb the/dt lp/nn relaxation/nn ./punct
+since/in the/dt cycle/nn formulation/nn does/vbz not/rb fit/vb in/in memory/nn ,/punct this/dt lp/nn stage/nn would/md fail/vb immediately/rb without/in an/dt incremental/jj formulation/nn approach/nn ./punct
+however/rb ,/punct motivated/vbn by/in the/dt observation/nn that/in an/dt exchange/nn solution/nn can/md include/vb only/rb using/vbg column/nn (/punct i.e./fw ,/punct cycle/nn )/punct generation/nn ./punct
+lp/nn containing/vbg only/rb a/dt small/jj number/nn of/in columns/nns (/punct variables/nns ,/punct i.e./fw ,/punct cycles/nns )/punct ,/punct and/cc then/rb to/to repeatedly/rb add/vb columns/nns until/in an/dt optimal/jj solution/nn to/to the/dt original/jj (/punct aka/nn master/nn )/punct lp/nn ./punct
+we/prp explain/vbp this/dt further/jj by/in way/nn of/in an/dt example/nn ./punct
+gives/vbz the/dt corresponding/jj master/nn lp/nn ,/punct p/nn ,/punct and/cc its/prp$ dual/jj ,/punct d./nnp the/dt constraint/nn c2/nn ./punct
+because/in p/nn and/cc d/nn are/vbp small/jj ,/punct we/prp can/md solve/vb c1/nn =/punct c3/nn =/punct 1/cd and/cc vop/nn t/nn (/punct d/nn )/punct =/punct v1/nn =/punct v2/nn =/punct v3/nn =/punct v4/nn =/punct 1/cd ./punct
+subset/nn of/in the/dt columns/nns of/in p./nnp because/in d/nnp and/cc p/nn are/vbp too/rb large/jj to/to solve/vb ./punct
+instead/rb ,/punct because/in is/vbz called/vbn the/dt pricing/nn problem/nn ./punct
+here/rb ,/punct the/dt price/nn of/in a/dt column/nn (/punct cycle/nn in/in our/prp$ setting/vbg )/punct is/vbz the/dt difference/nn between/in its/prp$ weight/nn ,/punct and/cc has/vbz a/dt positive/jj price/nn ,/punct its/prp$ corresponding/jj constraint/nn is/vbz violated/vbn and/cc we/prp have/vbp not/rb yet/rb proven/vbn optimality/nn ./punct
+in/in this/dt case/nn ,/punct we/prp must/md continue/vb generating/vbg columns/nns to/to add/vb to/to p/nn ./punct
+for/in smaller/jjr instances/nns ,/punct we/prp can/md maintain/vb an/dt explicit/jj collection/nn of/in all/dt feasible/jj cycles/nns ./punct
+this/dt makes/vbz the/dt pricing/nn problem/nn easy/jj and/cc efficient/jj to/to solve/vb :/punct we/prp simply/rb traverse/vb the/dt collection/nn of/in cycles/nns ,/punct and/cc look/vb for/in cycles/nns with/in positive/jj price/nn ./punct
+we/prp can/md even/rb find/vb cycles/nns with/in the/dt most/rbs positive/jj price/nn ,/punct which/wdt are/vbp the/dt ones/nns most/rbs likely/jj to/to improve/vb the/dt objective/jj value/nn of/in restricted/jj lp/nn ./punct
+this/dt approach/nn does/vbz not/rb scale/nn however/rb ./punct
+a/dt market/nn with/in 5000/cd patients/nns can/md have/vb as/rb many/jj as/in 400/cd million/cd cycles/nns to/to keep/vb in/in memory/nn ./punct
+hence/rb ,/punct for/in larger/jjr instances/nns ,/punct we/prp have/vbp to/to generate/vb feasible/jj cycles/nns while/in looking/vbg for/in one/cd with/in a/dt positive/jj price/nn ./punct
+we/prp do/vbp this/dt using/vbg a/dt depth-first/jj search/nn algorithm/nn on/in the/dt market/nn graph/nn (/punct see/vbp figure/nn 1/cd )/punct ./punct
+in/in order/nn to/to make/vb this/dt search/nn faster/rbr ,/punct we/prp explore/vbp vertices/nns in/in non-decreasing/jj value/nn order/nn ,/punct as/in these/dt vertices/nns are/vbp more/rbr likely/jj to/to belong/vb to/to cycles/nns with/in positive/jj weight/nn ./punct
+we/prp also/rb use/vbp several/jj pruning/nn rules/nns to/to determine/vb if/in the/dt current/jj search/nn path/nn can/md lead/vb to/to a/dt positive/jj weight/nn cycle/nn ./punct
+for/in the/dt fact/nn that/in every/dt vertex/nn we/prp visit/vbp from/in this/dt point/nn onwards/nns will/md have/vb value/nn at/in least/jjs as/rb great/jj the/dt current/jj vertex/nn ./punct
+even/rb with/in these/dt pruning/nn rules/nns ,/punct column/nn generation/nn is/vbz a/dt bottleneck/nn ./punct
+hence/rb ,/punct we/prp also/rb implemented/vbd the/dt following/vbg optimizations/nns ./punct
+whenever/nnp the/dt search/nn exhaustively/rb proves/vbz that/in a/dt vertex/nn belongs/vbz to/to no/dt positive/jj price/nn cycle/nn ,/punct we/prp mark/vbp the/dt vertex/nn and/cc dual/jj value/nn decreases/vbz ./punct
+in/in this/dt way/nn ,/punct we/prp avoid/vbp unnecessarily/rb repeating/vbg our/prp$ computational/jj efforts/nns from/in a/dt previous/jj column/nn generation/nn iteration/nn ./punct
+finally/rb ,/punct it/prp can/md sometimes/rb be/vb beneficial/jj for/in column/nn generation/nn to/to include/vb several/jj positive-price/jj columns/nns in/in one/cd once/rb the/dt first/jj one/cd is/vbz found/vbn ./punct
+however/rb ,/punct we/prp avoid/vbp this/dt for/in the/dt following/vbg reason/nn ./punct
+if/in we/prp attempt/vbp to/to find/vb more/jjr positive-price/jj our/prp$ experiments/nns ,/punct we/prp have/vbp seen/vbn this/dt occur/vb in/in markets/nns with/in hundreds/nns of/in millions/nns of/in cycles/nns ,/punct resulting/vbg in/in prohibitively/rb expensive/jj computation/nn costs/nns ./punct
+relaxation/nn ,/punct column/nn generation/nn requires/vbz many/jj iterations/nns to/to improve/vb the/dt objective/jj value/nn of/in the/dt restricted/jj lp/nn ./punct
+each/dt of/in these/dt iterations/nns is/vbz expensive/jj ,/punct as/in we/prp must/md solve/vb the/dt pricing/nn problem/nn ,/punct and/cc re-solve/vb the/dt restricted/jj lp/nn ./punct
+hence/rb ,/punct although/in we/prp could/md to/to seed/nn the/dt lp/nn with/in enough/jj columns/nns that/in the/dt optimal/jj objective/jj value/nn is/vbz not/rb too/rb far/rb from/in the/dt master/nn lp/nn ./punct
+of/in course/nn ,/punct we/prp can/md not/rb include/vb so/rb many/jj columns/nns that/in we/prp run/vbp out/in of/in memory/nn ./punct
+we/prp experimented/vbd with/in several/jj column/nn seeders/nns ./punct
+in/in one/cd then/rb add/vb the/dt cycles/nns of/in that/dt exchange/nn to/to the/dt initial/jj restricted/jj lp/nn ./punct
+we/prp implemented/vbd two/cd heuristics/nns ./punct
+the/dt first/jj is/vbz a/dt greedy/jj other/jj uncovered/jj vertices/nns ./punct
+the/dt other/jj heuristic/nn uses/vbz specialized/vbn maximum-weight/jj matching/nn code/nn to/to find/vb an/dt optimal/jj cover/nn by/in length-2/nn cycles/nns ./punct
+these/dt heuristics/nns perform/vbp extremely/rb well/rb ,/punct especially/rb taking/vbg into/in account/nn the/dt fact/nn that/in they/prp only/rb add/vbp a/dt small/jj number/nn of/in columns/nns ./punct
+for/in example/nn ,/punct table/nnp 1/cd shows/vbz that/in an/dt optimal/jj cover/nn by/in length-2/nn cycles/nns has/vbz almost/rb as/rb much/jj weight/nn as/in the/dt exchange/nn with/in unrestricted/jj cycle/nn size/nn ./punct
+however/rb ,/punct we/prp have/vbp enough/rb memory/nn to/to include/vb hundreds-of-thousands/nns of/in additional/jj columns/nns and/cc thereby/rb get/vb closer/jjr still/rb to/to the/dt upper/jj bound/vbn ./punct
+our/prp$ best/jjs column/nn seeder/nn constructs/nns a/dt random/jj collection/nn of/in feasible/jj cycles/nns ./punct
+since/in a/dt market/nn with/in 5000/cd patients/nns can/md have/vb generate/vb and/cc traverse/vb all/dt feasible/jj cycles/nns ,/punct and/cc so/in we/prp do/vbp not/rb include/vb a/dt uniformly/rb random/jj collection/nn ./punct
+instead/rb ,/punct we/prp perform/vbp a/dt random/jj walk/nn on/in the/dt market/nn graph/nn (/punct see/vbp ,/punct for/in example/nn ,/punct figure/nnp 1/cd )/punct ,/punct in/in which/wdt ,/punct after/in each/dt step/nn of/in the/dt walk/nn ,/punct we/prp test/vbp whether/in there/ex is/vbz an/dt edge/nn back/rb onto/in our/prp$ path/nn that/in forms/vbz a/dt feasible/jj experiments/nns (/punct see/vb section/nn 6/cd )/punct ,/punct we/prp use/vbp this/dt algorithm/nn to/to seed/nn the/dt lp/nn with/in 400,000/cd cycles/nns ./punct
+this/dt last/jj approach/nn outperforms/vbz the/dt heuristic/nn seeders/nns described/vbn above/in ./punct
+however/rb ,/punct in/in our/prp$ algorithm/nn ,/punct we/prp use/vbp a/dt combination/nn that/wdt takes/vbz the/dt union/nn of/in all/dt columns/nns from/in all/dt three/cd combination/nn seeder/nn against/in the/dt combination/nn without/in the/dt random/jj collection/nn seeder/nn ./punct
+we/prp do/vbp not/rb plot/vb the/dt performance/nn of/in the/dt algorithm/nn without/in any/dt seeder/nn at/in all/dt ,/punct because/in it/prp can/md take/vb hours/nns to/to clear/jj markets/nns we/prp can/md otherwise/rb clear/vb in/in a/dt few/jj minutes/nns ./punct
+master/nn lp/nn relaxation/nn ./punct
+using/vbg column/nn generation/nn ,/punct we/prp can/md prove/vb that/in a/dt restricted-primal/jj solution/nn is/vbz optimal/jj once/rb all/dt columns/nns have/vbp non-positive/jj prices/nns ./punct
+unfortunately/rb though/rb ,/punct our/prp$ clearing/nn problem/nn has/vbz the/dt so-called/jj tailing-off/jj effect/nn [/punct 1/cd ,/punct section/nn 6.3/cd ]/punct ,/punct in/in which/wdt ,/punct even/rb though/in the/dt restricted/jj primal/jj is/vbz optimal/jj in/in hindsight/nn ,/punct a/dt large/jj number/nn of/in additional/jj iterations/nns are/vbp required/vbn in/in order/nn to/to prove/vb optimality/nn (/punct i.e./fw ,/punct eliminate/vb all/dt positive-price/jj columns/nns )/punct ./punct
+there/ex is/vbz no/dt good/jj general/jj solution/nn to/to the/dt tailing-off/jj effect/nn ./punct
+however/rb ,/punct to/to mitigate/vb this/dt effect/nn ,/punct we/prp take/vbp advantage/nn of/in the/dt following/vbg problem-specific/jj observation/nn ./punct
+recall/vb from/in section/nn 1.1/cd that/in ,/punct almost/rb always/rb ,/punct a/dt maximum-weight/jj exchange/nn unrestricted/jj maximum-weight/jj exchange/nn ./punct
+(/punct this/dt does/vbz not/rb mean/vb that/in the/dt solver/nn for/in the/dt unrestricted/jj case/nn will/md find/vb a/dt solution/nn with/in short/jj cycles/nns ,/punct however/rb ./punct
+)/punct furthermore/rb ,/punct the/dt unrestricted/jj clearing/nn problem/nn can/md be/vb solved/vbn in/in polynomial/jj time/nn (/punct recall/nn section/nn 4/cd )/punct ./punct
+hence/rb ,/punct we/prp can/md efficiently/rb compute/vb an/dt upper/jj bound/vbn on/in the/dt master/nn lp/nn relaxation/nn ,/punct and/cc ,/punct whenever/wrb the/dt restricted/jj primal/jj achieves/vbz this/dt upper/jj bound/vbn ,/punct we/prp have/vbp proven/vbn optimality/nn without/in necessarily/rb having/vbg to/to eliminate/vb all/dt positive-price/jj columns/nns !/punct
+in/in order/nn for/in this/dt to/to improve/vb the/dt running/vbg time/nn of/in the/dt overall/jj market/nn in/in less/jjr time/nn than/in it/prp takes/vbz column/nn generation/nn to/to eliminate/vb all/pdt the/dt positive-price/jj cycles/nns ./punct
+even/rb though/in the/dt first/jj problem/nn is/vbz polynomial-time/jj solvable/jj ,/punct this/dt is/vbz not/rb trivial/jj for/in large/jj instances/nns ./punct
+for/in example/nn ,/punct for/in a/dt market/nn with/in 10,000/cd patients/nns and/cc 25/cd million/cd edges/nns ,/punct specialized/vbn maximum-weight/jj matching/nn code/nn was/vbd too/rb slow/jj ,/punct and/cc cplex/nnp ran/vbd out/in of/in memory/nn on/in the/dt edge/nn formulation/nn encoding/vbg from/in section/nn 4/cd ./punct
+to/to make/vb this/dt idea/nn work/nn then/rb ,/punct we/prp used/vbd column/nn generation/nn to/to solve/vb the/dt edge/nn formulation/nn ./punct
+this/dt involves/vbz starting/vbg with/in a/dt small/jj random/jj subset/nn of/in the/dt edges/nns ,/punct and/cc then/rb adding/vbg positive/jj price/nn edges/nns one-by-one/rb until/in none/nn remain/vbp ./punct
+we/prp conduct/vbp this/dt secondary/jj column/nn generation/nn not/rb in/in the/dt original/jj market/nn graph/nn g/nn ,/punct but/cc in/in the/dt perfect/jj only/jj need/nn to/to solve/vb the/dt lp/nn ,/punct not/rb the/dt ilp/nnp ,/punct since/in the/dt integrality/nn gap/nn in/in the/dt perfect/jj matching/nn bipartite/jj graph/nn is/vbz 1-i.e/jj ./punct
+there/rb always/rb exists/vbz an/dt integral/jj solution/nn that/wdt achieves/vbz the/dt fractional/jj upper/jj bound/vbn ./punct
+the/dt resulting/vbg speedup/nn to/to the/dt overall/jj algorithm/nn is/vbz dramatic/jj ,/punct as/in can/md be/vb seen/vbn in/in figure/nnp 6./ls are/vbp generated/vbn before/in the/dt gap/nn is/vbz closed/vbn ./punct
+this/dt leads/vbz to/to memory/nn problems/nns on/in markets/nns with/in as/rb few/jj as/in 4,000/cd patients/nns ./punct
+also/rb ,/punct even/rb before/in memory/nn becomes/vbz an/dt issue/nn ,/punct the/dt column/nn generation/nn iterations/nns become/vbp slow/jj because/in of/in the/dt additional/jj overhead/nn of/in solving/vbg a/dt larger/jjr lp/nn ./punct
+to/to address/vb these/dt issues/nns ,/punct we/prp implemented/vbd a/dt column/nn management/nn scheme/nn to/to limit/vb the/dt size/nn of/in the/dt restricted/jj lp/nn ./punct
+case/nn ,/punct we/prp selectively/rb remove/vb columns/nns until/in it/prp is/vbz again/rb below/in be/vb too/rb aggressive/jj with/in the/dt threshold/nn ,/punct because/in doing/vbg so/rb may/md offset/vb the/dt per-iteration/jj performance/nn gains/nns by/in significantly/rb increasing/vbg the/dt number/nn of/in iterations/nns required/vbn to/to get/vb a/dt suitable/jj column/nn set/vbn in/in the/dt lp/nn at/in the/dt same/jj time/nn ./punct
+there/ex are/vbp some/dt columns/nns we/prp never/rb delete/vbp ,/punct for/in example/nn those/dt we/prp have/vbp branched/vbn on/in (/punct see/vbp section/nn 5.3.2/cd )/punct ,/punct or/cc those/dt with/in a/dt non-zero/jj lp/nn value/nn ./punct
+amongst/in the/dt rest/nn ,/punct we/prp delete/vbp those/dt with/in the/dt lowest/jjs price/nn ,/punct since/in those/dt correspond/vbp to/to the/dt dual/jj constraints/nns that/wdt are/vbp most/rbs satisfied/jj ./punct
+this/dt column/nn management/nn scheme/nn works/vbz well/rb and/cc has/vbz enabled/vbn us/prp to/to clear/jj markets/nns with/in 10,000/cd patients/nns ,/punct as/in seen/vbn in/in figure/nnp 6/cd ./punct
+given/vbn a/dt large/jj market/nn clearing/nn problem/nn ,/punct we/prp can/md successfully/rb solve/vb its/prp$ lp/nn relaxation/nn to/to optimality/nn by/in using/vbg the/dt column/nn generation/nn enhancements/nns described/vbn above/in ./punct
+however/rb ,/punct the/dt solutions/nns we/prp find/vbp are/vbp usually/rb fractional/jj ./punct
+thus/rb the/dt next/jj based/vbn on/in memory/nn size/nn ,/punct we/prp set/vbd the/dt threshold/nn at/in 400,000./cd step/nn involves/vbz performing/vbg a/dt branch-and-price/jj tree/nn search/nn to/to find/vb an/dt optimal/jj integral/jj solution/nn ./punct
+briefly/rb ,/punct this/dt is/vbz the/dt idea/nn of/in branch-and-price/nn ./punct
+whenever/nnp we/prp lp/nn ,/punct and/cc the/dt restriction/nn we/prp are/vbp working/vbg with/in ,/punct are/vbp changed/vbn (/punct constrained/vbn )/punct ./punct
+by/in default/nn then/rb ,/punct we/prp need/vbp to/to perform/vb column/nn generation/nn (/punct go/vbp through/in the/dt effort/nn of/in pricing/nn )/punct at/in each/dt node/nn of/in the/dt search/nn tree/nn to/to prove/vb that/in the/dt constrained/vbn restriction/nn is/vbz optimal/jj for/in constrained/vbn master/nn lp/nn ./punct
+(/punct however/rb ,/punct as/in discussed/vbn in/in section/nn 5.2.3/cd ,/punct we/prp compute/vbp the/dt integral/jj upper/jj bound/vbn for/in the/dt root/nn node/nn based/vbn on/in relaxing/vbg the/dt cycle/nn length/nn constraint/nn completely/rb ,/punct and/cc whenever/wrb any/dt node/nn ''/'' s/nns lp/nn in/in the/dt tree/nn achieves/vbz for/in the/dt clearing/nn problem/nn with/in cycles/nns of/in length/nn at/in most/jjs 3/cd ,/punct we/prp have/vbp found/vbn that/in there/ex is/vbz rarely/rb a/dt gap/nn between/in the/dt optimal/jj integral/jj and/cc fractional/jj solutions/nns ./punct
+this/dt means/vbz we/prp can/md largely/rb avoid/vb the/dt expensive/jj per/in node/nn pricing/nn step/nn :/punct whenever/wrb the/dt constrained/vbn restricted/jj lp/nn has/vbz the/dt same/jj optimal/jj value/nn as/in its/prp$ in/in section/nnp 5.2.3/cd ,/punct without/in having/vbg to/to include/vb any/dt additional/jj columns/nns in/in the/dt restricted/jj lp/nn ./punct
+although/in cplex/nnp can/md solve/vb ilps/nns ,/punct it/prp does/vbz not/rb support/vb branch-and-price/jj (/punct for/in example/nn ,/punct because/in there/ex can/md be/vb problemspecific/jj complications/nns involving/vbg the/dt interaction/nn between/in the/dt branching/vbg rule/nn and/cc the/dt pricing/nn problem/nn )/punct ./punct
+hence/rb ,/punct we/prp implemented/vbd our/prp$ own/jj branch-and-price/jj algorithm/nn ,/punct which/wdt explores/vbz the/dt search/nn tree/nn in/in depth-first/jj order/nn ./punct
+we/prp also/rb experimented/vbd with/in the/dt a*/nn node/nn selection/nn order/nn ./punct
+however/rb ,/punct this/dt search/nn strategy/nn requires/vbz significantly/rb more/jjr memory/nn ,/punct which/wdt we/prp found/vbd was/vbd better/jjr employed/vbn in/in making/vbg the/dt column/nn generation/nn phase/nn faster/rbr (/punct see/vbp section/nn 5.2.2/cd )/punct ./punct
+the/dt remaining/vbg major/jj components/nns of/in the/dt algorithm/nn are/vbp described/vbn in/in the/dt next/jj two/cd subsections/nns ./punct
+before/in branching/vbg on/in a/dt fractional/jj variable/nn ,/punct we/prp use/vbp primal/jj heuristics/nns to/to construct/vb a/dt feasible/jj integral/jj solution/nn ./punct
+these/dt solutions/nns are/vbp lower/jjr bounds/nns on/in the/dt final/jj optimal/jj integral/jj solutions/nns ./punct
+hence/rb ,/punct whenever/wrb a/dt restricted/jj fractional/jj solution/nn is/vbz no/rb better/jjr than/in the/dt best/jjs integral/jj solution/nn found/vbn so/rb far/rb ,/punct we/prp prune/vbp the/dt current/jj subtree/nn ./punct
+a/dt primal/jj heuristic/nn is/vbz effective/jj if/in it/prp is/vbz efficient/jj and/cc constructs/nns tight/rb lower/jjr bounds/nns ./punct
+we/prp experimented/vbd with/in two/cd primal/jj heuristics/nns ./punct
+the/dt first/jj is/vbz a/dt simple/jj rounding/vbg algorithm/nn :/punct include/vb all/dt cycles/nns with/in fractional/jj value/nn at/in least/jjs 0.5/cd ,/punct and/cc then/rb ,/punct ensuring/vbg feasibility/nn ,/punct greedily/rb add/vb the/dt remaining/vbg cycles/nns ./punct
+whilst/in this/dt heuristic/nn is/vbz efficient/jj ,/punct we/prp found/vbd that/in the/dt lower/jjr bounds/nns it/prp constructs/nns rarely/rb enable/vbp much/jj pruning/nn ./punct
+any/dt given/vbn node/nn of/in the/dt search/nn tree/nn ,/punct we/prp can/md convert/vb the/dt integrality/nn constraints/nns ./punct
+cplex/nnp has/vbz several/jj built-in/jj primal/jj heuristics/nns ,/punct which/wdt we/prp can/md apply/vb to/to this/dt ilp/nn ./punct
+moreover/rb ,/punct we/prp can/md use/vb cplex/nnp ''/'' s/vbz own/jj tree/nn search/nn to/to find/vb an/dt optimal/jj integral/jj solution/nn ./punct
+in/in general/jj ,/punct this/dt tree/nn search/nn is/vbz much/jj faster/jjr than/in our/prp$ own/jj ./punct
+if/in cplex/nnp finds/vbz an/dt integral/jj solution/nn that/wdt matches/vbz the/dt fractional/jj upper/jj bound/vbn at/in the/dt root/nn node/nn ,/punct we/prp are/vbp done/vbn ./punct
+otherwise/rb ,/punct no/dt such/jj integral/jj solution/nn exists/vbz ,/punct or/cc we/prp don/vbp ''/'' t/nn yet/rb have/vbp the/dt right/jj combination/nn of/in cycles/nns in/in the/dt restricted/jj lp/nn ./punct
+for/in kidney-exchange/jj markets/nns ,/punct it/prp is/vbz usually/rb the/dt second/jj reason/nn that/wdt applies/vbz (/punct see/vbp sections/nns 5.2.2/cd and/cc 5.2.4/cd )/punct ./punct
+hence/rb ,/punct at/in some/dt point/nn in/in the/dt tree/nn search/nn ,/punct once/rb more/jjr columns/nns have/vbp been/vbn generated/vbn as/in a/dt result/nn of/in branching/vbg ,/punct the/dt cplex/nnp heuristic/nn will/md find/vb an/dt optimal/jj integral/jj solution/nn ./punct
+although/in cplex/nnp tree/nn search/nn is/vbz faster/rbr than/in our/prp$ own/jj ,/punct it/prp is/vbz tree/nn ./punct
+hence/rb ,/punct we/prp make/vbp the/dt following/vbg optimizations/nns ./punct
+firstly/rb ,/punct we/prp add/vbp a/dt constraint/nn that/wdt requires/vbz the/dt objective/jj value/nn of/in the/dt the/dt case/nn ,/punct we/prp want/vbp to/to abort/vb and/cc proceed/vb to/to generate/vb more/jjr columns/nns with/in our/prp$ branch-and-price/jj search/nn ./punct
+secondly/rb ,/punct we/prp limit/vbp the/dt number/nn of/in nodes/nns in/in cplex/nnp ''/'' s/vbz search/nn tree/nn ./punct
+this/dt is/vbz because/in we/prp have/vbp observed/vbn that/in no/dt integral/jj solution/nn exists/vbz ,/punct cplex/nnp can/md take/vb a/dt very/rb long/jj time/nn to/to prove/vb that/dt ./punct
+finally/rb ,/punct sufficiently/rb different/jj set/nn of/in cycles/nns from/in its/prp$ parent/nn ./punct
+using/vbg cplex/nnp as/in a/dt primal/jj heuristic/nn has/vbz a/dt large/jj impact/nn because/in it/prp makes/vbz the/dt search/nn tree/nn smaller/jjr ,/punct so/rb all/pdt the/dt computationally/rb expensive/jj pricing/nn work/nn is/vbz avoided/vbn at/in nodes/nns that/wdt are/vbp not/rb generated/vbn in/in this/dt smaller/jjr tree/nn ./punct

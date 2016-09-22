@@ -1,0 +1,115 @@
+in/in this/dt paper/nn ,/punct we/prp propose/vbp an/dt adaptive/jj task/nn allocation/nn framework/nn to/to perform/vb blast/nn searches/nns in/in a/dt grid/nn environment/nn against/in sequence/nn database/nn segments/nns ./punct
+the/dt framework/nn ,/punct called/vbn packageblast/nn ,/punct provides/vbz an/dt infrastructure/nn to/to choose/vb or/cc incorporate/vb task/nn allocation/nn strategies/nns ./punct
+furthermore/rb ,/punct we/prp propose/vbp a/dt mechanism/nn to/to compute/vb grid/nn nodes/nns execution/nn weight/nn ,/punct adapting/vbg the/dt chosen/vbn allocation/nn policy/nn to/to the/dt current/jj computational/jj power/nn of/in the/dt nodes/nns ./punct
+our/prp$ results/nns present/jj very/rb good/jj speedups/nns and/cc also/rb show/vbp that/in no/dt single/jj allocation/nn strategy/nn is/vbz able/jj to/to achieve/vb the/dt lowest/jjs execution/nn times/nns for/in all/dt scenarios/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct distributed/vbn systems/nnps ]/punct :/punct distributed/vbn applications/nns ;/punct j.3/nn [/punct life/nnp and/cc medical/nnp sciences/nnps ]/punct :/punct biology/nnp and/cc genetics/nnp 1/cd ./punct
+introduction/nnp biological/jj sequence/nn comparison/nn (/punct or/cc sequence/nn alignment/nn )/punct is/vbz one/cd of/in the/dt most/rbs important/jj problems/nns in/in computational/jj biology/nn ,/punct given/vbn the/dt number/nn and/cc diversity/nn of/in the/dt sequences/nns and/cc the/dt frequency/nn on/in which/wdt it/prp is/vbz needed/vbn to/to be/vb solved/vbn daily/rb ./punct
+sw/nn [/punct 14/cd ]/punct is/vbz an/dt exact/jj algorithm/nn that/wdt finds/vbz the/dt best/jjs local/jj alignment/nn between/in two/cd sequences/nns of/in size/nn n/nn in/in quadratic/jj time/nn and/cc space/nn ./punct
+in/in genome/nn projects/nns ,/punct the/dt size/nn of/in the/dt sequences/nns to/to be/vb compared/vbn is/vbz constantly/rb increasing/vbg ,/punct thus/rb an/dt o/nn (/punct n2/nn )/punct solution/nn is/vbz expensive/jj ./punct
+for/in this/dt reason/nn ,/punct heuristics/nns like/in blast/nn [/punct 3/cd ]/punct were/vbd proposed/vbn to/to reduce/vb execution/nn time/nn ./punct
+the/dt popularity/nn of/in the/dt internet/nn made/vbd possible/jj the/dt interconnection/nn of/in millions/nns of/in powerful/jj machines/nns in/in a/dt global/jj scale/nn ./punct
+this/dt led/vbd to/to the/dt idea/nn of/in grid/nn computing/nn ,/punct which/wdt involves/vbz cooperative/jj and/cc secure/jj sharing/nn of/in non-dedicated/jj and/cc heterogeneous/jj resources/nns that/wdt are/vbp geographically/rb distributed/vbn [/punct 5/cd ]/punct ./punct
+resource/nnp scheduling/nn is/vbz one/cd of/in the/dt most/rbs important/jj components/nns of/in a/dt grid/nn system/nn ./punct
+the/dt choice/nn of/in the/dt best/jjs resources/nns for/in a/dt particular/jj application/nn is/vbz called/vbn task/nn allocation/nn ,/punct which/wdt is/vbz an/dt np-complete/jj problem/nn ./punct
+grid/nnp applications/nns usually/rb do/vbp not/rb have/vb high/jj communication/nn rates/nns and/cc many/jj of/in them/prp follow/vbp the/dt master/slave/nn model/nn [/punct 13/cd ]/punct ./punct
+in/in order/nn to/to schedule/nn master/slave/nn applications/nns many/jj task/nn allocation/nn policies/nns were/vbd proposed/vbn such/jj as/in self/nn scheduling/nn [/punct 15/cd ]/punct and/cc fac2/nn [/punct 8/cd ]/punct ./punct
+the/dt choice/nn of/in the/dt best/jjs allocation/nn policy/nn depends/vbz on/in the/dt application/nn access/nn pattern/nn and/cc on/in the/dt environment/nn in/in which/wdt it/prp runs/vbz [/punct 13/cd ]/punct ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp packageblast/nn ,/punct an/dt adaptive/jj multi-policy/jj grid/nn service/nn to/to run/vb blast/nn searches/nns in/in grids/nns composed/vbn by/in segmented/jj genetic/jj databases/nns ./punct
+packageblast/nn executes/vbz on/in globus/nnp 3/cd [/punct 4/cd ]/punct and/cc ,/punct by/in now/rb ,/punct provides/vbz five/cd allocation/nn policies/nns ./punct
+also/rb ,/punct we/prp propose/vbp an/dt adaptive/jj mechanism/nn to/to assign/vb weights/nns to/to the/dt grid/nn nodes/nns ,/punct taking/vbg into/in account/vbp their/prp$ current/jj workload/nn ./punct
+as/in far/rb as/in we/prp know/vbp ,/punct this/dt is/vbz the/dt first/jj grid/nn service/nn that/wdt runs/vbz blast/nn with/in multiple/jj task/nn policies/nns with/in a/dt segmented/jj database/nn in/in a/dt heterogeneous/jj non-dedicated/jj platform/nn ./punct
+this/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+section/nn 2/cd presents/vbz the/dt sequence/nn comparison/nn problem/nn and/cc the/dt blast/nn algorithm/nn ./punct
+section/nn 3/cd describes/vbz allocation/nn policies/nns for/in grids/nns ./punct
+section/nn 4/cd discusses/vbz related/jj work/nn ./punct
+section/nn 5/cd presents/vbz the/dt design/nn of/in packageblast/nn ./punct
+experimental/jj results/nns are/vbp discussed/vbn in/in section/nn 6/cd ./punct
+section/nn 7/cd concludes/vbz the/dt paper/nn ./punct
+2/ls ./punct
+sequence/nn comparison/nn to/to compare/vb two/cd sequences/nns ,/punct we/prp must/md find/vb the/dt best/jjs alignment/nn ,/punct which/wdt is/vbz to/to place/vb one/cd sequence/nn above/in the/dt other/jj making/vbg clear/jj the/dt correspondence/nn between/in similar/jj characters/nns [/punct 7/cd ]/punct ./punct
+given/vbn an/dt alignment/nn between/in two/cd sequences/nns ,/punct a/dt score/nn is/vbz usually/rb associated/vbn for/in it/prp as/in follows/vbz (/punct figure/nn 1/cd )/punct ./punct
+for/in each/dt column/nn ,/punct we/prp associate/vbp ,/punct for/in instance/nn ,/punct +1/cd if/in the/dt two/cd characters/nns are/vbp identical/jj ,/punct -1/cd if/in the/dt characters/nns are/vbp different/jj and/cc -2/cd if/in one/cd of/in them/prp is/vbz a/dt space/nn ./punct
+the/dt score/nn is/vbz the/dt sum/nn of/in all/pdt the/dt values/nns and/cc the/dt maximal/jj score/nn is/vbz the/dt similarity/nn between/in the/dt sequences/nns ./punct
+to/to compute/vb exact/jj local/jj sequence/nn alignments/nns ,/punct [/punct 14/cd ]/punct proposed/vbd an/dt algorithm/nn (/punct sw/nn )/punct ,/punct based/vbn on/in dynamic/jj programming/nn ,/punct with/in quadratic/jj time/nn and/cc space/nn complexity/nn ./punct
+usually/rb ,/punct one/cd given/vbn biological/jj sequence/nn is/vbz compared/vbn against/in thousands/nns or/cc even/rb millions/nns of/in sequences/nns that/wdt compose/vbp genetic/jj data/nns banks/nns ./punct
+by/in now/rb ,/punct there/ex are/vbp millions/nns of/in entries/nns composed/vbn of/in billions/nns of/in nucleotides/nns at/in genbank/nn ,/punct which/wdt is/vbz one/cd of/in the/dt most/rbs important/jj public/nn gene/nn repositories/nns ./punct
+due/jj to/to the/dt 156/cd g/nn a/nn c/nn g/nn g/nn a/nn t/nn t/nn a/nn g/nn g/nn a/nn t/nn c/nn g/nn g/nn a/nn a/nn t/nn a/nn g/nn +1/cd +1/cd −2/cd +1/cd +1/cd +1/cd +1/cd −1/cd +1/cd +1/cd +1/cd σ/nn =/punct 6/cd figure/nn 1/cd :/punct example/nn of/in an/dt alignment/nn with/in score/nn 6/cd current/jj growth/nn rate/nn ,/punct these/dt databases/nns will/md soon/rb achieve/vb terabytes/nns ./punct
+in/in this/dt scenario/nn ,/punct the/dt use/nn of/in exact/jj methods/nns such/jj as/in sw/nn is/vbz prohibitive/jj ./punct
+for/in this/dt reason/nn ,/punct faster/jjr heuristic/nn methods/nns are/vbp proposed/vbn which/wdt do/vbp not/rb guarantee/vb that/in the/dt best/jjs alignment/nn will/md be/vb produced/vbn ./punct
+usually/rb ,/punct these/dt heuristic/nn methods/nns are/vbp evaluated/vbn using/vbg the/dt concepts/nns of/in sensitivity/nn and/cc sensibility/nn ./punct
+sensitivity/nn is/vbz the/dt rate/nn at/in which/wdt the/dt method/nn fails/vbz to/to identify/vb similar/jj sequences/nns whereas/in sensibility/nn is/vbz the/dt rate/nn at/in which/wdt the/dt method/nn identifies/vbz sequences/nns that/wdt are/vbp not/rb similar/jj [/punct 7/cd ]/punct ./punct
+blast/nn [/punct 1/cd ]/punct is/vbz the/dt most/rbs widely/rb used/vbn heuristic/nn method/nn for/in sequence/nn comparison/nn ./punct
+blast/nn (/punct basic/jj local/jj alignment/nn tool/nnp )/punct is/vbz a/dt set/nn of/in programs/nns used/vbn to/to search/vb dna/nn and/cc protein/nn databases/nns for/in similarities/nns between/in sequences/nns ./punct
+it/prp is/vbz designed/vbn to/to obtain/vb high/jj performance/nn with/in low/jj impact/nn in/in terms/nns of/in sensibility/nn ./punct
+blast/nn provides/vbz programs/nns to/to compare/vb many/jj combinations/nns of/in query/nn and/cc database/nn sequence/nn types/nns (/punct table/nn 1/cd )/punct ./punct
+basically/rb ,/punct the/dt algorithm/nn proceeds/vbz in/in three/cd steps/nns :/punct seeding/nn ,/punct extension/nn and/cc evaluation/nn ./punct
+in/in the/dt seeding/nn step/nn ,/punct a/dt query/nn words/nns are/vbp matched/vbn to/to database/nn sequences/nns and/cc used/vbn as/in alignment/nn seeds/nns if/in their/prp$ scores/nns are/vbp higher/jjr than/in a/dt threshold/nn t./fw in/in the/dt extension/nn step/nn ,/punct alignments/nns are/vbp generated/vbn from/in seeds/nns ./punct
+a/dt parameter/nn x/nn maintains/vbz the/dt recent/jj alignment/nn history/nn and/cc controls/vbz this/dt step/nn ./punct
+once/rb seeds/nns are/vbp extended/vbn ,/punct the/dt last/jj step/nn begins/vbz ./punct
+the/dt alignments/nns are/vbp evaluated/vbn to/to determine/vb if/in they/prp are/vbp statistically/rb significant/jj ./punct
+the/dt significant/jj ones/nns are/vbp termed/vbn hsps/nns (/punct high-scoring/jj segment/nnp pairs/nnp )/punct ./punct
+a/dt new/jj parameter/nn ,/punct s/nn ,/punct is/vbz used/vbn to/to sort/vb alignments/nns ./punct
+the/dt combination/nn of/in parameters/nns speed/nn of/in blast/nn searches/nns ./punct
+grid/nnp computing/nnp was/vbd initially/rb developed/vbn to/to enable/vb resource/nn sharing/nn between/in scientific/jj institutions/nns who/wp needed/vbd to/to share/vb data/nns ,/punct software/nn and/cc computational/jj power/nn ./punct
+the/dt globus/nnp toolkit/nnp emerged/vbd as/in an/dt open/jj source/nn project/nn and/cc quickly/rb became/vbd a/dt de/fw facto/fw standard/nn for/in grid/nn computing/nn infrastructure/nn ./punct
+globus/nnp implements/vbz a/dt set/nn of/in protocols/nns ,/punct apis/nns and/cc services/nns used/vbn by/in hundreds/nns of/in grid/nn applications/nns all/dt over/in the/dt world/nn ./punct
+in/in 2002/cd ,/punct the/dt open/nnp grid/nnp services/nnps architecture/nnp (/punct ogsa/nnp )/punct was/vbd introduced/vbn by/in the/dt global/jj grid/nnp forum/nnp (/punct ggf/nn )/punct to/to expand/vb standardization/nn ./punct
+ogsa/nn provided/vbd a/dt new/jj architecture/nn for/in grid/nn applications/nns based/vbn on/in web/nn services/nns in/in order/nn to/to achieve/vb interoperability/nn using/vbg industry/nn standards/nns ./punct
+many/jj ogsa/nn architecture/nn implementations/nns were/vbd developed/vbn ,/punct including/vbg one/cd for/in globus/nnp ./punct
+the/dt work/nn carried/vbd out/rp in/in this/dt paper/nn is/vbz deployed/vbn on/in a/dt grid/nn based/vbn on/in globus/nnp (/punct gt3/nn )/punct ./punct
+usually/rb ,/punct grid/nn applications/nns are/vbp modelled/vbn as/in master/slave/nn ,/punct where/wrb one/cd problem/nn is/vbz divided/vbn in/in many/jj independent/jj work/nn units/nns (/punct tasks/nns )/punct of/in smaller/jjr size/nn that/wdt can/md be/vb distributed/vbn to/to slave/nn nodes/nns for/in parallel/nn processing/nn ./punct
+is/vbz task/nn allocation/nn ./punct
+the/dt task/nn allocation/nn problem/nn consists/vbz of/in assigning/vbg tasks/nns to/to processors/nns in/in order/nn to/to maximize/vb system/nn precedence/nn relations/nns exist/vbp among/in the/dt tasks/nns ./punct
+given/vbn a/dt master/slave/jj application/nn composed/vbn by/in a/dt master/nn allocation/nn policy/nn ./punct
+weightfactor/nnp (/punct m/nn ,/punct si/fw ,/punct s/nn )/punct was/vbd defined/vbn by/in (/punct equation/nn 2/cd )/punct and/cc provides/vbz weights/nns for/in each/dt slave/nn si/nn ,/punct based/vbn on/in its/prp$ statically/rb known/vbn processing/nn rate/nn (/punct workerrate/jj )/punct ./punct
+the/dt following/vbg subsections/nns present/vbp some/dt work/nn allocation/nn policies/nns ,/punct which/wdt are/vbp instances/nns a/dt (/punct n/nn ,/punct s/nn )/punct of/in equation/nn 1/cd ./punct
+the/dt fixed/vbn strategy/nn distributes/vbz all/dt work/nn units/nns uniformly/rb to/to slaves/nns nodes/nns ./punct
+this/dt strategy/nn is/vbz appropriate/jj for/in homogeneous/jj systems/nns with/in dedicated/jj resources/nns (/punct equation/nn 3/cd )/punct ./punct
+self/nn scheduling/nn (/punct ss/nn )/punct distributes/vbz a/dt single/jj work/nn unit/nn to/to every/dt slave/nn node/nn (/punct equation/nn 4/cd )/punct ./punct
+in/in ss/nn ,/punct the/dt maximum/nn imbalance/nn is/vbz limited/vbn by/in the/dt processing/nn time/nn of/in a/dt work/nn unit/nn in/in the/dt slowest/jjs node/nn ./punct
+nevertheless/rb ,/punct ss/nn usually/rb demands/vbz a/dt lot/nn of/in communication/nn ,/punct since/in each/dt work/nn unit/nn retrieval/nn requires/vbz one/cd interaction/nn with/in the/dt master/nn ./punct
+trapezoidal/jj self-scheduling/nn (/punct tss/nn )/punct allocates/vbz work/nn units/nns in/in groups/nns with/in a/dt linearly/rb decreasing/vbg size/nn ./punct
+this/dt strategy/nn uses/vbz two/cd variables/nns ,/punct steps/nns and/cc δ/nn ,/punct that/wdt represent/vbp the/dt total/jj number/nn of/in allocation/nn steps/nns and/cc the/dt block/nn reduction/nn factor/nn ,/punct respectively/rb (/punct equations/nns 5/cd and/cc 6/cd )/punct ./punct
+difference/nn between/in the/dt length/nn of/in the/dt first/jj block/nn and/cc total/jj reduction/nn from/in the/dt last/jj s/nns −/vbp 1/cd blocks/vbz (/punct equation/nn 7/cd )/punct ./punct
+guided/vbn self-scheduling/jj (/punct gss/nn )/punct allocates/vbz work/nn units/nns in/in groups/nns whose/wp$ length/nn decrease/nn exponentially/rb ./punct
+its/prp$ goal/nn is/vbz to/to create/vb a/dt tradeoff/nn between/in the/dt number/nn of/in the/dt work/nn units/nns processed/vbn and/cc the/dt imbalance/nn in/in finishing/vbg times/nns (/punct equation/nn 8/cd )/punct ./punct
+fac2/nn allocates/vbz work/nn units/nns in/in cycles/nns consisting/vbg of/in s/nn allocation/nn sequences/nns ./punct
+equation/nn 9/cd shows/vbz the/dt function/nn that/wdt defines/vbz remaining/vbg work/nn units/nns are/vbp allocated/vbn in/in each/dt round/nn (/punct equation/nn 10/cd )/punct ./punct
+mpiblast/nn was/vbd proposed/vbn for/in clusters/nns and/cc has/vbz two/cd phases/nns ./punct
+first/rb ,/punct the/dt genetic/jj database/nn is/vbz segmented/jj ./punct
+then/rb ,/punct the/dt queries/nns are/vbp evenly/rb distributed/vbn among/in the/dt nodes/nns ./punct
+if/in the/dt node/nn method/nn is/vbz proposed/vbn that/in associates/nns data/nns fragments/nns to/to nodes/nns ,/punct trying/vbg to/to minimize/vb the/dt number/nn of/in copies/nns ./punct
+blast++/jj groups/nns multiple/jj sequences/nns to/to reduce/vb the/dt number/nn of/in database/nn accesses/nns ./punct
+a/dt master/slave/jj approach/nn is/vbz used/vbn that/in allocates/vbz the/dt queries/nns to/to the/dt slaves/nns according/vbg to/to the/dt fixed/jj policy/nn (/punct section/nn 3.3/cd )/punct ./punct
+each/dt worker/nn executes/vbz blast++/jj independently/rb and/cc ,/punct finally/rb ,/punct the/dt results/nns are/vbp collected/vbn and/cc combined/vbn by/in the/dt master/nn ./punct
+gridblast/nnp is/vbz a/dt master/slave/jj grid/nn application/nn that/wdt uses/vbz globus/nnp 2/cd ./punct
+it/prp distributes/vbz sequences/nns among/in the/dt grid/nn nodes/nns using/vbg two/cd allocation/nn policies/nns :/punct fcfs/nns and/cc minmax/nn ./punct
+of/in those/dt ,/punct only/rb the/dt last/jj one/cd takes/vbz into/in account/nn the/dt current/jj load/nn and/cc the/dt heterogeneity/nn of/in the/dt environment/nn ./punct
+however/rb ,/punct to/to use/vb minmax/nn ,/punct the/dt total/jj execution/nn time/nn of/in each/dt blast/nn task/nn must/md be/vb known/vbn ./punct
+having/vbg decided/vbn which/wdt sequences/nns will/md be/vb compared/vbn by/in each/dt node/nn ,/punct gridblast/nnp sends/vbz the/dt sequences/nns ,/punct the/dt executable/jj files/nns and/cc the/dt whole/nn database/nn to/to the/dt chosen/vbn node/nn ./punct
+when/wrb the/dt search/nn finishes/nns ,/punct the/dt results/nns are/vbp compacted/jj and/cc sent/vbn to/to the/dt master/nn ./punct
+grid/nnp blast/nn toolkit/nn (/punct gbtk/nn )/punct is/vbz a/dt web/nn portal/nn to/to execute/vb blast/nn searches/nns in/in globus/nnp 3/cd ./punct
+all/dt genetic/jj databases/nns are/vbp statically/rb placed/vbn on/in the/dt grid/nn nodes/nns (/punct without/in replication/nn )/punct ./punct
+gbtk/nn is/vbz a/dt master/slave/jj application/nn that/wdt receives/vbz the/dt sequences/nns and/cc the/dt name/nn of/in the/dt genetic/jj database/nn ./punct
+it/prp then/rb verifies/vbz if/in the/dt node/nn that/wdt contains/vbz the/dt database/nn is/vbz available/jj ./punct
+if/in so/rb ,/punct it/prp is/vbz selected/vbn ./punct
+if/in the/dt node/nn is/vbz not/rb available/jj ,/punct the/dt less/jjr loaded/jj node/nn is/vbz chosen/vbn and/cc the/dt database/nn is/vbz copied/vbn to/to it/prp ./punct
+the/dt database/nn is/vbz replicated/vbn in/in the/dt nodes/nns ,/punct we/prp propose/vbp an/dt adaptive/jj task/nn allocation/nn framework/nn which/wdt is/vbz a/dt grid/nn service/nn to/to perform/vb blast/nn searches/nns against/in sequence/nn database/nn segments/nns ./punct
+the/dt framework/nn ,/punct called/vbn packageblast/nn ,/punct provides/vbz an/dt infrastructure/nn to/to choose/vb or/cc incorporate/vb allocation/nn strategies/nns in/in a/dt master/slave/jj application/nn ./punct
+we/prp also/rb propose/vbp a/dt strategy/nn to/to compute/vb grid/nn nodes/nns execution/nn weight/nn which/wdt distributes/vbz work/nn units/nns (/punct database/nn segments/nns )/punct to/to grid/nn nodes/nns according/vbg to/to their/prp$ current/jj computational/jj power/nn ./punct
+segmentation/nn consists/vbz in/in the/dt division/nn of/in a/dt database/nn archive/nn in/in many/jj portions/nns of/in smaller/jjr size/nn ,/punct called/vbn segments/nns ,/punct that/wdt can/md be/vb processed/vbn independently/rb ./punct
+it/prp enables/vbz grid/nn nodes/nns to/to search/vb smaller/jjr parts/nns of/in a/dt sequence/nn database/nn ,/punct reducing/vbg the/dt number/nn of/in disk/nn accesses/nns and/cc hence/rb improving/vbg blast/nn performance/nn ./punct
+also/rb ,/punct a/dt single/jj query/nn sequence/nn can/md be/vb compared/vbn against/in all/dt segments/nns in/in parallel/nn ./punct
+just/rb as/in in/in mpiblast/nn (/punct section/nn 4/cd )/punct ,/punct we/prp decided/vbd to/to use/vb database/nn segmentation/nn in/in packageblast/nn with/in an/dt ncbi/nn tool/nn called/vbn formatdb/nn ,/punct which/wdt was/vbd modified/vbn to/to generate/vb more/jjr database/nn segments/nns of/in smaller/jjr size/nn ./punct
+we/prp opted/vbd to/to replicate/vb the/dt segmented/jj database/nn in/in every/dt slave/nn grid/nn node/nn to/to improve/vb data/nns accesses/nns times/nns and/cc to/to provide/vb a/dt potential/nn for/in fault/nn tolerance/nn ./punct
+figure/nn 2/cd illustrates/vbz this/dt ./punct
+as/in ,/punct we/prp think/vbp that/in no/dt allocation/nn policy/nn will/md produce/vb the/dt best/jjs results/nns for/in every/dt situation/nn ./punct
+thus/rb ,/punct we/prp propose/vbp the/dt use/nn of/in a/dt framework/nn where/wrb many/jj allocation/nn policies/nns can/md be/vb incorporated/vbn ./punct
+by/in now/rb ,/punct our/prp$ framework/nn contains/vbz five/cd allocation/nn policies/nns :/punct fixed/vbn ,/punct ss/nn ,/punct gss/nnp ,/punct tss/nnp ,/punct fac2/nn ,/punct all/dt described/vbn in/in section/nn 3/cd ./punct
+so/rb ,/punct the/dt user/nn can/md choose/vb or/cc even/rb create/vb the/dt allocation/nn policy/nn which/wdt is/vbz the/dt most/rbs appropriate/jj to/to his/her/vb environment/nn and/cc his/her/jj blast/nn parameters/nns ./punct
+besides/in that/dt ,/punct we/prp propose/vbp pss/nnp (/punct package/nnp weighted/nnp adaptive/nnp self-scheduling/nnp )/punct ,/punct a/dt new/jj strategy/nn that/wdt adapts/vbz the/dt chosen/vbn allocation/nn policy/nn to/to a/dt grid/nn with/in local/jj workload/nn ./punct
+considering/vbg the/dt heterogeneity/nn and/cc dynamic/jj characteristics/nns of/in the/dt grid/nn ,/punct pss/nn is/vbz able/jj to/to modify/vb the/dt length/nn of/in the/dt work/nn units/nns during/in execution/nn ,/punct based/vbn on/in average/jj processing/nn time/nn of/in each/dt node/nn ./punct
+the/dt expression/nn used/vbn for/in work/nn unit/nn allocation/nn is/vbz shown/vbn in/in equation/nn 11/cd ,/punct where/wrb a/dt (/punct n/nn ,/punct p/nn )/punct is/vbz the/dt allocation/nn policy/nn for/in a/dt allocation/nn policy/nn or/cc a/dt user-defined/jj one/cd ./punct
+to/to distribute/vb database/nn segments/nns to/to nodes/nns ,/punct the/dt master/nn analyzes/vbz periodic/jj slave/nn notifications/nns ./punct
+the/dt expression/nn used/vbn is/vbz φ/nn (/punct m/nn ,/punct pi/nn ,/punct p/nn )/punct (/punct equation/nn 12/cd )/punct ,/punct defined/vbn as/in the/dt weighted/jj mean/nn from/in the/dt last/jj ω/nn notifications/nns sent/vbn by/in each/dt pi/nn slave/nn node/nn ./punct
+γ/nn (/punct m/nn ,/punct pi/nn ,/punct ω/nn )/punct (/punct equation/nn 13/cd )/punct specifies/vbz the/dt average/jj computing/nn notifications/nns of/in te/nnp (/punct m/nn ,/punct pi/nn ,/punct τ/nn )/punct ,/punct which/wdt is/vbz the/dt average/jj computation/nn time/nn of/in τ/nn work/nn units/nns (/punct database/nn segments/nns )/punct assigned/vbn by/in the/dt is/vbz done/vbn with/in total/jj k/nn notifications/nns already/rb received/vbd ./punct

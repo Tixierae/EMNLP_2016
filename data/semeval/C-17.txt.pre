@@ -1,0 +1,325 @@
+real-time/jj services/nns have/vbp been/vbn supported/vbn by/in and/cc large/jj on/in circuitswitched/jj networks/nns ./punct
+recent/jj trends/nns favour/vbp services/nns ported/vbn on/in packet-switched/jj networks/nns ./punct
+for/in audio/jj conferencing/nn ,/punct we/prp need/vbp to/to consider/vb many/jj issues/nns -/punct scalability/nn ,/punct quality/nn of/in the/dt conference/nn application/nn ,/punct floor/nn control/nn and/cc load/nn on/in the/dt clients/servers/nns -/punct to/to name/vb a/dt few/jj ./punct
+in/in this/dt paper/nn ,/punct we/prp describe/vbp an/dt audio/jj service/nn framework/nn designed/vbn to/to provide/vb a/dt virtual/jj conferencing/nnp environment/nnp (/punct vce/nnp )/punct ./punct
+the/dt system/nn is/vbz designed/vbn to/to accommodate/vb a/dt large/jj number/nn of/in end/nn users/nns speaking/vbg at/in the/dt same/jj time/nn and/cc spread/nn across/in the/dt internet/nn ./punct
+the/dt framework/nn is/vbz based/vbn on/in conference/nn servers/nns [/punct 14/cd ]/punct ,/punct which/wdt facilitate/vbp the/dt audio/jj handling/nn ,/punct while/in we/prp exploit/vbp the/dt sip/nn capabilities/nns for/in signaling/nn purposes/nns ./punct
+client/nn selection/nn is/vbz based/vbn on/in a/dt recent/jj quantifier/nn called/vbn ``/`` loudness/nnp number/nnp ''/'' that/in helps/vbz mimic/vb a/dt physical/jj face-to-face/jj conference/nn ./punct
+we/prp deal/vbp with/in deployment/nn issues/nns of/in the/dt proposed/vbn solution/nn both/cc in/in terms/nns of/in scalability/nn and/cc interactivity/nn ,/punct while/in explaining/vbg the/dt techniques/nns we/prp use/vbp to/to reduce/vb the/dt traffic/nn ./punct
+we/prp have/vbp implemented/vbn a/dt conference/nn server/nn (/punct cs/nnp )/punct application/nn on/in a/dt campus-wide/jj network/nn at/in our/prp$ institute/nnp ./punct
+categories/nns and/cc subjects/nns descriptors/nns c.2.4/nn [/punct computer-communication/nnp networks/nnp ]/punct :/punct distributed/vbn systems/nnps -/punct client/nn //punct server/nn ,/punct distributed/vbn applications/nns ./punct
+general/nnp terms/nns algorithms/nns ,/punct performance/nnp ,/punct design/nnp ,/punct theory/nnp ./punct
+1/ls ./punct
+introduction/nnp today/nnp 's/pos internet/nn uses/vbz the/dt ip/nnp protocol/nn suite/nn that/wdt was/vbd primarily/rb designed/vbn for/in the/dt transport/nn of/in data/nns and/cc provides/vbz best/jjs effort/nn data/nns delivery/nn ./punct
+delay-constraints/nns and/cc characteristics/nns separate/jj traditional/jj data/nns on/in the/dt one/cd hand/nn from/in voice/nn &/punct video/nn applications/nns on/in the/dt other/jj ./punct
+hence/rb ,/punct as/in progressively/rb time-sensitive/jj voice/nn and/cc video/nn applications/nns are/vbp deployed/vbn on/in the/dt internet/nn ,/punct the/dt inadequacy/nn of/in the/dt internet/nn is/vbz exposed/vbn ./punct
+further/rb ,/punct we/prp seek/vbp to/to port/jj telephone/nn services/nns on/in the/dt internet/nn ./punct
+among/in them/prp ,/punct virtual/jj conference/nn (/punct teleconference/nn )/punct facility/nn is/vbz at/in the/dt cutting/vbg edge/nn ./punct
+audio/nnp and/cc video/jj conferencing/nn on/in internet/nn are/vbp popular/jj [/punct 25/cd ]/punct for/in the/dt several/jj advantages/nns they/prp inhere/vbp [/punct 3,6/cd ]/punct ./punct
+clearly/rb ,/punct the/dt bandwidth/nn required/vbn for/in a/dt teleconference/nn over/in the/dt internet/nn increases/vbz rapidly/rb with/in the/dt number/nn of/in participants/nns ;/punct reducing/vbg bandwidth/nn without/in compromising/vbg audio/jj quality/nn is/vbz a/dt challenge/nn in/in internet/nnp telephony/nnp ./punct
+additional/jj critical/jj issues/nns are/vbp :/punct (/punct a/dt )/punct packet/nn delay/nn ,/punct (/punct b/nn )/punct echo/vbp ,/punct (/punct c/nn )/punct mixing/vbg of/in audio/nn from/in selected/vbn clients/nns ,/punct (/punct d/nn )/punct automatic/jj selection/nn of/in clients/nns to/to participate/vb in/in the/dt conference/nn ,/punct (/punct e/sym )/punct playout/nn of/in mixed/jj audio/nn for/in every/dt client/nn ,/punct (/punct f/fw )/punct handling/vbg clients/nns not/rb capable/jj of/in mixing/vbg audio/jj streams/nns (/punct such/jj clients/nns are/vbp known/vbn as/in dumb/jj clients/nns )/punct ,/punct and/cc (/punct g/nn )/punct deciding/vbg the/dt number/nn of/in simultaneously/rb active/jj clients/nns in/in the/dt conference/nn without/in compromising/vbg voice/nn quality/nn ./punct
+while/in all/pdt the/dt above/jj requirements/nns are/vbp from/in the/dt technology/nn point/nn of/in view/nn ,/punct the/dt user/nn 's/pos perspective/nn and/cc interactions/nns are/vbp also/rb essential/jj factors/nns ./punct
+there/ex is/vbz plenty/nn of/in discussion/nn amongst/in hci/nnp and/cc cscw/nnp community/nn on/in the/dt use/nn of/in ethnomethodology/nn for/in design/nn of/in cscw/nnp applications/nns ./punct
+the/dt basic/jj approach/nn is/vbz to/to provide/vb larger/jjr bandwidth/nn ,/punct more/jjr facilities/nns and/cc more/jjr advanced/jj control/nn mechanisms/nns ,/punct looking/vbg forward/rb to/to better/jjr quality/nn of/in interaction/nn ./punct
+this/dt approach/nn ignores/vbz the/dt functional/jj utility/nn of/in the/dt environment/nn that/wdt is/vbz used/vbn for/in collaboration/nn ./punct
+eckehard/nnp doerry/nnp [/punct 4/cd ]/punct criticizes/vbz this/dt approach/nn by/in saying/vbg ``/`` it/prp is/vbz keeping/vbg form/nn before/in function/nn ''/'' ./punct
+thus/rb ,/punct the/dt need/nn is/vbz to/to take/vb an/dt approach/nn that/wdt considers/vbz both/dt aspects/nns -/punct the/dt technical/jj and/cc the/dt functional/jj ./punct
+regarding/vbg the/dt functional/jj aspect/nn ,/punct we/prp refer/vbp to/to [/punct 15/cd ]/punct where/wrb it/prp has/vbz been/vbn dealt/vbn with/in in/in some/dt detail/nn ./punct
+in/in this/dt work/nn ,/punct we/prp do/vbp not/rb discuss/vb video/nn conferencing/nn ;/punct its/prp$ inclusion/nn does/vbz not/rb significantly/rb benefit/vb conference/nn quality/nn [/punct 4/cd ]/punct ./punct
+our/prp$ focus/nn is/vbz on/in virtual/jj audio/nn environments/nns ./punct
+we/prp first/rb outline/vb the/dt challenges/nns encountered/vbn in/in virtual/jj audio/nn conferences/nns ./punct
+then/rb we/prp look/vbp into/in the/dt motivations/nns followed/vbn by/in relevant/jj literature/nn ./punct
+in/in section/nn 5/cd ,/punct we/prp explain/vbp the/dt architecture/nn of/in our/prp$ system/nn ./punct
+section/nn 6/cd comprises/vbz description/nn of/in the/dt various/jj algorithms/nns used/vbn in/in our/prp$ setup/nn ./punct
+we/prp address/vbp deployment/nn issues/nns ./punct
+a/dt discussion/nn on/in swiss/nnp federal/nnp institute/nnp of/in technology/nnp ,/punct lausanne/nnp ./punct
+former/jj visitor/nn at/in cedt/nnp ./punct
+pesit/nnp and/cc nias/nnp ,/punct bangalore/nnp ,/punct india.iv/nnp ii/ls performance/nn follows/vbz ./punct
+we/prp conclude/vbp taking/vbg alongside/in some/dt implementation/nn issues/nns ./punct
+2/ls ./punct
+challenges/nns in/in voip/nnp conferencing/nnp many/jj challenges/nns arise/vbp in/in building/vbg a/dt voip/nn application/nn ./punct
+the/dt following/vbg are/nn of/in particular/jj concern/nn in/in the/dt process/nn :/punct •/cd ease/nn of/in use/nn :/punct conferencing/nnp must/md be/vb simple/jj ;/punct users/nns need/vbp no/dt domain/nn expertise/nn ./punct
+management/nnp (/punct addition/removal/jj )/punct of/in clients/nns and/cc servers/nns must/md be/vb uncomplicated/jj ./punct
+application/nn development/nn should/md not/rb presuppose/vb specific/jj characteristics/nns of/in the/dt underlying/jj system/nn or/cc of/in network/nn layers/nns ./punct
+ease/vb of/in use/nn may/md include/vb leveraging/vbg readily/rb available/jj ,/punct technically/rb feasible/jj and/cc economically/rb viable/jj technologies/nns ./punct
+•/nn scalability/nn :/punct conferencing/nnp must/md seem/vb uninterrupted/jj under/in heavy/jj loads/nns ,/punct i.e./fw ,/punct when/wrb many/jj additional/jj users/nns are/vbp added/vbn on/in ./punct
+traffic/nn on/in wan/nnp should/md not/rb grow/vb appreciably/rb with/in the/dt total/jj number/nn of/in clients/nns ;/punct else/rb ,/punct this/dt has/vbz lead/vbn to/to congestion/nn ./punct
+so/in a/dt means/nn to/to regulate/vb traffic/nn to/to a/dt minimum/nn is/vbz needed/vbn for/in this/dt kind/nn of/in real-time/jj applications/nns ./punct
+•/nn interactivity/nn :/punct in/in virtual/jj conferencing/nnp environments/nnp (/punct vces/nns )/punct ,/punct we/prp intend/vbp a/dt face-to-face-like/jj conferencing/nn application/nn that/wdt mimics/vbz a/dt ``/`` real/jj ''/'' conference/nn ,/punct where/wrb more/rbr vocal/jj participants/nns invite/vbp attention/nn ./punct
+turn-taking/nn in/in floor/nn occupation/nn by/in participants/nns must/md be/vb adapted/vbn gracefully/rb to/to give/vb a/dt feel/nn of/in natural/jj transition/nn ./punct
+•/nn standardization/nn :/punct the/dt solution/nn must/md conform/vb to/to established/jj standards/nns so/rb as/in to/to gain/vb interoperability/nn and/cc peer/vb acceptance/nn ./punct
+the/dt above/jj requirements/nns are/vbp placed/vbn in/in the/dt perspective/nn of/in observations/nns made/vbn in/in earlier/jjr works/nns (/punct vide/vbp sections/nns 3/cd and/cc 4/cd )/punct and/cc will/md steer/vb the/dt vce/nnp design/nn ./punct
+3/ls ./punct
+the/dt motivation/nnp ramanathan/nnp and/cc rangan/nnp [/punct 20/cd ]/punct have/vbp studied/vbn in/in detail/nn the/dt architectural/jj configurations/nns comparing/vbg many/jj conferencing/vbg architecture/nn schemes/nns taking/vbg into/in consideration/nn the/dt network/nn delay/nn and/cc computation/nn requirements/nns for/in mixing/vbg ./punct
+functional/jj division/nn and/cc object-oriented/jj architecture/nn design/nn that/wdt aid/nn in/in implementation/nn is/vbz presented/vbn in/in [/punct 1/cd ]/punct ./punct
+an/dt overview/nn of/in many/jj issues/nns involved/vbn in/in supporting/vbg a/dt large/jj conference/nn is/vbz dealt/vbn in/in [/punct 8/cd ]/punct ./punct
+h./nnp p./nnp dommel/nnp [/punct 5/cd ]/punct and/cc many/jj others/nns highlight/vbp floor/nn control/nn as/in another/dt pivotal/jj aspect/nn to/to be/vb taken/vbn into/in account/nn in/in designing/vbg a/dt conferencing/nn tool/nn ./punct
+tightly/rb coupled/vbn conference/nn control/nn protocols/nns in/in internet/nn belong/vbp to/to the/dt itu-t/nn h.323/nn family/nn [/punct 9/cd ]/punct ;/punct however/rb ,/punct they/prp are/vbp mainly/rb for/in small/jj conferences/nns ./punct
+the/dt latest/jjs ietf/nn draft/nn by/in rosenberg/nnp and/cc schulzrinne/nnp [/punct 23/cd ]/punct discusses/vbz conferencing/vbg models/nns with/in sip/nn [/punct 22/cd ]/punct in/in the/dt background/nn ./punct
+aspects/nns of/in implementation/nn for/in centralized/vbn sip/nn conferencing/nn are/vbp reported/vbn in/in [/punct 26/cd ]/punct ./punct
+a/dt new/jj approach/nn called/vbd partial/jj mixing/vbg by/in radenkovic/nnp [/punct 18/cd ]/punct allows/vbz for/in mixed/jj and/cc non-mixed/jj streams/nns to/to coexist/vb ./punct
+in/in all/pdt the/dt above/jj proposals/nns ,/punct while/in there/ex are/vbp some/dt very/rb useful/jj suggestions/nns ,/punct they/prp share/vbp one/cd or/cc more/jjr of/in the/dt following/vbg limitations/nns :/punct •/cd in/in an/dt audio/jj conference/nn ,/punct streams/nns from/in all/pdt the/dt clients/nns need/vbp not/rb be/vb mixed/vbn ./punct
+actually/rb ,/punct mixing/vbg many/jj arbitrary/jj streams/nns [/punct 24/cd ]/punct from/in clients/nns degrades/vbz the/dt quality/nn of/in the/dt conference/nn due/jj to/to the/dt reduction/nn in/in the/dt volume/nn (/punct spatial/jj aspect/nn of/in speech/nn )/punct ./punct
+the/dt number/nn of/in streams/nns mixed/jj varies/vbz dynamically/rb depending/vbg on/in the/dt number/nn of/in active/jj participants/nns ./punct
+this/dt would/md lead/vb to/to fluctuations/nns in/in the/dt volume/nn of/in every/dt individual/jj participant/nn causing/vbg severe/jj degradation/nn in/in quality/nn ./punct
+customized/jj mixing/vbg of/in streams/nns is/vbz not/rb possible/jj when/wrb many/jj clients/nns are/vbp active/jj ./punct
+there/ex is/vbz a/dt threshold/nn on/in the/dt number/nn of/in simultaneous/jj speakers/nns above/in which/wdt increasing/vbg the/dt number/nn of/in speakers/nns becomes/vbz counterproductive/jj to/to conference/nn quality/nn ./punct
+fixing/vbg the/dt maximum/nn number/nn of/in simultaneous/jj speakers/nns is/vbz dealt/vbn in/in a/dt recent/jj work/nn [/punct 15/cd ]/punct using/vbg ethnomethodology/nnp ,/punct and/cc is/vbz conjectured/vbn to/to be/vb three/cd ./punct
+thus/rb it/prp is/vbz advisable/jj to/to honour/vb that/dt constraint/nn ./punct
+•/nn there/ex can/md not/rb be/vb many/jj intermediate/jj mixers/nns (/punct similarly/rb ,/punct conference/nn servers/nns as/in in/in [/punct 10/cd ]/punct )/punct in/in stages/nns as/in in/in [/punct 20/cd ]/punct because/in it/prp brings/vbz in/in inordinate/jj delay/nn by/in increasing/vbg the/dt number/nn of/in hops/vbz and/cc is/vbz not/rb scalable/jj with/in interactivity/nn in/in focus/nn ./punct
+•/rb floor/nnp control/nnp for/in an/dt audio/jj conference/nn (/punct even/rb video/jj conference/nn )/punct with/in explicit/jj turn-taking/jj instructions/nns to/to participants/nns renders/vbz the/dt conference/nn essentially/rb a/dt one-speakerat-a-time/jj affair/nn ,/punct not/rb a/dt live/jj and/cc free-to-interrupt/jj one/cd ./punct
+this/dt way/nn ,/punct the/dt conference/nn becomes/vbz markedly/rb artificial/jj and/cc its/prp$ quality/nn degrades/vbz ./punct
+schulzrinne/nnp et/fw al/fw ./punct
+[/punct 24/cd ]/punct ,/punct assume/vb only/rb one/cd participant/nn is/vbz speaking/vbg at/in a/dt time/nn ./punct
+in/in this/dt case/nn ,/punct if/in applications/nns are/vbp implemented/vbn with/in some/dt control/nn [/punct 5/cd ]/punct ,/punct the/dt service/nn becomes/vbz ‘gagging/jj ''/'' for/in the/dt users/nns ./punct
+•/rb partial/jj mixing/vbg [/punct 18/cd ]/punct has/vbz a/dt similar/jj problem/nn as/in that/dt of/in mixing/vbg when/wrb more/rbr streams/nns are/vbp mixed/jj ./punct
+moreover/rb ,/punct in/in [/punct 18/cd ]/punct ,/punct to/to allow/vb impromptu/jj speech/nn ,/punct mixing/vbg is/vbz not/rb done/vbn when/wrb the/dt network/nn can/md afford/vb high/jj bandwidth/nn requirements/nns for/in sending/receiving/vbg all/pdt the/dt streams/nns ,/punct but/cc it/prp is/vbz unnecessary/jj [/punct 15/cd ]/punct ./punct
+•/nn for/in large/jj conferences/nns [/punct 23/cd ,/punct 10/cd ]/punct a/dt centralized/jj conference/nn can/md not/rb scale/vb up/rp ./punct
+with/in multicasting/vbg ,/punct clients/nns will/md have/vb to/to parse/vb many/jj streams/nns and/cc traffic/nn on/in a/dt client/nn ''/'' s/nns network/nn increases/vbz unnecessarily/rb ./punct
+evidently/rb ,/punct different/jj particular/jj issues/nns ,/punct all/dt of/in which/wdt are/vbp a/dt subset/nn of/in requirements/nns (/punct defined/vbn in/in [/punct 14/cd ]/punct and/cc [/punct 16/cd ]/punct )/punct for/in a/dt voip/nn conferencing/nn support/nn ,/punct are/vbp tackled/vbn ./punct
+thus/rb there/ex is/vbz a/dt need/nn to/to address/vb conferencing/nn as/in a/dt whole/jj with/in all/dt its/prp$ requirements/nns considered/vbn concurrently/rb ./punct
+towards/in this/dt goal/nn ,/punct the/dt voip/nnp conferencing/nn system/nn we/prp propose/vbp is/vbz intended/vbn to/to be/vb scalable/jj and/cc interactive/jj ./punct
+we/prp make/vbp use/nn of/in the/dt ``/`` loudness/nnp number/nnp ''/'' for/in implementing/vbg floor/nn control/nn ./punct
+this/dt permits/vbz a/dt participant/nn to/to freely/rb get/vb into/in the/dt speaking/nn mode/nn to/to interrupt/vb the/dt current/jj speaker/nn as/in in/in a/dt natural/jj face-to-face/jj meeting/nn ./punct
+an/dt upper/jj limit/nn on/in the/dt number/nn of/in floors/nns (/punct i.e./fw ,/punct the/dt number/nn of/in speakers/nns allowed/vbn to/to speak/vb at/in the/dt same/jj time/nn )/punct is/vbz fixed/vbn using/vbg a/dt conjecture/nn proposed/vbn in/in [/punct 15/cd ]/punct ./punct
+the/dt work/nn presented/vbn here/rb is/vbz in/in continuation/nn of/in our/prp$ studies/nns into/in conferencing/vbg based/vbn on/in the/dt session/nn initiation/nn protocol/nnp in/in [/punct 14/cd ]/punct and/cc [/punct 16/cd ]/punct ./punct
+sip/nn ,/punct defined/vbn in/in [/punct 22/cd ]/punct is/vbz now/rb the/dt most/rbs popular/jj standard/nn for/in voip/nn deployment/nn and/cc has/vbz been/vbn chosen/vbn for/in its/prp$ strength/nn ,/punct ease/nn of/in use/nn ,/punct extensibility/nn and/cc compatibility/nn ./punct
+this/dt is/vbz the/dt reason/nn it/prp will/md be/vb in/in the/dt background/nn of/in all/dt controlling/vbg messages/nns that/wdt will/md implicitly/rb arise/vb between/in the/dt entities/nns in/in our/prp$ architecture/nn ./punct
+the/dt actual/jj messages/nns are/vbp described/vbn in/in [/punct 16/cd ]/punct and/cc ,/punct as/in such/jj ,/punct we/prp do/vbp not/rb present/vb a/dt complete/jj description/nn of/in them/prp here/rb ./punct
+4/ls ./punct
+related/jj work/vbp the/dt sip/nn standard/jj defined/vbn in/in rfc/nnp 3261/cd [/punct 22/cd ]/punct and/cc in/in later/jj extensions/nns such/jj as/in [/punct 21/cd ]/punct does/vbz not/rb offer/vb conference/nn control/nn services/nns such/jj as/in floor/nn control/nn or/cc voting/nn and/cc does/vbz not/rb prescribe/vb how/wrb a/dt conference/nn is/vbz to/to be/vb managed/vbn ./punct
+however/rb sip/nn can/md be/vb used/vbn to/to initiate/vb a/dt session/nn that/wdt uses/vbz some/dt other/jj conference/nn control/nn protocol/nn ./punct
+the/dt core/nn sip/nn specification/nn supports/vbz many/jj models/nns for/in conferencing/vbg [/punct 26/cd ,/punct 23/cd ]/punct ./punct
+in/in the/dt server-based/jj models/nns ,/punct a/dt server/nn mixes/vbz media/nns streams/nns ,/punct whereas/in in/in a/dt server-less/jj conference/nn ,/punct mixing/vbg is/vbz done/vbn at/in the/dt end/nn systems/nns ./punct
+sdp/nn [/punct 7/cd ]/punct can/md be/vb used/vbn to/to define/vb media/nns capabilities/nns and/cc provide/vb other/jj information/nn about/in the/dt conference/nn ./punct
+we/prp shall/md now/rb consider/vb a/dt few/jj conference/nn models/nns in/in sip/nn that/wdt have/vbp been/vbn proposed/vbn recently/rb [/punct 23/cd ]/punct ./punct
+first/rb ,/punct let/vb us/prp look/vb into/in server-less/jj models/nns ./punct
+in/in end-system/nnp mixing/nnp ,/punct only/rb one/cd client/nn (/punct sip/nn ua/nn )/punct handles/vbz the/dt signaling/nn and/cc media/nns mixing/vbg for/in all/pdt the/dt others/nns ,/punct which/wdt is/vbz clearly/rb not/rb scalable/jj and/cc causes/vbz problems/nns when/wrb that/dt particular/jj client/nn leaves/vbz the/dt conference/nn ./punct
+in/in the/dt users/nnp joining/vbg model/nn ,/punct a/dt tree/nn grows/vbz ,/punct as/in each/dt invited/vbn party/nn constitutes/vbz a/dt new/jj branch/nn in/in the/dt distribution/nn path/nn ./punct
+this/dt leads/vbz to/to an/dt increasing/vbg number/nn of/in hops/vbz for/in the/dt remote/jj leaves/nns and/cc is/vbz not/rb scalable/jj ./punct
+another/dt option/nn would/md be/vb to/to use/vb multicast/jj for/in conferencing/vbg but/cc multicast/nn is/vbz not/rb enabled/vbn over/in internet/nn and/cc only/rb possible/jj on/in a/dt lan/nn presently/rb ./punct
+among/in server-based/jj models/nns ,/punct in/in a/dt dial-in/nn conference/nn ,/punct uas/nns connect/vbp to/to a/dt central/jj server/nn that/wdt handles/vbz all/pdt the/dt mixing/vbg ./punct
+this/dt model/nn is/vbz not/rb scalable/jj as/in it/prp is/vbz limited/vbn by/in the/dt processing/nn power/nn of/in the/dt server/nn and/cc bandwidth/nn of/in the/dt network/nn ./punct
+adhoc/nnp centralized/nnp conferences/nnps and/cc dial-out/nnp conference/nnp servers/nns have/vbp similar/jj mechanisms/nns and/cc problems/nns ./punct
+hybrid/nn models/nns involving/vbg centralized/jj signaling/nn and/cc distributed/vbn media/nns ,/punct with/in the/dt latter/jj using/vbg unicast/jj or/cc multicast/jj ,/punct raise/vb scalability/nn problems/nns as/in before/rb ./punct
+however/rb an/dt advantage/nn is/vbz that/in the/dt conference/nn control/nn can/md be/vb a/dt third/jj party/nn solution/nn ./punct
+distributed/vbn partial/jj mixing/nn ,/punct presented/vbn in/in [/punct 18/cd ]/punct ,/punct proposes/vbz that/in in/in case/nn of/in bandwidth/nn limitation/nn ,/punct some/dt streams/nns are/vbp mixed/jj and/cc some/dt are/vbp not/rb ,/punct leaving/vbg interactivity/nn intact/jj ./punct
+loss/nn of/in spatialism/nn when/wrb they/prp mix/vbp and/cc the/dt bandwidth/nn increase/nn when/wrb they/prp do/vbp not/rb are/vbp open/jj problems/nns ./punct
+a/dt related/jj study/nn [/punct 19/cd ]/punct by/in the/dt same/jj author/nn proposes/vbz conferencing/vbg architecture/nn for/in collaborative/nnp virtual/nnp environments/nns (/punct cves/nns )/punct but/cc does/vbz not/rb provide/vb the/dt scalability/nn angle/nn without/in the/dt availability/nn of/in multicasting/vbg ./punct
+with/in the/dt limitations/nns of/in proposed/vbn conferencing/nn systems/nns in/in mind/nn ,/punct we/prp will/md now/rb detail/nn our/prp$ proposal/nn ./punct
+5/cd ./punct
+system/nn architecture/nn this/dt section/nn is/vbz dedicated/vbn to/to the/dt description/nn of/in the/dt proposed/jj system/nn architecture/nn ./punct
+however/rb ,/punct as/in this/dt paper/nn constitutes/vbz the/dt continuation/nn of/in our/prp$ work/nn started/vbd in/in [/punct 14/cd ]/punct and/cc furthered/vbn in/in [/punct 16/cd ]/punct ,/punct we/prp will/md not/rb present/vb here/rb all/pdt the/dt details/nns about/in the/dt proposed/vbn entities/nns and/cc invite/vb the/dt readers/nns to/to consult/vb the/dt papers/nns mentioned/vbn above/in for/in a/dt full/jj and/cc thorough/jj description/nn ./punct
+first/rb ,/punct we/prp do/vbp not/rb restrict/vb our/prp$ conferencing/nn system/nn to/to work/vb on/in small/jj conferences/nns only/rb ,/punct but/cc rather/rb on/in large/jj audio/jj vces/nns that/wdt have/vbp hundreds/nns (/punct or/cc even/rb thousands/nns )/punct of/in users/nns across/in a/dt wide/nn area/nn network/nnp (/punct wan/nnp )/punct such/jj as/in the/dt internet/nn ./punct
+this/dt view/nn stems/vbz from/in an/dt appraisal/nn that/wdt vces/nns will/md gain/vb in/in importance/nn in/in the/dt future/nn ,/punct as/in interactive/jj audio/nn conferences/nns will/md be/vb more/rbr popular/jj because/in of/in the/dt spread/nn of/in the/dt media/nns culture/nn around/in the/dt world/nn ./punct
+two/cd issues/nns must/md be/vb taken/vbn care/nn of/in when/wrb building/vbg a/dt voip/nn conferencing/nn system/nn :/punct (/punct i/fw )/punct the/dt front-end/nn ,/punct consisting/vbg of/in the/dt application/nn program/nn running/vbg on/in the/dt end-users/nns ''/'' computers/nns and/cc (/punct ii/ls )/punct the/dt back-end/jj that/in provides/vbz other/jj application/nn programs/nns that/wdt facilitate/vbp conferencing/nn and/cc conference/nn ./punct
+the/dt participating/vbg users/nns are/vbp grouped/vbn into/in several/jj domains/nns ./punct
+these/dt domains/nns are/vbp local/jj area/nn networks/nnp (/punct lans/nns )/punct ,/punct such/jj as/in corporate/jj or/cc educational/jj networks/nns ./punct
+this/dt distributed/vbn assumption/nn asks/vbz for/in distributed/vbn controlling/vbg and/cc media/nns handling/vbg solutions/nns ,/punct as/in centralized/jj systems/nns would/md not/rb scale/vb for/in such/jj very/rb large/jj conferences/nns (/punct vide/nn section/nn 4/cd )/punct ./punct
+more/rbr explicitly/rb ,/punct in/in each/dt domain/nn ,/punct we/prp can/md identify/vb several/jj relevant/jj logical/jj components/nns of/in a/dt conferencing/nn facility/nn (/punct fig/nn ./punct
+1/cd )/punct :/punct /cd an/dt arbitrary/jj number/nn of/in end/nn users/nns (/punct clients/nns )/punct that/in can/md take/vb part/nn in/in at/in most/jjs one/cd audio/jj conference/nn at/in a/dt time/nn ./punct
+every/dt user/nn is/vbz fig/nn ./punct
+1/ls ./punct
+conference/nn example/nn -/punct 3/cd domains/nns containing/vbg the/dt necessary/jj entities/nns so/in that/in the/dt conference/nn can/md take/vb place/nn ./punct
+included/vbn in/in one/cd and/cc only/rb one/cd domain/nn at/in a/dt given/vbn instant/nn ,/punct but/cc can/md move/vb from/in domain/nn to/to domain/nn (/punct nomadism/nn )/punct ./punct
+in/in our/prp$ conferencing/vbg environment/nn ,/punct these/dt clients/nns are/vbp regular/jj sip/nnp user/nn agents/nns (/punct sip/nn uas/nns )/punct ,/punct as/in defined/vbn in/in [/punct 22/cd ]/punct so/rb to/to gain/vb in/in interoperability/nn with/in other/jj existing/vbg sip-compatible/jj systems/nns ./punct
+these/dt clients/nns are/vbp thus/rb not/rb aware/jj of/in the/dt complex/jj setting/nn that/wdt supports/vbz the/dt conference/nn and/cc this/dt is/vbz highlighted/vbn below/in ./punct
+/nnp one/cd sip/nnp server/nn (/punct sips/vbz )/punct per/in domain/nn ,/punct taking/vbg care/nn of/in all/pdt the/dt signaling/nn aspects/nns of/in the/dt conference/nn (/punct clients/nns joining/vbg ,/punct leaving/vbg ,/punct etc/fw ./punct
+)/punct [/punct 16/cd ]/punct ./punct
+in/in particular/jj ,/punct it/prp is/vbz considered/vbn as/in a/dt physical/jj implementation/nn encompassing/vbg different/jj logical/jj roles/nns ,/punct namely/rb a/dt sip/nnp proxy/nnp server/nn ,/punct a/dt sip/nnp registrar/nnp server/nn ,/punct a/dt sip/nnp redirect/nnp server/nn and/cc a/dt sip/nn b2bua/nn (/punct back-to-back/nnp user/nn agent/nnp )/punct [/punct 22/cd ]/punct ./punct
+this/dt physical/jj implementation/nn enables/vbz the/dt handling/nn of/in incoming/outgoing/vbg sip/nn messages/nns by/in one/cd or/cc another/dt logical/jj entity/nn according/vbg to/to the/dt needs/nns ./punct
+sips/nns is/vbz entrusted/vbn with/in maintaining/vbg total/jj service/nn and/cc has/vbz many/jj advantages/nns such/jj as/in (/punct a/dt )/punct it/prp works/vbz as/in a/dt centralized/jj entity/nn that/wdt can/md keep/vb track/nn of/in the/dt activities/nns of/in the/dt uas/nns in/in a/dt conference/nn ;/punct (/punct b/nn )/punct it/prp can/md do/vb all/pdt the/dt switching/nn for/in providing/vbg pbx/nn features/nns ;/punct (/punct c/nn )/punct it/prp can/md locate/vb the/dt uas/nns and/cc invite/vb them/prp for/in a/dt conference/nn ;/punct (/punct d/nn )/punct it/prp can/md do/vb the/dt billing/nn as/rb well/rb ./punct
+sipss/nns in/in different/jj domains/nns communicate/vbp with/in each/dt other/jj using/vbg sip/nn messages/nns as/in described/vbn in/in [/punct 16/cd ]/punct ./punct
+if/in the/dt load/nn on/in a/dt particular/jj sips/nn is/vbz too/rb heavy/jj ,/punct it/prp can/md create/vb another/dt sips/nn in/in the/dt same/jj domain/nn so/in that/in the/dt load/nn will/md be/vb shared/vbn ./punct
+/nnp one/cd master/nnp conference/nnp server/nn (/punct m-cs/nn )/punct (/punct simply/rb a/dt conference/nn server/nn (/punct cs/nnp )/punct )/punct for/in each/dt conference/nn is/vbz created/vbn by/in the/dt local/jj sips/nns when/wrb a/dt conference/nn starts/vbz ./punct
+this/dt server/nn will/md be/vb used/vbn for/in handling/vbg media/nns packets/nns for/in the/dt clients/nns of/in the/dt domain/nn ./punct
+its/prp$ mechanism/nn will/md be/vb described/vbn in/in the/dt next/jj section/nn ./punct
+the/dt m-cs/nn will/md be/vb able/jj to/to create/vb a/dt hierarchy/nn of/in css/nnp inside/in a/dt domain/nn by/in adding/vbg one/cd or/cc more/jjr slave/nnp css/nnp (/punct s-css/jj )/punct to/to accommodate/vb all/pdt the/dt active/jj clients/nns and/cc prevent/vb its/prp$ own/jj flooding/nn at/in the/dt same/jj time/nn ./punct
+we/prp will/md see/vb this/dt mechanism/nn in/in some/dt detail/nn in/in the/dt sequel/nn ./punct
+the/dt entities/nns described/vbn here/rb are/vbp exhaustive/jj and/cc conform/vb to/to the/dt sip/nn philosophy/nn ./punct
+thus/rb ,/punct the/dt use/nn of/in sip/nn makes/vbz this/dt architecture/nn more/rbr useful/jj and/cc interoperable/jj with/in any/dt other/jj sip/nn clients/nns or/cc servers/nns ./punct
+6/cd ./punct
+algorithmic/nnp issues/nns
+similar/jj to/to sipconf/nnp in/in ,/punct a/dt conference/nn server/nn (/punct cs/nnp )/punct has/vbz the/dt function/nn of/in supporting/vbg the/dt conference/nn ;/punct it/prp is/vbz responsible/jj for/in handling/vbg audio/jj streams/nns using/vbg rtp/nnp ./punct
+it/prp can/md also/rb double/vb to/to convert/vb audio/jj stream/nn formats/nns for/in a/dt given/vbn client/nn if/in necessary/jj and/cc can/md work/vb as/in translators/mixers/nns of/in rtp/nnp specification/nn behind/in firewalls/nns ./punct
+processor/nn (/punct mp/nn )/punct ./punct
+in/in short/jj ,/punct the/dt mp/nn receives/vbz audio/jj streams/nns from/in the/dt endpoints/nns involved/vbn in/in a/dt centralized/jj or/cc hybrid/jj multipoint/jj conference/nn ,/punct processes/vbz them/prp and/cc returns/vbz them/prp to/to the/dt endpoints/nns ./punct
+an/dt mp/nn that/wdt processes/vbz audio/jj prepares/vbz nmax/nn audio/nn outputs/nns from/in m/nn input/nn streams/nns after/in selection/nn ,/punct mixing/vbg ,/punct or/cc both/dt ./punct
+audio/nnp mixing/vbg requires/vbz decoding/vbg the/dt input/nn audio/nn to/to linear/jj signals/nns (/punct pcm/nnp or/cc analog/nn )/punct ,/punct performing/vbg a/dt linear/jj combination/nn of/in the/dt signals/nns and/cc reencoding/vbg the/dt result/nn in/in an/dt appropriate/jj audio/nn format/nn ./punct
+the/dt mp/nn may/md noise/nn and/cc unwanted/jj components/nns ./punct
+the/dt limitation/nn of/in h.323/nn is/vbz that/in it/prp does/vbz not/rb address/vb the/dt scalability/nn chain/nn topology/nn ,/punct which/wdt can/md be/vb shown/vbn that/in it/prp can/md not/rb scale/vb up/rp for/in a/dt large/jj conference/nn ./punct
+domain/nn ,/punct as/in when/wrb there/ex are/vbp several/jj conferences/nns under/in way/nn ./punct
+signaling-related/jj messages/nns of/in css/nns are/vbp dealt/vbn in/in ./punct
+interval/nn ,/punct cs/nnp 1/cd chooses/vbz the/dt best/jjs nmax/nn audio/nn packets/nns out/in of/in the/dt m1/nn (/punct using/vbg a/dt criterion/nn termed/vbn ``/`` loudness/nnp number/nnp ,/punct described/vbn in/in the/dt next/jj subsection/nn )/punct ./punct
+it/prp may/md possibly/rb receive/vb and/cc sends/vbz these/dt to/to css/nnp 2/cd same/jj mixing/vbg interval/nn ,/punct it/prp also/rb receives/vbz the/dt best/jjs nmax/nn audio/nn packets/nns possibly/rb mp/nn )/punct from/in cs/nnp p./nnp for/in simplicity/nn ,/punct we/prp ignore/vbp propagation/nn delay/nn between/in css/nns which/wdt indeed/rb can/md be/vb taken/vbn into/in account/nn ;/punct it/prp is/vbz beyond/in the/dt scope/nn of/in this/dt presentation/nn ./punct
+the/dt set/nn of/in packets/nns received/vbn is/vbz denoted/vbn as/in fromothercss/nns ./punct
+finally/rb ,/punct it/prp selects/vbz the/dt best/jjs nmax/nn packets/nns from/in the/dt set/vbn {/punct toothercss/nns union/nn fromothercss/nn }/punct and/cc passes/vbz these/dt packets/nns to/to its/prp$ own/jj group/nn ./punct
+it/prp can/md be/vb seen/vbn that/in the/dt set/vbn {/punct toothercss/nns union/nn fromothercss/nns }/punct is/vbz the/dt same/jj at/in all/dt css/nns ./punct
+this/dt ensures/vbz that/in any/dt client/nn in/in the/dt conference/nn finally/rb receives/vbz the/dt same/jj set/nn of/in packets/nns for/in mixing/vbg ./punct
+hence/rb all/dt clients/nns obtain/vb a/dt common/jj view/nn of/in the/dt conference/nn ./punct
+similarly/rb ,/punct for/in each/dt time/nn slot/nn (/punct packet/nn time/nn )/punct ,/punct a/dt subset/nn ,/punct f/nn of/in all/dt clients/nns is/vbz selected/vbn (/punct using/vbg the/dt same/jj criterion/nn )/punct from/in the/dt pool/nn of/in packets/nns from/in all/dt other/jj css/nnp plus/cc the/dt nmax/nn clients/nns selected/vbn locally/rb ./punct
+their/prp$ packets/nns are/vbp mixed/jj and/cc played/vbd out/rp at/in the/dt clients/nns ./punct
+according/vbg to/to ,/punct the/dt cardinality/nn of/in f/nn ,/punct |f|/nn is/vbz nmax/nn and/cc is/vbz fixed/vbn at/in three/cd ./punct
+in/in our/prp$ conferencing/vbg setup/nn ,/punct selection/nn is/vbz by/in the/dt master/nnp conference/nnp server/nn (/punct m-cs/nn )/punct ,/punct which/wdt comes/vbz into/in the/dt picture/nn exclusively/rb for/in media/nns handling/nn ./punct
+note/vb that/in even/rb if/in the/dt sip/nnp specification/nn enables/vbz also/rb possible/jj to/to use/vb the/dt conference/nn server/nn for/in two-party/jj calls/nns ,/punct conference/nn by/in adding/vbg a/dt third/jj and/cc subsequently/rb more/jjr participant/nn (/punct s/nns )/punct ./punct
+there/ex are/vbp cases/nns wherein/wrb the/dt processing/nn capacity/nn of/in an/dt m-cs/nn is/vbz exceeded/vbn as/in it/prp may/md have/vb too/rb many/jj packets/nns -/punct from/in local/jj domains/nns and/cc from/in remote/jj domains/nns -/punct to/to process/nn ./punct
+in/in that/dt case/nn ,/punct the/dt m-cs/nn will/md create/vb one/cd or/cc many/jj s-cs/nn (/punct fig/nn ./punct
+6/cd )/punct and/cc transfer/vb its/prp$ own/jj clients/nns as/rb well/rb as/in the/dt new/jj clients/nns to/to them/prp ./punct
+in/in this/dt configuration/nn ,/punct the/dt algorithm/nn outlined/vbn above/rb will/md be/vb slightly/rb modified/vbn ,/punct as/in the/dt audio/jj packets/nns will/md go/vb from/in clients/nns to/to their/prp$ dedicated/jj s-cs/nn that/wdt will/md select/vb nmax/nn packets/nns to/to send/vb to/to the/dt local/jj m-cs/nn ,/punct which/wdt will/md then/rb select/vb nmax/nn packets/nns from/in all/dt its/prp$ s-css/nn in/in the/dt domain/nn before/in sending/vbg them/prp to/to the/dt remote/jj domains/nns ./punct
+the/dt incoming/jj packets/nns from/in other/jj domains/nns will/md be/vb received/vbn by/in the/dt m-cs/nn ,/punct select/jj nmax/nn of/in them/prp and/cc send/vb them/prp directly/rb to/to the/dt domain/nn clients/nns ,/punct bypassing/vbg the/dt scss/nns ./punct
+this/dt change/nn implies/vbz that/in at/in most/jjs three/cd intermediate/jj entities/nns exist/vbp for/in each/dt audio/nn packet/nn ,/punct instead/rb of/in two/cd in/in the/dt conventional/jj setup/nn ./punct
+as/in the/dt extra/jj hop/nn happens/vbz inside/in the/dt lan/nnp supposed/vbn to/to have/vb a/dt high-speed/jj connectivity/nn ,/punct we/prp consider/vbp that/in it/prp should/md not/rb prevent/vb us/prp from/in using/vbg this/dt hierarchy/nn of/in css/nns when/wrb there/ex ''/'' s/vbz a/dt need/nn to/to do/vb so/rb ./punct
+might/md possibly/rb receive/vb ?/punct
+one/cd way/nn is/vbz to/to rank/vb the/dt m/nn packets/nns received/vbd according/vbg to/to their/prp$ energies/nns ,/punct and/cc choose/vb the/dt top/jj nmax/nn ./punct
+however/rb ,/punct this/dt is/vbz usually/rb found/vbn to/to be/vb inadequate/jj because/in random/jj fluctuations/nns in/in packet/nn energies/nns can/md lead/vb to/to poor/jj audio/jj quality/nn ./punct
+this/dt indicates/vbz the/dt need/nn for/in a/dt metric/jj different/jj from/in mere/jj individual/jj packet/nn energies/nns ./punct
+the/dt metric/jj should/md have/vb the/dt following/vbg the/dt packet/nn energy/nn of/in another/dt speaker/nn ./punct
+this/dt implies/vbz that/in a/dt speaker/nn ''/'' s/nns speech/nn history/nn should/md be/vb given/vbn some/dt weight/nn ./punct
+this/dt is/vbz often/rb referred/vbn to/to as/in persistence/nn or/cc hangover/nn ./punct
+(/punct i/fw )/punct speak/vbp loudly/rb and/cc (/punct ii/ls )/punct keep/vb trying/vbg for/in a/dt little/jj while/nn ./punct
+in/in a/dt face-to-face/jj conference/nn ,/punct body/nn language/nn often/rb indicates/vbz the/dt intent/nn to/to interrupt/vb ./punct
+but/cc in/in a/dt blind/jj conference/nn under/in discussion/nn ,/punct a/dt participant/nn ''/'' s/nns intention/nn to/to interrupt/vb can/md be/vb conveyed/vbn effectively/rb through/in ln/nn ./punct
+a/dt floor/nn control/nn mechanism/nn empowered/vbd to/to cut/vb off/rp a/dt speaker/nn forcefully/rb must/md be/vb ensured/vbn ./punct
+these/dt requirements/nns are/vbp met/vbn by/in loudness/nnp number/nnp ,/punct which/wdt changes/vbz smoothly/rb with/in time/nn so/in that/in the/dt selection/nn (/punct addition/nn and/cc deletion/nn )/punct of/in clients/nns for/in conference/nn is/vbz graceful/jj ./punct
+plus/cc the/dt activity/nn and/cc amplitude/nn over/in a/dt specific/jj window/nn in/in the/dt past/nn ./punct
+fig/nn ./punct
+3/ls ./punct
+the/dt different/jj windows/nns used/vbn for/in ln/nn computation/nn the/dt loudness/nnp number/nnp is/vbz updated/vbn on/in a/dt packet-by-packet/jj basis/nn ./punct
+the/dt basic/jj parameter/nn used/vbn here/rb is/vbz packet/nn amplitude/nn ,/punct which/wdt is/vbz calculated/vbn as/in root/nn mean/nn square/jj (/punct rms/vbz )/punct of/in the/dt energies/nns in/in audio/jj samples/nns of/in a/dt packet/nn ,/punct and/cc denoted/vbn by/in xk/nn ./punct
+three/cd windows/nns are/vbp defined/vbn as/in shown/vbn in/in fig/nn ./punct
+3/ls ./punct
+the/dt present/jj amplitude/nn level/nn of/in the/dt speaker/nn is/vbz found/vbn by/in calculating/vbg the/dt moving/vbg average/nn of/in packet/nn amplitude/nn (/punct xk/nn )/punct within/in a/dt window/nn called/vbn recent/jj past/nnp window/nnp starting/vbg from/in the/dt present/jj instant/nn to/to some/dt past/jj time/nn ./punct
+the/dt past/jj activity/nn of/in the/dt speaker/nn is/vbz found/vbn by/in calculating/vbg the/dt moving/vbg average/nn of/in the/dt packet/nn amplitude/nn (/punct xk/nn )/punct within/in a/dt window/nn called/vbn distant/jj past/nnp window/nnp ,/punct which/wdt starts/vbz at/in the/dt point/nn where/wrb the/dt recent/jj past/nnp window/nn ends/vbz and/cc stretches/vbz back/rb in/in the/dt past/nn for/in a/dt pre-defined/jj interval/nn ./punct
+the/dt activity/nn of/in the/dt speaker/nn in/in the/dt past/nn is/vbz found/vbn with/in a/dt window/nn called/vbn activity/nn horizon/nn ,/punct which/wdt spans/vbz the/dt recent/jj past/nn window/nn as/rb well/rb as/in the/dt distant/jj past/nn window/nn and/cc beyond/in if/in necessary/jj ./punct
+though/in the/dt contribution/nn of/in the/dt activity/nn horizon/nn looks/vbz similar/jj to/to the/dt contribution/nn of/in the/dt recent/jj past/nn and/cc distant/jj past/jj windows/nns ,/punct past/jj activity/nn is/vbz computed/vbn from/in activity/nn horizon/nn window/nn in/in a/dt differently/rb ./punct
+define/vb the/dt quantities/nns during/in these/dt three/cd intervals/nns as/in l1/nn ,/punct l2/nn and/cc l3/nn ./punct
+l1/nn quantifies/vbz the/dt recent/jj past/jj speech/nn activity/nn ,/punct l2/nn the/dt distant/jj past/jj speech/nn activity/nn and/cc l3/nn gives/vbz a/dt number/nn corresponding/vbg to/to the/dt speech/nn activity/nn in/in the/dt activity/nn horizon/nn window/nn quantifying/vbg how/wrb active/jj the/dt speaker/nn was/vbd in/in the/dt past/jj few/jj intervals/nns ./punct
+l3/nn yields/vbz a/dt quantity/nn that/wdt pre-defined/jj threshold/nn (/punct eq/nn ./punct
+3/cd )/punct ./punct
+the/dt threshold/nn is/vbz invariant/jj across/in clients/nns ./punct
+here/rb ./punct
+loudness/nnp number/nnp λ/nn for/in the/dt present/jj time/nn instant/jj (/punct or/cc the/dt speech/nn activity/nn in/in the/dt activity/nn horizon/nn window/nn considered/vbn ./punct
+the/dt λ/nn parameter/nn kdv/nn vrph/nn phpru\/nn ghshqglqj/nn rq/nn wkh/nn vsuhdg/nn ri/nn the/dt windows/nns ./punct
+after/in one/cd conferee/nn becomes/vbz silent/jj ,/punct another/dt can/md take/vb the/dt floor/nn ./punct
+also/rb ,/punct as/in there/ex is/vbz more/jjr than/in one/cd channel/nn ,/punct interruption/nn is/vbz elevated/jj λ./nn this/dt ensures/vbz fairness/nn to/to all/dt conferees/nns ./punct
+after/in all/dt ,/punct even/rb in/in a/dt face-to-face/jj conference/nn ,/punct a/dt more/rbr vocal/jj speaker/nn grabs/nns special/jj attention/nn ./punct
+all/pdt these/dt desirable/jj characteristics/nns are/vbp embedded/vbn into/in the/dt ln/nn ./punct
+a/dt comprehensive/jj discussion/nn on/in selection/nn of/in the/dt various/jj parameters/nns and/cc the/dt dynamics/nns of/in ln/nn are/vbp beyond/in the/dt scope/nn of/in this/dt paper/nn ./punct
+following/vbg the/dt developments/nns in/in subsections/nns 6.1/cd and/cc 6.2/cd ,/punct we/prp present/vbp the/dt simple/jj algorithm/nn that/wdt runs/vbz at/in each/dt master-conference/nnp server/nn (/punct algorithm/nn ./punct
+1/cd )/punct ./punct
+this/dt algorithm/nn is/vbz based/vbn on/in the/dt discussions/nns in/in section/nn 6.1/cd ./punct
+the/dt globally/rb unique/jj set/nn f/nn is/vbz found/vbn using/vbg this/dt procedure/nn ./punct
+that/in belong/vbp to/to it/prp ./punct
+3/ls ./punct
+store/nnp a/dt copy/nn of/in packets/nns from/in those/dt nmax/nnp clients/nns in/in database/nn db1/nn ./punct
+4/ls ./punct
+send/vb these/dt nmax/nn packets/nns to/to other/jj m-css/nns (/punct on/in configuration/nn )/punct ./punct
+db2/nn ./punct
+6/cd ./punct
+now/rb compare/vb the/dt packets/nns in/in db1/nn and/cc db2/nn on/in should/md be/vb played/vbn out/rp at/in each/dt client/nnp ./punct
+clients/nns in/in its/prp$ domain/nn ./punct
+8/cd ./punct
+mix/nnp these/dt nmax/nn audio/nn packets/nns in/in set/vbn f/nn after/in in/in the/dt domain/nn ./punct
+single/jj conference/nn takes/vbz place/nn between/in three/cd domains/nns ./punct
+the/dt shaded/jj clients/nns are/vbp the/dt ones/nns selected/vbn in/in their/prp$ local/jj domains/nns ;/punct their/prp$ audio/jj streams/nns will/md be/vb sent/vbn to/to other/jj css/nns ./punct
+we/prp now/rb analyze/vbp deployment/nn issues/nns associated/vbn with/in conference/nn management/nn ./punct
+how/wrb are/vbp domains/nns to/to be/vb organized/vbn to/to maximize/vb the/dt some/dt useful/jj parameters/nns ./punct
+active/jj clients/nns in/in a/dt given/vbn conference/nn ./punct
+active/jj clients/nns in/in the/dt conference/nn is/vbz thus/rb ∑=/rb ./punct
+conference/nn server/nn can/md handle/vb in/in a/dt packet/nn time/nn ,/punct also/rb called/vbn minimum/jj system/nn requirement/nn a/dt machine/nn must/md meet/vb in/in order/nn to/to take/vb part/nn in/in a/dt conference/nn ./punct
+other/jj css/nns in/in remote/jj domains/nns (/punct see/vb section/nn 6.1/cd )/punct ./punct
+we/prp will/md set/vb nmax/nn =3/cd (/punct =|f|/nn )/punct ,/punct according/vbg to/to ./punct
+domain/nn with/in capacity/nn c./nn we/prp first/rb dispose/vb the/dt case/nn where/wrb the/dt capacity/nn is/vbz not/rb exceeded/vbn (/punct the/dt existing/vbg cs/nn is/vbz not/rb overloaded/vbn )/punct ,/punct and/cc then/rb proceed/vb to/to the/dt case/nn where/wrb there/ex exists/vbz a/dt need/nn to/to create/vb more/jjr css/nns when/wrb a/dt single/jj cs/nn is/vbz overloaded/vbn ./punct
+we/prp assume/vbp that/in clients/nns are/vbp equally/rb distributed/vbn amongst/in the/dt bound/vbn on/in the/dt number/nn of/in clients/nns acceptable/jj ,/punct given/vbn the/dt number/nn of/in active/jj domains/nns d./vbp consider/vb that/in the/dt system/nn works/vbz as/in outlined/vbn in/in section/nn 6.1/cd :/punct the/dt clients/nns send/vbp their/prp$ audio/jj packets/nns to/to their/prp$ local/jj cs/nnp ,/punct which/wdt selects/vbz nmax/nn streams/nns ,/punct before/in sending/vbg them/prp to/to other/jj css/nns ./punct
+in/in parallel/nn ,/punct it/prp also/rb receives/vbz nmax/nn streams/nns for/in every/dt other/jj css/nns before/in taking/vbg a/dt decision/nn on/in which/wdt nmax/nn streams/nns will/md be/vb selected/vbn ,/punct sent/vbn and/cc played/vbn out/rp at/in each/dt individual/jj clients/nns ./punct
+handle/vb its/prp$ local/jj clients/nns in/in addition/nn to/to the/dt audio/jj packets/nns from/in other/jj domains/nns ./punct
+clearly/rb then/rb ,/punct the/dt following/vbg inequality/nn must/md hold/vb for/in the/dt limiting/vbg case/nn of/in (/punct 5/cd )/punct (/punct taking/vbg the/dt equality/nn )/punct takes/vbz the/dt form/nn (/punct [/punct ]/punct */punct =/punct rounding/vbg to/to nearest/jjs integer/nn )/punct and/cc hence/rb ,/punct m/nn from/in (/punct 6/cd )/punct ./punct
+with/in nmax/nn =/punct 3/cd ./punct
+m/nn ,/punct being/vbg dependent/jj of/in c/nn ,/punct are/vbp therefore/rb based/vbn on/in the/dt weakest/jjs cs/nn ./punct
+more/rbr domains/nns in/in the/dt conference/nn ,/punct but/cc at/in the/dt expense/nn of/in restricting/vbg the/dt total/jj number/nn of/in clients/nns m/nn in/in the/dt conference/nn ./punct
+while/in implementing/vbg and/cc testing/vbg the/dt conference/nn servers/nns on/in a/dt pentium/nnp iii/nnp 1.4/cd ghz/nnp running/vbg windows/nnp nt/nnp ,/punct we/prp were/vbd able/jj to/to set/vb c=300/nn ./punct
+but/cc with/in the/dt advent/nn of/in faster/jjr computers/nns (/punct >/punct 3/cd ghz/nn )/punct ,/punct one/cd accordingly/rb ./punct
+optimized/vbn solutions/nns for/in css/nns of/in different/jj capacities/nns ./punct
+these/dt lead/vbp us/prp to/to maximize/vb the/dt number/nn of/in domains/nns ,/punct and/cc hence/rb ,/punct to/to maximize/vb the/dt fig/nn ./punct
+4/cd ,/punct the/dt individual/jj curves/nns represent/vbp the/dt total/jj number/nn of/in clients/nns perspective/nn of/in the/dt same/jj data/nns in/in 3d/nn ./punct
+fig/nn ./punct
+4/ls ./punct
+contour/nnp plot/nn of/in capacity/nn versus/cc optimum/jj number/nn of/in now/rb considering/vbg the/dt case/nn where/wrb the/dt number/nn of/in clients/nns in/in a/dt one/cd has/vbz to/to avoid/vb the/dt denial/nn of/in service/nn for/in new/jj clients/nns due/jj to/to overloading/nn of/in conference/nn server/nn ./punct
+this/dt problem/nn can/md be/vb solved/vbn by/in fig/nn ./punct
+6/cd ./punct
+the/dt existing/vbg m-cs/nn creates/vbz a/dt slave/nnp cs/nnp (/punct s-cs/nn )/punct that/wdt can/md clients/nns ./punct
+here/rb ,/punct the/dt system/nn works/vbz differently/rb as/in outlined/vbn in/in section/nn 6.1/cd :/punct the/dt clients/nns send/vbp their/prp$ audio/jj packets/nns to/to their/prp$ local/jj s-cs/nn ,/punct which/wdt selects/vbz nmax/nn streams/nns ,/punct before/in sending/vbg them/prp to/to a/dt local/jj m-cs/nn ,/punct which/wdt will/md proceed/vb in/in the/dt same/jj way/nn ,/punct before/in sending/vbg nmax/nn streams/nns to/to the/dt other/jj domains/nns ./punct
+each/dt newly/rb created/vbn s-cs/nn must/md run/vb on/in a/dt separate/jj machine/nn ./punct
+the/dt m-cs/nn has/vbz to/to create/vb more/jjr s-css/nns if/in the/dt after/in the/dt transfer/nn ./punct
+with/in this/dt mechanism/nn ,/punct the/dt m-cs/nn will/md be/vb able/jj to/to create/vb utmost/jj 3/cd (/punct =/punct nmax/nn )/punct packets/nns from/in each/dt other/jj remote/jj domains/nns ./punct
+we/prp can/md then/rb calculate/vb the/dt maximum/nn theoretical/jj number/nn of/in active/jj clients/nns conference/nn as/in cudm/nn ⋅⋅=/cd ./punct
+of/in course/nn ,/punct one/cd could/md further/rbr create/vb a/dt third/jj level/nn in/in the/dt hierarchy/nn ,/punct giving/vbg the/dt possibility/nn of/in accommodating/vbg even/rb more/rbr clients/nns ./punct
+this/dt enough/jj with/in two/cd levels/nns ./punct
+we/prp now/rb analyze/vbp the/dt performance/nn of/in the/dt algorithm/nn presented/vbn in/in subsection/nn 6.3/cd ,/punct i.e./fw ,/punct the/dt one/cd taking/vbg care/nn of/in the/dt exchange/nn of/in audio/jj packets/nns between/in the/dt different/jj domains/nns ./punct
+note/vb that/in the/dt packets/nns that/wdt are/vbp transiting/vbg within/in the/dt lan/nnp take/vb advantage/nn of/in the/dt higher/jjr capacity/nn (/punct generally/rb coupled/vbn with/in multicast/jj capabilities/nns )/punct and/cc therefore/rb do/vbp not/rb require/vb a/dt performance/nn analysis/nn ./punct
+thus/rb we/prp have/vbp to/to look/vb only/rb at/in the/dt rtp/nn packets/nns over/in the/dt wan/nnp ,/punct i.e./fw ,/punct between/in participating/vbg m-css/nns ./punct
+as/in each/dt m-cs/nn from/in a/dt domain/nn will/md wan/nnp is/vbz upper-bounded/jj by/in the/dt following/vbg expression/nn ./punct
+the/dt total/jj number/nn of/in audio/jj packets/nns transiting/vbg over/in the/dt wan/nnp for/in )/punct )/punct ./punct
+however/rb ,/punct it/prp is/vbz independent/jj of/in the/dt total/jj number/nn of/in active/jj clients/nns ./punct
+this/dt would/md not/rb have/vb been/vbn the/dt case/nn had/vbd all/dt packets/nns been/vbn sent/vbn over/in the/dt network/nn in/in each/dt time/nn slot/nn ./punct
+the/dt saving/nn is/vbz tremendous/jj ./punct
+yet/rb ,/punct one/cd may/md contend/vb that/in sending/vbg active/jj ,/punct selecting/vbg a/dt subset/nn of/in clients/nns in/in that/dt domain/nn is/vbz unnecessary/jj ./punct
+pessimistic/jj and/cc optimistic/jj algorithms/nns as/in presented/vbn in/in the/dt sequel/nn aim/nn at/in reducing/vbg the/dt traffic/nn further/rb by/in harnessing/vbg the/dt slow/jj varying/vbg nature/nn of/in the/dt ln/nn ./punct
+consider/vb a/dt scenario/nn wherein/wrb the/dt lowest/jjs ln/nn (/punct called/vbn lnt/nnp )/punct of/in the/dt three/cd globally/rb selected/vbn streams/nns (/punct set/vbn f/nn of/in section/nn 6.1/cd )/punct exceeds/vbz the/dt chances/nns that/in the/dt next/jj two/cd dominant/jj streams/nns of/in that/dt domain/nn being/vbg most/rbs dominant/jj stream/nn and/cc withhold/vb the/dt other/jj two/cd ./punct
+there/ex may/md be/vb an/dt error/nn in/in unique/jj selection/nn across/in all/dt domains/nns for/in one/cd packet/nn period/nn only/rb ./punct
+as/in ln/nn varies/vbz slowly/rb ,/punct the/dt error/nn would/md get/vb automatically/rb rectified/vbn in/in a/dt subsequent/jj packet/nn period/nn (/punct slot/nn )/punct ./punct
+in/in this/dt algorithm/nn ,/punct there/ex is/vbz at/in least/jjs one/cd stream/nn in/in each/dt period/nn ./punct
+the/dt net/jj do/nn using/vbg unicast/nn ,/punct instead/rb of/in maxndd/nnp ⋅−⋅/cd )/punct 1/cd (/punct ./punct
+considerable/jj valuable/jj bandwidth/nn can/md be/vb saved/vbn using/vbg this/dt heuristic/nn ./punct
+the/dt resulting/vbg traffic/nn complexity/nn reduces/vbz from/in o/nn (/punct d2/nn o/nn (/punct d/nn )/punct in/in multicast-enabled/jj networks/nns ./punct
+a./nn in/in the/dt first/jj time/nn slot/nn (/punct packet/nn time/nn )/punct ,/punct each/dt cs/nnp sends/vbz the/dt top/jj nmax/nn streams/nns (/punct based/vbn on/in their/prp$ ln/nn )/punct to/to all/dt other/jj css/nnp ./punct
+at/in each/dt m-cs/s-cs/nn and/cc for/in each/dt packet/nn time/nn :/punct globally/rb selected/vbn streams/nns (/punct set/vbn f/nn )/punct from/in the/dt previous/jj time/nn slot/nn ./punct
+set/nnp lnt/nnp with/in this/dt value/nn ./punct
+c./nnp at/in each/dt cs/nn domain/nn ,/punct select/vbp the/dt nmax/nn local/jj (/punct toothercss/nn set/vbd )/punct ./punct
+d./nnp select/nnp streams/nns that/wdt have/vbp ln/nn >/punct lnt/nn ./punct
+then/rb send/vb top/jj nmax/nn to/to other/jj css/nns ./punct
+else/rb if/in there/ex are/vbp (/punct nmax-1/nn )/punct streams/nns with/in ln/nn >/punct lnt/nn then/rb send/vb top/jj (/punct nmax-1/nn )/punct plus/cc the/dt one/cd lower/jjr than/in lnt/nn (/punct i.e./fw ,/punct top/jj nmax/nn )/punct to/to other/jj css/nns ./punct
+else/rb if/in there/ex are/vbp (/punct nmax-2/jj )/punct streams/nns with/in ln/nn >/punct lnt/nn then/rb send/vb top/jj (/punct nmax-2/nn )/punct plus/cc the/dt one/cd lower/jjr than/in lnt/nn (/punct i.e/nn ./punct
+top/jj (/punct nmax/nn -1/cd )/punct )/punct to/to other/jj css/nns ./punct
+else/rb if/in there/ex are/vbp no/nn streams/nns with/in ln/nn >/punct lnt/nn then/rb send/vb top/jj 1/cd stream/nn to/to other/jj css/nns ./punct
+e./nnp packets/nnps sent/vbd in/in step/nn d/nn form/nn db1/nn ./punct
+packets/nns received/vbd from/in other/jj css/nns form/vbp db2/nn ./punct
+f./nnp for/in this/dt time/nn slot/nn ,/punct find/vb global/jj nmax/nn streams/nns g./nnp send/vb set/vbn f/nn to/to the/dt clients/nns in/in its/prp$ domain/nn ./punct
+update/nnp lnt/nnp for/in the/dt next/jj period/nn ./punct
+algorithm/nn 2/cd ./punct
+pessimistic/jj algorithm/nn to/to reduce/vb the/dt number/nn of/in packets/nns sent/vbn over/in the/dt internet/nn ./punct
+will/md be/vb sent/vbn to/to other/jj domains/nns ''/'' css/nns ./punct
+condition/nn of/in formation/nn of/in globally/rb unique/jj set/nn f./nnp however/rb ,/punct the/dt discrepancies/nns in/in selected/vbn streams/nns at/in different/jj domains/nns remain/vbp for/in a/dt short/jj period/nn of/in time/nn depending/vbg on/in the/dt transportation/nn delay/nn between/in any/dt two/cd domains/nns ./punct
+even/rb for/in a/dt total/jj delay/nn of/in 400ms/nns ,/punct for/in real-time/jj interactive/jj conversation/nn is/vbz non-perceivable/jj by/in the/dt listener/nn ./punct
+in/in the/dt case/nn that/in there/ex is/vbz a/dt joke/nn and/cc every/dt one/cd laughs/nns ,/punct then/rb for/in a/dt short/jj period/nn ./punct
+the/dt traffic/nn can/md be/vb reduced/vbn further/rb ./punct
+the/dt scheme/nn in/in the/dt following/vbg algorithm/nn (/punct algorithm/nn ./punct
+3/cd )/punct is/vbz withholding/vbg all/pdt the/dt streams/nns that/wdt have/vbp less/jjr value/nn of/in ln/nn compared/vbn to/to the/dt least/jjs of/in the/dt three/cd in/in the/dt set/vbn f./nnp we/prp can/md find/vb the/dt correct/jj and/cc unique/jj three/cd streams/nns after/in a/dt few/jj time/nn slots/nns depending/vbg on/in the/dt transportation/nn delay/nn between/in the/dt domains/nns ./punct
+this/dt case/nn is/vbz always/rb restricted/jj to/to nmax/nn (/punct =3/cd )/punct ./punct
+even/rb without/in voice/nnp activity/nnp detection/nn (/punct vad/nn )/punct ,/punct there/ex will/md be/vb no/rb more/jjr than/in three/cd streams/nns in/in the/dt network/nn in/in the/dt best/jjs case/nn ,/punct thus/rb the/dt total/jj traffic/nn is/vbz particular/jj case/nn ./punct
+these/dt advantages/nns are/vbp due/jj to/to exploitation/nn of/in the/dt characteristics/nns of/in ln/nn ./punct
+a./nn in/in the/dt first/jj time/nn slot/nn (/punct packet/nn time/nn )/punct ,/punct each/dt cs/nnp sends/vbz the/dt top/jj nmax/nn streams/nns (/punct based/vbn on/in their/prp$ ln/nn )/punct to/to all/dt other/jj css/nnp ./punct
+at/in each/dt m-cs/s-cs/nn and/cc for/in each/dt packet/nn time/nn :/punct globally/rb selected/vbn streams/nns (/punct set/vbn f/nn )/punct from/in the/dt previous/jj time/nn slot/nn ./punct
+set/nnp lnt/nnp with/in this/dt value/nn ./punct
+c./nnp at/in each/dt cs/nn domain/nn ,/punct select/vbp the/dt nmax/nn local/jj then/rb send/vb top/jj nmax/nn to/to other/jj css/nns ./punct
+else/rb if/in there/ex are/vbp (/punct nmax-1/nn )/punct streams/nns with/in ln/nn >/punct lnt/nn then/rb send/vb top/jj (/punct nmax-1/nn )/punct and/cc see/vb e./nnp else/nnp if/in there/ex are/vbp (/punct nmax-2/jj )/punct streams/nns with/in ln/nn >/punct lnt/nn then/rb send/vb top/jj (/punct nmax-2/nn )/punct and/cc see/vb e./nnp else/nnp if/in there/ex are/vbp no/nn streams/nns with/in ln/nn >/punct lnt/nn then/rb don/vb ''/'' t/nn send/vb any/dt stream/nn ./punct
+interval/nn belongs/vbz to/to this/dt cs/jj then/rb select/jj and/cc send/vb that/dt stream/nn even/rb if/in its/prp$ ln/nn is/vbz now/rb </punct lnt/nn ./punct
+(/punct note/nn this/dt occurs/vbz only/rb at/in that/dt cs/nn which/wdt had/vbd the/dt stream/nn that/wdt was/vbd the/dt last/jj of/in the/dt three/cd in/in received/vbn from/in other/jj css/nns form/vbp db2/nn ./punct
+g./nnp for/in this/dt time/nn slot/nn ,/punct find/vb global/jj nmax/nn streams/nns based/vbn on/in ln/nn from/in db1/nn u/nn db2/nn (/punct set/vbn f/nn )/punct ./punct
+h./nnp send/vb set/vbn f/nn to/to the/dt clients/nns in/in its/prp$ domain/nn ./punct
+update/nnp lnt/nnp for/in the/dt next/jj period/nn ./punct
+algorithm/nn 3/cd ./punct
+optimistic/jj algorithm/nn to/to reduce/vb the/dt number/nn of/in furthermore/rb ,/punct when/wrb vad/nn is/vbz used/vbn ,/punct it/prp would/md further/rb reduce/vb the/dt traffic/nn by/in sending/vbg the/dt header/nn part/nn of/in the/dt rtp/nnp packet/nn only/rb and/cc not/rb the/dt whole/jj packet/nn ,/punct thus/rb in/in order/nn to/to keep/vb updating/vbg the/dt ln/nn across/in ./punct
+the/dt traffic/nn here/rb in/in this/dt case/nn is/vbz o/nn (/punct nmax/nn )/punct for/in multicast/jj and/cc o/nn (/punct d/nn )/punct for/in unicast/nn ./punct
+we/prp see/vbp that/in the/dt above/jj algorithms/nns save/vbp bandwidth/nn and/cc computation/nn at/in each/dt cs/nn ,/punct and/cc leads/vbz to/to a/dt scalable/jj architecture/nn with/in multiple/jj css/nns mainly/rb because/in clients/nns are/vbp grouped/vbn in/in domains/nns ./punct
+the/dt necessary/jj bandwidth/nn is/vbz not/rb dependent/jj on/in the/dt total/jj number/nn of/in active/jj clients/nns ./punct
+as/in the/dt cs/nnp always/rb chooses/vbz the/dt best/jjs three/cd clients/nns out/in clients/nns to/to the/dt existing/vbg conference/nn will/md not/rb cause/vb any/dt scalability/nn problem/nn ./punct
+in/in the/dt architecture/nn that/wdt has/vbz been/vbn proposed/vbn ,/punct no/dt assumption/nn was/vbd made/vbn about/in the/dt availability/nn of/in multicasting/jj support/nn from/in the/dt network/nn ./punct
+the/dt traffic/nn will/md be/vb further/jj reduced/vbn if/in multicasting/nn is/vbz as/in saving/vbg in/in multicasting/vbg depends/vbz also/rb on/in the/dt topology/nn ./punct
+the/dt analysis/nn was/vbd done/vbn for/in the/dt case/nn wherein/wrb multicast/nn is/vbz not/rb available/jj (/punct a/dt realistic/jj assumption/nn in/in today/nn ''/'' s/nns internet/nn )/punct ./punct
+the/dt advantage/nn of/in this/dt available/jj ./punct
+we/prp can/md instruct/vb css/nnp during/in the/dt set-up/jj phase/nn to/to send/vb unicast/jj packets/nns to/to those/dt css/nns that/wdt can/md not/rb receive/vb multicast/jj packets/nns whereas/in css/nns on/in multicast/jj enabled/vbd routers/nns can/md exchange/vb packets/nns on/in a/dt multicast/jj address/nn ./punct
+the/dt data/nns structures/nns and/cc conference/nn objects/nns inside/in a/dt cs/nn is/vbz given/vbn in/in ./punct
+fig/nn ./punct
+7/cd ./punct
+user/nn interface/nnp for/in setting/vbg the/dt weight/nn for/in nmax/nn audio/nn streams/nns (/punct setting/nn self-bar/nn to/to zero/cd avoids/nns echo/vbp )/punct ./punct

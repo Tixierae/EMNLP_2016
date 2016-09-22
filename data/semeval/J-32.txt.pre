@@ -1,0 +1,209 @@
+graphical/jj games/nns have/vbp been/vbn proposed/vbn as/in a/dt game-theoretic/jj model/nn of/in large-scale/jj distributed/vbn networks/nns of/in non-cooperative/jj agents/nns ./punct
+when/wrb the/dt number/nn of/in players/nns is/vbz large/jj ,/punct and/cc the/dt underlying/vbg graph/nn has/vbz low/jj degree/nn ,/punct they/prp provide/vbp a/dt concise/jj way/nn to/to represent/vb the/dt players/nns ''/'' payoffs/nns ./punct
+it/prp has/vbz recently/rb been/vbn shown/vbn that/in the/dt problem/nn of/in finding/vbg nash/nnp equilibria/nns in/in a/dt general/jj degree-3/nn graphical/jj game/nn with/in two/cd actions/nns per/in player/nn is/vbz complete/jj for/in the/dt complexity/nn class/nn ppad/nn ,/punct indicating/vbg that/in it/prp is/vbz unlikely/jj that/in there/ex is/vbz any/dt polynomial-time/jj algorithm/nn for/in this/dt problem/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp study/vbp the/dt complexity/nn of/in graphical/jj games/nns with/in two/cd actions/nns per/in player/nn on/in bounded-degree/jj trees/nns ./punct
+this/dt setting/nn was/vbd first/rb considered/vbn by/in kearns/nnp ,/punct littman/nnp and/cc singh/nnp ,/punct who/wp proposed/vbd a/dt dynamic/jj programming-based/jj algorithm/nn that/wdt computes/vbz all/dt nash/nnp equilibria/nn of/in such/jj games/nns ./punct
+the/dt running/vbg time/nn of/in their/prp$ algorithm/nn is/vbz exponential/jj ,/punct though/in approximate/jj equilibria/nns can/md be/vb computed/vbn efficiently/rb ./punct
+later/rb ,/punct littman/nnp ,/punct kearns/nnp and/cc singh/nnp proposed/vbd a/dt modification/nn to/to this/dt algorithm/nn that/wdt can/md find/vb a/dt single/jj nash/nnp equilibrium/nn in/in polynomial/jj time/nn ./punct
+we/prp show/vbp that/in this/dt modified/vbn algorithm/nn is/vbz incorrect/jj -/punct the/dt output/nn is/vbz not/rb always/rb a/dt nash/nnp equilibrium/nn ./punct
+we/prp then/rb propose/vbp a/dt new/jj algorithm/nn that/wdt is/vbz based/vbn on/in the/dt ideas/nns of/in kearns/nnp et/fw al/fw ./punct
+and/cc computes/vbz all/dt nash/nnp equilibria/nns in/in quadratic/jj time/nn if/in the/dt input/nn graph/nn is/vbz a/dt path/nn ,/punct and/cc in/in polynomial/jj time/nn if/in it/prp is/vbz an/dt arbitrary/jj graph/nn of/in maximum/nn degree/nn 2/cd ./punct
+moreover/rb ,/punct our/prp$ algorithm/nn can/md be/vb used/vbn to/to compute/vb nash/nnp equilibria/nns of/in graphical/jj games/nns on/in arbitrary/jj trees/nns ,/punct but/cc the/dt running/vbg time/nn can/md be/vb exponential/jj ,/punct even/rb when/wrb the/dt tree/nn has/vbz bounded/vbn degree/nn ./punct
+we/prp show/vbp that/in this/dt is/vbz inevitable/jj -/punct any/dt algorithm/nn of/in this/dt type/nn will/md take/vb exponential/jj time/nn ,/punct even/rb on/in bounded-degree/jj trees/nns with/in pathwidth/nn 2/cd ./punct
+it/prp is/vbz an/dt open/jj question/nn whether/in our/prp$ algorithm/nn runs/vbz in/in polynomial/jj time/nn on/in graphs/nns with/in pathwidth/nn 1/cd ,/punct but/cc we/prp show/vbp that/in finding/vbg a/dt nash/nnp equilibrium/nn for/in a/dt 2-action/jj graphical/jj game/nn in/in which/wdt the/dt underlying/vbg graph/nn has/vbz maximum/jj degree/nn 3/cd and/cc constant/jj pathwidth/nn is/vbz ppad-complete/jj (/punct so/rb is/vbz unlikely/jj to/to be/vb tractable/jj )/punct ./punct
+categories/nns and/cc subject/nnp descriptors/nnp f.2/nn [/punct theory/nnp of/in computation/nnp ]/punct :/punct analysis/nn of/in algorithms/nns and/cc problem/nnp complexity/nnp ;/punct j.4/nn [/punct computer/nn applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nns general/nnp terms/nns algorithms/nns ,/punct economics/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nnp graphical/nnp games/nns were/vbd introduced/vbn in/in the/dt papers/nns of/in kearns/nnp et/fw al/fw ./punct
+[/punct 8/cd ]/punct and/cc littman/nnp et/fw al/fw ./punct
+[/punct 9/cd ]/punct as/in a/dt succinct/jj representation/nn of/in games/nns with/in a/dt large/jj number/nn of/in players/nns ./punct
+the/dt classical/jj normal/jj form/nn (/punct or/cc matrix/nn form/nn )/punct representation/nn has/vbz a/dt size/nn that/wdt is/vbz exponential/jj in/in the/dt number/nn of/in players/nns ,/punct making/vbg it/prp unsuitable/jj for/in large-scale/jj distributed/vbn games/nns ./punct
+a/dt graphical/jj game/nn associates/vbz each/dt player/nn with/in a/dt vertex/nn of/in an/dt underlying/vbg graph/nn g/nn ,/punct and/cc the/dt payoff/nn to/to that/dt player/nn is/vbz a/dt function/nn of/in the/dt actions/nns chosen/vbn by/in himself/prp and/cc his/prp$ neighbours/nns in/in g/nn ;/punct if/in g/nn has/vbz low/jj degree/nn ,/punct this/dt is/vbz a/dt concise/jj way/nn to/to represent/vb a/dt game/nn with/in many/jj players/nns ./punct
+the/dt papers/nns [/punct 8/cd ,/punct 9/cd ]/punct give/vb a/dt dynamic-programming/jj algorithm/nn for/in finding/vbg nash/nnp equilibria/nns in/in graphical/jj games/nns where/wrb there/ex are/vbp two/cd actions/nns per/in player/nn and/cc g/nn is/vbz a/dt tree/nn ./punct
+the/dt first/jj of/in these/dt papers/nns describes/vbz a/dt generic/jj algorithm/nn for/in this/dt problem/nn that/wdt can/md be/vb specialized/vbn in/in two/cd ways/nns :/punct as/in an/dt algorithm/nn that/wdt computes/vbz approximations/nns to/to all/dt nash/nnp equilibria/nns in/in time/nn polynomial/jj in/in the/dt input/nn size/nn and/cc the/dt approximation/nn quality/nn ,/punct or/cc as/in an/dt exponential-time/jj algorithm/nn that/wdt allows/vbz the/dt exact/jj computation/nn of/in all/dt nash/nnp equilibria/nnp in/in g./nnp in/in [/punct 9/cd ]/punct ,/punct the/dt authors/nns propose/vbp a/dt modification/nn to/to the/dt latter/jj algorithm/nn that/wdt aims/vbz to/to find/vb a/dt single/jj nash/nnp equilibrium/nn in/in polynomial/jj time/nn ./punct
+this/dt does/vbz not/rb quite/rb work/vb ,/punct as/in we/prp show/vbp in/in section/nn 3/cd ,/punct though/in it/prp introduces/vbz a/dt useful/jj idea/nn ./punct
+the/dt generic/jj algorithm/nn of/in consists/vbz of/in two/cd phases/nns which/wdt we/prp will/md refer/vb to/to as/in the/dt upstream/jj pass/nn and/cc the/dt downstream/jj pass/nn ;/punct 1/cd former/jj starts/nns at/in the/dt leaves/nns of/in the/dt tree/nn and/cc ends/vbz at/in the/dt root/nn ,/punct while/in the/dt each/dt player/nn has/vbz two/cd pure/jj strategies/nns (/punct actions/nns )/punct ,/punct which/wdt are/vbp denoted/vbn player/nn selects/vbz 1/cd ./punct
+during/in the/dt upstream/jj pass/nn ,/punct each/dt vertex/nn v/nn computes/vbz the/dt set/nn of/in its/prp$ potential/jj best/jjs responses/nns to/to every/dt mixed/jj strategy/nn w/nn note/vbp that/in the/dt terminology/nn upstream/jj and/cc downstream/jj are/vbp reversed/vbn in/in -/punct our/prp$ trees/nns are/vbp rooted/vbn at/in the/dt top/nn ./punct
+(/punct inclusive/jj )/punct given/vbn that/in w/nn plays/vbz w/nn (/punct for/in a/dt more/rbr technical/jj definition/nn ,/punct the/dt reader/nn is/vbz referred/vbn to/to section/nn 2/cd )/punct ./punct
+the/dt output/nn of/in this/dt stage/nn can/md table/nn as/in the/dt best/jjs response/nn policy/nn for/in v/nn ./punct
+the/dt generic/jj algorithm/nn does/vbz not/rb address/vb the/dt problem/nn of/in representing/vbg the/dt best/jjs response/nn policy/nn ;/punct in/in fact/nn ,/punct the/dt most/rbs important/jj difference/nn between/in the/dt two/cd instantiations/nns issue/nn ./punct
+the/dt computation/nn is/vbz performed/vbn inductively/rb :/punct the/dt best/jjs response/nn of/in the/dt root/nn have/vbp computed/vbn their/prp$ best/jjs response/nn policies/nns ./punct
+in/in the/dt beginning/nn of/in the/dt downstream/jj pass/nn ,/punct the/dt root/nn selects/vbz its/prp$ strategy/nn and/cc informs/vbz its/prp$ children/nns about/in its/prp$ choice/nn ./punct
+it/prp also/rb selects/vbz a/dt strategy/nn for/in each/dt child/nn ./punct
+a/dt necessary/jj and/cc sufficient/jj condition/nn for/in the/dt to/to the/dt strategies/nns of/in its/prp$ children/nns and/cc ,/punct for/in each/dt child/nn ,/punct the/dt chosen/vbn strategy/nn is/vbz one/cd of/in the/dt pre-computed/jj potential/nn best/jjs responses/nns to/to the/dt chosen/vbn strategy/nn of/in the/dt root/nn ./punct
+the/dt equilibrium/nn then/rb propagates/vbz downstream/rb ,/punct with/in each/dt vertex/nn selecting/vbg its/prp$ children/nns ''/'' s/vbz actions/nns ./punct
+the/dt action/nn potential/jj best/jjs responses/nns to/to the/dt chosen/vbn strategy/nn of/in the/dt parent/nn ./punct
+to/to bound/vbd the/dt running/vbg time/nn of/in this/dt algorithm/nn ,/punct the/dt paper/nn shows/vbz exponential/jj number/nn of/in rectangles/nns ;/punct the/dt polynomial/jj time/nn approximation/nn algorithm/nn is/vbz obtained/vbn by/in combining/vbg this/dt representation/nn with/in a/dt necessary/jj to/to keep/vb track/nn of/in all/dt rectangles/nns in/in the/dt best/jjs response/nn policies/nns ;/punct a/dt polynomial-size/jj subset/nn of/in the/dt corresponding/jj policy/nn (/punct in/in ,/punct this/dt subset/nn is/vbz called/vbn a/dt breakpoint/nn policy/nn )/punct ,/punct and/cc still/rb ensure/vb that/in the/dt downstream/jj pass/nn can/md proceed/vb successfully/rb (/punct a/dt sufficient/jj condition/nn for/in this/dt algorithm/nn contains/vbz a/dt continuous/jj path/nn from/in w/nn =/punct 0/cd to/to w/vb =/punct 1/cd )/punct ./punct
+simple/jj example/nn for/in which/wdt the/dt algorithm/nn of/in outputs/nns a/dt vector/nn of/in strategies/nns that/wdt does/vbz not/rb constitute/vb a/dt nash/nnp equilibrium/nn of/in the/dt underlying/jj game/nn ./punct
+that/in it/prp always/rb produces/vbz correct/jj output/nn ./punct
+rectangles/nns in/in each/dt of/in the/dt best/jjs response/nn policies/nns is/vbz o/nn (/punct n2/nn )/punct algorithm/nn for/in finding/vbg a/dt nash/nnp equilibrium/nn ,/punct and/cc for/in in/in polynomial/jj time/nn when/wrb the/dt underlying/vbg graph/nn is/vbz a/dt path/nn ./punct
+)/punct we/prp can/md improve/vb the/dt running/vbg time/nn of/in the/dt generic/jj algorithm/nn n./vbd instead/rb of/in storing/vbg best/jjs response/nn policies/nns ,/punct this/dt algorithm/nn stores/nns appropriately-defined/jj subsets/nns ,/punct which/wdt ,/punct following/vbg ,/punct we/prp call/vbp breakpoint/nn policies/nns (/punct modifying/vbg the/dt definition/nn as/rb necessary/jj )/punct ./punct
+we/prp obtain/vbp equilibrium/nn of/in a/dt graphical/jj game/nn with/in two/cd actions/nns per/in player/nn on/in representation/nn of/in all/dt nash/nnp equilibria/nn of/in such/pdt a/dt game/nn ./punct
+degree2/nn graphs/nns ,/punct obtaining/vbg the/dt following/vbg theorem/nn ./punct
+nash/nnp equilibrium/nn of/in a/dt graphical/jj game/nn with/in two/cd actions/nns per/in player/nn on/in a/dt graph/nn with/in maximum/nn degree/nn 2./fw when/wrb the/dt tree/nn has/vbz bounded/vbn degree/nn ,/punct the/dt running/vbg time/nn can/md be/vb graphical/jj games/nns on/in bounded-degree/jj trees/nns for/in which/wdt best/jjs response/nn policies/nns of/in some/dt of/in the/dt vertices/nns have/vbp exponential/jj size/nn ,/punct and/cc any/dt of/in )/punct has/vbz to/to store/vb almost/rb all/dt points/nns of/in the/dt best/jjs response/nn policies/nns ./punct
+in/in particular/jj ,/punct we/prp show/vbp the/dt following/vbg ./punct
+bounded-degree/jj trees/nns with/in pathwidth/nn 2/cd such/jj that/in any/dt two-pass/jj algorithm/nn for/in finding/vbg nash/nnp equilibria/nns on/in these/dt trees/nns requires/vbz exponential/jj time/nn and/cc space/nn ./punct
+an/dt open/jj question/nn whether/in our/prp$ algorithm/nn runs/vbz in/in polynomial/jj time/nn describe/vbp it/prp in/in more/jjr detail/nn in/in section/nn 8./nn on/in a/dt graph/nn with/in small/jj pathwidth/nn ./punct
+we/prp prove/vbp the/dt following/vbg theorem/nn ./punct
+theorem/nnp 4/cd ./punct
+consider/vb the/dt problem/nn of/in finding/vbg a/dt nash/nnp equilibrium/nn for/in a/dt graphical/jj game/nn in/in which/wdt the/dt underlying/vbg graph/nn has/vbz this/dt problem/nn is/vbz ppad-complete/jj ./punct
+to/to prove/vb theorem/nnp 4/cd ,/punct we/prp use/vbp recent/jj ppad-completeness/nn results/vbz for/in games/nns ,/punct in/in particular/jj the/dt papers/nns which/wdt show/vbp that/in the/dt problem/nn normal-form/jj games/nns (/punct for/in r/nn ≥/cd 4/cd )/punct ,/punct both/dt of/in which/wdt are/vbp ppad-complete/jj ./punct
+we/prp consider/vbp graphical/jj games/nns in/in which/wdt the/dt underlying/vbg graph/nn g/nn is/vbz an/dt n-vertex/jj tree/nn ./punct
+each/dt vertex/nn has/vbz two/cd actions/nns ,/punct which/wdt are/vbp denoted/vbn which/wdt denotes/vbz the/dt probability/nn that/in the/dt player/nn selects/vbz action/nn 1/cd ./punct
+fur/nnp the/dt purposes/nns of/in the/dt algorithm/nn ,/punct the/dt tree/nn is/vbz rooted/vbn arbitrarily/rb ./punct
+for/in convenience/nn ,/punct we/prp assume/vbp without/in loss/nn of/in generality/nn that/in the/dt root/nn has/vbz a/dt single/jj child/nn ,/punct and/cc that/in its/prp$ payoff/nn is/vbz independent/jj of/in the/dt action/nn arbitrary/jj root/nn of/in the/dt tree/nn ,/punct and/cc then/rb adding/vbg a/dt dummy/nn parent/nn of/in this/dt root/nn ,/punct giving/vbg the/dt new/jj parent/nn a/dt constant/jj payoff/nn function/nn ./punct
+strategy/nn w./vbd v/ls is/vbz a/dt mixed/jj strategy/nn for/in v/nn and/cc that/in w/nn is/vbz a/dt mixed/jj strategy/nn for/in w/nn ./punct
+which/wdt v/nn has/vbz mixed/vbn strategy/nn v./cc we/prp define/vbp the/dt best/jjs response/nn policy/nn is/vbz used/vbn to/to denote/vb the/dt set/nn b/nn (/punct w/nnp ,/punct v/nnp )/punct ∩×/cd {/punct v/ls }/punct ./punct
+the/dt upstream/jj pass/nn of/in the/dt generic/jj algorithm/nn of/in computes/nns the/dt best/jjs response/nn policy/nn for/in v/nn for/in every/dt node/nn v/nn other/jj than/in the/dt root/nn ./punct
+with/in the/dt above/jj assumptions/nns about/in the/dt root/nn ,/punct the/dt downstream/jj pass/nn is/vbz straightforward/jj :/punct let/vb w/nnp denote/vb the/dt root/nn and/cc v/nn denote/vbp its/prp$ child/nn ./punct
+play/nn u/nn ./punct
+3/ls ./punct
+algorithm/nn of/in littman/nnp et/nnp al/nnp ./punct
+not/rb necessary/jj to/to construct/vb the/dt entire/jj best/jjs response/nn policy/nn for/in each/dt vertex/nn ./punct
+as/rb long/rb as/rb ,/punct at/in each/dt step/nn of/in the/dt downstream/jj pass/nn ,/punct the/dt vertex/nn under/in consideration/nn can/md select/vb a/dt vector/nn of/in strategies/nns for/in all/dt its/prp$ the/dt parent/nn ''/'' s/nns strategy/nn ,/punct the/dt algorithm/nn succeeds/vbz in/in producing/vbg a/dt nash/nnp equilibrium/nn ./punct
+this/dt can/md be/vb achieved/vbn if/in ,/punct at/in the/dt beginning/nn of/in the/dt policy/nn )/punct which/wdt covers/vbz every/dt possible/jj w/nn ∈/nn ./punct
+we/prp will/md show/vb later/rb that/in a/dt sufficient/jj condition/nn for/in the/dt construction/nn of/in such/pdt a/dt data/nns structure/nn is/vbz the/dt invariant/jj that/in ,/punct at/in every/dt level/nn of/in the/dt upstream/jj pass/nn ,/punct ˆb/nn (/punct w/nn ,/punct v/nn )/punct contains/vbz a/dt continuous/jj path/nn from/in w/nn =/punct 0/cd to/to w/vb =/punct 1./cd a/dt particular/jj way/nn ./punct
+namely/rb ,/punct the/dt paper/nn uses/vbz the/dt following/vbg definition/nn :/punct value/nn between/in vi/ls and/cc vi+1/nn ./punct
+we/prp say/vbp such/jj a/dt breakpoint/nn policy/nn has/vbz t/nn −/nn 1/cd breakpoints/nns ./punct
+the/dt paper/nn then/rb claims/vbz that/in any/dt vertex/nn v/nn can/md compute/vb its/prp$ breakpoint/nn policy/nn with/in respect/nn to/to its/prp$ parent/nn w/nn given/vbn the/dt breakpoint/nn the/dt children/nns ''/'' s/vbz breakpoints/nns (/punct i.e./fw ,/punct the/dt respective/jj values/nns of/in v/ls )/punct from/in left/vbn to/to right/jj (/punct it/prp can/md be/vb assumed/vbn without/in loss/nn of/in generality/nn that/in all/pdt these/dt breakpoints/nns are/vbp distinct/jj )/punct and/cc considering/vbg them/prp in/in turn/nn ;/punct each/dt such/jj child/nn ./punct
+assume/vb for/in convenience/nn that/in this/dt child/nn is/vbz u1/nn and/cc its/prp$ plays/nns uj/nn ,/punct and/cc w/nn plays/vbz w/nn ,/punct and/cc consider/vb the/dt set/vbn note/nn that/in for/in any/dt w/nn ∈/cd wl/nn we/prp have/vbp vl/jj ∈/nn pbrv/nn (/punct w/nn )/punct ./punct
+the/dt authors/nns show/vbp that/in for/in any/dt breakpoint/nn vl/nn ,/punct the/dt set/nn wl/nn is/vbz either/cc follows/vbz easily/rb that/in one/prp can/md cover/vb with/in at/in most/jjs l+2/nn intervals/nns ,/punct any/dt such/jj cover/nn can/md be/vb transformed/vbn into/in a/dt breakpoint/nn policy/nn for/in v/nn ./punct
+namely/rb ,/punct they/prp say/vbp that/in for/in any/dt two/cd intervals/nns wl1/nn and/cc wl2/nn in/in the/dt cover/nn ,/punct any/dt overlap/vbp between/in wl1/nn and/cc wl2/nn can/md be/vb arbitrarily/rb assigned/vbn coverage/nn by/in wl1/nn and/cc wl2/nn trimmed/vbd accordingly/rb (/punct cf./vb ,/punct as/in figure/nnp 1/cd here/rb ./punct
+in/in the/dt figure/nn ,/punct the/dt dashed/vbn horizontal/jj lines/nns represent/vbp follows/vbz :/punct begin/vb on/in the/dt left/nn ,/punct and/cc always/rb jump/vb to/to the/dt interval/jj allowing/vbg greatest/jjs progress/nn to/to the/dt right/nn ./punct
+to/to see/vb why/wrb this/dt approach/nn does/vbz not/rb work/vb in/in general/jj ,/punct consider/vb a/dt probability/nn v/ls )/punct ,/punct then/rb the/dt expected/vbn payoff/nn that/wdt u/nnp derives/vbz from/in playing/vbg 0/cd is/vbz (/punct u/nnp )/punct =/punct v/ls and/cc the/dt expected/vbn payoff/nn that/wdt u/nnp derives/vbz from/in (/punct 1/cd −/nn u/nn )/punct (/punct 1/cd −/nn w/nn )/punct +/punct (/punct 1/cd −/nn u/nn )/punct w/nn (/punct −9/cd )/punct +/punct u/nn (/punct 1/cd −/nn w/nn )/punct 9/cd +/punct uw/nn (/punct −1/cd )/punct ./punct
+using/vbg the/dt techniques/nns of/in (/punct or/cc ,/punct alternatively/rb ,/punct those/dt of/in section/nn 4/cd )/punct ,/punct w/nn =/punct 1/cd doubles/vbz back/rb )/punct ./punct
+the/dt lks/nnp algorithm/nn would/md trim/vb to/to get/vb a/dt breakpoint/nn policy/nn such/jj invalid/jj in/in the/dt sense/nn that/in it/prp does/vbz not/rb satisfy/vb ˆb/nn (/punct w/nn ,/punct v/nn )/punct ⊆/nn b/nn (/punct w/nn ,/punct v/nn )/punct ./punct
+the/dt failure/nn of/in the/dt algorithm/nn is/vbz not/rb caused/vbn by/in the/dt fact/nn that/in the/dt trimming/vbg policy/nn goes/vbz as/in far/rb to/to the/dt right/nn as/in possible/jj ./punct
+any/dt other/jj trimming/vbg would/md be/vb just/rb as/rb bad/jj ./punct
+for/in example/nn ,/punct suppose/vbp the/dt equilibrium/nn since/in w/nnp prefers/vbz action/nn 0/cd ./punct
+we/prp conclude/vbp that/in the/dt lks/nnp algorithm/nn does/vbz not/rb always/rb find/vb a/dt nash/nnp algorithm/nn so/in that/in it/prp always/rb finds/vbz a/dt nash/nnp equilibrium/nn ./punct
+for/in the/dt modified/vbn algorithm/nn ,/punct we/prp have/vbp to/to extend/vb the/dt definition/nn of/in breakpoint/nn policy/nn corrected/vbn algorithm/nn does/vbz not/rb run/vb in/in polynomial/jj time/nn on/in all/dt trees/nns ./punct
+in/in the/dt next/jj section/nn ,/punct we/prp show/vbp that/in it/prp runs/vbz in/in polynomial/jj time/nn on/in a/dt path/nn ./punct
+in/in this/dt section/nn ,/punct we/prp focus/vbp on/in the/dt case/nn when/wrb the/dt underlying/vbg graph/nn best/jjs response/nn policy/nn for/in each/dt vertex/nn can/md be/vb represented/vbn as/in a/dt union/nn iu/nn consists/vbz of/in a/dt single/jj point/nn ./punct
+rectangles/nns ./punct
+moreover/rb ,/punct given/vbn such/jj representation/nn of/in b/nn (/punct vj/nn ,/punct vj−1/nn )/punct ,/punct one/cd can/md compute/vb a/dt representation/nn of/in b/nn (/punct vj+1/nn ,/punct vj/nn )/punct in/in time/nn o/nn (/punct j2/nn )/punct ./punct
+points/nns are/vbp defined/vbn similarly/rb ./punct
+observe/vb that/dt for/in any/dt u/fw ∈/fw ,/punct the/dt number/nn of/in v/nn -event/jj points/nns of/in a./nn the/dt theorem/nn holds/vbz and/cc ,/punct additionally/rb ,/punct each/dt b/nn (/punct vj/nn ,/punct vj−1/nn )/punct has/vbz at/in most/jjs 2j/jj +/punct 4/cd event/nn points/nns ./punct
+to/to simplify/vb the/dt base/nn case/nn ,/punct we/prp modify/vbp the/dt graphical/jj game/nn by/in the/dt payoffs/nns of/in all/dt other/jj vertices/nns (/punct including/vbg v1/nn )/punct are/vbp the/dt same/jj as/in in/in the/dt original/jj game/nn ./punct
+theorem/nn is/vbz trivially/rb true/jj ./punct
+w/nn =/punct vj+1/nn be/vb the/dt vertices/nns that/wdt precede/vb and/cc follow/vb v/nn ,/punct respectively/rb ./punct
+while/in its/prp$ expected/vbn payoff/nn from/in playing/vbg 1/cd is/vbz =/punct (/punct 1−u/fw )/punct (/punct 1−w/fw )/punct p010+/jj (/punct 1−u/nn )/punct wp011+u/nn (/punct 1−w/nn )/punct p110+uwp111/nn ./punct
+exist/vb some/dt constants/nns a1/nn ,/punct a0/nn ,/punct b1/nn ,/punct and/cc b0/nn that/wdt depend/vbp on/in the/dt matrix/nn depending/vbg on/in the/dt values/nns of/in a1/nn ,/punct a0/nn ,/punct b1/nn ,/punct and/cc b0/nn ,/punct we/prp subdivide/vbp the/dt rest/nn of/in the/dt proof/nn into/in the/dt following/vbg cases/nns ./punct
+•/nn b1/nn =/punct 0/cd ,/punct b0/nn =/punct 0./cd if/in and/cc only/rb if/in a1u/nn +/punct a0/nn </punct 0./cd statement/nn of/in the/dt theorem/nn is/vbz trivially/rb true/jj ./punct
+2/cd (/punct j/nn −/cd 1/cd )/punct +/punct 4/cd segments/nns and/cc isolated/vbn points/nns ./punct
+of/in the/dt pure/jj strategies/nns ./punct
+1/ls ./punct
+therefore/rb ,/punct either/cc b/nn (/punct w/nnp ,/punct v/nnp )/punct |v/nn =0/nn =/punct or/cc b/nn (/punct w/nnp ,/punct v/nnp )/punct |v/nn =0/nn =/punct ∅/nn ./punct
+pbru/nn (/punct 1/cd )/punct ./punct
+b/nn (/punct w/nnp ,/punct v/nnp )/punct |v/nn =1/cd contributes/vbz at/in most/jjs one/cd rectangle/nn ./punct
+similarly/rb ,/punct its/prp$ total/jj b/nn (/punct v/nn ,/punct u/nnp )/punct ,/punct and/cc there/ex are/vbp at/in most/jjs 2j/jj +/punct 2/cd of/in them/prp ./punct
+•/nn b1u/nn +/punct b0/nn ≡/nn 0/cd ,/punct a1/nn =/punct αb1/nn ,/punct a0/nn =/punct αb0/nn for/in some/dt α/nn ∈/cd r./nnp ./punct
+a/dt similar/jj manner/nn ./punct
+rectangles/nns ./punct
+•/nn b1u/nn +/punct b0/nn ≡/nn 0/cd ,/punct α/nn (/punct b1u/nn +/punct b0/nn )/punct ≡/cd a1u/nn +/punct a0/nn ./punct
+in/in this/dt case/nn ,/punct one/cd can/md define/vb the/dt indifference/nn function/nn f/fw (/punct ·/fw )/punct as/in into/in zero/cd simultaneously/rb ./punct
+observe/vb that/dt whenever/wrb w/nn =/punct f/fw (/punct u/fw )/punct and/cc (/punct v/ls ,/punct u/fw )/punct ∈/fw a/dt }/punct ;/punct note/nn that/in ˆfv/nn maps/nns subsets/nns of2/nn from/in the/dt context/nn ./punct
+b/nn (/punct v/nn ,/punct u/nnp )/punct and/cc w/nn =/punct f/fw (/punct u/fw )/punct ./punct
+u/fw ∈/fw pbru/nn (/punct v/ls )/punct ,/punct w/nn =/punct f/fw (/punct u/fw )/punct satisfies/nns w/vbp ∈/rb ,/punct and/cc w/nn plays/vbz w./nn conditions/nns in/in the/dt definition/nn of/in potential/jj best/jjs response/nn ,/punct i.e./fw ,/punct we/prp have/vbp v/ls ∈/cd pbrv/nn (/punct w/nn )/punct ./punct
+f/ls (/punct vj−1/nn )/punct ./punct
+choose/vb u/nn =/punct vj−1/nn ;/punct by/in construction/nn ,/punct u/fw ∈/fw pbru/nn (/punct v/ls )/punct ./punct
+(/punct −∞/nn ,/punct f/fw (/punct u/fw )/punct ]/punct ×/fw {/punct 0/cd }/punct if/in b/nn (/punct u/nn )/punct </punct 0/cd ./punct
+(/punct −∞/nn ,/punct f/fw (/punct u/fw )/punct ]/punct ×/fw {/punct 1/cd }/punct if/in b/nn (/punct u/nn )/punct >/punct 0./cd pbrv/nn (/punct w/nn )/punct ./punct
+is/vbz equivalent/jj to/to w/vb ≥/fw f/fw (/punct u0/fw )/punct ./punct
+argument/nn for/in the/dt case/nn b/nn (/punct u0/nn )/punct </punct 0/cd is/vbz similar/jj ./punct
+the/dt strategies/nns of/in vk/nn ''/'' s/nns neighbours/nns ./punct
+note/vb that/dt for/in any/dt such/jj u∈pbru/nn (/punct 0/cd )/punct ru/nn ./punct
+then/rb it/prp must/md be/vb the/dt case/nn that/in for/in any/dt switching/nn to/to 1/cd ./punct
+the/dt argument/nn for/in ˆf/jj (/punct 1/cd )/punct is/vbz similar/jj ./punct
+together/rb ,/punct lemma/nnp 1/cd and/cc lemma/nnp 2/cd completely/rb describe/vbp the/dt set/nn ./punct
+)/punct time/nn ./punct
+continuous/jj on/in [/punct u1/nn ,/punct u2/nn ]/punct and/cc hence/rb ˆf/jj (/punct r/nn )/punct =/punct [/punct fmin/nn ,/punct fmax/nn ]/punct ×/cd [/punct v1/nn ,/punct v2/nn ]/punct ,/punct fmin/nn =/punct min/nn {/punct f/fw (/punct u1/nn )/punct ,/punct f/fw (/punct u2/nn )/punct }/punct ,/punct fmax/nn =/punct max/fw {/punct f/fw (/punct u1/nn )/punct ,/punct f/fw (/punct u2/nn )/punct }/punct ,/punct consists/vbz of/in a/dt single/jj rectangle/nn ./punct
+now/rb ,/punct suppose/vbp that/in r/nn is/vbz intersected/vbn by/in the/dt line×/nn {/punct u∗/nn was/vbd noted/vbn earlier/rbr ,/punct there/ex are/vbp at/in most/jjs 2j+2/jj such/jj rectangles/nns ./punct
+suppose/vb this/dt implies/vbz that/in limu→u∗+/jj f/fw (/punct u/fw )/punct =/punct −∞/nn and/cc also/rb f/fw (/punct u1/nn )/punct >/punct f/fw (/punct u2/nn )/punct ./punct
+to/to be/vb any/dt value/nn outside/in of/in in/in this/dt case/nn ./punct
+,/punct +∞/cd )/punct ./punct
+consists/vbz of/in at/in most/jjs two/cd rectangles/nns ./punct
+the/dt case/nn limu→u∗−/nn f/fw (/punct u/fw )/punct =/punct −∞/nn is/vbz similar/jj ./punct
+rectangles/nns ./punct
+u/nn ∈/cd such/jj that/in w/nn =/punct f/fw (/punct u/fw )/punct and/cc u/nn is/vbz a/dt u-event/jj point/nn of/in b/nn (/punct v/nn ,/punct u/nnp )/punct ./punct
+hence/rb ,/punct b/nn (/punct w/nn ,/punct v/nn )/punct has/vbz at/in most/jjs 2j/jj +/punct 4/cd event/nn points/nns ./punct
+our/prp$ description/nn of/in the/dt algorithm/nn ./punct
+the/dt o/nn (/punct n3/nn running/vbg time/nn for/in finding/vbg a/dt nash/nnp equilibrium/nn (/punct and/cc a/dt representation/nn of/in all/dt nash/nnp equilibria/nn )/punct follows/vbz ./punct
+least/jjs assuming/vbg the/dt straightforward/jj implementation/nn ,/punct in/in which/wdt each/dt )/punct ./punct
+quadratic/jj time/nn ,/punct thus/rb obtaining/vbg a/dt proof/nn of/in theorem/nnp 1/cd ./punct
+our/prp$ solution/nn response/nn policies/nns rather/rb than/in the/dt best/jjs response/nn policies/nns themselves/prp ;/punct following/vbg ,/punct we/prp will/md refer/vb to/to such/jj subsets/nns as/in breakpoint/nn policies/nns ./punct
+that/in a/dt breakpoint/nn policy/nn always/rb exists/vbz ;/punct moreover/rb ,/punct we/prp prove/vbp that/in for/in this/dt vertex/nn has/vbz ./punct
+v0/nn =/punct 0/cd ,/punct vm/nn =/punct 1/cd ,/punct and/cc ˆb/nn (/punct v/nn ,/punct u/nnp )/punct ⊆/nn b/nn (/punct v/nn ,/punct u/nnp )/punct ./punct
+collection/nn of/in segments/nns xi/nn ,/punct yi/nn rather/rb than/in their/prp$ union/nn ./punct
+note/vb that/in in/in any/dt argument/nn involving/vbg breakpoint/nn policies/nns ,/punct all/dt segments/nns are/vbp to/to be/vb treated/vbn as/in directed/vbn segments/nns ./punct
+observe/vb that/in any/dt valid/jj breakpoint/nn t2k+2/nn }/punct =/punct yk+1/nn ./punct
+instead/rb of/in the/dt best/jjs response/nn policy/nn during/in the/dt downstream/jj pass/nn ,/punct and/cc still/rb guarantee/vb that/in in/in the/dt end/nn ,/punct we/prp will/md output/nn a/dt nash/nnp equilibrium/nn ./punct
+segments/nns ./punct
+in/in this/dt section/nn we/prp show/vbp how/wrb the/dt algorithm/nn for/in paths/nns can/md be/vb of/in paths/nns and/cc cycles/nns ./punct
+since/in each/dt connected/vbn component/nn can/md be/vb to/to show/vb how/wrb to/to deal/vb with/in cycles/nns ./punct
+two/cd separate/jj searches/nns for/in a/dt nash/nnp equilibrium/nn :/punct first/rb we/prp search/vb for/in a/dt nash/nnp equilibrium/nn where/wrb some/dt vertex/nn plays/vbz a/dt pure/jj strategy/nn ,/punct then/rb we/prp search/vb for/in a/dt fully/rb mixed/jj nash/nnp equilibrium/nn ,/punct where/wrb all/dt vertices/nns play/vbp plays/vbz 1./cd and/cc each/dt b/nn ∈/cd {/punct 0/cd ,/punct 1/cd }/punct ,/punct do/vbp the/dt following/vbg ./punct
+keep/vb track/nn of/in all/dt possible/jj mixed/jj strategies/nns vj/vbp 5/cd ./punct
+check/vb whether/in vi+1/nn has/vbz any/dt responses/nns that/wdt are/vbp consistent/jj there/ex is/vbz no/dt nash/nnp equilibrium/nn of/in the/dt desired/vbn form/nn ./punct
+)/punct for/in the/dt second/jj search/nn ,/punct note/nn that/in if/in vi/nnp plays/vbz a/dt mixed/jj strategy/nn ,/punct a1vi−1/nn )/punct //punct (/punct b0/nn +/punct b1vi−1/nn )/punct ./punct
+since/in all/dt vertices/nns in/in the/dt cycle/nn play/nn mixed/jj strategies/nns ,/punct we/prp have/vbp vi+3/nn =/punct (/punct a0/nn +a1vi+1/nn )/punct //punct (/punct b0/nn +b1vi+1/nn )/punct ./punct
+composing/vbg the/dt two/cd linear/jj fractional/jj transforms/vbz ,/punct we/prp obtain/vbp vi+3/nn =/punct b0/nn ,/punct b1/nn ./punct
+vi+4/nn ,/punct vi+6/nn etc/nn ./punct
+and/cc ultimately/rb vi/ls itself/prp to/to obtain/vb a/dt quadratic/jj odd-length/jj cycle/nn all/dt other/jj vj/nn ``/`` s/nns are/vbp derivable/jj from/in those/dt solutions/nns ,/punct and/cc if/in a/dt fully/rb mixed/jj nash/nnp equilibrium/nn exists/vbz ,/punct all/pdt the/dt vj/nn should/md turn/vb cycle/nn ,/punct we/prp obtain/vbp two/cd quadratic/jj equations/nns ,/punct one/cd for/in vi/ls and/cc another/dt for/in vi+1/nn ,/punct and/cc we/prp can/md in/in the/dt same/jj way/nn test/nn whether/in any/dt solutions/nns to/to these/dt yield/nn values/nns for/in the/dt other/jj vj/nn ,/punct all/dt of/in which/wdt lie/vbp in/in (/punct 0/cd ,/punct 1/cd )/punct ./punct
+nash/nnp equilibrium/nn are/vbp those/dt for/in which/wdt all/dt dependent/jj vj/nn values/nns lie/vbp in/in (/punct 0/cd ,/punct 1/cd )/punct ;/punct the/dt latter/jj condition/nn is/vbz easy/jj to/to check/vb by/in computing/vbg the/dt image/nn of/in the/dt interval/jj (/punct 0/cd ,/punct 1/cd )/punct under/in respective/jj fractional/jj linear/jj transforms/vbz ./punct
+for/in arbitrary/jj trees/nns ,/punct the/dt general/jj structure/nn of/in the/dt algorithm/nn remains/vbz the/dt same/jj ,/punct i.e./fw ,/punct one/prp can/md construct/vb a/dt best/jjs response/nn policy/nn (/punct or/cc ,/punct alternatively/rb ,/punct a/dt breakpoint/nn policy/nn )/punct for/in any/dt vertex/nn based/vbn on/in the/dt best/jjs response/nn policies/nns of/in its/prp$ children/nns ./punct
+we/prp assume/vbp that/in the/dt degree/nn of/in each/dt )/punct ./punct
+parent/nn is/vbz w/nn ;/punct the/dt best/jjs response/nn policy/nn of/in each/dt uj/nn is/vbz b/nn (/punct v/nn ,/punct uj/nn )/punct ./punct
+from/in playing/vbg 0/cd or/cc 1/cd ,/punct respectively/rb ./punct
+namely/rb ,/punct (/punct ·/nn ,/punct ./punct
+./punct
+./punct
+,/punct ·/nn )/punct are/vbp linear/jj in/in all/dt of/in their/prp$ arguments/nns ./punct
+(/punct 1/cd )/punct and/cc wb/nn (/punct u/nn )/punct ≤/cd a/dt (/punct u/nn )/punct }/punct ./punct
+constitutes/vbz a/dt valid/jj breakpoint/nn policy/nn ./punct
+while/in the/dt algorithm/nn of/in section/nn 4/cd can/md be/vb generalized/vbn for/in boundeddegree/nn trees/nns ,/punct its/prp$ running/vbg time/nn is/vbz no/rb longer/rb polynomial/jj ./punct
+in/in fact/nn ,/punct the/dt matrices/nns for/in all/dt players/nns so/in that/in the/dt best/jjs response/nn policies/nns for/in some/dt of/in the/dt players/nns consist/vbp of/in an/dt exponential/jj number/nn of/in segments/nns ./punct
+moreover/rb ,/punct in/in our/prp$ example/nn the/dt breakpoint/nn policies/nns coincide/vbp with/in the/dt best/jjs response/nn policies/nns ,/punct which/wdt means/vbz that/in even/rb finding/vbg a/dt single/jj nash/nnp exponentially/rb long/jj time/nn ./punct
+in/in fact/nn ,/punct a/dt stronger/jjr statement/nn is/vbz true/jj :/punct for/in any/dt polynomial-time/jj two-pass/jj algorithm/nn (/punct defined/vbn later/rb )/punct that/wdt works/vbz with/in subsets/nns of/in best/jjs response/nn policies/nns for/in this/dt graph/nn ,/punct we/prp can/md choose/vb the/dt payoffs/nns of/in the/dt vertices/nns so/in that/in the/dt downstream/jj pass/nn of/in this/dt algorithm/nn will/md fail/vb ./punct
+in/in the/dt rest/nn of/in this/dt subsection/nn ,/punct we/prp describe/vbp this/dt construction/nn ./punct
+consider/vb the/dt tree/nn tn/nn given/vbn by/in figure/nnp 5/cd ;/punct let/vb vn/nn be/vb the/dt root/nn of/in this/dt tree/nn ./punct
+see/vb that/in the/dt indifference/nn function/nn for/in tk/nn is/vbz given/vbn by/in f/fw (/punct s/nns )/punct =/punct .8s+.1/nn ./punct
+otherwise/rb ;/punct v0/nn ''/'' s/nns best/jjs response/nn policy/nn is/vbz given/vbn by/in figure/nnp 6./ls strategies/nns of/in vk−1/nn ,/punct tk/nn ,/punct vk/nn ,/punct and/cc vk+1/nn ,/punct respectively/rb ./punct
+suppose/vb that/dt vk/nn prefers/vbz playing/vbg 0/cd to/to playing/vbg 1/cd if/in and/cc only/rb if/in .5t/nn +/punct .1u/nn +/punct .2/nn >/punct w./nn then/rb b/nn (/punct vk+1/nn ,/punct vk/nn )/punct consists/vbz of/in at/in least/jjs 3k/jj {/punct (/punct v/ls ,/punct w/fw )/punct |/punct (/punct v/ls ,/punct w/nn )/punct ∈/nn b/nn (/punct vk+1/nn ,/punct vk/nn )/punct ,/punct .8/cd ≤/nn w/nn ≤/cd 1/cd }/punct =/punct [/punct .8/cd ,/punct 1/cd ]/punct ×/cd {/punct 1/cd }/punct ./punct
+statement/nn is/vbz obvious/jj ./punct
+now/rb ,/punct suppose/vb it/prp is/vbz true/jj for/in b/nn (/punct vk/nn ,/punct vk−1/nn )/punct ./punct
+one/prp can/md view/vb b/nn (/punct vk+1/nn ,/punct vk/nn )/punct as/in a/dt union/nn of/in seven/cd components/nns :/punct turn/nn ./punct
+to/to describe/vb ˆf/jj (/punct 0/cd )/punct ∩×/nn {/punct 0/cd }/punct ,/punct note/nn that/in f/fw (/punct u/fw ,/punct t/nn )/punct =/punct .5t+.1u+.2/nn ˆf/nn (/punct 1/cd )/punct ∩×/cd {/punct 1/cd }/punct =/punct [/punct .8/cd ,/punct 1/cd ]/punct ×/cd {/punct 1/cd }/punct ./punct
+these/dt sets/nns correspond/vbp to/to horizontal/jj segments/nns of/in b/nn (/punct vk/nn ,/punct tk/nn )/punct ./punct
+are/vbp disjoint/nn ./punct
+finally/rb ,/punct the/dt set/nn b/nn (/punct vk+1/nn ,/punct vk/nn )/punct contains/vbz two/cd segments/nns that/wdt correspond/vbp to/to the/dt vertical/jj segments/nns of/in b/nn (/punct vk/nn ,/punct tk/nn )/punct ,/punct i.e./fw ,/punct s5/nn =/punct {/punct (/punct f/fw (/punct 1/cd ,/punct t/nn )/punct ,/punct .9/cd )/punct |/punct t/nn ∈/cd [/punct 0/cd ,/punct .5/cd ]/punct )/punct =/punct [/punct .3/nn ,/punct .55/cd ]/punct ×/cd {/punct .9/cd }/punct ./punct
+and/cc s5/nn do/vbp not/rb intersect/vb each/dt other/jj ./punct
+we/prp conclude/vbp that/in b/nn (/punct vk+1/nn ,/punct vk/nn )/punct the/dt condition/nn of/in the/dt lemma/nn ./punct
+more/rbr general/jj statement/nn ,/punct namely/rb ,/punct that/in the/dt indifference/nn function/nn of/in descendants/nns ''/'' strategies/nns ./punct
+monomials/nns have/vbp the/dt same/jj degree/nn ./punct
+recall/vb that/in the/dt payoffs/nns of/in a/dt vertex/nn when/wrb it/prp plays/vbz j/nn and/cc the/dt (/punct mixed/jj )/punct strategies/nns of/in its/prp$ neighbours/nns of/in which/wdt is/vbz 1/cd with/in the/dt respective/jj probabilities/nns w/vbp ,/punct u1/nn ,/punct ./punct
+./punct
+./punct
+,/punct uk/nn ./punct
+p/nn −/cd p/nn =/punct wf2/nn (/punct u1/nn ,/punct ./punct
+./punct
+./punct
+,/punct uk/nn )/punct −/cd f1/nn (/punct u1/nn ,/punct ./punct
+./punct
+./punct
+,/punct uk/nn )/punct ./punct
+the/dt proof/nn of/in this/dt lemma/nn is/vbz based/vbn on/in the/dt fact/nn that/in every/dt monomial/jj version/nn of/in this/dt paper/nn ./punct
+while/in the/dt best/jjs response/nn policy/nn constructed/vbn in/in the/dt previous/jj two-pass/jj algorithms/nns such/jj as/in the/dt algorithm/nn of/in ,/punct the/dt best/jjs response/nn policy/nn can/md not/rb be/vb simplified/vbn ./punct
+more/rbr precisely/rb ,/punct we/prp say/vbp that/in an/dt •/nn a/nn consists/vbz of/in an/dt upstream/jj pass/nn and/cc a/dt downstream/jj pass/nn ./punct
+applying/vbg the/dt procedure/nn from/in the/dt beginning/nn of/in section/nn 6/cd and/cc then/rb possibly/rb omitting/vbg some/dt of/in the/dt points/nns of/in the/dt resulting/vbg set/nn (/punct which/wdt is/vbz then/rb stored/vbn explicitly/rb )/punct ./punct
+•/nn the/dt downstream/jj pass/nn is/vbz identical/jj to/to the/dt downstream/jj pass/nn the/dt sets/nns bb/nn (/punct w/nn ,/punct v/nn )/punct rather/rb than/in on/in the/dt sets/nns b/nn (/punct w/nn ,/punct v/nn )/punct ./punct
+theorem/nn 7/cd ./punct
+for/in any/dt two-pass/jj algorithm/nn a/nn for/in which/wdt there/ex interior/jj point/nn (/punct x/nn ,/punct y/nn )/punct of/in s/nn such/jj that/in bb/nn (/punct vj/nn ,/punct vj−1/nn )/punct does/vbz not/rb contain/vb that/in the/dt downstream/jj pass/nn of/in a/dt will/md fail/vb ,/punct and/cc ,/punct additionally/rb ,/punct payoffs/nns to/to v4j/nn ,/punct ./punct
+./punct
+./punct
+,/punct vn/nnp are/vbp identically/rb 0./cd the/dt full/jj version/nn of/in this/dt paper/nn ./punct
+we/prp proceed/vbp by/in induction/nn ./punct
+for/in response/nn policy/nn (/punct including/vbg the/dt part/nn that/wdt was/vbd omitted/vbn !/punct
+)/punct by/in using/vbg an/dt appropriate/jj indifference/nn function/nn ;/punct this/dt allows/vbz us/prp to/to reduce/vb the/dt case/nn j/nn =/punct j0/nn to/to j/nn =/punct j0/nn −/nn 1/cd ./punct
+in/in the/dt previous/jj section/nn ,/punct we/prp showed/vbd that/in for/in graphical/jj games/nns on/in trees/nns that/wdt are/vbp almost/rb but/cc not/rb quite/rb paths/nns ,/punct two-pass/jj algorithms/nns fail/vbp to/to find/vb nash/nnp equilibria/nns in/in polynomial/jj time/nn ./punct
+we/prp next/rb show/vbp that/in a/dt milder/jjr path-like/jj graph/nn property/nn allows/vbz us/prp to/to construct/vb graphical/jj games/nns for/in which/wdt it/prp is/vbz unlikely/jj that/in any/dt polynomial-time/jj algorithm/nn will/md find/vb nash/nnp equilibria/nns ./punct
+path/nn decomposition/nn has/vbz width/nn k/nn if/in all/dt sets/nns si/nnp (/punct v/nnp )/punct have/vbp cardinality/nn path/nn decomposition/nn of/in g./nnp pathwidth/nnp is/vbz a/dt restriction/nn of/in treewidth/nn (/punct in/in which/wdt one/prp would/md seek/vb a/dt tree/nn whose/wp$ vertices/nns were/vbd the/dt sets/nns si/nnp (/punct v/nnp )/punct ,/punct and/cc the/dt sets/nns containing/vbg some/dt vertex/nn would/md have/vb to/to form/vb a/dt subtree/jj )/punct ./punct
+for/in any/dt constant/jj pathwidth/nn (/punct or/cc treewidth/nn )/punct k./nnp furthermore/rb many/jj graph-theoretic/jj problems/nns seem/vbp easier/jjr to/to solve/vb in/in polynomial/jj time/nn ,/punct when/wrb restricted/vbn to/to fixed/vbn treewidth/nn ,/punct or/cc pathwidth/nn ,/punct graphs/nns ,/punct see/vb for/in an/dt overview/nn ./punct
+note/vb that/in a/dt path/nn has/vbz pathwidth/nn 1/cd and/cc a/dt cycle/nn has/vbz pathwidth/nn 2/cd ./punct

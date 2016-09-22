@@ -1,0 +1,301 @@
+multiattribute/jj auction/nn mechanisms/nns generally/rb either/dt remain/vbp agnostic/jj about/in traders/nns ''/'' preferences/nns ,/punct or/cc presume/vb highly/rb restrictive/jj forms/nns ,/punct such/jj as/in full/jj additivity/nn ./punct
+real/jj preferences/nns often/rb exhibit/vbp dependencies/nns among/in attributes/nns ,/punct yet/rb may/md possess/vb some/dt structure/nn that/wdt can/md be/vb usefully/rb exploited/vbn to/to streamline/vb communication/nn and/cc simplify/vb operation/nn of/in a/dt multiattribute/jj auction/nn ./punct
+we/prp develop/vbp such/jj a/dt structure/nn using/vbg the/dt theory/nn of/in measurable/jj value/nn functions/nns ,/punct a/dt cardinal/jj utility/nn representation/nn based/vbn on/in an/dt underlying/jj order/nn over/in preference/nn differences/nns ./punct
+a/dt set/nn of/in local/jj conditional/jj independence/nn relations/nns over/in such/jj differences/nns supports/vbz a/dt generalized/vbn additive/jj preference/nn representation/nn ,/punct which/wdt decomposes/vbz utility/nn across/in overlapping/vbg clusters/nns of/in related/jj attributes/nns ./punct
+we/prp introduce/vbp an/dt iterative/jj auction/nn mechanism/nn that/wdt maintains/vbz prices/nns on/in local/jj clusters/nns of/in attributes/nns rather/rb than/in the/dt full/jj space/nn of/in joint/jj configurations/nns ./punct
+when/wrb traders/nns ''/'' preferences/nns are/vbp consistent/jj with/in the/dt auction/nn ''/'' s/nns generalized/vbn additive/jj structure/nn ,/punct the/dt mechanism/nn produces/vbz approximately/rb optimal/jj allocations/nns ,/punct at/in approximate/jj vcg/nnp prices/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnps :/punct j.4/nn [/punct computer/nn applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nnp general/nnp terms/nns :/punct algorithms/nns ,/punct economics/nnp 1/cd ./punct
+introduction/nn multiattribute/jj trading/nn mechanisms/nns extend/vbp traditional/jj ,/punct price-only/jj mechanisms/nns by/in facilitating/vbg the/dt negotiation/nn over/in a/dt set/nn of/in predefined/jj attributes/nns representing/vbg various/jj non-price/jj aspects/nns of/in the/dt deal/nn ./punct
+rather/rb than/in negotiating/vbg over/in a/dt fully/rb defined/vbn good/jj or/cc service/nn ,/punct a/dt multiattribute/jj mechanism/nn delays/nns commitment/nn to/to specific/jj configurations/nns until/in the/dt most/rbs promising/jj candidates/nns are/vbp identified/vbn ./punct
+for/in example/nn ,/punct a/dt procurement/nn department/nn of/in a/dt company/nn may/md use/vb a/dt multiattribute/jj auction/nn to/to select/vb a/dt supplier/nn of/in hard/jj drives/nns ./punct
+supplier/nn offers/nns may/md be/vb evaluated/vbn not/rb only/rb over/in the/dt price/nn they/prp offer/vbp ,/punct but/cc also/rb over/in various/jj qualitative/jj attributes/nns such/jj as/in volume/nn ,/punct rpm/nnp ,/punct access/nn time/nn ,/punct latency/nn ,/punct transfer/nn rate/nn ,/punct and/cc so/rb on/in ./punct
+in/in addition/nn ,/punct suppliers/nns may/md offer/vb different/jj contract/nn conditions/nns such/jj as/in warranty/nn ,/punct delivery/nn time/nn ,/punct and/cc service/nn ./punct
+in/in order/nn to/to account/vb for/in traders/nns ''/'' preferences/nns ,/punct the/dt auction/nn mechanism/nn must/md extract/vb evaluative/jj information/nn over/in a/dt complex/jj domain/nn of/in multidimensional/jj configurations/nns ./punct
+constructing/vbg and/cc communicating/vbg a/dt complete/jj preference/nn specification/nn can/md be/vb a/dt severe/jj burden/nn for/in even/rb a/dt moderate/jj number/nn of/in attributes/nns ,/punct therefore/rb practical/jj multiattribute/jj auctions/nns must/md either/rb accommodate/vb partial/jj specifications/nns ,/punct or/cc support/nn compact/jj expression/nn of/in preferences/nns assuming/vbg some/dt simplified/vbn form/nn ./punct
+by/in far/rb the/dt most/rbs popular/jj multiattribute/jj form/nn to/to adopt/vb is/vbz the/dt simplest/jjs :/punct an/dt additive/jj representation/nn where/wrb overall/jj value/nn is/vbz a/dt linear/jj combination/nn of/in values/nns associated/vbn with/in each/dt attribute/nn ./punct
+for/in example/nn ,/punct several/jj recent/jj proposals/nns for/in iterative/jj multiattribute/jj auctions/nns [/punct 2/cd ,/punct 3/cd ,/punct 8/cd ,/punct 19/cd ]/punct require/vbp additive/jj preference/nn representations/nns ./punct
+such/jj additivity/nn reduces/vbz the/dt complexity/nn of/in preference/nn specification/nn exponentially/rb (/punct compared/vbn to/to the/dt general/jj discrete/jj case/nn )/punct ,/punct but/cc precludes/vbz expression/nn of/in any/dt interdependencies/nns among/in the/dt attributes/nns ./punct
+in/in practice/nn ,/punct however/rb ,/punct interdependencies/nns among/in natural/jj attributes/nns are/vbp quite/rb common/jj ./punct
+for/in example/nn ,/punct the/dt buyer/nn may/md exhibit/vb complementary/jj preferences/nns for/in size/nn and/cc access/nn time/nn (/punct since/in the/dt performance/nn effect/nn is/vbz more/rbr salient/jj if/in much/jj data/nns is/vbz involved/vbn )/punct ,/punct or/cc may/md view/vb a/dt strong/jj warranty/nn as/in a/dt good/jj substitute/nn for/in high/jj reliability/nn ratings/nns ./punct
+similarly/rb ,/punct the/dt seller/nn ''/'' s/nns production/nn characteristics/nns (/punct such/jj as/in increasing/vbg access/nn time/nn is/vbz harder/rbr for/in larger/jjr hard/jj drives/nns )/punct can/md easily/rb violate/vb additivity/nn ./punct
+in/in such/jj cases/nns an/dt additive/jj value/nn function/nn may/md not/rb be/vb able/jj to/to provide/vb even/rb a/dt reasonable/jj approximation/nn of/in real/jj preferences/nns ./punct
+on/in the/dt other/jj hand/nn ,/punct fully/rb general/jj models/nns are/vbp intractable/jj ,/punct and/cc it/prp is/vbz reasonable/jj to/to expect/vb multiattribute/jj preferences/nns to/to exhibit/vb some/dt structure/nn ./punct
+our/prp$ goal/nn ,/punct therefore/rb ,/punct is/vbz to/to identify/vb the/dt subtler/jj yet/rb more/rbr widely/rb applicable/jj structured/jj representations/nns ,/punct and/cc exploit/vb these/dt properties/nns of/in preferences/nns in/in trading/nn mechanisms/nns ./punct
+we/prp propose/vbp an/dt iterative/jj auction/nn mechanism/nn based/vbn on/in just/rb such/jj a/dt flexible/jj preference/nn structure/nn ./punct
+our/prp$ approach/nn is/vbz inspired/vbn by/in the/dt design/nn of/in an/dt iterative/jj multiattribute/jj procurement/nn auction/nn for/in additive/jj preferences/nns ,/punct due/jj to/to parkes/nnp and/cc kalagnanam/nnp (/punct pk/nn )/punct [/punct 19/cd ]/punct ./punct
+pk/nn propose/vbp two/cd types/nns of/in iterative/jj auctions/nns :/punct the/dt first/jj (/punct nld/nn )/punct makes/vbz no/dt assumptions/nns about/in traders/nns ''/'' preferences/nns ,/punct and/cc lets/vbz sellers/nns bid/vb on/in the/dt full/jj multidimensional/jj attribute/nn space/nn ./punct
+because/in nld/nnp maintains/vbz an/dt exponential/jj price/nn structure/nn ,/punct it/prp is/vbz suitable/jj only/rb for/in small/jj domains/nns ./punct
+the/dt other/jj auction/nn (/punct ad/nn )/punct assumes/vbz additive/jj buyer/nn valuation/nn and/cc seller/nn cost/nn functions/nns ./punct
+it/prp collects/vbz sell/jj bids/nns per/in attribute/nn level/nn and/cc for/in a/dt single/jj discount/nn term/nn ./punct
+the/dt price/nn of/in a/dt configuration/nn is/vbz defined/vbn as/in the/dt sum/nn of/in the/dt prices/nns of/in the/dt chosen/vbn attribute/nn levels/nns minus/cc the/dt discount/nn ./punct
+the/dt auction/nn we/prp propose/vbp also/rb supports/vbz compact/jj price/nn spaces/nns ,/punct albeit/in for/in levels/nns of/in clusters/nns of/in attributes/nns rather/rb than/in singletons/nns ./punct
+we/prp employ/vbp a/dt preference/nn decomposition/nn based/vbn on/in generalized/vbn additive/jj independence/nn (/punct gai/nn )/punct ,/punct a/dt model/nn flexible/jj enough/jj to/to accommodate/vb interdependencies/nns to/to the/dt exact/jj degree/nn of/in accuracy/nn desired/vbn ,/punct yet/rb providing/vbg a/dt compact/jj functional/jj form/nn to/to the/dt extent/nn that/in interdependence/nn can/md be/vb limited/vbn ./punct
+given/vbn its/prp$ roots/nns in/in multiattribute/jj utility/nn theory/nn [/punct 13/cd ]/punct ,/punct 227/cd the/dt gai/nn condition/nn is/vbz defined/vbn with/in respect/nn to/to the/dt expected/vbn utility/nn function/nn ./punct
+to/to apply/vb it/prp for/in modeling/nn values/nns for/in certain/jj outcomes/nns ,/punct therefore/rb ,/punct requires/vbz a/dt reinterpretation/nn for/in preference/nn under/in certainty/nn ./punct
+to/to this/dt end/nn ,/punct we/prp exploit/vbp the/dt fact/nn that/in auction/nn outcomes/nns are/vbp associated/vbn with/in continuous/jj prices/nns ,/punct which/wdt provide/vbp a/dt natural/jj scale/nn for/in assessing/vbg magnitude/nn of/in preference/nn ./punct
+we/prp first/rb lay/vbd out/rp a/dt representation/nn framework/nn for/in preferences/nns that/wdt captures/vbz ,/punct in/in addition/nn to/to simple/jj orderings/nns among/in attribute/nn configuration/nn values/nns ,/punct the/dt difference/nn in/in the/dt willingness/nn to/to pay/vb (/punct wtp/nn )/punct for/in each/dt ./punct
+that/dt is/vbz ,/punct we/prp should/md be/vb able/jj not/rb only/rb to/to compare/vb outcomes/nns but/cc also/rb decide/vbp whether/in the/dt difference/nn in/in quality/nn is/vbz worth/in a/dt given/vbn difference/nn in/in price/nn ./punct
+next/rb ,/punct we/prp build/vbp a/dt direct/jj ,/punct formally/rb justified/jj link/nn from/in preference/nn statements/nns over/in priced/vbn outcomes/nns to/to a/dt generalized/vbn additive/jj decomposition/nn of/in the/dt wtp/nn function/nn ./punct
+after/in laying/vbg out/rp this/dt infrastructure/nn ,/punct we/prp employ/vbp this/dt representation/nn tool/nn for/in the/dt development/nn of/in a/dt multiattribute/jj iterative/jj auction/nn mechanism/nn that/wdt allows/vbz traders/nns to/to express/vb their/prp$ complex/jj preferences/nns in/in gai/nn format/nn ./punct
+we/prp then/rb study/vb the/dt auction/nn ''/'' s/nns allocational/jj ,/punct computational/jj ,/punct and/cc practical/jj properties/nns ./punct
+in/in section/nn 2/cd we/prp present/vbp essential/jj background/nn on/in our/prp$ representation/nn framework/nn ,/punct the/dt measurable/jj value/nn function/nn (/punct mvf/nn )/punct ./punct
+section/nn 3/cd develops/vbz new/jj multiattribute/jj structures/nns for/in mvf/nn ,/punct supporting/vbg generalized/vbn additive/jj decompositions/nns ./punct
+next/rb ,/punct we/prp show/vbp the/dt applicability/nn of/in the/dt theoretical/jj framework/nn to/to preferences/nns in/in trading/nn ./punct
+the/dt rest/nn of/in the/dt paper/nn is/vbz devoted/vbn to/to the/dt proposed/vbn auction/nn mechanism/nn ./punct
+2/ls ./punct
+multiattribute/nnp preferences/nnps as/in mentioned/vbn ,/punct most/jjs tools/nns facilitating/vbg expression/nn of/in multiattribute/jj value/nn for/in trading/nn applications/nns assume/vbp that/in agents/nns ''/'' preferences/nns can/md be/vb represented/vbn in/in an/dt additive/jj form/nn ./punct
+by/in way/nn of/in background/nn ,/punct we/prp start/vbp by/in introducing/vbg the/dt formal/jj prerequisites/nns justifying/vbg the/dt additive/jj representation/nn ,/punct as/in provided/vbn by/in multiattribute/jj utility/nn theory/nn ./punct
+we/prp then/rb present/vbp the/dt generalized/vbn additive/jj form/nn ,/punct and/cc develop/vb the/dt formal/jj underpinnings/nns for/in measurable/jj value/nn needed/vbn to/to extend/vb this/dt model/nn to/to the/dt case/nn of/in choice/nn under/in certainty/nn ./punct
+let/vb θ/nnp denote/vb the/dt space/nn of/in possible/jj outcomes/nns ,/punct with/in a/dt of/in variables/nns ,/punct small/jj letters/nns (/punct with/in or/cc without/in numeric/jj subscripts/nns )/punct denote/vbp specific/jj variables/nns ,/punct and/cc ¯x/nn denotes/vbz the/dt complement/nn of/in x/nn with/in respect/nn to/to a./nn we/prp indicate/vbp specific/jj variable/jj assignments/nns with/in prime/jj x/nn y/nn ./punct
+preference/nn order/nn over/in y/nn given/vbn a/dt fixed/jj level/nn z0/nn ./punct
+z./nnp of/in its/prp$ complement/nn ./punct
+the/dt preference/nn relation/nn when/wrb no/dt uncertainty/nn is/vbz modeled/vbn is/vbz usually/rb represented/vbn by/in a/dt value/nn function/nn v./cc the/dt following/vbg fundamental/jj result/nn greatly/rb simplifies/vbz the/dt value/nn function/nn representation/nn ./punct
+theorem/nnp 1/cd (/punct )/punct ./punct
+a/dt preference/nn order/nn over/in set/nn of/in attributes/nns a/dt has/vbz an/dt additive/jj value/nn function/nn representation/nn iff/nn a/nn is/vbz mutually/rb preferential/jj independent/jj ./punct
+essentially/rb ,/punct the/dt additive/jj forms/nns used/vbn in/in trading/nn mechanisms/nns assume/vbp mutual/jj preferential/jj independence/nn over/in the/dt full/jj set/nn of/in attributes/nns ,/punct including/vbg the/dt money/nn attribute/nn ./punct
+intuitively/rb that/dt means/vbz that/in willingness/nn the/dt value/nn of/in other/jj attributes/nns ./punct
+a/dt cardinal/jj value/nn function/nn representing/vbg an/dt ordering/vbg over/in certain/jj outcomes/nns need/vbp not/rb in/in general/jj coincide/vbp with/in the/dt cardinal/jj utility/nn function/nn that/wdt represents/vbz preference/nn over/in lotteries/nns or/cc expected/vbn utility/nn (/punct eu/nnp )/punct ./punct
+nevertheless/rb ,/punct eu/nnp functions/nns may/md possess/vb structural/jj properties/nns analogous/jj to/to that/dt for/in value/nn functions/nns ,/punct such/jj as/in additive/jj decomposition/nn ./punct
+since/in the/dt present/jj work/nn does/vbz not/rb involve/vb decisions/nns under/in uncertainty/nn ,/punct we/prp do/vbp not/rb provide/vb a/dt full/jj exposition/nn of/in the/dt eu/nnp concept/nn ./punct
+however/rb we/prp do/vbp make/vb frequent/jj reference/nn to/to the/dt following/vbg additive/jj independence/nn relations/nns ./punct
+only/rb on/in their/prp$ marginal/jj conditional/jj probability/nn distributions/nns over/in x/nn and/cc y/nn ./punct
+i=1/nn ii/nn =/punct a./nn preferences/nns over/in lotteries/nns on/in a/dt depend/vbp only/rb on/in their/prp$ marginal/jj distributions/nns over/in i1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ig/nn ./punct
+an/dt (/punct expected/vbd )/punct utility/nn function/nn u/fw (/punct ·/fw )/punct can/md be/vb decomposed/vbn additively/rb according/vbg to/to its/prp$ (/punct possibly/rb overlapping/vbg )/punct gai/nn sub-configurations/nns ./punct
+what/wp is/vbz now/rb known/vbn as/in the/dt gai/nnp condition/nn was/vbd originally/rb introduced/vbn by/in fishburn/nnp for/in eu/nnp ,/punct and/cc was/vbd named/vbn gai/nnp and/cc brought/vbd to/to the/dt attention/nn of/in ai/nnp researchers/nns by/in bacchus/nn and/cc grove/nnp ./punct
+graphical/jj models/nns and/cc elicitation/nn procedures/nns for/in gai/nn decomposable/jj utility/nn were/vbd developed/vbn for/in eu/nnp ,/punct for/in a/dt cardinal/jj representation/nn of/in the/dt ordinal/jj value/nn function/nn ,/punct and/cc for/in an/dt ordinal/jj preference/nn relations/nns corresponding/vbg to/to a/dt tcp-net/nn structure/nn by/in brafman/nnp et/fw al../fw apart/rb from/in the/dt work/nn on/in gai/nnp in/in the/dt context/nn of/in preference/nn handling/nn that/wdt were/vbd discussed/vbn above/in ,/punct gai/nnp have/vbp been/vbn recently/rb used/vbn in/in the/dt direct/jj revelation/nn mechanisms/nns ./punct
+as/in shown/vbn by/in bacchus/nn and/cc grove/nnp ,/punct gai/nnp structure/nn can/md be/vb detect/vb and/cc verify/vb ./punct
+in/in general/jj ,/punct utility/nn functions/nns may/md exhibit/vb gai/nnp structure/nn not/rb based/vbn on/in cai/nnp ./punct
+however/rb ,/punct to/to date/vb all/dt proposals/nns for/in reasoning/nn and/cc eliciting/vbg utility/nn in/in gai/nnp form/nn take/vb advantage/nn of/in the/dt gai/nnp cai/nnp conditions/nns ./punct
+for/in example/nn ,/punct gai/nn trees/nns employ/vbp triangulation/nn of/in the/dt cai/nnp map/nn ,/punct and/cc braziunas/nnp and/cc boutilier/nnp ''/'' s/vbz conditional/jj set/nn cj/nn of/in a/dt set/vbn ij/nn corresponds/vbz to/to the/dt cai/nnp separating/vbg set/nn of/in ij/nn ./punct
+since/in the/dt cai/nnp condition/nn is/vbz also/rb defined/vbn based/vbn on/in preferences/nns over/in lotteries/nns ,/punct we/prp can/md not/rb apply/vb bacchus/nn and/cc grove/nnp ''/'' s/vbz result/nn without/in first/jj establishing/vbg an/dt alternative/jj framework/nn based/vbn on/in priced/vbn outcomes/nns ./punct
+we/prp develop/vbp such/jj a/dt framework/nn using/vbg the/dt theory/nn of/in measurable/jj value/nn functions/nns ,/punct ultimately/rb producing/vbg a/dt gai/nn decomposition/nn (/punct eq/nn ./punct
+1/cd )/punct of/in the/dt wtp/nn function/nn ./punct
+readers/nns interested/jj primarily/rb in/in the/dt multiattribute/jj auction/nn and/cc willing/jj to/to grant/vb the/dt well-foundedness/nn of/in the/dt preference/nn structure/nn may/md skip/vb down/rp to/to section/nnp 5/cd ./punct
+trading/nn decisions/nns represent/vbp a/dt special/jj case/nn of/in decisions/nns under/in certainty/nn ,/punct where/wrb choices/nns involve/vbp multiattribute/jj outcomes/nns and/cc corresponding/jj monetary/jj payments/nns ./punct
+in/in such/jj problems/nns ,/punct the/dt key/jj decision/nn often/rb hinges/vbz on/in relative/jj valuations/nns of/in price/nn differences/nns compared/vbn to/to differences/nns in/in alternative/jj configurations/nns of/in goods/nns and/cc services/nns ./punct
+theoretically/rb ,/punct price/nn can/md be/vb treated/vbn as/rb just/rb another/dt attribute/nn ,/punct however/rb ,/punct such/pdt an/dt approach/nn fails/vbz to/to exploit/vb the/dt special/jj character/nn of/in the/dt money/nn dimension/nn ,/punct and/cc can/md significantly/rb add/vb to/to complexity/nn due/jj to/to the/dt inherent/jj continuity/nn and/cc typical/jj wide/jj range/nn of/in possible/jj monetary/jj outcome/nn values/nns ./punct
+measurable/jj value/nn functions/nns (/punct mvfs/nns )/punct ./punct
+as/in we/prp show/vbp below/in ,/punct wtp/nn we/prp first/rb present/vb the/dt mvf/nn framework/nn in/in a/dt more/rbr generic/jj way/nn ,/punct where/wrb the/dt measurement/nn is/vbz not/rb necessarily/rb monetary/jj ./punct
+we/prp present/vbp the/dt essential/jj definitions/nns and/cc refer/vb to/to dyer/nnp and/cc sarin/nnp for/in more/rbr detailed/jj background/nn and/cc axiomatic/jj treatment/nn ./punct
+the/dt key/jj concept/nn is/vbz that/in of/in ]/punct denotes/vbz the/dt preference/nn difference/nn between/in preference/nn differences/nns ./punct
+)/punct ./punct
+[/punct θ/nn ,/punct θ/nn ]/punct iff/nn θ/nn θ/nn ./punct
+for/in any/dt assignment/nn ¯x/nn ./punct
+¯x/nn ./punct
+as/in with/in additive/jj independence/nn for/in eu/nnp ,/punct this/dt condition/nn is/vbz stronger/jjr than/in preferential/jj independence/nn of/in x./nnp also/rb analogously/rb to/to eu/nnp ,/punct mutual/jj preferential/jj independence/nn combined/vbn with/in other/jj conditions/nns leads/vbz to/to additive/jj decomposition/nn of/in the/dt mvf/nn ./punct
+moreover/rb ,/punct dyer/nnp and/cc sarin/nnp have/vbp defined/vbn analogs/nns of/in utility/nn independence/nn for/in mvf/nn ,/punct and/cc worked/vbd out/rp a/dt parallel/nn set/nn of/in decomposition/nn results/nns ./punct
+version/nn ./punct
+y/nn 2/cd ˆz/nn ]/punct ./punct
+since/in the/dt conditional/jj set/nn is/vbz always/rb the/dt complement/nn ,/punct we/prp sometimes/rb leave/vbp it/prp implicit/jj ,/punct using/vbg the/dt abbreviated/jj notation/nn cdi/nnp (/punct x/nn ,/punct y/nn )/punct ./punct
+cdi/nnp leads/vbz to/to a/dt decomposition/nn similar/jj to/to that/dt obtained/vbn from/in cai/nnp ./punct
+lemma/nnp 3/cd ./punct
+let/vb u/fw (/punct a/dt )/punct be/vb an/dt mvf/nn representing/vbg preference/nn ,/punct z/nn )/punct ./punct
+follows/vbz ./punct
+relation/nn ./punct
+the/dt conditional/jj independence/nn condition/nn is/vbz much/rb more/rbr a./in a/dt single/jj cdi/nnp condition/nn decomposes/vbz the/dt value/nn function/nn into/in two/cd parts/nns ./punct
+we/prp seek/vbp a/dt finer-grain/jj global/jj decomposition/nn of/in the/dt utility/nn function/nn ,/punct similar/jj to/to that/dt obtained/vbn from/in mutual/jj preferential/jj independence/nn ./punct
+for/in this/dt purpose/nn we/prp are/vbp now/rb ready/jj to/to employ/vb the/dt results/nns of/in bacchus/nn and/cc grove/nnp ,/punct who/wp establish/vbp that/in the/dt cai/nnp condition/nn has/vbz a/dt perfect/jj map/nn ;/punct that/dt is/vbz ,/punct there/ex exists/vbz a/dt graph/nn whose/wp$ nodes/nns correspond/vbp to/to the/dt set/nn a/nn ,/punct and/cc its/prp$ node/nn separation/nn reflects/vbz exactly/rb the/dt complete/jj set/nn of/in cai/nn conditions/nns on/in a./nn moreover/rb ,/punct they/prp show/vbp that/in the/dt utility/nn function/nn decomposes/vbz over/in the/dt set/nn of/in maximal/jj cliques/nns of/in the/dt perfect/jj map/nn ./punct
+their/prp$ proofs/nns can/md be/vb easily/rb adapted/vbn to/to cdi/nnp ,/punct since/in they/prp only/rb rely/vbp on/in the/dt decomposition/nn property/nn of/in cai/nnp that/wdt is/vbz also/rb implied/vbn by/in cdi/nnp according/vbg to/to proposition/nnp 4./ls corresponding/vbg to/to a/dt maximal/jj clique/nn of/in g./nnp given/vbn theorem/nnp 5/cd ,/punct we/prp can/md now/rb identify/vb an/dt mvf/nn gai/nn structure/nn from/in a/dt collection/nn of/in cdi/nnp conditions/nns ./punct
+the/dt cdi/nnp conditions/nns ,/punct in/in turn/nn ,/punct are/vbp particularly/rb intuitive/jj to/to detect/vb when/wrb the/dt preference/nn differences/nns carry/vbp a/dt direct/jj interpretation/nn ,/punct as/in in/in the/dt case/nn with/in monetary/jj differences/nns discussed/vbn below/in ./punct
+moreover/rb ,/punct the/dt assumption/nn or/cc detection/nn of/in cdi/nnp conditions/nns can/md be/vb performed/vbn incrementally/rb ,/punct until/in the/dt mvf/nn is/vbz fully/rb additive/jj decomposition/nn of/in mvf/nn that/wdt requires/vbz mutual/jj preferential/jj independence/nn ./punct
+the/dt next/jj theorem/nn establishes/vbz that/in the/dt functional/jj constituents/nns of/in mvf/nn are/vbp the/dt same/jj as/in those/dt for/in gai/nn decompositions/nns as/in defined/vbn by/in fishburn/nnp for/in eu/nnp ./punct
+we/prp adopt/vbp the/dt following/jj conventional/jj m/nn )/punct be/vb a/dt predefined/jj vector/nn called/vbd the/dt reference/nn outcome/nn ./punct
+for/in any/dt i/prp ⊆/vbp a/dt ,/punct the/dt function/nn u/fw (/punct [/punct i/prp ]/punct )/punct stands/nns for/in the/dt reference/nn levels/nns ./punct
+defined/vbn in/in theorem/nnp 5/cd ./punct
+then/rb the/dt functional/jj decomposition/nn from/in that/dt map/nn of/in cdi/nnp ,/punct u/fw (/punct a/dt )/punct decomposes/vbz to/to a/dt sum/nn over/in the/dt functions/nns defined/vbn thus/rb this/dt proof/nn does/vbz not/rb rely/vb on/in the/dt decomposition/nn result/nn of/in theorem/nnp 5/cd ,/punct only/rb on/in the/dt existence/nn of/in the/dt perfect/jj map/nn ./punct
+to/to summarize/vb ,/punct the/dt results/nns of/in this/dt section/nn generalize/vb additive/jj mvf/nn theory/nn ./punct
+in/in particular/jj it/prp justifies/vbz the/dt application/nn of/in methods/nns recently/rb of/in value/nn under/in certainty/nn ./punct
+in/in this/dt section/nn we/prp apply/vbp measurable/jj value/nn to/to represent/vb differences/nns of/in willingness/nn to/to pay/vb for/in outcomes/nns ./punct
+we/prp assume/vbp that/in the/dt agent/nn attributes/vbz a/nn ,/punct and/cc an/dt attribute/nn p/nn representing/vbg monetary/jj consequence/nn ./punct
+the/dt agent/nn ''/'' s/nns money/nn holdings/nns net/nn of/in the/dt transaction/nn (/punct i.e./fw ,/punct wealth/nn after/in purchase/nn )/punct ,/punct not/rb the/dt purchase/nn price/nn ./punct
+an/dt outcome/nn in/in this/dt space/nn is/vbz the/dt quasi-linear/jj form/nn immediately/rb qualifies/vbz money/nn as/in a/dt measure/nn of/in preference/nn differences/nns ,/punct and/cc establishes/vbz a/dt monetary/jj scale/nn for/in u/fw (/punct a/dt )/punct ./punct
+willingnessto-pay/jj (/punct wtp/nn )/punct function/nn ./punct
+note/vb that/dt wtp/nn may/md also/rb refer/vb to/to the/dt seller/nn ''/'' s/nns willingness/nn to/to accept/vb to/to choose/vb among/in priced/vbn outcomes/nns ./punct
+this/dt proof/nn and/cc most/rbs other/jj proofs/nns in/in this/dt paper/nn are/vbp omitted/vbn for/in space/nn consideration/nn ,/punct and/cc are/vbp available/jj in/in an/dt online/jj appendix/nn ./punct
+in/in many/jj procurement/nn applications/nns ,/punct the/dt deals/nns in/in question/nn are/vbp small/jj relative/jj to/to the/dt enterprises/nns involved/vbn ,/punct so/in the/dt quasi-linearity/nn called/vbn corresponding/jj tradeoffs/nns ,/punct which/wdt does/vbz not/rb require/vb the/dt value/nn over/in money/nn to/to be/vb linear/jj ./punct
+to/to simplify/vb the/dt presentation/nn ,/punct however/rb ,/punct we/prp maintain/vbp the/dt stronger/jjr assumption/nn ./punct
+naturally/rb ,/punct elicitation/nn of/in wtp/nn function/nn is/vbz most/rbs intuitive/jj when/wrb )/punct ,/punct and/cc assuming/vbg continuity/nn of/in p/nn ,/punct for/in any/dt assignment/nn reserve/nn price/nn of/in ˆθ/nn ./punct
+proposition/nn 7/cd ./punct
+the/dt wtp/nn function/nn is/vbz an/dt mvf/nn over/in differences/nns in/in the/dt reserve/nn prices/nns ./punct
+we/prp note/vbp that/in the/dt wtp/nn function/nn is/vbz used/vbn extensively/rb in/in economics/nns ,/punct and/cc that/in all/pdt the/dt development/nn in/in section/nn 3/cd could/md be/vb performed/vbn directly/rb in/in terms/nns of/in wtp/nn ,/punct relying/vbg on/in quasi-linearity/nn for/in preference/nn measurement/nn ,/punct and/cc without/in formalization/nn using/vbg mvfs/nns ./punct
+this/dt formalization/nn however/rb aligns/vbz this/dt work/nn with/in the/dt fundamental/jj difference/nn independence/nn theory/nn by/in dyer/nnp and/cc sarin/nnp ./punct
+in/in addition/nn to/to facilitating/vbg the/dt detection/nn of/in gai/nn structure/nn ,/punct the/dt cdi/nnp condition/nn supports/vbz elicitation/nn using/vbg local/jj queries/nns ,/punct similar/jj to/to how/wrb cai/nnp is/vbz used/vbn by/in braziunas/nnps and/cc boutilier/nnp ./punct
+we/prp adopt/vbp their/prp$ the/dt separating/vbg set/nn of/in ir/nnp in/in the/dt cdi/nnp map/nn ,/punct hence/rb cdi/nnp (/punct ir/nnp ,/punct vr/nnp )/punct ,/punct where/wrb r/nn )/punct ./punct
+eliciting/vbg the/dt wtp/nn function/nn therefore/rb amounts/vbz to/to eliciting/vbg the/dt utility/nn (/punct wtp/nn )/punct of/in one/cd full/jj outcome/nn (/punct the/dt reference/nn outcome/nn θ0/nn obtaining/vbg the/dt function/nn over/in each/dt maximal/jj clique/nn using/vbg monetary/jj differences/nns between/in its/prp$ possible/jj assignments/nns (/punct technique/nn known/vbn as/in pricing/vbg out/rp )/punct ,/punct keeping/vbg the/dt variables/nns in/in the/dt conditional/jj set/nn fixed/vbn ./punct
+these/dt ceteris/nns paribus/nn elicitation/nn queries/nns are/vbp local/jj in/in the/dt sense/nn that/in the/dt agent/nn does/vbz not/rb need/vb to/to consider/vb the/dt values/nns of/in the/dt rest/nn of/in the/dt attributes/nns ./punct
+furthermore/rb ,/punct in/in eliciting/vbg mvfs/nns we/prp can/md avoid/vb the/dt global/jj scaling/nn step/nn that/wdt is/vbz required/vbn for/in eu/nnp functions/nns ./punct
+since/in the/dt preference/nn differences/nns are/vbp extracted/vbn with/in respect/nn to/to specific/jj amounts/nns of/in the/dt attribute/nn p/nn ,/punct the/dt utility/nn is/vbz already/rb scaled/vbn according/vbg to/to that/dt external/jj measure/nn ./punct
+hence/rb ,/punct once/in the/dt conditional/jj utility/nn functions/nns u/vbp (/punct [/punct ij/nn ]/punct )/punct are/vbp obtained/vbn ,/punct we/prp can/md calculate/vb u/fw (/punct a/dt )/punct according/vbg to/to (/punct 4/cd )/punct ./punct
+this/dt last/jj step/nn may/md require/vb (/punct in/in the/dt worst/jjs case/nn )/punct computation/nn of/in a/dt number/nn of/in terms/nns that/wdt is/vbz exponential/jj in/in the/dt number/nn of/in max/nn cliques/nns ./punct
+search/nn algorithm/nn suggested/vbn by/in braziunas/nnps and/cc boutilier/nnp ,/punct which/wdt efficiently/rb finds/vbz all/pdt the/dt nonempty/jj intersections/nns for/in each/dt clique/nn ./punct
+as/in shown/vbn ,/punct the/dt wtp/nn function/nn can/md be/vb used/vbn directly/rb for/in pairwise/jj comparisons/nns of/in priced/vbn outcomes/nns ./punct
+another/dt preference/nn query/nn often/rb possibly/rb under/in constraints/nns ./punct
+typical/jj decisions/nns about/in exchange/nn of/in a/dt good/jj or/cc service/nn exhibit/vbp what/wp we/prp call/vbp first-order/jj preferential/jj independence/nn (/punct fopi/nn )/punct ,/punct under/in which/wdt most/rbs or/cc all/dt single/jj attributes/nns have/vbp a/dt natural/jj ordering/vbg of/in quality/nn ,/punct choosing/vbg a/dt pc/nn we/prp always/rb prefer/vbp more/jjr memory/nn ,/punct faster/rbr cpu/nnp ,/punct longer/jjr warranty/nn ,/punct and/cc so/rb on/in ./punct
+under/in fopi/nnp ,/punct the/dt unconstrained/jj optimization/nn of/in this/dt should/md not/rb be/vb mistaken/vbn with/in the/dt highly/rb demanding/vbg condition/nn of/in mutual/jj preferential/jj independence/nn ,/punct that/wdt requires/vbz all/dt tradeoffs/nns between/in attributes/nns to/to be/vb independent/jj ./punct
+unpriced/jj outcomes/nns is/vbz trivial/jj ,/punct hence/rb we/prp consider/vbp choice/nn among/in attribute/nn points/nns with/in prices/nns ./punct
+since/in any/dt outcome/nn can/md be/vb best/jjs given/vbn enough/rb monetary/jj compensation/nn ,/punct this/dt problem/nn is/vbz not/rb well-defined/jj unless/in the/dt combinations/nns are/vbp constrained/vbn somehow/rb ./punct
+a/dt particularly/rb interesting/jj optimization/nn problem/nn arises/vbz in/in the/dt context/nn of/in negotiation/nn ,/punct where/wrb we/prp consider/vbp the/dt utility/nn of/in both/cc buyers/nns and/cc sellers/nns ./punct
+the/dt multiattribute/jj matching/nn problem/nn (/punct mmp/nn )/punct is/vbz concerned/vbn with/in finding/vbg an/dt attribute/nn point/nn that/wdt maximizes/vbz the/dt surplus/nn of/in a/dt trade/nn ,/punct or/cc the/dt difference/nn between/in the/dt utilities/nns of/in the/dt buyer/nn and/cc the/dt seller/nn ,/punct ub/nn (/punct a/nn )/punct −/cd us/prp (/punct a/dt )/punct ./punct
+gai/nnp ,/punct as/in an/dt additive/jj decomposition/nn ,/punct has/vbz the/dt gai/nn form/nn as/rb well/rb ./punct
+we/prp can/md therefore/rb use/vb combinatorial/jj optimization/nn procedures/nns for/in gai/nn decomposition/nn ,/punct based/vbn on/in the/dt well/rb studied/vbn variable/jj elimination/nn schemes/nns (/punct e.g./fw ,/punct )/punct to/to find/vb the/dt best/jjs trading/nn point/nn ./punct
+similarly/rb ,/punct this/dt optimization/nn can/md be/vb done/vbn to/to maximize/vb surplus/nn between/in a/dt trader/nn ''/'' s/nns utility/nn function/nn and/cc a/dt pricing/nn system/nn that/wdt assigns/vbz a/dt price/nn to/to each/dt level/nn of/in each/dt gai/nn element/nn ,/punct and/cc this/dt way/nn guide/nn traders/nns a/dt multiattribute/jj procurement/nn auction/nn that/wdt builds/vbz on/in this/dt idea/nn ./punct
+private/jj valuation/nn function/nn (/punct willingness-to-accept/jj )/punct ./punct
+for/in compliance/nn cost/nn function/nn ,/punct denoted/vbn by/in ci/nn ./punct
+the/dt multiattribute/jj allocation/nn problem/nn (/punct map/nn )/punct is/vbz the/dt welfare/nn optimization/nn problem/nn in/in procurement/nn over/in a/dt discrete/jj domain/nn ,/punct and/cc it/prp is/vbz defined/vbn as/in :/punct to/to illustrate/vb the/dt need/nn for/in a/dt gai/nn price/nn space/nn we/prp consider/vbp the/dt case/nn of/in traders/nns with/in non-additive/jj preferences/nns bidding/nn in/in an/dt additive/jj price/nn space/nn such/jj as/in in/in pk/nn ''/'' s/nns auction/nn ad/nn ./punct
+if/in the/dt buyer/nn ''/'' s/nns preferences/nns are/vbp not/rb additive/jj ,/punct choosing/vbg preferred/jj levels/nns per/in attribute/nn (/punct as/in in/in auction/nn ad/nn )/punct admits/vbz undesired/jj combinations/nns and/cc fails/vbz to/to guide/vb the/dt sellers/nns to/to the/dt efficient/jj configurations/nns ./punct
+non-additive/jj sellers/nns face/vbp an/dt exposure/nn problem/nn ,/punct somewhat/rb analogous/jj to/to traders/nns with/in complementary/jj preferences/nns that/wdt participate/vbp in/in simultaneous/jj auctions/nns ./punct
+a/dt value/nn a1/nn attribute/vbp a/dt may/md be/vb optimal/jj given/vbn that/in the/dt value/nn of/in another/dt attribute/nn ,/punct and/cc arbitrarily/rb suboptimal/jj given/vbn other/jj values/nns of/in b./nn may/md result/vb in/in a/dt poor/jj allocation/nn if/in the/dt seller/nn instead/rb of/in assuming/vbg full/jj additivity/nn ,/punct the/dt auction/nn designer/nn can/md come/vb up/rp with/in a/dt gai/nn preference/nn structure/nn that/wdt captures/vbz the/dt set/nn of/in common/jj interdependencies/nns between/in attributes/nns ./punct
+if/in traders/nns could/md bid/vb on/in clusters/nns of/in interdependent/jj attributes/nns ,/punct it/prp would/md solve/vb the/dt problems/nns discussed/vbn above/in ./punct
+for/in example/nn ,/punct if/in a/dt and/cc b/nn are/vbp interdependent/jj (/punct meaning/nn is/vbz still/rb better/jjr than/in a/dt general/jj pricing/nn structure/nn that/wdt solicits/vbz bids/nns for/in the/dt cluster/nn abc/nn ./punct
+we/prp stress/vbp that/in each/dt trader/nn may/md have/vb a/dt different/jj set/nn of/in interdependencies/nns ,/punct and/cc therefore/rb to/to be/vb completely/rb general/jj the/dt if/in only/rb the/dt sellers/nns are/vbp non-additive/jj ,/punct the/dt auction/nn design/nn could/md potentially/rb alleviate/vb this/dt problem/nn by/in collecting/vbg a/dt new/jj set/nn of/in bids/nns each/dt round/nn and/cc forgetting/vbg bids/nns from/in previous/jj rounds/nns ,/punct and/cc also/rb guiding/vbg non-additive/jj sellers/nns to/to bid/vb on/in only/rb one/cd level/nn per/in attribute/nn in/in order/nn to/to avoid/vb undesired/jj combinations/nns ./punct
+gai/nn structure/nn needs/vbz to/to account/vb for/in all.5/nn domains/nns have/vbp natural/jj dependencies/nns that/wdt are/vbp mutual/jj to/to traders/nns ./punct
+assume/vb that/dt preferences/nns of/in all/dt traders/nns are/vbp reflected/vbn in/in a/dt gai/nn subconfiguration/nn formed/vbn by/in projecting/vbg configuration/nn θ/nn to/to element/nn ir/nn ./punct
+exactly/rb one/cd sub-configuration/nn αr/nn corresponding/vbg to/to each/dt element/nn ir/nnp ,/punct r/nn ∈/cd {/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct g/nn }/punct ./punct
+configuration/nn ,/punct which/wdt we/prp denote/vbp by/in (/punct α1/nn ,/punct ./punct
+./punct
+./punct
+,/punct αg/nn )/punct ./punct
+elements/nns i1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ig/nn ,/punct with/in an/dt edge/nn between/in ir/nnp ,/punct ir/nnp iff/nnp ir/nnp ∩/cd ir/nn =/punct ∅/nn ./punct
+equivalently/rb ,/punct a/dt gai/nnp network/nn is/vbz the/dt clique/jj graph/nn of/in a/dt cdi-map/jj ./punct
+in/in order/nn to/to justify/vb the/dt compact/jj pricing/nn structure/nn we/prp require/vbp that/in for/in any/dt set/nn of/in optimal/jj configurations/nns (/punct wrt/nn a/dt given/vbn utility/nn function/nn )/punct ,/punct with/in a/dt corresponding/jj collection/nn of/in sub-configurations/jj γ/nn ,/punct all/dt cdi-map/jj prior/jj to/to construction/nn of/in the/dt clique/nn graph/nn (/punct gai/nn networks/nns and/cc gai/nn trees/nns are/vbp defined/vbn by/in gonzales/nnp and/cc perny/nnp ,/punct who/wp also/rb provide/vbp a/dt triangulation/nn algorithm/nn )/punct ./punct
+under/in gai/nnp ,/punct the/dt buyer/nn ''/'' s/nns value/nn (/punct 1/cd )/punct ./punct
+we/prp use/vbp fb/nn ,/punct r/nn and/cc fi/nn ,/punct r/nn to/to denote/vb the/dt local/jj functions/nns of/in buyer/nn and/cc sellers/nns (/punct respectively/rb )/punct ,/punct according/vbg to/to (/punct 4/cd )/punct ./punct
+for/in example/nn ,/punct consider/vb the/dt procurement/nn of/in a/dt good/jj with/in three/cd attributes/nns ,/punct a/dt ,/punct b/nn ,/punct c./nn each/dt attribute/nn ''/'' s/nns domain/nn has/vbz two/cd values/nns (/punct e.g./fw ,/punct {/punct a/dt ,/punct b/nn }/punct ,/punct i2/nn =/punct {/punct b/nn ,/punct c/nn }/punct ./punct
+figure/nnp 1/cd shows/vbz the/dt simple/jj cdi/nnp map/nn and/cc the/dt corresponding/jj gai/nnp network/nn ,/punct which/wdt is/vbz a/dt gai/nnp tree/nn ./punct
+here/rb ,/punct subconfigurations/nns are/vbp assignments/nns of/in the/dt form/nn a1/nn so/rb on/in ./punct
+the/dt set/nn of/in sub-configurations/nns {/punct a1/nn cover/nn ,/punct corresponding/vbg to/to the/dt configuration/nn a1/nn }/punct is/vbz inconsistent/jj ./punct
+we/prp define/vbp an/dt iterative/jj multiattribute/jj auction/nn that/wdt maintains/vbz a/dt gai/nn subconfiguration/nn of/in each/dt gai-tree/jj element/nn ./punct
+the/dt price/nn of/in a/dt (/punct θr/nn )/punct −/cd δ./nnp we/prp relax/vbp this/dt requirement/nn in/in section/nn 6/cd ./punct
+bidders/nns submit/vbp sub-bids/nns on/in sub-configurations/nns and/cc on/in an/dt current/jj prices/nns ,/punct and/cc need/vb to/to be/vb resubmitted/vbn at/in each/dt round/nn ,/punct therefore/rb they/prp do/vbp not/rb need/vb to/to explicitly/rb carry/vb the/dt price/nn ./punct
+the/dt set/nn of/in full/jj bids/nns of/in a/dt seller/nn contains/vbz all/dt consistent/jj covers/nns that/wdt can/md be/vb generated/vbn from/in that/dt seller/nn ''/'' s/nns current/jj set/nn of/in sub-bids/nns ./punct
+the/dt existence/nn of/in a/dt full/jj bid/nn over/in a/dt configuration/nn θ/nn represents/vbz the/dt seller/nn ''/'' s/nns willingness/nn to/to accept/vb the/dt (/punct θ/nn )/punct for/in supplying/vbg θ./nn at/in the/dt start/nn of/in the/dt auction/nn ,/punct the/dt buyer/nn reports/vbz (/punct to/to the/dt auction/nn ,/punct not/rb to/to sellers/nns )/punct her/prp$ complete/jj valuation/nn in/in gai/nnp form/nn ./punct
+the/dt initial/jj prices/nns of/in sub-configurations/nns are/vbp set/vbn at/in some/dt level/nn above/in the/dt buyer/nn ''/'' s/nns initialized/vbd to/to zero/cd ./punct
+the/dt auction/nn has/vbz the/dt dynamics/nns of/in a/dt descending/vbg clock/nn auction/nn :/punct at/in each/dt round/nn t/nn ,/punct bids/nns are/vbp collected/vbn for/in current/jj prices/nns and/cc then/rb prices/nns are/vbp reduced/vbn according/vbg to/to price/nn rules/nns ./punct
+a/dt seller/nn is/vbz allowed/vbn to/to participate/vb ,/punct and/cc the/dt auction/nn terminates/vbz when/wrb no/dt more/jjr than/in i/fw }/punct ./punct
+./punct
+the/dt auction/nn proceeds/vbz in/in two/cd phases/nns ./punct
+in/in the/dt first/jj phase/nn (/punct a/nn )/punct ,/punct at/in each/dt round/nn t/nn the/dt auction/nn computes/vbz a/dt set/nn of/in preferred/jj convergence/nn ,/punct and/cc section/nn 5.5/cd shows/vbz how/wrb to/to efficiently/rb compute/vb it/prp ./punct
+in/in phase/nn a/nn ,/punct the/dt auction/nn adjusts/vbz prices/nns after/in each/dt round/nn ,/punct reducing/vbg the/dt price/nn of/in every/dt sub-configuration/nn that/wdt has/vbz received/vbn a/dt bid/nn but/cc is/vbz not/rb in/in the/dt preferred/jj set/nn ./punct
+let/vb be/vb the/dt prespecified/jj price/nn increment/nn parameter/nn ./punct
+specifically/rb ,/punct the/dt phase/nn a/dt price/nn change/nn rule/nn is/vbz applied/vbn to/to the/dt rhs/nn maximum/nn ensures/vbz that/in prices/nns do/vbp not/rb get/vb reduced/vbn below/in the/dt buyer/nn ''/'' s/nns valuation/nn in/in phase/nn a./nn denote/vbp the/dt set/nn of/in configurations/nns that/wdt are/vbp consistent/jj covers/nns the/dt auction/nn switches/vbz to/to phase/nn b/nn when/wrb all/dt active/jj sellers/nns have/vbp at/in least/jjs one/cd full/jj bid/nn in/in the/dt buyer/nn ''/'' s/nns preferred/vbn set/nn :/punct point/nn ,/punct the/dt auction/nn selects/vbz the/dt buyer-optimal/jj full/jj bid/nn ηi/nn for/in each/dt seller/nn si/nn ./punct
+(/punct ·/nn )/punct during/in this/dt phase/nn ./punct
+the/dt only/jj adjustment/nn in/in phase/nn b/nn terminates/vbz when/wrb at/in most/jjs one/cd seller/nn (/punct if/in exactly/rb one/cd ,/punct designate/vb it/prp sˆi/jj )/punct is/vbz 1/cd ./punct
+all/dt sellers/nns drop/vbp out/rp in/in phase/nn a/nn (/punct i.e./fw ,/punct before/in rule/nn [/punct switch/nn ]/punct holds/vbz )/punct ./punct
+the/dt auction/nn returns/nns with/in no/dt allocation/nn ./punct
+the/dt discount/nn term/nn could/md be/vb replaced/vbn with/in a/dt uniform/jj price/nn reduction/nn across/in all/dt sub-configurations/nns ./punct
+auction/nn selects/vbz the/dt best/jjs seller/nn (/punct sˆi/nns )/punct from/in the/dt preceding/vbg round/nn ,/punct and/cc applies/vbz the/dt applicable/jj case/nn below/in ./punct
+the/dt winner/nn sˆi/vbd an/dt opportunity/nn to/to supply/vb ηˆi/nns at/in price/nn ub/nn (/punct ηˆi/nns )/punct ./punct
+allocates/vbz the/dt chosen/vbn configuration/nn and/cc seller/nn at/in this/dt resulting/vbg price/nn ./punct
+the/dt overall/jj auction/nn is/vbz described/vbn by/in high-level/jj pseudocode/nn in/in one-dimensional/jj competition/nn over/in the/dt surplus/nn that/wdt remaining/vbg seller/nn candidates/nns can/md provide/vb to/to the/dt buyer/nn ./punct
+in/in section/nn 5.5/cd we/prp discuss/vbp the/dt computational/jj tasks/nns associated/vbn with/in the/dt auction/nn ,/punct and/cc section/nn 5.6/cd provides/vbz a/dt detailed/jj example/nn ./punct
+algorithm/nn 1/cd gai-based/jj multiattribute/jj auction/nn collect/vb a/dt reported/vbn valuation/nn ,/punct ˆv/nn from/in the/dt buyer/nn implement/vb allocation/nn and/cc payment/nn to/to winning/vbg seller/nn when/wrb the/dt optimal/jj solution/nn to/to map/nn (/punct 5/cd )/punct provides/vbz negative/jj welfare/nn and/cc sellers/nns do/vbp not/rb bid/vb below/in their/prp$ cost/nn ,/punct the/dt auction/nn efficient/jj ./punct
+we/prp therefore/rb assume/vb throughout/in the/dt analysis/nn that/in the/dt optimal/jj (/punct seller/nn ,/punct configuration/nn )/punct pair/nn provides/vbz non-negative/jj welfare/nn ./punct
+the/dt buyer/nn profit/nn from/in a/dt configuration/nn θ/nn is/vbz defined/vbn as7/nn subconfigurations/nns by/in θμ/nn ,/punct and/cc define/vb the/dt profit/nn from/in a/dt configuration/nn θ/nn (/punct fb/nn ,/punct r/nn (/punct θr/nn )/punct −/nn p/nn (/punct θr/nn )/punct )/punct ./punct
+πτ/nn (/punct θ/nn )/punct =/punct πτ/nn (/punct θμ/nn )/punct +/punct πτ/nn (/punct θ¯μ/nn )/punct ./punct
+function/nn ub/nn (/punct ·/nn )/punct −/cd ci/nn (/punct ·/nn )/punct ./punct
+for/in any/dt price/nn system/nn p/nn ,/punct σi/nn (/punct θ/nn )/punct =/punct πb/nn (/punct θ/nn )/punct +/punct πi/nn (/punct θ/nn )/punct ./punct
+we/prp drop/vbp the/dt t/nn superscript/nn in/in generic/jj statements/nns involving/vbg price/nn and/cc profit/nn functions/nns ,/punct understanding/vbg that/in all/dt usage/nn is/vbz with/in respect/nn to/to the/dt (/punct currently/rb )/punct applicable/jj prices/nns ./punct
+since/in we/prp do/vbp not/rb assume/vb anything/nn about/in the/dt buyer/nn ''/'' s/nns strategy/nn ,/punct the/dt analysis/nn refers/vbz to/to profit/vb and/cc surplus/nn with/in respect/nn to/to the/dt face/nn value/nn functions/nns of/in si/nn ./punct
+definition/nn 10/cd ./punct
+a/dt seller/nn is/vbz called/vbn straightforward/jj bidder/nn (/punct sb/nn )/punct i/fw ,/punct r/nn ∈/cd {/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct g/nn }/punct }/punct ./punct
+intuitively/rb ,/punct an/dt sb/nn seller/nn follows/vbz a/dt myopic/jj best/jjs response/nn strategy/nn (/punct mbr/nnp )/punct ,/punct meaning/vbg they/prp bid/vbd myopically/rb rather/rb than/in strategically/rb by/in optimizing/vbg their/prp$ profit/nn with/in respect/nn to/to current/jj prices/nns ./punct
+to/to i/fw sellers/nns need/vbp to/to optimize/vb their/prp$ current/jj profit/nn function/nn ,/punct as/in discussed/vbn in/in section/nn 4.2/cd ./punct
+the/dt following/vbg lemma/nn bridges/nns the/dt apparent/jj gap/nn between/in the/dt compact/jj pricing/nn and/cc bid/nn structure/nn and/cc the/dt global/jj optimization/nn performed/vbn by/in the/dt traders/nns ./punct
+is/vbz also/rb a/dt profit-maximizing/jj configuration/nn for/in τ./nn the/dt sub-configurations/nns of/in the/dt configuration/nn ˆθj/nn consistent/jj and/cc that/in they/prp must/md all/rb be/vb suboptimal/jj as/rb well/rb ,/punct and/cc since/in all/dt contradicts/vbz optimality/nn of/in ψ./nnp i/fw (/punct θ/fw )/punct ./punct
+next/in we/prp consider/vbp combinations/nns of/in configurations/nns that/wdt are/vbp only/rb within/in some/dt δ/nn of/in optimality/nn ./punct
+maximizing/vbg utility/nn for/in τ./nn this/dt bound/vbn is/vbz tight/rb ,/punct that/dt is/vbz for/in any/dt gai/nn tree/nn and/cc a/dt non-trivial/jj consistent/jj cover/nn whose/wp$ utility/nn is/vbz exactly/rb δg/jj below/in the/dt maximal/jj ./punct
+the/dt set/nn of/in sub-configurations/nns that/wdt are/vbp part/nn of/in a/dt configuration/nn within/in the/dt error/nn proportionally/rb across/in the/dt disconnected/vbn trees/nns ./punct
+let/vb g/nnp be/vb gai/nn elements/nns in/in gj/nn ./punct
+j./in the/dt auction/nn ./punct
+corollary/nn 11./cd also/rb note/vbp that/in without/in assuming/vbg any/dt preference/nn structure/nn ,/punct meaning/nn is/vbz again/rb ./punct
+phase/nn a./nn proof/nnp ./punct
+we/prp prove/vbp the/dt lemma/nn per/in each/dt tree/nn gj/nn ./punct
+the/dt optimal/jj values/nns for/in disconnected/vbn components/nns are/vbp independent/jj of/in each/dt other/jj hence/rb if/in the/dt maximal/jj profit/nn for/in each/dt component/nn does/vbz not/rb change/vb the/dt combined/jj maximal/jj profit/nn does/vbz not/rb change/vb as/rb well/rb ./punct
+if/in the/dt price/nn ./punct
+b/nn (/punct θj/nn )/punct ./punct
+this/dt is/vbz true/jj for/in any/dt configuration/nn whose/wp$ profit/nn improves/vbz ,/punct therefore/rb the/dt maximal/jj buyer/nn profit/nn does/vbz not/rb change/vb during/in phase/nn a./nn lemma/nnp 13/cd ./punct
+the/dt price/nn of/in at/in least/jjs one/cd sub-configuration/nn must/md be/vb reduced/vbn at/in every/dt round/nn in/in phase/nn a./nn for/in at/in least/jjs one/cd of/in these/dt sub-configurations/nns ,/punct πt/nn activation/nn of/in rule/nn [/punct a/dt ]/punct ./punct
+b/nn (/punct ˆθr/nn )/punct ≥/nn 0/cd ./punct
+for/in simplicity/nn we/prp assume/vbp that/in for/in any/dt θr/nn ,/punct π1/nn (/punct that/wdt can/md be/vb easily/rb done/vbn )/punct ,/punct and/cc that/in ensures/vbz that/in πt/nn because/in once/rb profit/nn hits/vbz 0/cd it/prp can/md not/rb increase/vb by/in rule/nn [/punct a/dt ]/punct ./punct
+lemma/nnp 14/cd ./punct
+when/wrb the/dt solution/nn to/to map/nn provides/vbz positive/jj surplus/nn ,/punct and/cc at/in least/jjs the/dt best/jjs seller/nn is/vbz sb/nn ,/punct the/dt auction/nn must/md reach/vb phase/nn b./nnp the/dt auction/nn either/cc terminates/vbz in/in phase/nn a/nn or/cc must/md reach/vb condition/nn [/punct switch/nn ]/punct ./punct
+assume/vb that/in the/dt efficient/jj allocation/nn (/punct θ∗/nn phase/nn a/nn hence/rb the/dt auction/nn can/md not/rb terminate/vb before/in reaching/vbg condition/nn [/punct switch/nn ]/punct ./punct
+lemma/nnp 15/cd ./punct
+for/in sb/nn seller/nn si/nns ,/punct ηi/nn is/vbz (/punct e/sym +/punct 1/cd )/punct -efficient/jj ./punct
+./punct
+theorem/nnp 17/cd ./punct
+given/vbn a/dt truthful/jj buyer/nn and/cc sb/nn sellers/nns ,/punct the/dt auction/nn is/vbz (/punct e+2/nn )/punct -efficient/jj :/punct the/dt surplus/nn of/in the/dt final/jj allocation/nn is/vbz within/in (/punct e/sym +/punct 2/cd )/punct of/in the/dt maximal/jj surplus/nn ./punct
+auction/nn to/to establish/vb incentive/nn properties/nns for/in the/dt sellers/nns ./punct
+in/in the/dt onesided/jj multiattribute/jj vcg/nnp auction/nn ,/punct buyer/nn and/cc sellers/nns report/vbp valuation/nn and/cc cost/nn functions/nns ˆub/vbp ,/punct ˆci/vbp ,/punct and/cc the/dt buyer/nn pays/vbz the/dt sell-side/jj vcg/nnp payment/nn to/to the/dt winning/vbg seller/nn ./punct
+)/punct be/vb the/dt optimal/jj solution/nn to/to map/nn ./punct
+does/vbz not/rb participate/vb ./punct
+)/punct −/sym (/punct ˆub/fw (/punct ˜θ/fw )/punct −/fw ˆc˜i/fw (/punct ˜θ/fw )/punct )/punct ./punct
+the/dt maximal/jj regret/nn for/in buyers/nns from/in bidding/nn truthfully/rb in/in this/dt product/nn of/in the/dt efficient/jj seller/nn ./punct
+usually/rb in/in iterative/jj auctions/nns the/dt vcg/nnp outcome/nn is/vbz only/rb nearly/rb achieved/vbn ,/punct but/cc the/dt deviation/nn is/vbz bounded/vbn by/in the/dt minimal/jj price/nn change/nn ./punct
+we/prp show/vbp a/dt similar/jj result/nn ,/punct and/cc therefore/rb define/vb δ-vcg/jj payments/nns ./punct
+definition/nn 12/cd ./punct
+sell-side/jj δ-vcg/jj payment/nn for/in map/nn is/vbz a/dt v/nn cg/nn (/punct ˆub/nn ,/punct ˆci/fw )/punct −/fw δ/fw ≤/fw p/nn ≤/cd v/nn cg/nn (/punct ˆub/nn ,/punct ˆci/fw )/punct +/punct δ./fw when/wrb payment/nn is/vbz guaranteed/vbn to/to be/vb δ-vcg/jj sellers/nns can/md only/rb affect/vb their/prp$ payment/nn within/in that/dt range/nn ,/punct therefore/rb their/prp$ gain/nn by/in falsely/rb reporting/vbg their/prp$ cost/nn is/vbz bounded/vbn by/in 2δ/nn ./punct
+lemma/nnp 18/cd ./punct
+when/wrb sellers/nns are/vbp sb/nn ,/punct the/dt payment/nn in/in the/dt end/nn of/in gai/nnp auction/nn is/vbz sell-side/jj (/punct e/sym +/punct 2/cd )/punct -vcg/nn ./punct
+for/in sellers/nns in/in gai/nnp auction/nn ./punct
+that/dt is/vbz ,/punct sellers/nns can/md not/rb gain/vb more/jjr than/in (/punct 3e/nn +/punct 5/cd )/punct by/in deviating/vbg ./punct
+in/in practice/nn ,/punct however/rb ,/punct sellers/nns are/vbp unlikely/jj to/to have/vb the/dt information/nn that/wdt would/md let/vb them/prp exploit/vb that/in potential/jj gain/nn ./punct
+they/prp are/vbp much/rb more/rbr likely/jj to/to lose/vb from/in bidding/nn on/in their/prp$ less/rbr attractive/jj configurations/nns ./punct
+maxr/nn |ir|/nn ./punct
+this/dt is/vbz also/rb equivalent/jj to/to the/dt tree-width/jj (/punct plus/in one/cd )/punct of/in the/dt original/jj cdi-map/nn ./punct
+for/in the/dt purpose/nn of/in the/dt computational/jj analysis/nn the/dt collection/nn of/in all/dt sub-configurations/nns ./punct
+the/dt first/jj purpose/nn of/in this/dt sub-section/nn is/vbz to/to show/vb that/in the/dt complexity/nn of/in all/pdt the/dt computations/nns required/vbn for/in the/dt auction/nn depends/vbz only/rb on/in |i|/nn ,/punct i.e./fw ,/punct no/dt computation/nn depends/vbz on/in the/dt size/nn of/in the/dt full/jj exponential/jj domain/nn ./punct
+we/prp are/vbp first/rb concerned/vbn with/in the/dt computation/nn of/in mt/nn grows/vbz monotonically/rb with/in t/nn ,/punct a/dt naive/jj application/nn of/in optimization/nn algorithm/nn to/to generate/vb the/dt best/jjs outcomes/nns sequentially/rb might/md end/vb up/rp enumerating/vbg significant/jj portions/nns of/in the/dt fully/rb exponential/jj domain/nn ./punct
+however/rb as/in shown/vbn below/in this/dt plain/jj enumeration/nn can/md be/vb avoided/vbn ./punct
+)/punct ./punct
+moreover/rb ,/punct the/dt total/jj time/nn spent/vbn on/in this/dt task/nn throughout/in the/dt auction/nn is/vbz o/nn (/punct |i|/nn (/punct |i|/nn +/punct t/nn )/punct )/punct ./punct
+the/dt bounds/nns are/vbp in/in practice/nn significantly/rb lower/jjr ,/punct based/vbn on/in results/nns on/in similar/jj problems/nns from/in the/dt probabilistic/jj reasoning/nn literature/nn ./punct
+one/cd of/in the/dt benefits/nns of/in the/dt compact/jj pricing/nn structure/nn is/vbz the/dt compact/jj representation/nn it/prp lends/vbz for/in bids/nns :/punct sellers/nns submit/vbp only/rb sub-bids/jj ,/punct and/cc therefore/rb the/dt number/nn of/in them/prp submitted/vbd and/cc stored/vbd per/in seller/nn is/vbz bounded/vbn by/in |i|/nn ./punct
+since/in the/dt computation/nn tasks/nns :/punct bt/nn [/punct switch/nn ]/punct and/cc choice/nn of/in ηi/nn are/vbp all/dt involving/vbg the/dt set/nn bt/nn important/jj to/to note/vb that/in their/prp$ performance/nn only/rb depend/vbp on/in the/dt size/nn of/in i/fw ,/punct since/in they/prp are/vbp all/dt subsumed/vbn by/in the/dt combinatorial/jj ./punct
+next/rb ,/punct we/prp analyze/vbp the/dt number/nn of/in rounds/nns it/prp takes/vbz for/in the/dt auction/nn to/to terminate/vb ./punct
+phase/nn b/nn requires/vbz maxi=1/nn ,/punct .../: n/nn πt/nn equivalent/jj to/to price-only/jj auctions/nns ,/punct the/dt concern/nn is/vbz only/rb with/in the/dt time/nn upper/jj bound/vbn on/in the/dt number/nn of/in rounds/nns required/vbn is/vbz however/rb phase/nn a/nn may/md converge/vb faster/rbr ./punct
+let/vb the/dt initial/jj negative/jj general/jj ,/punct the/dt closer/jjr the/dt initial/jj prices/nns reflect/vbp buyer/nn valuation/nn ,/punct the/dt full/jj initial/jj revelation/nn of/in buyer/nn ''/'' s/nns valuation/nn as/in done/vbn in/in other/jj mechanisms/nns discussed/vbn below/in ./punct
+between/in this/dt option/nn and/cc the/dt other/jj extreme/jj ,/punct choices/nns to/to determine/vb the/dt right/jj tradeoff/nn between/in convergence/nn time/nn and/cc information/nn revelation/nn ./punct
+in/in the/dt example/nn below/in the/dt choice/nn of/in a/dt lower/jjr initial/jj price/nn for/in the/dt domain/nn of/in i1/nn provides/vbz some/dt speedup/nn by/in revealing/vbg a/dt harmless/jj amount/nn of/in information/nn ./punct
+another/dt potential/jj concern/nn is/vbz the/dt communication/nn cost/nn associated/vbn with/in the/dt japanese/jj auction/nn style/nn ./punct
+the/dt sellers/nns need/vbp to/to send/vb their/prp$ bids/nns over/in and/cc over/in again/rb at/in each/dt round/nn ./punct
+a/dt simple/jj change/nn can/md be/vb made/vbn to/to avoid/vb much/jj of/in the/dt redundant/jj communication/nn :/punct the/dt auction/nn can/md retain/vb sub-bids/nns from/in previous/jj rounds/nns on/in sub-configurations/nns whose/wp$ price/nn did/vbd not/rb change/vb ./punct
+since/in combinations/nns of/in sub-bids/nns from/in different/jj rounds/nns can/md yield/vb sub-optimal/jj configurations/nns ,/punct each/dt sub-bid/nn should/md submitted/vbn ,/punct and/cc only/rb consistent/jj combinations/nns from/in the/dt same/jj round/nn are/vbp considered/vbn to/to be/vb full/jj bids/nns ./punct
+with/in this/dt implementation/nn sellers/nns need/vbp not/rb resubmit/vb their/prp$ bid/nn until/in a/dt price/nn of/in at/in least/jjs one/cd sub-configuration/nn has/vbz changed/vbn ./punct
+we/prp use/vbp the/dt example/nn settings/nns introduced/vbn in/in section/nn 5.2/cd ./punct
+recall/vb that/in the/dt gai/nn structure/nn is/vbz i1/nn =/punct {/punct a/dt ,/punct b/nn }/punct ,/punct i2/nn =/punct {/punct b/nn ,/punct c/nn }/punct (/punct note/nn that/wdt e/ls =/punct 1/cd )/punct ./punct
+the/dt maximal/jj surplus/nn of/in the/dt second/jj best/jjs seller/nn ,/punct s2/nn ,/punct is/vbz 25/cd ,/punct achieved/vbd that/in price/nn reduction/nn for/in sub-configurations/nns is/vbz 4/cd ./punct
+though/in with/in these/dt either/cc the/dt efficient/jj allocation/nn or/cc on/in a1/nn of/in 39/cd ./punct
+the/dt reason/nn is/vbz that/in these/dt are/vbp the/dt only/jj two/cd configurations/nns one/cd of/in them/prp must/md be/vb chosen/vbn by/in phase/nn a/nn )/punct ,/punct and/cc both/dt provide/vbp more/jjr than/in surplus/nn over/in s2/nn ''/'' s/nns most/rbs efficient/jj configuration/nn (/punct and/cc this/dt is/vbz sufficient/jj in/in order/nn to/to win/vb in/in phase/nn b/nn )/punct ./punct
+therefore/rb she/prp no/rb longer/rbr changes/vbz her/prp$ bids/nns since/in the/dt price/nn of/in her/prp$ optimal/jj configurations/nns does/vbz not/rb decrease/vb ./punct
+s2/nn sticks/vbz to/to a2/vb }/punct )/punct ./punct
+profit/nn 20/cd ./punct
+the/dt welfare/nn achieved/vbn in/in this/dt case/nn is/vbz optimal/jj ./punct
+to/to illustrate/vb how/wrb some/dt efficiency/nn loss/nn could/md occur/vb consider/vb the/dt case/nn that/in c1/nn (/punct b2/nn no/rb longer/rb optimal/jj after/in the/dt price/nn change/nn ,/punct a1/nn ./punct
+terminates/vbz with/in the/dt slightly/rb suboptimal/jj configuration/nn and/cc surplus/nn 40/cd ./punct
+a/dt key/jj aspect/nn in/in implementing/vbg gai/nn based/vbn auctions/nns is/vbz the/dt choice/nn some/dt domains/nns the/dt structure/nn can/md be/vb more/rbr or/cc less/rbr robust/jj over/in time/nn and/cc over/in different/jj decision/nn makers/nns ./punct
+when/wrb this/dt is/vbz not/rb the/dt case/nn ,/punct extracting/vbg reliable/jj structure/nn from/in sellers/nns (/punct in/in the/dt form/nn of/in cdi/nnp conditions/nns )/punct is/vbz a/dt serious/jj challenge/nn ./punct
+this/dt could/md have/vb been/vbn a/dt deal/nn breaker/nn we/prp can/md run/vb this/dt auction/nn without/in any/dt assumptions/nns on/in sellers/nns ''/'' preference/nn structure/nn ./punct
+the/dt only/jj place/nn where/wrb this/dt assumption/nn is/vbz used/vbn in/in our/prp$ analysis/nn is/vbz for/in lemma/nnp 8/cd ./punct
+if/in sellers/nns whose/wp$ preference/nn structure/nn does/vbz not/rb agree/vb with/in the/dt one/cd used/vbn by/in the/dt auction/nn are/vbp guided/vbn to/to submit/vb undesired/jj consistent/jj combinations/nns ,/punct all/pdt the/dt properties/nns of/in the/dt auction/nn still/rb hold/vbp ./punct
+locally/rb ,/punct the/dt sellers/nns can/md optimize/vb their/prp$ profit/nn functions/nns using/vbg the/dt union/nn of/in their/prp$ gai/nn structure/nn with/in the/dt auction/nn ''/'' s/nns structure/nn ./punct
+it/prp is/vbz therefore/rb essential/jj only/rb that/in the/dt buyer/nn ''/'' s/nns preference/nn structure/nn is/vbz accurately/rb modeled/vbn ./punct
+of/in course/nn ,/punct capturing/vbg sellers/nns ''/'' structures/nns as/rb well/rb is/vbz still/rb preferred/vbn since/in it/prp can/md speed/vb up/rp the/dt execution/nn and/cc let/vb sellers/nns take/vb advantage/nn of/in the/dt compact/jj bid/nn representation/nn ./punct
+in/in both/dt cases/nns the/dt choice/nn of/in clusters/nns may/md significantly/rb affect/vb the/dt complexity/nn of/in the/dt price/nn structure/nn and/cc the/dt runtime/nn of/in the/dt auction/nn ./punct
+order/nn to/to reduce/vb dimensionality/nn ./punct
+the/dt complexity/nn of/in the/dt structure/nn also/rb affects/vbz the/dt efficiency/nn of/in the/dt auction/nn through/in the/dt value/nn of/in e./fw in/fw considering/vbg information/nn properties/nns of/in this/dt mechanism/nn we/prp compare/vbp to/to the/dt standard/jj approach/nn for/in iterative/jj multiattribute/jj auctions/nns ,/punct these/dt mechanisms/nns the/dt buyer/nn reveals/vbz a/dt scoring/vbg function/nn and/cc then/rb the/dt mechanism/nn solicits/vbz bids/nns from/in the/dt sellers/nns (/punct the/dt mechanisms/nns suggested/vbn by/in beil/nnp and/cc wein/nnp is/vbz different/jj since/in buyers/nns can/md modify/vb their/prp$ scoring/vbg function/nn each/dt round/nn ,/punct but/cc the/dt goal/nn there/ex is/vbz to/to maximize/vb the/dt buyer/nn ''/'' s/nns profit/nn )/punct ./punct
+whereas/in these/dt iterative/jj procurement/nn mechanisms/nns tend/vbp to/to relieve/vb the/dt burden/nn of/in information/nn revelation/nn from/in the/dt sellers/nns ,/punct a/dt major/jj drawback/nn is/vbz that/in the/dt buyer/nn ''/'' s/nns utility/nn function/nn must/md be/vb revealed/vbn to/to the/dt sellers/nns before/in receiving/vbg any/dt auction/nn above/in ,/punct buyer/nn information/nn is/vbz revealed/vbn only/rb in/in exchange/nn for/in sell/nn commitments/nns ./punct
+in/in particular/jj ,/punct sellers/nns learn/vbp nothing/nn (/punct beyond/in the/dt initial/jj price/nn upper/jj bound/vbn ,/punct which/wdt can/md be/vb arbitrarily/rb loose/jj )/punct about/in the/dt utility/nn of/in configurations/nns for/in which/wdt no/dt bid/nn was/vbd submitted/vbn ./punct
+when/wrb infer/vbp its/prp$ utility/nn relative/jj to/to the/dt current/jj preferred/jj configurations/nns only/rb configuration/nn as/rb well/rb ./punct

@@ -1,0 +1,200 @@
+machine/nn learning/nn is/vbz commonly/rb used/vbn to/to improve/vb ranked/vbd retrieval/nn systems/nns ./punct
+due/jj to/to computational/jj difficulties/nns ,/punct few/jj learning/vbg techniques/nns have/vbp been/vbn developed/vbn to/to directly/rb optimize/vb for/in mean/jj average/jj precision/nn (/punct map/nn )/punct ,/punct despite/in its/prp$ widespread/jj use/nn in/in evaluating/vbg such/jj systems/nns ./punct
+existing/vbg approaches/nns optimizing/vbg map/nn either/cc do/vbp not/rb find/vb a/dt globally/rb optimal/jj solution/nn ,/punct or/cc are/vbp computationally/rb expensive/jj ./punct
+in/in contrast/nn ,/punct we/prp present/vbp a/dt general/jj svm/nn learning/nn algorithm/nn that/wdt efficiently/rb finds/vbz a/dt globally/rb optimal/jj solution/nn to/to a/dt straightforward/jj relaxation/nn of/in map/nn ./punct
+we/prp evaluate/vbp our/prp$ approach/nn using/vbg the/dt trec/nn 9/cd and/cc trec/nn 10/cd web/nn track/nnp corpora/nn (/punct wt10g/nn )/punct ,/punct comparing/vbg against/in svms/nns optimized/vbn for/in accuracy/nn and/cc rocarea/nn ./punct
+in/in most/jjs cases/nns we/prp show/vbp our/prp$ method/nn to/to produce/vb statistically/rb significant/jj improvements/nns in/in map/nn scores/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp h.3.3/nn [/punct information/nn search/vb and/cc retrieval/nnp ]/punct :/punct retrieval/nnp models/nns general/nnp terms/nns algorithm/nnp ,/punct theory/nnp ,/punct experimentation/nn 1/cd ./punct
+introduction/nn state/nn of/in the/dt art/nn information/nn retrieval/nn systems/nns commonly/rb use/vbp machine/nn learning/nn techniques/nns to/to learn/vb ranking/jj functions/nns ./punct
+however/rb ,/punct most/rbs current/jj approaches/nns do/vbp not/rb optimize/vb for/in the/dt evaluation/nn measure/nn most/rbs often/rb used/vbn ,/punct namely/rb mean/nn average/jj precision/nn (/punct map/nn )/punct ./punct
+instead/rb ,/punct current/jj algorithms/nns tend/vbp to/to take/vb one/cd of/in two/cd general/jj approaches/nns ./punct
+the/dt first/jj approach/nn is/vbz to/to learn/vb a/dt model/nn that/wdt estimates/vbz the/dt probability/nn of/in a/dt document/nn being/vbg relevant/jj given/vbn a/dt query/nn (/punct e.g./fw ,/punct [/punct 18/cd ,/punct 14/cd ]/punct )/punct ./punct
+if/in solved/vbn effectively/rb ,/punct the/dt ranking/jj with/in best/jjs map/nn performance/nn can/md easily/rb be/vb derived/vbn from/in the/dt probabilities/nns of/in relevance/nn ./punct
+however/rb ,/punct achieving/vbg high/jj map/nn only/rb requires/vbz finding/vbg a/dt good/jj ordering/vbg of/in the/dt documents/nns ./punct
+as/in a/dt result/nn ,/punct finding/vbg good/jj probabilities/nns requires/vbz solving/vbg a/dt more/rbr difficult/jj problem/nn than/in necessary/jj ,/punct likely/jj requiring/vbg more/jjr training/nn data/nns to/to achieve/vb the/dt same/jj map/nn performance/nn ./punct
+the/dt second/jj common/jj approach/nn is/vbz to/to learn/vb a/dt function/nn that/wdt maximizes/vbz a/dt surrogate/jj measure/nn ./punct
+performance/nnp measures/vbz optimized/vbn include/vbp accuracy/nn [/punct 17/cd ,/punct 15/cd ]/punct ,/punct rocarea/nn [/punct 1/cd ,/punct 5/cd ,/punct 10/cd ,/punct 11/cd ,/punct 13/cd ,/punct 21/cd ]/punct or/cc modifications/nns of/in rocarea/nn [/punct 4/cd ]/punct ,/punct and/cc ndcg/nn [/punct 2/cd ,/punct 3/cd ]/punct ./punct
+learning/vbg a/dt model/nn to/to optimize/vb for/in such/jj measures/nns might/md result/vb in/in suboptimal/jj map/nn performance/nn ./punct
+in/in fact/nn ,/punct although/in some/dt previous/jj systems/nns have/vbp obtained/vbn good/jj map/nn performance/nn ,/punct it/prp is/vbz known/vbn that/in neither/cc achieving/vbg optimal/jj accuracy/nn nor/cc rocarea/nn can/md guarantee/vb optimal/jj map/nn performance/nn [/punct 7/cd ]/punct ./punct
+in/in this/dt paper/nn ,/punct we/prp present/vbp a/dt general/jj approach/nn for/in learning/vbg ranking/jj functions/nns that/wdt maximize/vbp map/nn performance/nn ./punct
+specifically/rb ,/punct we/prp present/vbp an/dt svm/nn algorithm/nn that/wdt globally/rb optimizes/vbz a/dt hinge-loss/jj relaxation/nn of/in map/nn ./punct
+this/dt approach/nn simplifies/vbz the/dt process/nn of/in obtaining/vbg ranking/jj functions/nns with/in high/jj map/nn performance/nn by/in avoiding/vbg additional/jj intermediate/jj steps/nns and/cc heuristics/nns ./punct
+the/dt new/jj algorithm/nn also/rb makes/vbz it/prp conceptually/rb just/rb as/in easy/jj to/to optimize/vb svms/nns for/in map/nn as/in was/vbd previously/rb possible/jj only/rb for/in accuracy/nn and/cc rocarea/nn ./punct
+in/in contrast/nn to/to recent/jj work/nn directly/rb optimizing/vbg for/in map/nn performance/nn by/in metzler/nnp &/punct croft/nnp [/punct 16/cd ]/punct and/cc caruana/nnp et/fw al/fw ./punct
+[/punct 6/cd ]/punct ,/punct our/prp$ technique/nn is/vbz computationally/rb efficient/jj while/in finding/vbg a/dt globally/rb optimal/jj solution/nn ./punct
+like/in [/punct 6/cd ,/punct 16/cd ]/punct ,/punct our/prp$ method/nn learns/vbz a/dt linear/jj model/nn ,/punct but/cc is/vbz much/rb more/rbr efficient/jj in/in practice/nn and/cc ,/punct unlike/in [/punct 16/cd ]/punct ,/punct can/md handle/vb many/jj thousands/nns of/in features/nns ./punct
+we/prp now/rb describe/vbp the/dt algorithm/nn in/in detail/nn and/cc provide/vb proof/nn of/in correctness/nn ./punct
+following/vbg this/dt ,/punct we/prp provide/vbp an/dt analysis/nn of/in running/vbg time/nn ./punct
+we/prp finish/vbp with/in empirical/jj results/nns from/in experiments/nns on/in the/dt trec/nn 9/cd and/cc trec/nn 10/cd web/nn track/nnp corpus/nn ./punct
+we/prp have/vbp also/rb developed/vbn a/dt software/nn package/nn implementing/vbg our/prp$ algorithm/nn that/wdt is/vbz available/jj for/in public/jj use1/nn ./punct
+2/ls ./punct
+the/dt learning/vbg problem/nn following/vbg the/dt standard/jj machine/nn learning/vbg setup/nn ,/punct our/prp$ goal/nn is/vbz to/to learn/vb a/dt function/nn h/nn :/punct x/nn →/cd y/nn between/in an/dt input/nn space/nn x/nn (/punct all/dt possible/jj queries/nns )/punct and/cc output/nn space/nn y/nn (/punct rankings/nns over/in a/dt corpus/nn )/punct ./punct
+in/in order/nn to/to quantify/vb the/dt quality/nn of/in a/dt prediction/nn ,/punct ˆy/nn =/punct h/nn (/punct x/cc )/punct ,/punct we/prp will/md consider/vb a/dt loss/nn function/nn ∆/cd :/punct y/nn ×/cd y/nn →/cd ./punct
+∆/nn (/punct y/nn ,/punct ˆy/jj )/punct quantifies/vbz the/dt penalty/nn for/in making/vbg prediction/nn ˆy/nn if/in the/dt correct/jj output/nn is/vbz y./vbn the/dt loss/nn function/nn allows/vbz us/prp to/to incorporate/vb specific/jj performance/nn measures/nns ,/punct which/wdt we/prp will/md exploit/vb 1/cd http/nn :/punct //svmrank.yisongyue.com/nnp for/in optimizing/vbg map/nn ./punct
+we/prp restrict/vbp ourselves/prp to/to the/dt supervised/jj learning/nn scenario/nn ,/punct where/wrb input/output/jj pairs/nns (/punct x/nn ,/punct y/nn )/punct are/vbp available/jj for/in training/nn and/cc are/vbp assumed/vbn to/to come/vb from/in some/dt fixed/jj distribution/nn p/nn (/punct x/nn ,/punct y/nn )/punct ./punct
+the/dt goal/nn is/vbz to/to find/vb a/dt function/nn h/nn such/jj that/in the/dt risk/nn (/punct i.e./fw ,/punct expected/vbn loss/nn )/punct ,/punct r∆/nn p/nn (/punct h/nn )/punct =/punct z/nn x×y/nn ∆/cd (/punct y/nn ,/punct h/nn (/punct x/cc )/punct )/punct dp/nn (/punct x/nn ,/punct y/nn )/punct ,/punct is/vbz minimized/vbn ./punct
+of/in course/nn ,/punct p/nn (/punct x/nn ,/punct y/nn )/punct is/vbz unknown/jj ./punct
+but/cc given/vbn a/dt finite/jj set/nn of/in training/nn pairs/nns ,/punct s/nn =/punct {/punct (/punct xi/nn ,/punct yi/nn )/punct ∈/nn x/nn ×/cd y/nn :/punct i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn }/punct ,/punct the/dt performance/nn of/in h/nn on/in s/nn can/md be/vb measured/vbn by/in the/dt empirical/jj risk/nn ,/punct r∆/nn s/nn (/punct h/nn )/punct =/punct 1/cd n/nn nx/nn i=1/nn ∆/cd (/punct yi/nns ,/punct h/nn (/punct xi/nn )/punct )/punct ./punct
+in/in the/dt case/nn of/in learning/vbg a/dt ranked/vbn retrieval/nn function/nn ,/punct x/nn denotes/vbz a/dt space/nn of/in queries/nns ,/punct and/cc y/nn the/dt space/nn of/in (/punct possibly/rb weak/jj )/punct rankings/nns over/in some/dt corpus/nn of/in documents/nns c/nn =/punct {/punct d1/nn ,/punct ./punct
+./punct
+./punct
+,/punct d|c|/nn }/punct ./punct
+we/prp can/md define/vb average/jj precision/nn loss/nn as/in ∆map/jj (/punct y/nn ,/punct ˆy/jj )/punct =/punct 1/cd −/cd map/nn (/punct rank/nn (/punct y/nn )/punct ,/punct rank/nn (/punct ˆy/nn )/punct )/punct ,/punct where/wrb rank/nn (/punct y/nn )/punct is/vbz a/dt vector/nn of/in the/dt rank/nn values/nns of/in each/dt document/nn in/in c./nn for/in example/nn ,/punct for/in a/dt corpus/nn of/in two/cd documents/nns ,/punct {/punct d1/nn ,/punct d2/nn }/punct ,/punct with/in d1/nn having/vbg higher/jjr rank/nn than/in d2/nn ,/punct rank/nn (/punct y/nn )/punct =/punct (/punct 1/cd ,/punct 0/cd )/punct ./punct
+we/prp assume/vbp true/jj rankings/nns have/vbp two/cd rank/jj values/nns ,/punct where/wrb relevant/jj documents/nns have/vbp rank/jj value/nn 1/cd and/cc non-relevant/jj documents/nns rank/vbp value/nn 0/cd ./punct
+we/prp further/rb assume/vb that/in all/dt predicted/vbn rankings/nns are/vbp complete/jj rankings/nns (/punct no/dt ties/nns )/punct ./punct
+let/vb p/nn =/punct rank/nn (/punct y/nn )/punct and/cc ˆp/nn =/punct rank/nn (/punct ˆy/nn )/punct ./punct
+the/dt average/jj precision/nn score/nn is/vbz defined/vbn as/in map/nn (/punct p/nn ,/punct ˆp/nn )/punct =/punct 1/cd rel/nn x/nn j/nn :/punct pj/nn =1/cd prec/nnp @/punct j/nn ,/punct where/wrb rel/nn =/punct |/punct {/punct i/fw :/punct pi/nn =/punct 1/cd }/punct |/punct is/vbz the/dt number/nn of/in relevant/jj documents/nns ,/punct and/cc prec/nnp @/punct j/nn is/vbz the/dt percentage/nn of/in relevant/jj documents/nns in/in the/dt top/jj j/nn documents/nns in/in predicted/vbn ranking/jj ˆy/nn ./punct
+map/nn is/vbz the/dt mean/nn of/in the/dt average/jj precision/nn scores/nns of/in a/dt group/nn of/in queries/nns ./punct
+most/jjs learning/vbg algorithms/nns optimize/vb for/in accuracy/nn or/cc rocarea/nn ./punct
+while/in optimizing/vbg for/in these/dt measures/nns might/md achieve/vb good/jj map/nn performance/nn ,/punct we/prp use/vbp two/cd simple/jj examples/nns to/to show/vb it/prp can/md also/rb be/vb suboptimal/jj in/in terms/nns of/in map/nn ./punct
+rocarea/nn assigns/vbz equal/jj penalty/nn to/to each/dt misordering/nn of/in a/dt relevant/non-relevant/jj pair/nn ./punct
+in/in contrast/nn ,/punct map/nn assigns/vbz greater/jjr penalties/nns to/to misorderings/nns higher/jjr up/in in/in the/dt predicted/vbn ranking/nn ./punct
+using/vbg our/prp$ notation/nn ,/punct rocarea/nn can/md be/vb defined/vbn as/in ranking/jj ,/punct and/cc 1/cd [/punct b/nn ]/punct is/vbz the/dt indicator/nn function/nn conditioned/vbn on/in b./nnp using/vbg a/dt very/rb similar/jj example/nn ,/punct we/prp now/rb demonstrate/vbp how/wrb optimizing/vbg for/in accuracy/nn might/md result/vb in/in suboptimal/jj map/nn ./punct
+models/nns which/wdt optimize/vbp for/in accuracy/nn are/vbp not/rb directly/rb concerned/vbn with/in the/dt ranking/nn ./punct
+instead/rb ,/punct they/prp learn/vbp a/dt threshold/nn such/jj that/in documents/nns scoring/vbg higher/jjr than/in the/dt threshold/nn can/md be/vb classified/vbn as/in relevant/jj and/cc documents/nns scoring/vbg lower/jjr as/in nonrelevant/jj ./punct
+hypothesis/nn map/nn best/jjs acc/nn ./punct
+4/ls ./punct
+5/cd and/cc 6/cd gives/vbz 3/cd errors/nns (/punct documents/nns 10-11/cd incorrectly/rb classified/vbn as/in relevant/jj ,/punct and/cc document/nn 1/cd as/in non-relevant/jj )/punct ,/punct yielding/vbg an/dt accuracy/nn of/in 0.73/cd ./punct
+a/dt learning/nn method/nn which/wdt optimizes/vbz for/in accuracy/nn would/md choose/vb h2/nn since/in that/dt results/vbz in/in a/dt higher/jjr accuracy/nn score/nn ,/punct but/cc this/dt yields/vbz a/dt suboptimal/jj map/nn score/nn ./punct
+optimizing/vbg rocarea/nn ./punct
+unlike/in rocarea/nn ,/punct however/rb ,/punct map/nn does/vbz not/rb decompose/vb linearly/rb in/in the/dt examples/nns and/cc requires/vbz a/dt substantially/rb extended/vbn algorithm/nn ,/punct which/wdt we/prp describe/vbp in/in this/dt section/nn ./punct
+recall/vb that/in the/dt true/jj ranking/nn is/vbz a/dt weak/jj ranking/nn with/in two/cd rank/nn values/nns (/punct relevant/jj and/cc non-relevant/jj )/punct ./punct
+let/vb cx/nnp denote/vb the/dt set/nn of/in relevant/jj and/cc non-relevant/jj documents/nns of/in c/nn for/in query/nn x/nn ,/punct respectively/rb ./punct
+the/dt ranking/jj y/nn that/wdt maximizes/vbz the/dt discriminant/jj function/nn :/punct ./punct
+matrices/nns which/wdt correspond/vbp to/to valid/jj rankings/nns (/punct i.e/rb ,/punct obeying/vbg antisymmetry/nn and/cc transitivity/nn )/punct ./punct
+intuitively/rb ,/punct ψ/nn is/vbz a/dt summation/nn over/in the/dt vector/nn differences/nns of/in all/dt relevant/non-relevant/jj document/nn pairings/nns ./punct
+since/in we/prp assume/vbp predicted/vbn rankings/nns to/to be/vb complete/jj rankings/nns ,/punct yij/nn is/vbz either/cc +1/cd or/cc −1/cd (/punct never/rb 0/cd )/punct ./punct
+given/vbn a/dt learned/vbn weight/nn vector/nn w/nn ,/punct predicting/vbg a/dt ranking/jj (/punct i.e/nn ./punct
+solving/vbg equation/nn (/punct 1/cd )/punct )/punct given/vbn query/nn x/nn reduces/vbz to/to picking/vbg each/dt used/vbn for/in our/prp$ experiments/nns ./punct
+the/dt above/jj formulation/nn is/vbz very/rb similar/jj to/to learning/vbg a/dt straightforward/jj linear/jj model/nn while/in training/nn on/in the/dt pairwise/jj difference/nn of/in relevant/non-relevant/jj document/nn pairings/nns ./punct
+many/jj svm-based/jj approaches/nns optimize/vbp over/in these/dt pairwise/jj differences/nns (/punct e.g./fw ,/punct )/punct ,/punct although/in these/dt methods/nns do/vbp not/rb optimize/vb for/in map/nn during/in training/nn ./punct
+previously/rb ,/punct it/prp was/vbd not/rb clear/jj how/wrb to/to incorporate/vb non-linear/jj multivariate/jj loss/nn functions/nns such/jj as/in map/nn loss/nn directly/rb into/in global/jj optimization/nn problems/nns such/jj as/in svm/nn training/nn ./punct
+we/prp now/rb present/vbp a/dt method/nn based/vbn on/in structural/jj svms/nns to/to address/vb this/dt problem/nn ./punct
+we/prp use/vbp the/dt structural/jj svm/nn formulation/nn ,/punct presented/vbn in/in ./punct
+optimization/nnp problem/nnp 1/cd ./punct
+(/punct structural/jj svm/nn )/punct for/in example/nn ,/punct one/cd dimension/nn might/md be/vb the/dt number/nn of/in times/nns the/dt query/nn words/nns appear/vbp in/in the/dt document/nn ./punct
+algorithm/nn 1/cd cutting/jj plane/nn algorithm/nn for/in solving/vbg op/nn 1/cd within/in tolerance/nn ./punct
+13/cd :/punct until/in no/dt wi/nn has/vbz changed/vbn during/in iteration/nn parameter/nn that/wdt controls/vbz this/dt tradeoff/nn and/cc can/md be/vb tuned/vbn to/to achieve/vb good/jj performance/nn in/in different/jj training/nn tasks/nns ./punct
+for/in each/dt (/punct xi/nn ,/punct yi/nn )/punct in/in the/dt training/nn set/nn ,/punct a/dt set/nn of/in constraints/nns function/vbp f/nn (/punct x/nn ,/punct y/nn ;/punct w/nn )/punct (/punct see/vbp equation/nn (/punct 2/cd )/punct )/punct ./punct
+during/in prediction/nn ,/punct our/prp$ model/nn chooses/vbz the/dt ranking/nn which/wdt maximizes/vbz the/dt discriminant/jj (/punct 1/cd )/punct ./punct
+if/in the/dt discriminant/jj value/nn for/in an/dt incorrect/jj ranking/jj f/nn (/punct xi/nn ,/punct yi/nn ;/punct w/nn )/punct )/punct ,/punct then/rb corresponding/vbg slack/nn variable/nn ,/punct ξi/nn ,/punct must/md be/vb at/in least/jjs ∆/cd (/punct yi/nn ,/punct y/nn )/punct for/in that/dt constraint/nn to/to be/vb satisfied/vbn ./punct
+ξi/nn ,/punct upper/jj bounds/nns the/dt map/nn loss/nn ./punct
+this/dt is/vbz stated/vbn formally/rb in/in proposition/nnp 1/cd ./punct
+s/nn (/punct w/nn )/punct ./punct
+that/in optimizes/vbz an/dt upper/jj bound/vbn on/in map/nn error/nn on/in the/dt required/vbn for/in every/dt possible/jj wrong/jj output/nn y/nn ,/punct and/cc the/dt c./nnp fortunately/rb ,/punct we/prp may/md employ/vb algorithm/nn 1/cd to/to solve/vb op/nn 1/cd ./punct
+algorithm/nn 1/cd is/vbz a/dt cutting/vbg plane/nn algorithm/nn ,/punct iteratively/rb introducing/vbg constraints/nns until/in we/prp have/vbp solved/vbn the/dt original/jj problem/nn within/in a/dt desired/vbn tolerance/nn ./punct
+the/dt algorithm/nn starts/vbz with/in no/dt constraints/nns ,/punct and/cc iteratively/rb finds/vbz for/in each/dt example/nn (/punct xi/nn ,/punct yi/fw )/punct the/dt output/nn ˆy/nn associated/vbn with/in the/dt most/rbs violated/vbn constraint/nn ./punct
+introduce/vb ˆy/rb into/in the/dt working/vbg set/nn wi/nns of/in active/jj constraints/nns for/in shown/vbn that/in algorithm/nn 1/cd ''/'' s/vbz outer/jj loop/nn is/vbz guaranteed/vbn to/to halt/vb within/in a/dt polynomial/jj number/nn of/in iterations/nns for/in any/dt desired/vbn precision/nn ./punct
+constraints/nns to/to the/dt working/vbg set/nn w/nn ./punct
+(/punct see/vb for/in proof/nn )/punct however/rb ,/punct within/in the/dt inner/jj loop/nn of/in this/dt algorithm/nn we/prp have/vbp ψ/nn (/punct xi/nn ,/punct yi/nn )/punct is/vbz constant/jj with/in respect/nn to/to y./vb though/nnp closely/rb related/jj to/to the/dt classification/nn procedure/nn ,/punct this/dt has/vbz the/dt substantial/jj complication/nn that/in we/prp must/md contend/vb with/in the/dt additional/jj ∆/nn (/punct yi/nn ,/punct y/nn )/punct term/nn ./punct
+without/in the/dt ability/nn to/to efficiently/rb find/vb the/dt most/rbs violated/vbn constraint/nn (/punct i.e./fw ,/punct solve/vb argmaxy∈y/nn h/nn (/punct y/nn ,/punct w/nn )/punct )/punct ,/punct the/dt constraint/nn generation/nn procedure/nn is/vbz not/rb tractable/jj ./punct
+using/vbg op/nn 1/cd and/cc optimizing/vbg to/to rocarea/nn loss/nn (/punct ∆roc/nn )/punct ,/punct the/dt problem/nn of/in finding/vbg the/dt most/rbs violated/vbn constraint/nn ,/punct or/cc solving/vbg argmaxy∈y/nn h/nn (/punct y/nn ,/punct w/nn )/punct (/punct henceforth/nn argmax/nn h/nn )/punct ,/punct is/vbz addressed/vbn in/in ./punct
+solving/vbg argmax/nn h/nn for/in ∆map/nn is/vbz more/rbr difficult/jj ./punct
+this/dt is/vbz primarily/rb because/in rocarea/nn decomposes/vbz nicely/rb into/in a/dt sum/nn of/in scores/nns computed/vbn independently/rb on/in each/dt relative/jj ordering/vbg of/in a/dt relevant/non-relevant/jj document/nn pair/nn ./punct
+map/nn ,/punct on/in the/dt other/jj hand/nn ,/punct does/vbz not/rb decompose/vb in/in the/dt same/jj way/nn as/in rocarea/nn ./punct
+the/dt main/jj algorithmic/jj contribution/nn of/in this/dt paper/nn is/vbz an/dt efficient/jj method/nn for/in solving/vbg argmax/nn h/nn for/in ∆map/nn ./punct
+swapping/vbg two/cd documents/nns with/in equal/jj relevance/nn ./punct
+for/in example/nn ,/punct if/in documents/nns da/nn and/cc db/nn are/vbp both/dt relevant/jj ,/punct then/rb swapping/vbg the/dt positions/nns of/in da/nn and/cc db/nn in/in any/dt ranking/nn does/vbz not/rb affect/vb ∆map/nn ./punct
+by/in extension/nn ,/punct ∆map/nn is/vbz invariant/jj to/to any/dt arbitrary/jj permutation/nn of/in the/dt relevant/jj documents/nns amongst/in themselves/prp and/cc of/in the/dt non-relevant/jj documents/nns amongst/in themselves/prp ./punct
+however/rb ,/punct this/dt reshuﬄing/nn will/md affect/vb the/dt discriminant/jj score/nn ,/punct wt/nn ψ/nn (/punct x/nn ,/punct y/nn )/punct ./punct
+this/dt leads/vbz us/prp to/to observation/nn 1/cd ./punct
+observation/nn 1/cd ./punct
+consider/vb rankings/nns which/wdt are/vbp constrained/vbn by/in fixing/vbg the/dt relevance/nn at/in each/dt position/nn in/in the/dt ranking/jj (/punct e.g./fw ,/punct the/dt 3rd/jj document/nn in/in the/dt ranking/nn must/md be/vb relevant/jj )/punct ./punct
+every/dt ranking/nn which/wdt satisfies/vbz the/dt same/jj set/nn of/in constraints/nns will/md have/vb the/dt same/jj ∆map/nn ./punct
+if/in the/dt relevant/jj documents/nns are/vbp sorted/vbn by/in φ/nn (/punct x/nn ,/punct d/nn )/punct in/in descending/vbg order/nn ,/punct and/cc the/dt non-relevant/jj interleaving/nn of/in the/dt two/cd sorted/vbd lists/nns which/wdt satisfies/vbz the/dt constraints/nns will/md maximize/vb h/nn for/in that/dt constrained/vbn set/nn of/in rankings/nns ./punct
+observation/nn 1/cd implies/vbz that/in in/in the/dt ranking/nn which/wdt and/cc the/dt non-relevant/jj documents/nns will/md also/rb be/vb sorted/vbn likewise/rb ./punct
+by/in first/jj sorting/vbg the/dt relevant/jj and/cc non-relevant/jj documents/nns ,/punct the/dt problem/nn is/vbz simplified/vbn to/to finding/vbg the/dt optimal/jj interleaving/nn of/in two/cd sorted/vbd lists/nns ./punct
+for/in the/dt rest/nn of/in our/prp$ discussion/nn ,/punct we/prp assume/vbp that/in the/dt relevant/jj documents/nns and/cc non-relevant/jj documents/nns we/prp also/rb refer/vbp to/to relevant/jj documents/nns as/in {/punct dx/nn ./punct
+when/wrb the/dt highest/jjs ranked/vbd relevant/jj document/nn ranked/vbd after/in d¯x/nn φ/nn (/punct x/nn ,/punct di/fw )/punct ./punct
+the/dt first/jj term/nn in/in (/punct 5/cd )/punct is/vbz the/dt change/nn in/in ∆map/nn when/wrb the/dt ith/nn relevant/jj document/nn has/vbz j/vbn non-relevant/jj documents/nns ranked/vbd before/in it/prp ,/punct as/in opposed/vbn to/to j/vb −1/cd ./punct
+the/dt second/jj term/nn is/vbz the/dt change/nn in/in the/dt discriminant/jj score/nn ,/punct wt/nn when/wrb yij/nn changes/nns from/in +1/cd to/to −1/cd ./punct
+i+1/nn ,/punct ./punct
+./punct
+./punct
+i+1/nn ,/punct ./punct
+./punct
+./punct
+bottom/jj ranking/jj differs/vbz from/in the/dt top/nn only/rb where/wrb d¯x/jj one/cd rank/nn ./punct
+the/dt difference/nn in/in the/dt value/nn of/in h/nn for/in these/dt two/cd rankings/nns is/vbz exactly/rb δj/jj (/punct i/fw ,/punct i/fw +/punct 1/cd )/punct ./punct
+./punct
+document/nn ranked/vbd after/in the/dt jth/nn non-relevant/jj document/nn ./punct
+due/jj to/to observation/nn 1/cd ,/punct this/dt encoding/vbg uniquely/rb identifies/vbz a/dt complete/jj we/prp can/md now/rb reformulate/vb h/nn into/in a/dt new/jj objective/jj function/nn ,/punct where/wrb ¯y/nn is/vbz the/dt true/jj (/punct weak/jj )/punct ranking/nn ./punct
+conceptually/rb h/nn starts/vbz with/in a/dt perfect/jj ranking/jj ¯y/nn ,/punct and/cc adds/vbz the/dt change/nn in/in h/nn when/wrb each/dt successive/jj non-relevant/jj document/nn slides/vbz up/rp the/dt ranking/nn ./punct
+we/prp can/md then/rb reformulate/vb the/dt argmax/nn h/nn problem/nn as/in s.t/nn ./punct
+algorithm/nn 2/cd describes/vbz the/dt algorithm/nn used/vbn to/to solve/vb equation/nn (/punct 8/cd )/punct ./punct
+conceptually/rb ,/punct algorithm/nn 2/cd starts/vbz with/in a/dt perfect/jj ranking/nn ./punct
+then/rb for/in each/dt successive/jj non-relevant/jj document/nn ,/punct the/dt algorithm/nn modifies/vbz the/dt solution/nn by/in sliding/vbg that/in document/nn up/in the/dt ranking/jj to/to locally/rb maximize/vb h/nn while/in keeping/vbg the/dt positions/nns of/in the/dt other/jj non-relevant/jj documents/nns constant/jj ./punct
+position/nn of/in each/dt non-relevant/jj document/nn independently/rb from/in the/dt other/jj non-relevant/jj documents/nns ./punct
+in/in other/jj words/nns ,/punct the/dt algorithm/nn maximizes/vbz h/nn for/in each/dt non-relevant/jj document/nn ,/punct d¯x/nn algorithm/nn 2/cd finding/vbg the/dt most/jjs violated/vbn constraint/nn without/in considering/vbg the/dt positions/nns of/in the/dt other/jj non-relevant/jj documents/nns ,/punct and/cc thus/rb ignores/vbz the/dt constraints/nns of/in (/punct 9/cd )/punct ./punct
+in/in order/nn for/in the/dt solution/nn to/to be/vb feasible/jj ,/punct the/dt jth/nn non-relevant/jj if/in the/dt solution/nn is/vbz feasible/jj ,/punct the/dt it/prp clearly/rb solves/vbz (/punct 8/cd )/punct ./punct
+therefore/rb ,/punct prove/vbp that/in δj/nn (/punct ·/nn ,/punct ·/nn )/punct is/vbz monotonically/rb decreasing/vbg in/in j./nn δj+1/nn (/punct i1/nn ,/punct i2/nn )/punct ≤/cd δj/nn (/punct i1/nn ,/punct i2/nn )/punct ./punct
+decomposed/vbn into/in two/cd parts/nns (/punct see/vbp (/punct 5/cd )/punct )/punct ./punct
+we/prp will/md show/vb that/in each/dt are/vbp true/jj for/in the/dt aforementioned/jj values/nns of/in j/nn and/cc k./nn and/cc choosing/vbg a/dt =/punct j/nn and/cc b/nn =/punct j/nn +/punct k./nn the/dt second/jj inequality/nn (/punct 12/cd )/punct holds/vbz because/in algorithm/nn 2/cd first/jj j/nn ./punct
+corresponding/jj term/nn in/in δj/nn ,/punct which/wdt completes/vbz the/dt proof/nn ./punct
+the/dt result/nn of/in lemma/nnp 1/cd leads/vbz directly/rb to/to our/prp$ main/jj satisfy/vb (/punct 10/cd )/punct ,/punct implying/vbg that/in the/dt solution/nn returned/vbn by/in algorithm/nn 2/cd is/vbz feasible/jj and/cc thus/rb optimal/jj ./punct
+|/punct +/punct 1/cd )/punct </punct 0/cd ./punct
+|/punct +/punct 1/cd )/punct </punct 0/cd ./punct
+suppose/vb for/in contradiction/nn that/wdt optj+1/nn </punct optj/cd ./punct
+then/rb which/wdt contradicts/vbz (/punct 13/cd )/punct ./punct
+therefore/rb ,/punct it/prp must/md be/vb the/dt case/nn that/in optj/nn ≤/cd optj+1/nn ,/punct which/wdt completes/vbz the/dt proof/nn ./punct
+the/dt running/vbg time/nn of/in algorithm/nn 2/cd can/md be/vb split/vbn into/in two/cd part/nn computes/vbz each/dt optj/nn ,/punct which/wdt requires/vbz o/nn (/punct |cx/nn |/punct )/punct time/nn ./punct
+with/in respect/nn to/to n/nn )/punct ,/punct in/in which/wdt case/nn the/dt running/vbg time/nn for/in the/dt second/jj part/nn is/vbz simply/rb o/nn (/punct n/nn )/punct ./punct
+for/in most/jjs real-world/jj datasets/nns ,/punct algorithm/nn 2/cd is/vbz dominated/vbn by/in the/dt sort/nn and/cc has/vbz complexity/nn o/nn (/punct n/nn log/nn n/nn )/punct ./punct
+number/nn of/in iterations/nns ,/punct and/cc each/dt iteration/nn runs/vbz algorithm/nn 2/cd ./punct
+virtually/rb all/dt well-performing/jj models/nns were/vbd trained/vbn in/in a/dt reasonable/jj amount/nn of/in time/nn (/punct usually/rb less/jjr than/in one/cd hour/nn )/punct ./punct
+once/rb training/nn is/vbz complete/jj ,/punct making/vbg predictions/nns on/in query/nn x/nn using/vbg the/dt resulting/vbg hypothesis/nn h/nn (/punct x|w/nn )/punct requires/vbz only/rb sorting/vbg φ/jj (/punct x/nn ,/punct d/nn )/punct ./punct
+we/prp developed/vbd our/prp$ software/nn using/vbg a/dt python/nnp interface3/nn ,/punct since/in the/dt python/nnp language/nn greatly/rb simplified/vbd the/dt ./punct
+the/dt main/jj goal/nn of/in our/prp$ experiments/nns is/vbz to/to evaluate/vb whether/in directly/rb optimizing/vbg map/nn leads/vbz to/to improved/vbn map/nn performance/nn compared/vbn to/to conventional/jj svm/nn methods/nns that/wdt empirically/rb evaluate/vbp our/prp$ method/nn using/vbg two/cd sets/nns of/in trec/nn web/nn track/nnp queries/nns ,/punct one/cd each/dt from/in trec/nns 9/cd and/cc trec/nn 10/cd (/punct topics/nns 451-500/cd and/cc 501-550/cd )/punct ,/punct both/dt of/in which/wdt used/vbd the/dt wt10g/nn corpus/nn ./punct
+for/in each/dt query/nn ,/punct trec/nn provides/vbz the/dt relevance/nn judgments/nns of/in the/dt documents/nns ./punct
+we/prp generated/vbd our/prp$ features/nns using/vbg the/dt scores/nns of/in existing/vbg retrieval/nn functions/nns on/in these/dt queries/nns ./punct
+while/in our/prp$ method/nn is/vbz agnostic/jj to/to the/dt meaning/nn of/in the/dt yet/rb effective/jj way/nn of/in acquiring/vbg useful/jj features/nns ./punct
+as/in such/jj ,/punct our/prp$ http/nn :/punct //www.cs.cornell.edu/~tomf/svmpython//nn http/nn :/punct //svmlight.joachims.org/svmstruct.html/nn we/prp compare/vbp our/prp$ method/nn against/in the/dt best/jjs retrieval/nn functions/nns trained/vbn on/in (/punct henceforth/nn base/nn functions/vbz )/punct ,/punct as/rb well/rb as/in against/in previously/rb proposed/vbn svm/nnp methods/nns ./punct
+comparing/vbg with/in the/dt best/jjs base/nn functions/nns tests/vbz our/prp$ method/nn ''/'' s/nns ability/nn to/to learn/vb a/dt useful/jj combination/nn ./punct
+comparing/vbg with/in previous/jj svm/nn methods/nns allows/vbz us/prp to/to test/vb whether/in optimizing/vbg directly/rb for/in map/nn (/punct as/in opposed/vbn to/to accuracy/nn or/cc rocarea/nn )/punct achieves/vbz a/dt higher/jjr map/nn score/nn in/in practice/nn ./punct
+the/dt rest/nn of/in this/dt section/nn describes/vbz the/dt base/nn functions/nns and/cc the/dt feature/nn generation/nn method/nn in/in detail/nn ./punct
+we/prp chose/vbd two/cd sets/nns of/in base/nn functions/nns for/in our/prp$ experiments/nns ./punct
+for/in the/dt first/jj set/nn ,/punct we/prp generated/vbd three/cd indices/nns over/in the/dt wt10g/nn default/nn settings/nns ,/punct the/dt second/jj used/vbn porter-stemming/nn ,/punct and/cc the/dt last/jj used/jj porter-stemming/nn and/cc indri/nnp ''/'' s/vbz default/nn stopwords/nns ./punct
+for/in both/dt trec/nns 9/cd and/cc trec/nn 10/cd ,/punct we/prp used/vbd the/dt description/nn portion/nn of/in each/dt query/nn and/cc scored/vbd the/dt documents/nns using/vbg five/cd of/in indri/nnp ''/'' s/vbz built-in/jj retrieval/nn methods/nns ,/punct which/wdt are/vbp cosine/nnp similarity/nnp ,/punct tfidf/nn ,/punct okapi/nnp ,/punct language/nnp model/nnp with/in dirichlet/nnp prior/rb ,/punct and/cc language/nnp model/nnp with/in jelinek-mercer/nnp prior/rb ./punct
+all/dt parameters/nns were/vbd kept/vbn as/in their/prp$ defaults/nns ./punct
+we/prp computed/vbd the/dt scores/nns of/in these/dt five/cd retrieval/nn methods/nns over/in the/dt three/cd indices/nns ,/punct giving/vbg 15/cd base/nn functions/nns in/in total/nn ./punct
+for/in each/dt query/nn ,/punct we/prp considered/vbd the/dt scores/nns of/in documents/nns found/vbn in/in the/dt union/nn of/in the/dt top/jj 1000/cd documents/nns of/in each/dt base/nn function/nn ./punct
+for/in our/prp$ second/jj set/nn of/in base/nn functions/nns ,/punct we/prp used/vbd scores/nns from/in the/dt trec/nn 9/cd and/cc trec/nn 10/cd web/nn track/nnp submissions/nns ./punct
+we/prp used/vbd only/rb the/dt non-manual/jj ,/punct non-short/jj submissions/nns from/in both/dt years/nns ./punct
+for/in trec/nns 9/cd and/cc trec/nn 10/cd ,/punct there/ex were/vbd 53/cd and/cc 18/cd such/jj submissions/nns ,/punct respectively/rb ./punct
+a/dt typical/jj submission/nn contained/vbd scores/nns of/in its/prp$ top/jj 1000/cd documents/nns ./punct
+in/in order/nn to/to generate/vb input/nn examples/nns for/in our/prp$ method/nn ,/punct a/dt concrete/jj instantiation/nn of/in φ/nn must/md be/vb provided/vbn ./punct
+for/in each/dt since/in we/prp are/vbp using/vbg linear/jj kernels/nns ,/punct one/prp can/md think/vb of/in the/dt learning/nn problem/nn as/in finding/vbg a/dt good/jj piecewise-constant/jj combination/nn of/in the/dt scores/nns of/in the/dt retrieval/nn functions/nns ./punct
+figure/nn 2/cd shows/vbz an/dt example/nn of/in our/prp$ feature/nn mapping/nn method/nn ./punct
+in/in this/dt ./punct
+are/vbp positive/jj ,/punct and/cc wc/nn is/vbz negative/jj ./punct
+we/prp ran/vbd our/prp$ main/jj experiments/nns using/vbg four/cd choices/nns of/in f/nn :/punct the/dt set/nn of/in aforementioned/jj indri/nnp retrieval/nn functions/nns for/in trec/nns 9/cd and/cc trec/nn 10/cd ,/punct and/cc the/dt web/nn track/nnp submissions/nns for/in trec/nn we/prp chose/vbd 50/cd values/nns for/in kf/nn which/wdt are/vbp reasonably/rb spaced/vbn and/cc capture/vb the/dt sensitive/jj region/nn of/in f./nnp using/vbg the/dt four/cd choices/nns of/in f/nn ,/punct we/prp generated/vbd four/cd datasets/nns for/in our/prp$ main/jj experiments/nns ./punct
+table/nnp 5/cd contains/vbz statistics/nns of/in the/dt generated/vbn datasets/nns ./punct
+there/ex are/vbp many/jj ways/nns to/to generate/vb features/nns ,/punct and/cc we/prp are/vbp not/rb advocating/vbg our/prp$ method/nn over/in others/nns ./punct
+this/dt was/vbd simply/rb an/dt efficient/jj means/nns to/to normalize/vb the/dt outputs/nns of/in different/jj functions/nns and/cc allow/vb for/in a/dt more/rbr expressive/jj model/nn ./punct
+each/dt trial/nn ,/punct we/prp train/vbp on/in 10/cd randomly/rb selected/vbn queries/nns ,/punct and/cc select/jj another/dt 5/cd queries/nns at/in random/jj for/in a/dt validation/nn set/nn ./punct
+models/nns were/vbd trained/vbn using/vbg a/dt wide/jj range/nn of/in c/nn values/nns ./punct
+the/dt model/nn which/wdt performed/vbd best/jjs on/in the/dt validation/nn set/nn was/vbd selected/vbn and/cc tested/vbn on/in the/dt remaining/vbg 35/cd queries/nns ./punct
+all/dt queries/nns were/vbd selected/vbn to/to be/vb in/in the/dt training/nn ,/punct validation/nn and/cc test/nn sets/vbz the/dt same/jj number/nn of/in times/nns ./punct
+using/vbg this/dt setup/nn ,/punct we/prp performed/vbd the/dt same/jj experiments/nns while/in using/vbg our/prp$ method/nn map/nn )/punct ,/punct an/dt svm/nn optimizing/vbg for/in rocarea/nn (/punct svm∆/nn and/cc a/dt conventional/jj classification/nn svm/nn (/punct svmacc/nn )/punct ./punct
+all/dt svm/nnp methods/nns used/vbd a/dt linear/jj kernel/nn ./punct
+we/prp reported/vbd the/dt average/jj performance/nn of/in all/dt models/nns over/in the/dt 50/cd trials/nns ./punct
+in/in analyzing/vbg our/prp$ results/nns ,/punct the/dt first/jj question/nn to/to answer/vb is/vbz ,/punct map/nn learn/vbp a/dt model/nn which/wdt outperforms/vbz the/dt best/jjs base/nn all/dt tables/nns displaying/vbg our/prp$ experimental/jj results/nns are/vbp structured/vbn outperforms/vbz the/dt best/jjs base/nn functions/nns ./punct
+hence/rb ,/punct we/prp ran/vbd the/dt same/jj experiments/nns using/vbg a/dt modified/vbn dataset/nn where/wrb the/dt features/nns computed/vbn using/vbg the/dt best/jjs submission/nn were/vbd removed/vbn ./punct
+table/nnp 8/cd shows/vbz the/dt results/nns (/punct note/nn that/in we/prp are/vbp still/rb comparing/vbg against/in the/dt best/jjs submission/nn though/in we/prp are/vbp not/rb using/vbg it/prp for/in training/nn )/punct ./punct
+notice/nnp that/wdt while/in the/dt map/nn degraded/vbd slightly/rb ,/punct the/dt performance/nn was/vbd still/rb comparable/jj with/in that/dt of/in the/dt best/jjs submission/nn ./punct
+the/dt next/jj question/nn to/to answer/vb is/vbz ,/punct does/vbz svm∆/nnp higher/jjr map/nn scores/nns than/in previous/jj svm/nn methods/nns ?/punct
+tables/nns 9/cd when/wrb trained/vbn on/in the/dt indri/nnp retrieval/nn functions/nns and/cc trec/nn submissions/nns ,/punct respectively/rb ./punct
+table/nnp 11/cd contains/vbz the/dt corresponding/jj results/nns when/wrb trained/vbn on/in the/dt trec/nn submissions/nns without/in the/dt best/jjs submission/nn ./punct
+to/to start/vb with/in ,/punct our/prp$ results/nns indicate/vbp that/in svmacc/nn was/vbd not/rb underperformed/vbn dramatically/rb ./punct
+as/in such/jj ,/punct we/prp tried/vbd several/jj approaches/nns to/to improve/vb the/dt performance/nn of/in svmacc/nn ./punct
+one/cd issue/nn which/wdt may/md cause/vb svmacc/nn to/to underperform/vb is/vbz the/dt severe/jj imbalance/nn between/in relevant/jj and/cc non-relevant/jj another/dt possible/jj issue/nn is/vbz that/in svmacc/nn attempts/nns to/to find/vb just/rb one/cd discriminating/vbg threshold/nn b/nn that/wdt is/vbz query-invariant/jj ./punct
+it/prp may/md be/vb that/in different/jj queries/nns require/vbp different/jj values/nns of/in (/punct when/wrb one/cd does/vbz not/rb exist/vb )/punct may/md be/vb detrimental/jj ./punct
+we/prp took/vbd two/cd approaches/nns to/to address/vb this/dt issue/nn ./punct
+the/dt first/jj method/nn ,/punct svmacc3/nn ,/punct converts/vbz the/dt retrieval/nn function/nn scores/nns into/in percentiles/nns ./punct
+for/in example/nn ,/punct for/in document/nn d/nn ,/punct query/nn q/nn and/cc the/dt scores/nns f/fw (/punct ·|q/fw )/punct for/in query/nn q/nn ,/punct then/rb the/dt converted/jj score/nn is/vbz performance/nn of/in svmacc3/nn was/vbd also/rb not/rb competitive/jj with/in svm∆/nn map/nn ./punct
+the/dt second/jj method/nn ,/punct svmacc4/nn ,/punct normalizes/vbz the/dt scores/nns given/vbn by/in f/fw for/in each/dt query/nn ./punct
+for/in example/nn ,/punct assume/vb for/in query/nn q/in that/dt f/fw outputs/fw scores/nns in/in the/dt range/nn 0.2/cd to/to 0.7/cd ./punct
+then/rb for/in document/nn show/vbp that/in svmacc4/nn was/vbd not/rb competitive/jj with/in svm∆/nn

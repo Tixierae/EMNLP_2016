@@ -1,0 +1,146 @@
+how/wrb to/to provide/vb appropriate/jj context/nn information/nn is/vbz a/dt challenging/jj problem/nn in/in context-aware/jj computing/nn ./punct
+most/jjs existing/vbg approaches/nns use/vbp a/dt centralized/jj selection/nn mechanism/nn to/to decide/vb which/wdt context/nn information/nn is/vbz appropriate/jj ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp a/dt novel/jj approach/nn based/vbn on/in negotiation/nn with/in rewards/nns to/to solving/vbg such/jj problem/nn ./punct
+distributed/vbn context/nn providers/nns negotiate/vbp with/in each/dt other/jj to/to decide/vb who/wp can/md provide/vb context/nn and/cc how/wrb they/prp allocate/vbp proceeds/nns ./punct
+in/in order/nn to/to support/vb our/prp$ approach/nn ,/punct we/prp have/vbp designed/vbn a/dt concrete/jj negotiation/nn model/nn with/in rewards/nns ./punct
+we/prp also/rb evaluate/vbp our/prp$ approach/nn and/cc show/vbp that/in it/prp indeed/rb can/md choose/vb an/dt appropriate/jj context/nn provider/nn and/cc allocate/vb the/dt proceeds/nns fairly/rb ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct distributed/vbn systems/nnps ]/punct :/punct distributed/vbn applicationsproviding/vbg context/nn information/nn general/nnp terms/nns context/nnp 1/cd ./punct
+introduction/nn context-awareness/nn is/vbz a/dt key/jj concept/nn in/in pervasive/jj computing/nn ./punct
+context/nn informs/vbz both/cc recognition/nn and/cc mapping/nn by/in providing/vbg a/dt structured/vbn ,/punct unified/vbn view/nn of/in the/dt world/nn in/in which/wdt the/dt system/nn operates/vbz [/punct 1/cd ]/punct ./punct
+context-aware/jj applications/nns exploit/vbp context/nn information/nn ,/punct such/jj as/in location/nn ,/punct preferences/nns of/in users/nns and/cc so/rb on/in ,/punct to/to adapt/vb their/prp$ behaviors/nns in/in response/nn to/to changing/vbg requirements/nns of/in users/nns and/cc pervasive/jj environments/nns ./punct
+however/rb ,/punct one/cd specific/jj kind/nn of/in context/nn can/md often/rb be/vb provided/vbn by/in different/jj context/nn providers/nns (/punct sensors/nns or/cc other/jj data/nns sources/nns of/in context/nn information/nn )/punct with/in different/jj quality/nn levels/nns ./punct
+for/in example/nn ,/punct in/in a/dt smart/jj home/nn ,/punct thermometer/nn a/nn ''/'' s/nns measurement/nn precision/nn is/vbz 0.1/cd ◦/nn c/nn ,/punct and/cc thermometer/nn b/nn ''/'' s/nns measurement/nn precision/nn is/vbz 0.5/cd ◦/cd c./nnp thus/rb a/dt could/md provide/vb more/rbr precise/jj context/nn information/nn about/in temperature/nn than/in b./nnp moreover/rb ,/punct sometimes/rb different/jj context/nn providers/nns may/md provide/vb conflictive/jj context/nn information/nn ./punct
+for/in example/nn ,/punct different/jj sensors/nns report/vbp that/in the/dt same/jj person/nn is/vbz in/in different/jj places/nns at/in the/dt same/jj time/nn ./punct
+because/in context-aware/jj applications/nns utilize/vbp context/nn information/nn to/to adapt/vb their/prp$ behaviors/nns ,/punct inappropriate/jj context/nn information/nn may/md lead/vb to/to inappropriate/jj behavior/nn ./punct
+thus/rb we/prp should/md design/vb a/dt mechanism/nn to/to provide/vb appropriate/jj context/nn information/nn for/in current/jj context-aware/jj applications/nns ./punct
+in/in pervasive/jj environments/nns ,/punct context/nn providers/nns considered/vbn as/in relatively/rb independent/jj entities/nns ,/punct have/vbp their/prp$ own/jj interests/nns ./punct
+they/prp hope/vbp to/to get/vb proceeds/nns when/wrb they/prp provide/vbp context/nn information/nn ./punct
+however/rb ,/punct most/rbs existing/jj approaches/nns consider/vbp context/nn providers/nns as/in entities/nns without/in any/dt personal/jj interests/nns ,/punct and/cc use/vb a/dt centralized/jj arbitrator/nn provided/vbn by/in the/dt middleware/nn to/to decide/vb who/wp can/md provide/vb appropriate/jj context/nn ./punct
+thus/rb the/dt burden/nn of/in the/dt middleware/nn is/vbz very/rb heavy/jj ,/punct and/cc its/prp$ decision/nn may/md be/vb unfair/jj and/cc harm/vb some/dt providers/nns ''/'' interests/nns ./punct
+moreover/rb ,/punct when/wrb such/jj arbitrator/nn is/vbz broken/vbn down/rp ,/punct it/prp will/md cause/vb serious/jj consequences/nns for/in context-aware/jj applications/nns ./punct
+in/in this/dt paper/nn ,/punct we/prp let/vbd distributed/vbn context/nn providers/nns themselves/prp decide/vbp who/wp provide/vbp context/nn information/nn ./punct
+since/in high/jj reputation/nn could/md help/vb providers/nns get/vb more/jjr opportunities/nns to/to provide/vb context/nn and/cc get/vb more/jjr proceeds/nns in/in the/dt future/nn ,/punct providers/nns try/vbp to/to get/vb the/dt right/nn to/to provide/vb good/jj context/nn to/to enhance/vb their/prp$ reputation/nn ./punct
+in/in order/nn to/to get/vb such/jj right/nn ,/punct context/nn providers/nns may/md agree/vb to/to share/vb some/dt portion/nn of/in the/dt proceeds/nns with/in its/prp$ opponents/nns ./punct
+thus/rb context/nn providers/nns negotiate/vbp with/in each/dt other/jj to/to reach/vb agreement/nn on/in the/dt issues/nns who/wp can/md provide/vb context/nn and/cc how/wrb they/prp allocate/vbp the/dt proceeds/nns ./punct
+our/prp$ approach/nn has/vbz some/dt specific/jj advantages/nns :/punct 1/cd ./punct
+we/prp do/vbp not/rb need/vb an/dt arbitrator/nn provided/vbn by/in the/dt middleware/nn of/in pervasive/jj computing/nn to/to decide/vb who/wp provides/vbz context/nn ./punct
+thus/rb it/prp will/md reduce/vb the/dt burden/nn of/in the/dt middleware/nn ./punct
+2/ls ./punct
+it/prp is/vbz more/rbr reasonable/jj that/in distributed/vbn context/nn providers/nns decide/vbp who/wp provide/vbp context/nn ,/punct because/in it/prp can/md avoid/vb the/dt serious/jj consequences/nns caused/vbn by/in a/dt breakdown/nn of/in a/dt centralized/jj arbitrator/nn ./punct
+3/ls ./punct
+it/prp can/md guarantee/vb providers/nns ''/'' interests/nns and/cc provide/vbp fair/jj proceeds/nns allocation/nn when/wrb providers/nns negotiate/vbp with/in each/dt other/jj to/to reach/vb agreement/nn on/in their/prp$ concerned/jj problems/nns ./punct
+4/ls ./punct
+this/dt approach/nn can/md choose/vb an/dt appropriate/jj provider/nn automatically/rb ./punct
+it/prp does/vbz not/rb need/vb any/dt applications/nns and/cc users/nns ''/'' intervention/nn ./punct
+the/dt negotiation/nn model/nn we/prp have/vbp designed/vbn to/to support/vb our/prp$ approach/nn is/vbz also/rb a/dt novel/jj model/nn in/in negotiation/nn domain/nn ./punct
+this/dt model/nn can/md help/vb negotiators/nns reach/vb agreement/nn in/in the/dt present/jj negotiation/nn process/nn by/in providing/vbg some/dt guarantees/nns over/in the/dt outcome/nn of/in next/jj negotiation/nn process/nn (/punct i.e/nn ./punct
+rewards/nns )/punct ./punct
+negotiator/nn may/md find/vb current/jj offer/nn and/cc reward/nn worth/in more/jjr than/in counter-offer/nn which/wdt will/md delay/vb the/dt agreement/nn ,/punct and/cc accepts/vbz current/jj offer/nn and/cc reward/nn ./punct
+without/in the/dt reward/nn ,/punct it/prp may/md find/vb current/jj offer/nn worth/in less/jjr than/in the/dt counter-offer/nn ,/punct and/cc proposes/vbz its/prp$ counter-offer/nn ./punct
+it/prp will/md cost/vb more/jjr time/nn to/to reach/vb agreement/nn ./punct
+it/prp also/rb expands/vbz the/dt negotiation/nn space/nn considered/vbn in/in present/jj negotiation/nn process/nn ,/punct and/cc therefore/rb provides/vbz more/jjr possibilities/nns to/to find/vb better/jjr agreement/nn ./punct
+the/dt remainder/nn of/in this/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+section/nn 2/cd presents/vbz some/dt assumptions/nns ./punct
+section/nn 3/cd describes/vbz our/prp$ approach/nn based/vbn on/in negotiation/nn detailedly/rb ,/punct including/vbg utility/nn functions/nns ,/punct negotiation/nn protocol/nn and/cc context/nn providers/nns ''/'' strategies/nns ./punct
+section/nn 4/cd evaluates/vbz our/prp$ approach/nn ./punct
+in/in section/nn 5/cd we/prp introduce/vbp some/dt related/jj work/nn and/cc conclude/vbp in/in section/nn 6/cd ./punct
+2/ls ./punct
+some/nnp assumptions/nnps before/in introducing/vbg our/prp$ approach/nn ,/punct we/prp would/md like/vb to/to give/vb some/dt assumptions/nns :/punct 1/cd ./punct
+all/dt context/nn providers/nns are/vbp well-meaning/jj and/cc honest/jj ./punct
+during/in the/dt negotiation/nn process/nn ,/punct they/prp exchange/vbp information/nn honestly/rb ./punct
+rewards/nns confirmed/vbd in/in this/dt negotiation/nn process/nn will/md be/vb fulfilled/vbn in/in the/dt next/jj negotiation/nn process/nn ./punct
+2/ls ./punct
+all/dt providers/nns must/md guarantee/vb the/dt system/nn ''/'' s/nns interests/nns ./punct
+they/prp should/md provide/vb appropriate/jj context/nn information/nn for/in current/jj applications/nns ./punct
+after/in guaranteeing/vbg the/dt system/nn ''/'' s/nns interest/nn ,/punct they/prp can/md try/vb to/to maximize/vb their/prp$ own/jj personal/jj interests/nns ./punct
+the/dt assumption/nn is/vbz reasonable/jj ,/punct because/in when/wrb an/dt inappropriate/jj context/nn provider/nn gets/vbz the/dt right/nn to/to provide/vb bad/jj context/nn ,/punct as/in a/dt punishment/nn ,/punct its/prp$ reputation/nn will/md decrease/vb ,/punct and/cc the/dt proceeds/nns is/vbz also/rb very/rb small/jj ./punct
+3/ls ./punct
+as/in context/nn providers/nns are/vbp independent/jj ,/punct factors/nns which/wdt influence/vbp their/prp$ negotiation/nn stance/nn and/cc behavior/nn are/vbp private/jj and/cc not/rb available/jj to/to their/prp$ opponents/nns ./punct
+their/prp$ utility/nn functions/nns are/vbp also/rb private/jj ./punct
+4/ls ./punct
+since/in the/dt negotiation/nn takes/vbz place/nn in/in pervasive/jj environments/nns ,/punct time/nn is/vbz a/dt critical/jj factors/nns ./punct
+the/dt current/jj application/nn often/rb hopes/vbz to/to get/vb context/nn information/nn as/rb quickly/rb as/in possible/jj ,/punct so/in the/dt time/nn cost/nn to/to reach/vb agreement/nn should/md be/vb as/rb short/jj as/in possible/jj ./punct
+context/nn providers/nns often/rb have/vbp strict/jj deadline/nn by/in when/wrb the/dt negotiation/nn must/md be/vb completed/vbn ./punct
+after/in presenting/vbg these/dt assumptions/nns ,/punct we/prp will/md propose/vb our/prp$ approach/nn based/vbn on/in negotiation/nn with/in rewards/nns in/in the/dt next/jj section/nn ./punct
+3/ls ./punct
+our/nnp approach/nnp in/in the/dt beginning/nn ,/punct we/prp introduce/vbp the/dt concepts/nns of/in reputation/nn and/cc quality/nnp of/in context/nnp (/punct qoc/nn )/punct attributes/nns ./punct
+both/dt will/md be/vb used/vbn in/in our/prp$ approach/nn ./punct
+reputation/nn of/in an/dt agent/nn is/vbz a/dt perception/nn regarding/vbg its/prp$ behavior/nn norms/nns ,/punct which/wdt is/vbz held/vbn by/in other/jj agents/nns ,/punct based/vbn on/in experiences/nns and/cc observation/nn of/in its/prp$ past/jj actions/nns [/punct 7/cd ]/punct ./punct
+here/rb agent/nn means/vbz context/nn provider/nn ./punct
+each/dt provider/nn ''/'' s/nns reputation/nn indicates/vbz its/prp$ historical/jj ability/nn to/to provide/vb appropriate/jj context/nn information/nn ./punct
+quality/nnp of/in context/nnp (/punct qoc/nn )/punct attributes/nns characterize/vbp the/dt quality/nn of/in context/nn information/nn ./punct
+when/wrb applications/nns require/vbp context/nn information/nn ,/punct they/prp should/md specify/vb their/prp$ qoc/nn requirements/nns which/wdt express/vbp constraints/nns of/in qoc/nn attributes/nns ./punct
+context/nn providers/nns can/md specify/vb qoc/nn attributes/nns for/in the/dt context/nn information/nn they/prp deliver/vbp ./punct
+although/in we/prp can/md decide/vb who/wp provides/vbz appropriate/jj context/nn according/vbg to/to qoc/nn requirements/nns and/cc context/nn providers/nns ''/'' qoc/nn information/nn ,/punct applications/nns ''/'' qoc/nn requirements/nns might/md not/rb reflect/vb the/dt actual/jj quality/nn requirements/nns ./punct
+thus/rb ,/punct in/in addition/nn to/to qoc/nn ,/punct reputation/nn information/nn of/in context/nn providers/nns is/vbz another/dt factor/nn affecting/vbg the/dt decision/nn who/wp can/md provide/vb context/nn information/nn ./punct
+negotiation/nn is/vbz a/dt process/nn by/in which/wdt a/dt joint/jj decision/nn is/vbz made/vbn by/in two/cd or/cc more/jjr parties/nns ./punct
+the/dt parties/nns first/rb verbalize/vbp contradictory/jj demands/nns and/cc then/rb move/vb towards/in agreement/nn by/in a/dt process/nn of/in concession/nn making/nn or/cc search/nn for/in new/jj alternatives/nns [/punct 2/cd ]/punct ./punct
+in/in pervasive/jj environments/nns ,/punct all/dt available/jj context/nn providers/nns negotiate/vbp with/in each/dt other/jj to/to decide/vb who/wp can/md provide/vb context/nn information/nn ./punct
+this/dt process/nn will/md be/vb repeated/vbn because/in a/dt kind/nn of/in context/nn is/vbz needed/vbn more/jjr than/in one/cd time/nn ./punct
+negotiation/nn using/vbg persuasive/jj arguments/nns (/punct such/jj as/in threats/nns ,/punct promises/nns of/in future/jj rewards/nns ,/punct and/cc appeals/nns )/punct allows/vbz negotiation/nn parties/nns to/to influence/vb each/dt others/nns ''/'' preferences/nns to/to reach/vb better/jjr deals/nns effectively/rb and/cc efficiently/rb [/punct 9/cd ]/punct ./punct
+this/dt pervasive/jj negotiation/nn is/vbz effective/jj in/in repeated/jj interaction/nn because/in arguments/nns can/md be/vb constructed/vbn to/to directly/rb impact/vb future/jj encounters/nns ./punct
+in/in this/dt paper/nn ,/punct for/in simplicity/nn ,/punct we/prp let/vbd negotiation/nn take/vb place/nn between/in two/cd providers/nns ./punct
+we/prp extend/vbp raiffa/nnp ''/'' s/vbz basic/jj model/nn for/in bilateral/jj negotiation/nn [/punct 8/cd ]/punct ,/punct and/cc allow/vb negotiators/nns to/to negotiate/vb with/in each/dt other/jj by/in exchanging/vbg arguments/nns in/in the/dt form/nn of/in promises/nns of/in future/jj rewards/nns or/cc requests/nns for/in future/jj rewards/nns ./punct
+rewards/nns mean/vbp some/dt extra/jj proceeds/nns in/in the/dt next/jj negotiation/nn process/nn ./punct
+they/prp can/md influence/vb outcomes/nns of/in current/jj and/cc future/jj negotiation/nn ./punct
+in/in our/prp$ approach/nn ,/punct as/in described/vbn by/in figure/nnp 1/cd ,/punct the/dt current/jj application/nn requires/vbz context/nnp manager/nnp to/to provide/vb a/dt specific/jj type/nn of/in context/nn information/nn satisfying/vbg qoc/nn requirements/nns ./punct
+context/nnp manager/nnp finds/vbz that/in provider/nn a/nn and/cc b/nn can/md provide/vb such/jj kind/nn of/in context/nn with/in different/jj quality/nn levels/nns ./punct
+then/rb the/dt manager/nn tells/vbz a/nn and/cc b/nn to/to negotiate/vb to/to reach/vb agreement/nn on/in who/wp can/md provide/vb the/dt context/nn information/nn and/cc how/wrb they/prp will/md allocate/vb the/dt proceeds/nns ./punct
+both/dt providers/nns get/vbp reputation/nn information/nn from/in the/dt database/nn reputation/nn of/in context/nnp providers/nnp and/cc qoc/nn requirements/nns ,/punct and/cc then/rb negotiate/vb with/in each/dt other/jj according/vbg to/to our/prp$ negotiation/nn model/nn ./punct
+when/wrb negotiation/nn is/vbz completed/vbn ,/punct the/dt chosen/vbn provider/nn will/md provide/vb the/dt context/nn information/nn to/to context/nnp manager/nnp ,/punct and/cc then/rb context/nnp manager/nnp delivers/vbz such/jj information/nn to/to the/dt application/nn and/cc also/rb stores/nns it/prp in/in context/nnp knowledge/nnp base/nnp where/wrb current/jj and/cc historical/jj context/nn information/nn is/vbz stored/vbn ./punct
+the/dt current/jj application/nn gives/vbz the/dt feedback/nn information/nn about/in the/dt provided/vbn context/nn ,/punct and/cc then/rb context/nnp manager/nnp will/md update/vb the/dt chosen/vbn provider/nn ''/'' s/nns reputation/nn information/nn according/vbg to/to the/dt feedback/nn information/nn ./punct
+context/nnp manager/nnp also/rb provides/vbz the/dt proceeds/nns to/to providers/nns according/vbg to/to the/dt feedback/nn information/nn and/cc the/dt time/nn cost/nn on/in negotiation/nn ./punct
+in/in the/dt following/vbg parts/nns of/in this/dt section/nn ,/punct we/prp describe/vbp our/prp$ negotiation/nn model/nn in/in detail/nn ,/punct including/vbg context/nn providers/nns ''/'' utility/nn functions/nns to/to evaluate/vb offers/nns and/cc rewards/nns ,/punct negotiation/nn protocol/nn ,/punct and/cc strategies/nns to/to generate/vb offers/nns and/cc rewards/nns ./punct
+context/nn knowledge/nn base/nn reputation/nn of/in context/nnp providers/nnp context/nnp provider/nn a/dt context/nnp manager/nnp negotiate/nnp application/nn ''/'' s/nns qoc/nn requirements/nns and/cc feedback/nn provide/vb qoc/nn requirements/nns and/cc proceeds/vbz manage/nnp context/nnp provide/vb context/nnp getreputation/nnp getreputation/nnp update/nnp reputation/nn information/nn according/vbg to/to feedback/nn context/nn provider/nn b/nn figure/nn 1/cd :/punct negotiate/vb to/to provide/vb appropriate/jj context/nn information/nn ./punct
+during/in the/dt negotiation/nn process/nn ,/punct one/cd provider/nn proposes/vbz an/dt domain/nn is/vbz dc/nnp (/punct i.e/nn ./punct
+the/dt two/cd context/nn providers/nns participating/vbg in/in the/dt negotiation/nn )/punct ;/punct p/nn means/vbz the/dt proposer/nn ''/'' s/nns portion/nn of/in the/dt proceeds/nns ,/punct and/cc its/prp$ domain/nn is/vbz dp/nn =/punct [/punct 0,1/cd ]/punct ./punct
+its/prp$ opponent/nn ''/'' s/nns portion/nn of/in the/dt proceeds/nns is/vbz 1−p/nn ./punct
+the/dt reward/nn ep/nn ''/'' s/nns domain/nn is/vbz dep/nn =/punct [/punct -1,1/cd ]/punct ,/punct and/cc |ep|/nn means/vbz the/dt extra/jj portion/nn of/in proceeds/nns the/dt proposer/nn promises/vbz to/to provide/vb or/cc requests/nns in/in the/dt next/jj =0/nn means/vbz no/dt reward/nn ./punct
+the/dt opponent/nn evaluates/vbz the/dt offer/nn and/cc and/cc a/dt reward/nn ./punct
+thus/rb context/nn providers/nns should/md have/vb utility/nn functions/nns to/to evaluate/vb offers/nns and/cc rewards/nns ./punct
+their/prp$ offers/nns ./punct
+the/dt set/vbn o/nn include/vbp all/dt available/jj offers/nns ./punct
+context/nn provider/nn a/nn ''/'' s/nns utility/nn function/nn of/in the/dt offer/nn and/cc reward/nn at/in similarly/rb ,/punct the/dt utility/nn function/nn of/in a/dt ''/'' s/vbz opponent/nn (/punct i.e/nn ./punct
+b/nn )/punct can/md provider/nn pays/vbz the/dt most/rbs attention/nn to/to the/dt system/nn ''/'' s/nns interests/nns ,/punct pays/vbz the/dt least/jjs attention/nn to/to the/dt reward/nn ,/punct thus/rb wa/nn 3/cd ./punct
+provides/vbz context/nn ./punct
+this/dt function/nn is/vbz determined/vbn by/in two/cd factors/nns :/punct the/dt distance/nn between/in c/nn ''/'' s/nns qoc/nn and/cc current/jj application/nn ''/'' s/nns qoc/nn requirements/nns ,/punct and/cc c/nn ''/'' s/nns reputation/nn ./punct
+the/dt two/cd negotiators/nns acquire/vb c/nn ''/'' s/nns qoc/nn information/nn from/in c/nn ,/punct and/cc we/prp use/vbp the/dt approach/nn proposed/vbd in/in to/to calculate/vb the/dt distance/nn between/in c/nn ''/'' s/nns qoc/nn and/cc the/dt application/nn ''/'' s/nns qoc/nn requirements/nns ./punct
+the/dt required/vbn context/nn has/vbz n/nn qoc/nn attributes/nns and/cc let/vb the/dt ai/vbp =/punct means/vbz the/dt application/nn ''/'' s/nns indifference/nn to/to the/dt i-th/jj qoc/nn cpi/nn =/punct means/nns c/nn ''/'' s/nns inability/nn to/to provide/vb a/dt quantitative/jj value/nn for/in the/dt i-th/jj qoc/nn attribute/nn )/punct ./punct
+because/in numerical/jj distance/nn values/nns of/in different/jj properties/nns are/vbp combined/vbn ,/punct e.g/nn ./punct
+location/nn precision/nn in/in metres/nns with/in refresh/jj rate/nn in/in hz/nnp ,/punct thus/rb a/dt standard/jj scale/nn for/in all/dt dimension/nn is/vbz needed/vbn ./punct
+the/dt scaling/nn factors/nns for/in the/dt qoc/nn attributes/nns may/md have/vb different/jj weights/nns :/punct w/nn =/punct (/punct w1/nn ,/punct w2/nn ./punct
+./punct
+./punct
+wn/nn )/punct ./punct
+(/punct o/nn (/punct ./punct
+)/punct determines/vbz the/dt application/nn ''/'' s/nns satisfaction/nn or/cc attribute/nn ,/punct given/vbn the/dt value/nn wished/vbd for/in by/in the/dt application/nn )/punct ./punct
+the/dt distance/nn can/md be/vb linear/jj distance/nn (/punct 1-norm/jj )/punct ,/punct euclidean/jj distance/nn (/punct 2-norm/jj )/punct ,/punct or/cc the/dt maximum/nn distance/nn (/punct max-norm/nn )/punct :/punct the/dt detail/nn description/nn of/in this/dt calculation/nn can/md be/vb found/vbn in/in ./punct
+reputation/nn of/in c/nn can/md be/vb acquired/vbn from/in the/dt database/nn c2/nn are/vbp weights/nns given/vbn to/to the/dt distance/nn and/cc monotone-increasing/jj function/nn ./punct
+a/dt ''/'' s/vbz utility/nn function/nn of/in reward/nn function/nn ./punct
+it/prp is/vbz also/rb a/dt monotone-decreasing/jj function/nn ./punct
+when/wrb time/nn t/nn cost/nn on/in negotiation/nn increases/nns ,/punct δa/nn (/punct t/nn )/punct will/md decrease/vb ,/punct and/cc the/dt utility/nn will/md also/rb decrease/vb ./punct
+thus/rb both/dt negotiators/nns want/vbp utility/nn ./punct
+when/wrb provider/nn a/nn and/cc b/nn have/vbp got/vbn qoc/nn requirements/nns and/cc reputation/nn information/nn ,/punct they/prp begin/vbp to/to negotiate/vb ./punct
+they/prp first/rb set/vbd their/prp$ reserved/vbn (/punct the/dt lowest/jjs acceptable/jj )/punct utility/nn which/wdt can/md guarantee/vb the/dt system/nn ''/'' s/nns interests/nns and/cc their/prp$ personal/jj interests/nns ./punct
+when/wrb the/dt context/nn provider/nn finds/vbz the/dt utility/nn of/in an/dt offer/nn and/cc a/dt reward/nn is/vbz lower/jjr than/in its/prp$ reserved/jj utility/nn ,/punct it/prp will/md reject/vb this/dt proposal/nn and/cc terminate/vb the/dt negotiation/nn process/nn ./punct
+the/dt provider/nn who/wp starts/vbz the/dt negotiation/nn is/vbz chosen/vbn randomly/rb ./punct
+we/prp assume/vbp a/dt starts/vbz the/dt negotiation/nn ,/punct and/cc it/prp proposes/vbz offer/nn o/nn and/cc reward/nn ep/nn to/to b/nn according/vbg to/to its/prp$ strategy/nn (/punct see/vbp subsection/nn 3.3/cd )/punct ./punct
+when/wrb b/nn receives/vbz the/dt proposal/nn from/in a/dt ,/punct it/prp uses/vbz its/prp$ utility/nn provider/nn terminates/vbz the/dt negotiation/nn ./punct
+otherwise/rb ,/punct if/in than/in the/dt utility/nn of/in offer/nn o/nn ''/'' and/cc reward/vb ep/nn ''/'' which/wdt b/nn will/md propose/vb to/to a/dt at/in time/nn t/nn +/punct 1/cd ,/punct b/nn will/md accept/vb this/dt offer/nn and/cc reward/nn ./punct
+the/dt negotiation/nn is/vbz completed/vbn ./punct
+however/rb ,/punct if/in then/rb b/nn will/md reject/vb a/dt ''/'' s/vbz proposal/nn ,/punct and/cc propose/vbp its/prp$ counter-offer/nn and/cc reward/nn to/to a./nn when/wrb a/dt receives/vbz b/nn ''/'' s/nns counter-offer/nn and/cc reward/nn ,/punct a/dt evaluates/vbz them/prp using/vbg its/prp$ utility/nn function/nn ,/punct and/cc compares/vbz the/dt utility/nn with/in the/dt utility/nn of/in offer/nn and/cc reward/vb it/prp wants/vbz counter-offer/nn and/cc reward/nn ./punct
+this/dt negotiation/nn process/nn continues/vbz and/cc in/in each/dt negotiation/nn round/nn ,/punct context/nn providers/nns concede/vbp in/in order/nn to/to reach/vb agreement/nn ./punct
+the/dt negotiation/nn will/md be/vb successfully/rb finished/vbn when/wrb agreement/nn is/vbz reached/vbn ,/punct or/cc be/vb terminated/vbn forcibly/rb due/jj to/to deadline/nn or/cc the/dt utility/nn lower/jjr than/in reserved/vbn utility/nn ./punct
+when/wrb negotiation/nn is/vbz forced/vbn to/to be/vb terminated/vbn ,/punct context/nnp manager/nnp let/vb a/dt provide/vbp context/nn ./punct
+if/in then/rb b/nn will/md get/vb the/dt right/nn to/to provide/vb context/nn information/nn ./punct
+context/nnp manager/nnp will/md select/vb a/dt provider/nn from/in a/dt and/cc b/nn randomly/rb ./punct
+in/in addition/nn ,/punct context/nnp manager/nnp allocates/vbz the/dt proceeds/nns between/in the/dt two/cd providers/nns ./punct
+although/in we/prp can/md select/vb one/cd provider/nn when/wrb negotiation/nn is/vbz terminated/vbn forcibly/rb ,/punct however/rb ,/punct this/dt may/md lead/vb to/to the/dt unfair/jj allocation/nn of/in the/dt proceeds/nns ./punct
+moreover/rb ,/punct more/jjr time/nn negotiators/nns cost/nn on/in negotiation/nn ,/punct less/jjr proceeds/nns will/md be/vb given/vbn ./punct
+thus/rb negotiators/nns will/md try/vb to/to reach/vb loss/nn ./punct
+when/wrb the/dt negotiation/nn is/vbz finished/vbn ,/punct the/dt chosen/vbn provider/nn provides/vbz the/dt context/nn information/nn to/to context/nnp manager/nnp which/wdt will/md deliver/vb the/dt information/nn to/to current/jj application/nn ./punct
+according/vbg to/to the/dt application/nn ''/'' s/nns feedback/nn information/nn about/in this/dt context/nn ,/punct context/nnp manager/nnp updates/nns the/dt provider/nn ''/'' s/nns reputation/nn stored/vbn in/in reputation/nn of/in context/nnp providers/nnp ./punct
+the/dt provider/nn ''/'' s/nns reputation/nn may/md be/vb enhanced/vbn or/cc decreased/vbn ./punct
+in/in addition/nn ,/punct according/vbg to/to the/dt feedback/nn and/cc the/dt negotiation/nn time/nn ,/punct context/nnp manager/nnp will/md give/vb proceeds/nns to/to the/dt provider/nn ./punct
+then/rb the/dt provider/nn will/md share/vb the/dt proceeds/nns with/in its/prp$ opponent/nn according/vbg to/to the/dt negotiation/nn outcome/nn and/cc the/dt reward/nn confirmed/vbd in/in the/dt last/jj negotiation/nn process/nn ./punct
+for/in example/nn ,/punct in/in the/dt last/jj and/cc its/prp$ opponent/nn b/nn ''/'' s/nns portion/nn of/in the/dt proceeds/nns is/vbz 1−p+p·ep/nn ./punct

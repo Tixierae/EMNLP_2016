@@ -1,0 +1,242 @@
+this/dt paper/nn proposes/vbz a/dt new/jj variant/nn of/in the/dt task/nn allocation/nn problem/nn ,/punct where/wrb the/dt agents/nns are/vbp connected/vbn in/in a/dt social/jj network/nn and/cc tasks/nns arrive/vbp at/in the/dt agents/nns distributed/vbn over/in the/dt network/nn ./punct
+we/prp show/vbp that/in the/dt complexity/nn of/in this/dt problem/nn remains/vbz nphard/nnp ./punct
+moreover/rb ,/punct it/prp is/vbz not/rb approximable/jj within/in some/dt factor/nn ./punct
+we/prp develop/vbp an/dt algorithm/nn based/vbn on/in the/dt contract-net/nn protocol/nn ./punct
+our/prp$ algorithm/nn is/vbz completely/rb distributed/vbn ,/punct and/cc it/prp assumes/vbz that/in agents/nns have/vbp only/rb local/jj knowledge/nn about/in tasks/nns and/cc resources/nns ./punct
+we/prp conduct/vbp a/dt set/nn of/in experiments/nns to/to evaluate/vb the/dt performance/nn and/cc scalability/nn of/in the/dt proposed/vbn algorithm/nn in/in terms/nns of/in solution/nn quality/nn and/cc computation/nn time/nn ./punct
+three/cd different/jj types/nns of/in networks/nns ,/punct namely/rb small-world/jj ,/punct random/jj and/cc scale-free/jj networks/nns ,/punct are/vbp used/vbn to/to represent/vb various/jj social/jj relationships/nns among/in agents/nns in/in realistic/jj applications/nns ./punct
+the/dt results/nns demonstrate/vbp that/in our/prp$ algorithm/nn works/vbz well/rb and/cc that/in it/prp scales/nns well/rb to/to large-scale/jj applications/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp i.2.11/nn [/punct distributed/vbn artificial/nnp intelligence/nnp ]/punct :/punct multiagent/jj systems/nns general/nnp terms/nns algorithms/nns ,/punct experimentation/nn 1/cd ./punct
+introduction/nnp recent/jj years/nns have/vbp seen/vbn a/dt lot/nn of/in work/nn on/in task/nn and/cc resource/nn allocation/nn methods/nns ,/punct which/wdt can/md potentially/rb be/vb applied/vbn to/to many/jj real-world/jj applications/nns ./punct
+however/rb ,/punct some/dt interesting/jj applications/nns where/wrb relations/nns between/in agents/nns play/vbp a/dt role/nn require/vbp a/dt slightly/rb more/rbr general/jj model/nn ./punct
+such/jj situations/nns appear/vbp very/rb frequently/rb in/in real-world/jj scenarios/nns ,/punct and/cc recent/jj technological/jj developments/nns are/vbp bringing/vbg more/jjr of/in them/prp within/in the/dt range/nn of/in task/nn allocation/nn methods/nns ./punct
+especially/rb in/in business/nn applications/nns ,/punct preferential/jj partner/nn selection/nn and/cc interaction/nn is/vbz very/rb common/jj ,/punct and/cc this/dt aspect/nn becomes/vbz more/rbr important/jj for/in task/nn allocation/nn research/nn ,/punct to/to the/dt extent/nn that/in technological/jj developments/nns need/vbp to/to be/vb able/jj to/to support/vb it/prp ./punct
+for/in example/nn ,/punct the/dt development/nn of/in semantic/jj web/nn and/cc grid/nn technologies/nns leads/vbz to/to increased/vbn and/cc renewed/vbn attention/nn for/in the/dt potential/nn of/in the/dt web/nn to/to support/vb business/nn processes/nns [/punct 7/cd ,/punct 15/cd ]/punct ./punct
+as/in an/dt example/nn ,/punct virtual/jj organizations/nns (/punct vos/nns )/punct are/vbp being/vbg re-invented/vbn in/in the/dt context/nn of/in the/dt grid/nn ,/punct where/wrb they/prp are/vbp composed/vbn of/in a/dt number/nn of/in autonomous/jj entities/nns (/punct representing/vbg different/jj individuals/nns ,/punct departments/nns and/cc organizations/nns )/punct ,/punct each/dt of/in which/wdt has/vbz a/dt range/nn of/in problem-solving/jj capabilities/nns and/cc resources/nns at/in its/prp$ disposal/nn [/punct 15/cd ,/punct p/nn ./punct
+237/cd ]/punct ./punct
+the/dt question/nn is/vbz how/wrb vos/nns are/vbp to/to be/vb dynamically/rb composed/vbn and/cc re-composed/vbn from/in individual/jj agents/nns ,/punct when/wrb different/jj tasks/nns and/cc subtasks/nns need/vbp to/to be/vb performed/vbn ./punct
+this/dt would/md be/vb done/vbn by/in allocating/vbg them/prp to/to different/jj agents/nns who/wp may/md each/dt be/vb capable/jj of/in performing/vbg different/jj subsets/nns of/in those/dt tasks/nns ./punct
+similarly/rb ,/punct supply/nn chain/nn formation/nn (/punct scf/nn )/punct is/vbz concerned/vbn with/in the/dt ,/punct possibly/rb ad-hoc/jj ,/punct allocation/nn of/in services/nns to/to providers/nns in/in the/dt supply/nn chain/nn ,/punct in/in such/pdt a/dt way/nn that/in overall/jj profit/nn is/vbz optimized/vbn [/punct 6/cd ,/punct 21/cd ]/punct ./punct
+traditionally/rb ,/punct such/jj allocation/nn decisions/nns have/vbp been/vbn analyzed/vbn using/vbg transaction/nn cost/nn economics/nns (/punct tce/nn )/punct [/punct 4/cd ]/punct ,/punct which/wdt takes/vbz the/dt transaction/nn between/in consecutive/jj stages/nns of/in development/nn as/in its/prp$ basic/jj unit/nn of/in analysis/nn ,/punct and/cc considers/vbz the/dt firm/nn and/cc the/dt market/nn as/in alternative/jj structural/jj forms/nns for/in organizing/vbg transactions/nns ./punct
+(/punct transaction/nn cost/nn )/punct economics/nns has/vbz traditionally/rb built/vbn on/in analysis/nn of/in comparative/jj statics/nns :/punct the/dt central/jj problem/nn of/in economic/jj organization/nn is/vbz considered/vbn to/to be/vb the/dt adaptation/nn of/in organizational/jj forms/nns to/to the/dt characteristics/nns of/in transactions/nns ./punct
+more/rbr recently/rb ,/punct tce/nn ''/'' s/nns founding/vbg father/nn ,/punct ronald/nnp coase/nnp ,/punct acknowledged/vbd that/in this/dt is/vbz too/rb simplistic/jj an/dt approach/nn [/punct 5/cd ,/punct p/nn ./punct
+245/cd ]/punct :/punct the/dt analysis/nn can/md not/rb be/vb confined/vbn to/to what/wp happens/vbz within/in a/dt single/jj firm/nn ./punct
+(/punct ./punct
+./punct
+./punct
+)/punct what/wp we/prp are/vbp dealing/vbg with/in is/vbz a/dt complex/jj interrelated/jj structure/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp study/vbp the/dt problem/nn of/in task/nn allocation/nn from/in the/dt perspective/nn of/in such/pdt a/dt complex/jj interrelated/jj structure/nn ./punct
+in/in particular/jj ,/punct ‘the/jj market/nn ''/'' can/md not/rb be/vb considered/vbn as/in an/dt organizational/jj form/nn without/in considering/vbg specific/jj partners/nns to/to interact/vb with/in on/in the/dt market/nn [/punct 11/cd ]/punct ./punct
+specifically/rb ,/punct therefore/rb ,/punct we/prp consider/vbp agents/nns to/to be/vb connected/vbn to/to each/dt other/jj in/in a/dt social/jj network/nn ./punct
+furthermore/rb ,/punct this/dt network/nn is/vbz not/rb fully/rb connected/vbn :/punct as/in informed/vbn by/in the/dt business/nn literature/nn ,/punct firms/nns typically/rb have/vbp established/vbn working/vbg relations/nns with/in limited/jj numbers/nns of/in preferred/jj partners/nns [/punct 10/cd ]/punct ;/punct these/dt are/vbp the/dt ones/nns they/prp consider/vbp when/wrb new/jj tasks/nns arrive/vbp and/cc they/prp have/vbp to/to form/vb supply/nn chains/nns to/to allocate/vb those/dt tasks/nns [/punct 19/cd ]/punct ./punct
+other/jj than/in modeling/nn the/dt interrelated/jj 500/cd 978-81-904262-7-5/cd (/punct rps/vbz )/punct c/nn 2007/cd ifaamas/nnp structure/nn between/in business/nn partners/nns ,/punct the/dt social/jj network/nn introduced/vbn in/in this/dt paper/nn can/md also/rb be/vb used/vbn to/to represent/vb other/jj types/nns of/in connections/nns or/cc constraints/nns among/in autonomous/jj entities/nns that/wdt arise/vbp from/in other/jj application/nn domains/nns ./punct
+the/dt next/jj section/nn gives/vbz a/dt formal/jj description/nn of/in the/dt task/nn allocation/nn problem/nn on/in social/jj networks/nns ./punct
+in/in section/nn 3/cd ,/punct we/prp prove/vbp that/in the/dt complexity/nn of/in this/dt problem/nn remains/vbz np-hard/jj ./punct
+we/prp then/rb proceed/vb to/to develop/vb a/dt distributed/vbn algorithm/nn in/in section/nn 4/cd ,/punct and/cc perform/vb a/dt series/nn of/in experiments/nns with/in this/dt algorithm/nn ,/punct as/in described/vbn in/in section/nn 5/cd ./punct
+section/nn 6/cd discusses/vbz related/jj work/nn ,/punct and/cc section/nn 7/cd concludes/vbz ./punct
+2/ls ./punct
+problem/nn description/nn we/prp formulate/vbp the/dt social/jj task/nn allocation/nn problem/nn in/in this/dt section/nn ./punct
+there/ex is/vbz a/dt set/nn a/nn of/in agents/nns :/punct a/nn =/punct {/punct a1/nn ,/punct ./punct
+./punct
+./punct
+,/punct am/vbp }/punct ./punct
+agents/nns need/vbp resources/nns to/to complete/vb tasks/nns ./punct
+let/vb r/nn =/punct {/punct r1/nn ,/punct ./punct
+./punct
+./punct
+,/punct rk/nn }/punct denote/vbp the/dt collection/nn of/in the/dt resource/nn types/nns available/jj to/to the/dt agents/nns a./nn each/dt agent/nn a/dt ∈/nn a/nn controls/vbz a/dt fixed/jj amount/nn of/in resources/nns for/in each/dt resource/nn type/nn in/in r/nn ,/punct which/wdt is/vbz defined/vbn by/in a/dt resource/nn function/nn :/punct rsc/nn :/punct a/dt ×/nn r/nn →/cd n./nnp moreover/rb ,/punct we/prp assume/vbp agents/nns are/vbp connected/vbn by/in a/dt social/jj network/nn ./punct
+definition/nn 1/cd (/punct social/nnp network/nn )/punct ./punct
+an/dt agent/nn social/jj network/nn sn/nn =/punct (/punct a/nn ,/punct ae/nn )/punct is/vbz an/dt undirected/jj graph/nn ,/punct where/wrb vertices/nns a/dt are/vbp agents/nns ,/punct and/cc each/dt edge/nn (/punct ai/vbp ,/punct aj/vbp )/punct ∈/cd ae/nn indicates/vbz the/dt existence/nn of/in a/dt social/jj connection/nn between/in agents/nns ai/vbp and/cc aj/nn ./punct
+suppose/vb a/dt set/nn of/in tasks/nns t/nn =/punct {/punct t1/nn ,/punct t2/nn ,/punct ./punct
+./punct
+./punct
+,/punct tn/nn }/punct arrives/vbz at/in such/pdt an/dt agent/nn social/jj network/nn ./punct
+each/dt task/nn t/nn ∈/cd t/nn is/vbz then/rb defined/vbn by/in a/dt tuple/nn u/nn (/punct t/nn )/punct ,/punct rsc/nn (/punct t/nn )/punct ,/punct loc/nn (/punct t/nn )/punct ,/punct where/wrb u/fw (/punct t/nn )/punct is/vbz the/dt utility/nn gained/vbd if/in task/nn t/nn is/vbz accomplished/vbn ,/punct and/cc the/dt resource/nn function/nn rsc/nn :/punct t/nn ×r/nn →/cd n/nn specifies/vbz the/dt amount/nn of/in resources/nns required/vbn for/in the/dt accomplishment/nn of/in task/nn t./nn furthermore/rb ,/punct a/dt location/nn function/nn loc/nn :/punct t/nn →/nn a/nn defines/vbz the/dt locations/nns (/punct i.e./fw ,/punct agents/nns )/punct at/in which/wdt the/dt tasks/nns arrive/vbp in/in the/dt social/jj network/nn ./punct
+an/dt agent/nn a/dt that/dt is/vbz the/dt location/nn of/in a/dt task/nn t/nn ,/punct i.e/nn ./punct
+loc/nn (/punct t/nn )/punct =/punct a/dt ,/punct is/vbz called/vbn the/dt manager/nn of/in this/dt task/nn ./punct
+each/dt task/nn t/nn ∈/cd t/nn needs/vbz some/dt specific/jj resources/nns from/in the/dt agents/nns in/in order/nn to/to complete/vb the/dt task/nn ./punct
+the/dt exact/jj assignment/nn of/in tasks/nns to/to agents/nns is/vbz defined/vbn by/in a/dt task/nn allocation/nn ./punct
+definition/nn 2/cd (/punct task/nnp allocation/nn )/punct ./punct
+given/vbn a/dt set/nn of/in tasks/nns t/nn =/punct {/punct t1/nn ,/punct ./punct
+./punct
+./punct
+,/punct tn/nn }/punct and/cc a/dt set/nn of/in agents/nns a/nn =/punct {/punct a1/nn ,/punct ./punct
+./punct
+./punct
+,/punct am/vbp }/punct in/in a/dt social/jj network/nn sn/nn ,/punct a/dt task/nn allocation/nn is/vbz a/dt mapping/nn φ/nn :/punct t/nn ×/cd a/dt ×/nn r/nn →/cd n./nnp a/nnp valid/jj task/nn allocation/nn in/in sn/nnp must/md satisfy/vb the/dt following/vbg constrains/vbz :/punct •/cd a/dt task/nn allocation/nn must/md be/vb correct/jj ./punct
+each/dt agent/nn a/dt ∈/nn a/nn can/md not/rb use/vb more/jjr than/in its/prp$ available/jj resources/nns ,/punct i.e/nn ./punct
+for/in each/dt r/nn ∈/cd r/nn ,/punct p/nn t∈t/nn φ/nn (/punct t/nn ,/punct a/dt ,/punct r/nn )/punct ≤/cd rsc/nn (/punct a/dt ,/punct r/nn )/punct ./punct
+•/nn a/nn task/nn allocation/nn must/md be/vb complete/jj ./punct
+for/in each/dt task/nn t/nn ∈/cd t/nn ,/punct either/cc all/dt allocated/vbn agents/nns ''/'' resources/nns are/vbp sufficient/jj ,/punct i.e/nn ./punct
+for/in each/dt r/nn ∈/cd r/nn ,/punct p/nn a∈a/nn φ/nn (/punct t/nn ,/punct a/dt ,/punct r/nn )/punct ≥/cd rsc/nn (/punct t/nn ,/punct r/nn )/punct ,/punct or/cc t/nn is/vbz not/rb allocated/vbn ,/punct i.e/nn ./punct
+φ/nn (/punct t/nn ,/punct ·/nn ,/punct ·/nn )/punct =/punct 0/cd ./punct
+•/nn a/nn task/nn allocation/nn must/md obey/vb the/dt social/jj relationships/nns ./punct
+each/dt task/nn t/nn ∈/cd t/nn can/md only/rb be/vb allocated/vbn to/to agents/nns that/wdt are/vbp (/punct direct/jj )/punct neighbors/nns of/in agent/nn loc/nn (/punct t/nn )/punct in/in the/dt social/jj network/nn sn/nn ./punct
+each/dt such/jj agent/nn that/wdt can/md contribute/vb to/to a/dt task/nn is/vbz called/vbn a/dt contractor/nn ./punct
+we/prp write/vbp tφ/nn to/to represent/vb the/dt tasks/nns that/wdt are/vbp fully/rb allocated/vbn in/in φ./nn the/dt utility/nn of/in φ/nn is/vbz then/rb the/dt summation/nn of/in the/dt utilities/nns of/in each/dt task/nn in/in tφ/nn ,/punct i.e./fw ,/punct uφ/nn =/punct p/nn t∈tφ/nn u/nn (/punct t/nn )/punct ./punct
+using/vbg this/dt notation/nn ,/punct we/prp define/vbp the/dt efficient/jj task/nn allocation/nn below/in ./punct
+definition/nn 3/cd (/punct efficient/jj task/nn allocation/nn )/punct ./punct
+we/prp say/vbp a/dt task/nn allocation/nn φ/nn is/vbz efficient/jj if/in it/prp is/vbz valid/jj and/cc uφ/nn is/vbz maximized/vbn ,/punct i.e./fw ,/punct uφ/nn =/punct max/nn (/punct p/nn t∈tφ/nn u/nn (/punct t/nn )/punct )/punct ./punct
+we/prp are/vbp now/rb ready/jj to/to define/vb the/dt task/nn allocation/nn problem/nn in/in social/jj network/nn that/in we/prp study/vb in/in this/dt paper/nn ./punct
+definition/nn 4/cd (/punct social/nnp task/nn allocation/nn problem/nn )/punct ./punct
+given/vbn a/dt set/nn of/in agents/nns a/dt connected/vbn by/in a/dt social/jj network/nn sn/nn =/punct (/punct a/nn ,/punct ae/nn )/punct ,/punct and/cc a/dt finite/jj set/nn of/in tasks/nns t/nn ,/punct the/dt social/jj task/nn allocation/nn problem/nn (/punct or/cc stap/nn for/in short/jj )/punct is/vbz the/dt problem/nn of/in finding/vbg the/dt efficient/jj task/nn allocation/nn φ/nn ,/punct such/jj that/in φ/nn is/vbz valid/jj and/cc the/dt social/jj welfare/nn uφ/nn is/vbz maximized/vbn ./punct
+3/ls ./punct
+complexity/nnp results/nns the/dt traditional/jj task/nn allocation/nn problem/nn ,/punct tap/nn (/punct without/in the/dt condition/nn of/in the/dt social/jj network/nn sn/nn )/punct ,/punct is/vbz np-complete/jj [/punct 18/cd ]/punct ,/punct and/cc the/dt complexity/nn comes/vbz from/in the/dt fact/nn that/in we/prp need/vbp to/to evaluate/vb the/dt exponential/jj number/nn of/in subsets/nns of/in the/dt task/nn set/nn ./punct
+although/in we/prp may/md consider/vb the/dt tap/nn as/in a/dt special/jj case/nn of/in the/dt stap/nn by/in assuming/vbg agents/nns are/vbp fully/rb connected/vbn ,/punct we/prp can/md not/rb directly/rb use/vb the/dt complexity/nn results/vbz from/in the/dt tap/nn ,/punct since/in we/prp study/vbp the/dt stap/nn in/in an/dt arbitrary/jj social/jj network/nn ,/punct which/wdt ,/punct as/in we/prp argued/vbd in/in the/dt introduction/nn ,/punct should/md be/vb partially/rb connected/vbn ./punct
+we/prp now/rb show/vbp that/in the/dt tap/nn with/in an/dt arbitrary/jj social/jj network/nn is/vbz also/rb np-complete/jj ,/punct even/rb when/wrb the/dt utility/nn of/in each/dt task/nn is/vbz 1/cd ,/punct and/cc the/dt quantity/nn of/in all/dt required/vbn and/cc available/jj resources/nns is/vbz 1/cd ./punct
+theorem/nnp 1/cd ./punct
+given/vbn the/dt social/jj task/nn allocation/nn problem/nn with/in an/dt arbitrary/jj social/jj network/nn ,/punct as/in defined/vbn in/in definition/nnp 4/cd ,/punct the/dt problem/nn of/in deciding/vbg whether/in a/dt task/nn allocation/nn φ/nn with/in utility/nn more/rbr than/in k/nn exists/vbz is/vbz np-complete/jj ./punct
+proof/nn ./punct
+we/prp first/rb show/vbp that/in the/dt problem/nn is/vbz in/in np/nn ./punct
+given/vbn an/dt instance/nn of/in the/dt problem/nn and/cc an/dt integer/nn k/nn ,/punct we/prp can/md verify/vb in/in polynomial/jj time/nn whether/in an/dt allocation/nn φ/nn is/vbz a/dt valid/jj allocation/nn and/cc whether/in the/dt utility/nn of/in φ/nn is/vbz greater/jjr than/in k./vb we/prp now/rb prove/vbp that/in the/dt stap/nn is/vbz np-hard/jj by/in showing/vbg that/in maximum/nnp independent/jj set/nn ≤p/nn stap/nn ./punct
+given/vbn an/dt undirected/jj graph/nn g/nn =/punct (/punct v/nn ,/punct e/nn )/punct and/cc an/dt integer/nn k/nn ,/punct we/prp construct/vbp a/dt network/nn g/nn =/punct (/punct v/nn ,/punct e/nn )/punct which/wdt has/vbz an/dt efficient/jj task/nn allocation/nn with/in k/nn tasks/nns of/in utility/nn 1/cd allocated/vbn if/in and/cc only/rb if/in g/nn has/vbz an/dt independent/jj set/nn (/punct is/vbz )/punct of/in size/nn k./nn av1/nn av3/nn ae3/nn rsc/nn (/punct ae1/nn )/punct =/punct {/punct e1/nn }/punct rsc/nn (/punct ae4/nn )/punct =/punct {/punct e4/nn }/punct av4/nn ae2/nn av2/nn ae4/nn ae1/nn rsc/nn (/punct ae2/nn )/punct =/punct {/punct e2/nn }/punct {/punct e3/nn }/punct rsc/nn (/punct av3/nn )/punct =/punct {/punct v3/nn }/punct rsc/nn (/punct av4/nn )/punct =/punct {/punct v4/nn }/punct t1/nn =/punct {/punct v1/nn ,/punct e1/nn ,/punct e3/nn }/punct t2/nn =/punct {/punct v2/nn ,/punct e1/nn ,/punct e2/nn }/punct rsc/nn (/punct ae3/nn )/punct =/punct rsc/nn (/punct av1/nn )/punct =/punct {/punct v1/nn }/punct rsc/nn (/punct av2/nn )/punct =/punct {/punct v2/nn }/punct t3/nn =/punct {/punct v3/nn ,/punct e3/nn ,/punct e4/nn }/punct t4/nn =/punct {/punct v4/nn ,/punct e2/nn ,/punct e4/nn }/punct e1/nn e2/nn e4/nn e3/nn v1/nn v2/nn v4v3/nn figure/nn 1/cd :/punct the/dt mis/nnp problem/nn can/md be/vb reduced/vbn to/to the/dt stap/nn ./punct
+the/dt left/jj figure/nn is/vbz an/dt undirected/jj graph/nn g/nn ,/punct which/wdt has/vbz the/dt optimal/jj solution/nn {/punct v1/nn ,/punct v4/nn }/punct or/cc {/punct v2/nn ,/punct v3/nn }/punct ;/punct the/dt right/jj figure/nn is/vbz the/dt constructed/vbn instance/nn of/in the/dt stap/nn ,/punct where/wrb the/dt optimal/jj allocation/nn is/vbz {/punct t1/nn ,/punct t4/nn }/punct or/cc {/punct t2/nn ,/punct t3/nn }/punct ./punct
+an/dt instance/nn of/in the/dt following/vbg construction/nn is/vbz shown/vbn in/in figure/nnp 1/cd ./punct
+for/in each/dt node/nn v/ls ∈/cd v/nn and/cc each/dt edge/nn e/sym ∈/cd e/nn in/in the/dt graph/nn g/nn ,/punct we/prp create/vbp a/dt vertex/nn agent/nn av/nn and/cc an/dt edge/nn agent/nn ae/nn in/in g/nn ./punct
+the/dt sixth/nnp intl/nnp ./punct
+joint/nnp conf/nnp ./punct
+on/in autonomous/nnp agents/nnps and/cc multi-agent/nnp systems/nnp (/punct aamas/nnp 07/cd )/punct 501/cd when/wrb v/ls was/vbd incident/nn to/to e/sym in/in g/nn we/prp correspondingly/rb add/vbp an/dt edge/nn e/sym in/in g/nn between/in av/nn and/cc ae/nn ./punct
+we/prp assign/vbp each/dt agent/nn in/in g/nn one/cd resource/nn ,/punct which/wdt is/vbz related/jj to/to the/dt node/nn or/cc the/dt edge/nn in/in the/dt graph/nn g/nn ,/punct i.e./fw ,/punct for/in each/dt v/ls ∈/cd v/nn ,/punct rsc/nn (/punct av/nn )/punct =/punct {/punct v/ls }/punct (/punct here/rb we/prp write/vbp rsc/nn (/punct a/dt )/punct and/cc rsc/nn (/punct t/nn )/punct to/to represent/vb the/dt set/nn of/in resources/nns available/jj to/required/vbn by/in a/dt and/cc t/nn )/punct ,/punct and/cc for/in each/dt e/sym ∈/cd e/nn ,/punct rsc/nn (/punct ae/nn )/punct =/punct {/punct e/sym }/punct ./punct
+each/dt vertex/nn agent/nn avi/nn in/in g/nn has/vbz a/dt task/nn ti/nn that/wdt requires/vbz a/dt set/nn of/in neighboring/vbg resources/nns ti/nn =/punct {/punct vi/ls }/punct ∪/cd {/punct e|e/nn =/punct (/punct u/nn ,/punct vi/ls )/punct ∈/cd e/nn }/punct ./punct
+there/ex is/vbz no/dt task/nn on/in the/dt edge/nn agents/nns in/in g/nn ./punct
+we/prp define/vbp utility/nn 1/cd for/in each/dt task/nn ,/punct and/cc the/dt quantity/nn of/in all/dt required/vbn and/cc available/jj resources/nns to/to be/vb 1/cd ./punct
+taken/vbd an/dt instance/nn of/in the/dt is/vbz problem/nn ,/punct suppose/vbp there/ex is/vbz a/dt solution/nn of/in size/nn k/nn ,/punct i.e./fw ,/punct a/dt subset/nn n/nn ⊆/cd v/nn such/jj that/in no/dt two/cd vertices/nns in/in n/nn are/vbp joined/vbn by/in an/dt edge/nn in/in e/nn and/cc |n|/nn =/punct k./nn n/nn specifies/vbz a/dt set/nn of/in vertex/nn agents/nns an/dt in/in the/dt corresponding/jj graph/nn g/nn ./punct
+given/vbn two/cd agents/nns a1/nn ,/punct a2/nn ∈/cd an/dt we/prp now/rb know/vbp that/in there/ex is/vbz no/dt edge/nn agent/nn ae/nn connected/vbn to/to both/dt a1/nn and/cc a2/nn ./punct
+thus/rb ,/punct for/in each/dt agent/nn a/dt ∈/cd an/dt ,/punct a/dt assigns/vbz its/prp$ task/nn to/to the/dt edge/nn agents/nns which/wdt are/vbp connected/vbn to/to a./vb all/dt other/jj vertex/nn agents/nns a/dt /∈/cd an/dt are/vbp not/rb able/jj to/to assign/vb their/prp$ tasks/nns ,/punct since/in the/dt required/vbn resources/nns of/in the/dt edge/nn agents/nns are/vbp already/rb used/vbn by/in the/dt agents/nns a/dt ∈/cd an/dt ./punct
+the/dt set/nn of/in tasks/nns of/in the/dt agents/nns an/dt (/punct |an/nn |/punct =/punct k/nn )/punct is/vbz thus/rb the/dt maximum/nn set/nn of/in tasks/nns that/wdt can/md be/vb allocated/vbn ./punct
+the/dt utility/nn of/in this/dt allocation/nn is/vbz k./nnp similarly/rb ,/punct if/in there/ex is/vbz a/dt solution/nn for/in the/dt stap/nn with/in the/dt utility/nn value/nn k/nn ,/punct and/cc the/dt allocated/vbn task/nn set/nn is/vbz n/nn ,/punct then/rb for/in the/dt is/vbz problem/nn ,/punct there/ex exists/vbz a/dt maximum/nn independent/jj set/nn n/nn of/in size/nn k/nn in/in g./nnp an/dt example/nn can/md be/vb found/vbn in/in figure/nnp 1/cd ./punct
+we/prp just/rb proved/vbd that/in the/dt stap/nn is/vbz np-hard/jj for/in an/dt arbitrary/jj graph/nn ./punct
+in/in our/prp$ proof/nn ,/punct the/dt complexity/nn comes/vbz from/in the/dt introduction/nn of/in a/dt social/jj network/nn ./punct
+one/cd may/md expect/vb that/in the/dt complexity/nn of/in this/dt problem/nn can/md be/vb reduced/vbn for/in some/dt networks/nns where/wrb the/dt number/nn of/in neighbors/nns of/in the/dt agents/nns is/vbz bounded/vbn by/in a/dt fixed/vbn constant/nn ./punct
+we/prp now/rb give/vbp a/dt complexity/nn result/nn on/in this/dt class/nn of/in networks/nns as/in follows/vbz ./punct
+theorem/nnp 2/cd ./punct
+let/vb the/dt number/nn of/in neighbors/nns of/in each/dt agent/nn in/in the/dt social/jj network/nn sn/nn be/vb bounded/vbn by/in δ/nn for/in δ/nn ≥/cd 3/cd ./punct
+computing/nnp the/dt efficient/jj task/nn allocation/nn given/vbn such/pdt a/dt network/nn is/vbz np-complete/jj ./punct
+in/in addition/nn ,/punct it/prp is/vbz not/rb approximable/jj within/in δε/nn for/in some/dt ε/nn >/punct 0/cd ./punct
+proof/nn ./punct
+it/prp has/vbz been/vbn shown/vbn in/in [/punct 2/cd ]/punct that/in the/dt maximum/nn independent/jj set/nn problem/nn in/in the/dt case/nn of/in the/dt degree/nn bounded/vbn by/in δ/nn for/in δ/nn ≥/cd 3/cd is/vbz np-complete/jj and/cc is/vbz not/rb approximable/jj within/in δε/nn for/in some/dt ε/nn >/punct 0/cd ./punct
+using/vbg the/dt similar/jj reduction/nn from/in the/dt proof/nn of/in theorem/nnp 1/cd ,/punct this/dt result/nn also/rb holds/vbz for/in the/dt stap/nn ./punct
+since/in our/prp$ problem/nn is/vbz as/rb hard/jj as/in mis/nnp as/in shown/vbn in/in theorem/nnp 1/cd ,/punct it/prp is/vbz not/rb possible/jj to/to give/vb a/dt worst/jjs case/nn bound/vbd better/jjr than/in δε/nn for/in any/dt polynomial/jj time/nn algorithm/nn ,/punct unless/in p/nn =/punct np/nn ./punct
+4/ls ./punct
+algorithms/nnp to/to deal/vb with/in the/dt problem/nn of/in allocating/vbg tasks/nns in/in a/dt social/jj network/nn ,/punct we/prp present/vbp a/dt distributed/vbn algorithm/nn ./punct
+we/prp introduce/vbp this/dt algorithm/nn by/in describing/vbg the/dt protocol/nn for/in the/dt agents/nns ./punct
+after/in that/dt we/prp give/vbp the/dt optimal/jj ,/punct centralized/jj algorithm/nn and/cc an/dt upper/jj bound/vbn algorithm/nn ,/punct which/wdt we/prp use/vbp in/in section/nn 5/cd to/to benchmark/jj the/dt quality/nn of/in our/prp$ distributed/vbn algorithm/nn ./punct
+we/prp can/md summarize/vb the/dt description/nn of/in the/dt task/nn allocation/nn algorithm/nn 1/cd greedy/nnp distributed/vbn allocation/nn protocol/nn (/punct gdap/nn )/punct ./punct
+each/dt manager/nn a/dt calculates/vbz the/dt efficiency/nn e/sym (/punct t/nn )/punct for/in each/dt of/in their/prp$ such/jj that/in for/in each/dt task/nn t/nn ∈/cd ta/nnp :/punct e/sym (/punct t/nn )/punct ≤/nn e/sym (/punct t/nn )/punct ./punct
+2/ls ./punct
+each/dt manager/nn a/dt requests/nns help/vbp for/in t/nn from/in all/dt its/prp$ neighbors/nns (/punct of/in a/dt )/punct by/in informing/vbg these/dt neighbors/nns of/in the/dt efficiency/nn e/sym (/punct t/nn )/punct and/cc the/dt required/vbn resources/nns for/in t/nn ./punct
+3/ls ./punct
+contractors/nns receive/vbp and/cc store/vbp all/dt requests/nns ,/punct and/cc then/rb offer/vbp all/dt relevant/jj resources/nns to/to the/dt manager/nn for/in the/dt task/nn with/in the/dt highest/jjs efficiency/nn ./punct
+4/ls ./punct
+the/dt managers/nns that/wdt have/vbp received/vbn sufficient/jj offers/nns allocate/vbp their/prp$ tasks/nns ,/punct and/cc inform/vb each/dt contractor/nn which/wdt allocated/vbd ,/punct or/cc when/wrb a/dt manager/nn has/vbz received/vbn offers/nns from/in all/dt neighbors/nns ,/punct but/cc still/rb can/md not/rb satisfy/vb its/prp$ task/nn ,/punct the/dt task/nn is/vbz removed/vbn from/in the/dt task/nn list/nn ta/nn ./punct
+5/cd ./punct
+contractors/nns update/vbp their/prp$ used/vbn resources/nns ./punct
+set/nn of/in tasks/nns ./punct
+each/dt task/nn requires/vbz some/dt resources/nns ,/punct has/vbz a/dt fixed/jj task/nn ./punct
+these/dt agents/nns are/vbp called/vbn contractors/nns ./punct
+agents/nns can/md fulfill/vb to/to find/vb out/rp which/wdt tasks/nns to/to execute/vb ,/punct and/cc which/wdt resources/nns of/in which/wdt contractors/nns to/to use/vb for/in these/dt tasks/nns ./punct
+the/dt idea/nn of/in the/dt protocol/nn is/vbz as/in follows/vbz ./punct
+all/dt manager/nn agents/nns offering/vbg the/dt task/nn that/wdt is/vbz most/rbs efficient/jj in/in terms/nns of/in the/dt ratio/nn between/in benefit/nn and/cc required/vbn resources/nns ./punct
+out/in of/in all/dt tasks/nns offered/vbd ,/punct contractors/nns select/vbp the/dt task/nn with/in the/dt highest/jjs efficiency/nn ,/punct the/dt resources/nns the/dt agent/nn is/vbz able/jj to/to supply/vb for/in this/dt task/nn ./punct
+if/in sufficient/jj resources/nns have/vbp been/vbn offered/vbn ,/punct the/dt manager/nn selects/vbz the/dt required/vbn resources/nns and/cc informs/vbz all/dt contractors/nns of/in its/prp$ choice/nn ./punct
+./punct
+a/dt more/jjr detailed/jj description/nn of/in this/dt protocol/nn can/md be/vb found/vbn impossible/jj to/to fulfill/vb locally/rb ./punct
+obviously/rb ,/punct a/dt task/nn is/vbz also/rb not/rb offered/vbn anymore/rb when/wrb it/prp has/vbz been/vbn allocated/vbn ./punct
+this/dt protocol/nn is/vbz such/jj that/in ,/punct when/wrb no/dt two/cd tasks/nns have/vbp exactly/rb the/dt same/jj efficiency/nn ,/punct in/in every/dt iteration/nn at/in least/jjs one/cd task/nn is/vbz removed/vbn from/in from/in this/dt the/dt computation/nn and/cc communication/nn property/nn of/in the/dt algorithm/nn follows/vbz ./punct
+the/dt run/nn time/nn of/in the/dt distributed/vbn algorithm/nn is/vbz o/nn (/punct nm/nn )/punct ,/punct and/cc the/dt number/nn of/in communication/nn messages/nns is/vbz o/nn (/punct n2/nn m/nn )/punct ./punct
+even/rb when/wrb some/dt tasks/nns have/vbp the/dt same/jj efficiency/nn ,/punct it/prp is/vbz straightforward/jj to/to make/vb this/dt result/nn work/nn ./punct
+for/in example/nn ,/punct the/dt implementation/nn can/md ensure/vb that/in the/dt contractors/nns choose/vb the/dt task/nn with/in the/dt lowest/jjs task-id/nn ./punct
+algorithm/nn 2/cd optimal/jj social/jj task/nn allocation/nn (/punct opt/nnp )/punct ./punct
+repeat/nn the/dt following/vbg for/in each/dt combination/nn of/in tasks/nns :/punct 1/cd ./punct
+if/in the/dt total/jj reward/nn for/in this/dt combination/nn is/vbz higher/jjr than/in any/dt previous/jj combination/nn ,/punct test/nn if/in this/dt combination/nn is/vbz 2/cd ./punct
+create/vb a/dt network/nn flow/nn problem/nn for/in each/dt resource/nn type/nn (/punct a/dt )/punct create/vb a/dt source/nn s/nns and/cc a/dt sink/nn s/nns ./punct
+an/dt edge/nn from/in s/nns to/to this/dt node/nn with/in capacity/nn equal/jj to/to the/dt amount/nn of/in resources/nns of/in type/nn r/nn agent/nn a/dt has/vbz ./punct
+edge/nn from/in this/dt node/nn to/to s/nns with/in capacity/nn equal/jj to/to the/dt amount/nn of/in resources/nns of/in type/nn r/nn task/nn t/nn requires/vbz ./punct
+(/punct d/nn )/punct for/in each/dt agent/nn a/dt connect/vb the/dt agent/nn node/nn to/to all/dt (/punct a/dt ,/punct loc/nn (/punct t/nn )/punct )/punct ∈/nn ae/nn }/punct ./punct
+give/vb this/dt connection/nn unlimited/jj capacity/nn ./punct
+3/ls ./punct
+solve/vb the/dt maximum/nn flow/nn problem/nn for/in the/dt created/vbn flow/nn networks/nns ./punct
+if/in the/dt maximum/nn flow/nn in/in each/dt network/nn is/vbz equal/jj to/to the/dt total/nn required/vbn resources/nns of/in that/dt type/nn ,/punct the/dt current/jj combination/nn of/in tasks/nns is/vbz feasible/jj ./punct
+in/in that/dt case/nn ,/punct this/dt is/vbz the/dt current/jj best/jjs combination/nn of/in tasks/nns ./punct
+in/in each/dt iteration/nn in/in the/dt worst/jjs case/nn (/punct i.e./fw ,/punct a/dt fully/rb connected/jj network/nn )/punct ,/punct for/in each/dt of/in the/dt o/nn (/punct n/nn )/punct managers/nns ,/punct o/nn (/punct m/nn )/punct messages/nns are/vbp sent/vbn ./punct
+next/in the/dt task/nn with/in the/dt highest/jjs efficiency/nn can/md be/vb selected/vbn by/in each/dt contractor/nn in/in o/nn (/punct n/nn )/punct ./punct
+assigning/vbg an/dt allocation/nn operations/nns for/in each/dt iteration/nn ,/punct and/cc thus/rb o/nn (/punct n2/nn m/nn )/punct ./punct
+we/prp establish/vbp the/dt quality/nn of/in this/dt protocol/nn experimentally/rb (/punct in/in section/nn 5/cd )/punct ./punct
+preferably/rb ,/punct we/prp compare/vbp the/dt results/nns to/to the/dt optimal/jj solution/nn ./punct
+the/dt optimal/jj task/nn allocation/nn algorithm/nn should/md deal/vb with/in the/dt restrictions/nns posed/vbn by/in the/dt social/jj network/nn ./punct
+for/in this/dt npcomplete/nn problem/nn we/prp used/vbd an/dt exponential/jj brute-force/jj algorithm/nn to/to consider/vb relevant/jj combinations/nns of/in tasks/nns to/to execute/vb ./punct
+for/in each/dt combination/nn we/prp use/vbp a/dt maximum-flow/jj algorithm/nn to/to check/vb whether/in the/dt resources/nns are/vbp sufficient/jj for/in the/dt selected/vbn subset/nn of/in tasks/nns ./punct
+the/dt flow/nn network/nn describes/vbz which/wdt resources/nns can/md be/vb used/vbn for/in which/wdt tasks/nns ,/punct depending/vbg on/in the/dt social/jj feasible/jj solution/nn exists/vbz (/punct see/vb algorithm/nn 2/cd )/punct ./punct
+clearly/rb ,/punct we/prp can/md not/rb expect/vb this/dt optimal/jj algorithm/nn to/to be/vb able/jj to/to find/vb solutions/nns for/in larger/jjr problem/nn sizes/nns ./punct
+to/to establish/vb the/dt quality/nn of/in our/prp$ protocol/nn for/in large/jj instances/nns ,/punct we/prp use/vbp the/dt following/vbg method/nn to/to determine/vb an/dt upper/jj bound/vbn ./punct
+given/vbn a/dt social/jj task/nn allocation/nn problem/nn ,/punct if/in the/dt number/nn of/in algorithm/nn 3/cd an/dt upper/jj bound/vbn for/in social/jj task/nn allocation/nn (/punct ub/nnp )/punct ./punct
+create/vb a/dt network/nn flow/nn problem/nn with/in costs/nns as/in follows/vbz :/punct 1/cd ./punct
+create/vb a/dt source/nn s/nns and/cc a/dt sink/nn s/nns ./punct
+create/vb an/dt agent-resource/jj node/nn ai/vbp ,/punct and/cc an/dt edge/nn from/in resources/nns of/in type/nn r/nn agent/nn a/dt has/vbz available/jj and/cc with/in costs/nns 0./cd create/vbp a/dt task-resource/jj node/nn ti/nn ,/punct and/cc an/dt edge/nn from/in this/dt node/nn type/nn r/nn task/nn t/nn requires/vbz and/cc costs/vbz −e/jj (/punct t/nn )/punct ./punct
+connect/vb the/dt agent-resource/jj node/nn ai/vbp to/to all/dt task-resource/jj capacity/nn and/cc zero/cd costs/nns ./punct
+capacity/nn and/cc zero/cd costs/nns ./punct
+solve/vb the/dt minimum/jj cost/nn flow/nn network/nn problem/nn for/in this/dt network/nn ./punct
+the/dt costs/nns of/in the/dt resulting/vbg network/nn is/vbz an/dt upper/jj bound/vbn for/in the/dt social/jj task/nn allocation/nn problem/nn ./punct
+network/nn problem/nn ./punct
+our/prp$ method/nn for/in efficiently/rb calculating/vbg an/dt upper/jj bound/vbn for/in stap/nn makes/vbz use/nn of/in this/dt special/jj case/nn by/in converting/vbg any/dt given/vbn stap/nn instance/nn p/nn into/in a/dt new/jj problem/nn p/nn where/wrb each/dt task/nn only/rb has/vbz one/cd resource/nn type/nn ./punct
+more/rbr specifically/rb ,/punct for/in every/dt task/nn t/nn ∈/cd t/nn with/in utility/nn u/nn (/punct t/nn )/punct ,/punct fair/jj share/nn of/in the/dt utility/nn ,/punct i.e./fw ,/punct the/dt efficiency/nn of/in t/nn from/in after/in polynomially/rb performing/vbg this/dt conversion/nn for/in every/dt task/nn in/in t/nn ,/punct the/dt original/jj problem/nn p/nn becomes/vbz the/dt special/jj case/nn p/nn ./punct
+the/dt original/jj problem/nn p./nnp the/dt flow/nn network/nn by/in the/dt negation/nn of/in the/dt new/jj task/nn ''/'' s/nns utility/nn ./punct
+a/dt polynomial-time/jj implementation/nn of/in a/dt scaling/vbg minimum/nn cost/nn flow/nn algorithm/nn is/vbz used/vbn for/in the/dt computation/nn ./punct
+the/dt resulting/vbg minimum/nn cost/nn flow/nn represents/vbz a/dt maximum/nn allocation/nn of/in estimate/nn the/dt quality/nn of/in the/dt gdap/nn for/in large-scale/jj instances/nns ./punct
+we/prp implemented/vbd the/dt greedy/jj distributed/vbn allocation/nn protocol/nn (/punct gdap/nn )/punct ,/punct the/dt optimal/jj allocation/nn algorithm/nn (/punct opt/nnp )/punct ,/punct and/cc the/dt upper/jj bound/vbn algorithm/nn (/punct ub/nnp )/punct in/in java/nnp ,/punct and/cc tested/vbd them/prp the/dt performance/nn of/in the/dt distributed/vbn algorithm/nn in/in different/jj problem/nn settings/nns using/vbg different/jj social/jj networks/nns ./punct
+the/dt formance/nn measurements/nns are/vbp the/dt solution/nn quality/nn and/cc computation/nn time/nn ,/punct where/wrb the/dt solution/nn quality/nn (/punct sq/nn )/punct is/vbz computed/vbn the/dt output/nn of/in the/dt distributed/vbn algorithm/nn with/in the/dt optimal/jj the/dt optimal/jj solution/nn ,/punct we/prp use/vbp the/dt value/nn returned/vbn by/in the/dt upper/jj bound/vbn algorithm/nn for/in evaluation/nn ,/punct i.e./fw ,/punct sq/nn =/punct gdap/nn ./punct
+compare/vb the/dt quality/nn of/in the/dt upper/jj bound/vbn to/to the/dt optimal/jj solution/nn for/in smaller/jjr problems/nns ./punct
+in/in the/dt following/vbg ,/punct we/prp describe/vbp the/dt setup/nn of/in all/dt experiments/nns ,/punct and/cc present/vb the/dt results/nns ./punct
+we/prp consider/vbp several/jj experimental/jj environments/nns ./punct
+in/in all/dt environments/nns the/dt agents/nns are/vbp connected/vbn by/in a/dt social/jj network/nn ./punct
+in/in the/dt experiments/nns ,/punct three/cd different/jj networks/nns are/vbp used/vbn to/to simulate/vb the/dt social/jj relationships/nns among/in agents/nns in/in potential/jj realworld/nn problems/nns ./punct
+small-world/jj networks/nns are/vbp networks/nns where/wrb most/rbs neighbors/nns of/in an/dt agent/nn are/vbp also/rb connected/vbn to/to each/dt other/jj ./punct
+for/in the/dt experiments/nns we/prp use/vbp a/dt method/nn for/in generating/vbg random/jj small-world/jj networks/nns proposed/vbn by/in watts/nnp et/fw al./fw ,/punct with/in a/dt fixed/vbn rewiring/nn probability/nn p/nn =/punct 0.05/cd ./punct
+scale-free/jj networks/nns have/vbp the/dt property/nn that/in a/dt couple/nn of/in nodes/nns have/vbp many/jj connections/nns ,/punct and/cc many/jj nodes/nns have/vbp only/rb the/dt implementation/nn in/in the/dt jung/nnp library/nn of/in the/dt generator/nn proposed/vbn by/in barab´asi/nn and/cc albert/nnp ./punct
+we/prp also/rb generate/vbp random/jj networks/nns as/in follows/vbz ./punct
+first/rb we/prp connect/vbp each/dt agent/nn to/to another/dt agent/nn such/jj that/in all/dt agents/nns are/vbp connected/vbn ./punct
+next/rb ,/punct we/prp randomly/rb add/vbp connections/nns until/in the/dt desired/vbn average/jj degree/nn has/vbz been/vbn reached/vbn ./punct
+we/prp now/rb describe/vbp the/dt different/jj settings/nns used/vbn in/in our/prp$ experiments/nns with/in both/dt small/jj and/cc large-scale/jj problems/nns ./punct
+tasks/nns is/vbz 20/cd ./punct
+the/dt number/nn of/in different/jj resource/nn types/nns is/vbz bounded/vbn by/in 5/cd ,/punct and/cc the/dt average/jj number/nn of/in resources/nns required/vbn by/in a/dt task/nn is/vbz 30/cd ./punct
+consequently/rb ,/punct the/dt total/jj number/nn of/in resources/nns required/vbn by/in the/dt tasks/nns is/vbz fixed/vbn ./punct
+however/rb ,/punct the/dt resources/nns available/jj to/to the/dt agents/nns are/vbp varied/vbn ./punct
+we/prp define/vbp the/dt resource/nn ratio/nn to/to refer/vb to/to the/dt ratio/nn between/in the/dt total/jj number/nn of/in available/jj resources/nns and/cc the/dt total/jj number/nn of/in required/vbn resources/nns ./punct
+resources/nnps are/vbp allocated/vbn uniformly/rb to/to the/dt agents/nns ./punct
+the/dt average/jj degrees/nns of/in the/dt networks/nns may/md also/rb change/vb ./punct
+in/in this/dt setting/vbg the/dt task/nn benefits/nns are/vbp distributed/vbn normally/rb around/in the/dt number/nn of/in resources/nns required/vbn ./punct
+let/vb the/dt benefits/nns of/in the/dt tasks/nns vary/vbp dramatically-40/cd %/punct of/in the/dt tasks/nns have/vbp around/in 10/cd times/nns higher/jjr benefit/nn than/in the/dt other/jj 60/cd %/punct of/in the/dt tasks/nns ./punct
+setting/vbg 3/cd ./punct
+this/dt setting/nn is/vbz for/in large-scale/jj problems/nns ./punct
+the/dt ratio/nn between/in the/dt number/nn of/in agents/nns and/cc the/dt number/nn of/in tasks/nns is/vbz set/vbn to/to 5/3/cd ,/punct and/cc the/dt number/nn of/in agents/nns varies/vbz from/in 100/cd to/to 2000/cd ./punct
+we/prp also/rb fix/vbp the/dt resource/nn ratio/nn to/to 1.2/cd and/cc the/dt average/jj degree/nn to/to 6/cd ./punct
+the/dt number/nn of/in different/jj resource/nn types/nns is/vbz 20/cd ,/punct and/cc the/dt average/jj resource/nn requirement/nn of/in a/dt tasks/nns is/vbz 100/cd ./punct
+the/dt task/nn benefits/nns are/vbp again/rb normally/rb distributed/vbn ./punct
+the/dt experiments/nns are/vbp done/vbn with/in the/dt three/cd different/jj settings/nns in/in the/dt three/cd different/jj networks/nns mentioned/vbn before/rb ,/punct where/wrb each/dt recorded/vbn data/nns is/vbz the/dt average/nn over/in 20/cd random/jj instances/nns ./punct
+experimental/jj setting/nn 1/cd is/vbz used/vbn for/in this/dt set/nn of/in experiments/nns ./punct
+we/prp would/md like/vb to/to see/vb how/wrb the/dt gdap/nn behaves/vbz in/in the/dt different/jj networks/nns when/wrb the/dt number/nn of/in resources/nns available/jj to/to the/dt agents/nns is/vbz changing/vbg ./punct
+we/prp also/rb study/vb the/dt behavior/nn of/in our/prp$ upper/jj bound/vbn algorithm/nn ./punct
+for/in this/dt experiment/nn we/prp fix/vbp the/dt average/jj number/nn of/in neighbors/nns (/punct degree/nn )/punct in/in each/dt network/nn type/nn to/to six/cd ./punct
+bound/vbn and/cc the/dt gdap/nn algorithm/nn depends/vbz on/in the/dt resource/nn ratio/nn ./punct
+remarkably/rb ,/punct for/in lower/jjr resource/nn ratios/nns our/prp$ gdap/nn is/vbz much/rb closer/jjr to/to the/dt optimal/jj allocation/nn than/in the/dt upper/jj bound/vbn ./punct
+when/wrb the/dt resource/nn ratio/nn grows/vbz above/in 1.5/cd ,/punct the/dt graphs/nns of/in the/dt upper/jj bound/vbn and/cc the/dt gdap/nn converge/vbp ,/punct meaning/vbg that/in both/dt are/vbp really/rb close/jj to/to the/dt optimal/jj solution/nn ./punct
+this/dt can/md be/vb explained/vbn by/in the/dt fact/nn that/in when/wrb plenty/nn of/in resources/nns are/vbp available/jj ,/punct all/dt tasks/nns can/md be/vb allocated/vbn without/in any/dt conflicts/nns ./punct
+however/rb ,/punct when/wrb resources/nns are/vbp very/rb scarce/jj ,/punct the/dt upper/jj bound/vbn is/vbz sub-tasks/jj per/in resource/nn type/nn ,/punct and/cc does/vbz not/rb reason/nn about/in how/wrb many/jj of/in the/dt tasks/nns can/md actually/rb be/vb allocated/vbn completely/rb ./punct
+we/prp also/rb notice/vbp from/in the/dt graph/nn that/in the/dt solution/nn quality/nn of/in the/dt gdap/nn on/in all/dt three/cd networks/nns is/vbz quite/rb high/jj (/punct over/in 0.8/cd )/punct when/wrb the/dt available/jj resource/nn is/vbz very/rb limited/jj (/punct 0.3/cd )/punct ./punct
+it/prp drops/vbz below/in 0.8/cd with/in the/dt increased/vbn ratio/nn and/cc goes/vbz up/rp again/rb once/rb there/ex are/vbp plenty/nn of/in resources/nns available/jj (/punct resource/nn ratio/nn 0.9/cd )/punct ./punct
+clearly/rb ,/punct if/in resources/nns are/vbp really/rb scarce/jj ,/punct only/rb a/dt few/jj tasks/nns can/md be/vb successfully/rb allocated/vbn even/rb by/in the/dt optimal/jj algorithm/nn ./punct
+therefore/rb ,/punct the/dt gdap/nn is/vbz able/jj to/to give/vb quite/rb a/dt good/jj allocation/nn ./punct
+although/in the/dt differences/nns are/vbp minor/jj ,/punct it/prp can/md also/rb be/vb seen/vbn that/in the/dt results/nns for/in the/dt small-world/jj network/nn are/vbp consistently/rb slightly/rb better/jjr than/in those/dt of/in random/jj networks/nns ,/punct which/wdt in/in turn/nn outperform/vbp scale-free/jj networks/nns ./punct
+this/dt can/md be/vb understood/vbn by/in looking/vbg at/in the/dt distribution/nn of/in the/dt agents/nns ''/'' degree/nn ,/punct as/in shown/vbn almost/rb every/dt manager/nn has/vbz a/dt degree/nn of/in six/cd ./punct
+in/in random/jj networks/nns ,/punct the/dt degree/nn varies/vbz between/in one/cd and/cc about/rb ten/cd ./punct
+however/rb ,/punct in/in the/dt scale-free/jj network/nn ,/punct most/jjs nodes/nns have/vbp only/rb three/cd connections/nns ./punct
+as/in we/prp will/md see/vb in/in the/dt next/jj experiment/nn ,/punct having/vbg more/jjr connections/nns means/vbz getting/vbg better/jjr results/nns ./punct
+for/in the/dt next/jj experiment/nn we/prp fix/vbp the/dt resource/nn ratio/nn to/to 1.0/cd and/cc study/vb the/dt quality/nn of/in both/cc the/dt upper/jj bound/vbn and/cc the/dt gdap/nn algorithm/nn related/jj to/to the/dt degree/nn of/in the/dt social/jj we/prp can/md see/vb that/in a/dt high/jj average/jj degree/nn also/rb leads/vbz to/to convergence/nn of/in the/dt upper/jj bound/vbn and/cc the/dt gdap/nn ./punct
+obviously/rb ,/punct when/wrb managers/nns have/vbp many/jj connections/nns ,/punct it/prp becomes/vbz easier/jjr to/to this/dt graph/nn confirms/vbz the/dt results/nns that/in the/dt gdap/nn performs/vbz better/jjr for/in problems/nns with/in higher/jjr degree/nn and/cc higher/jjr resource/nn ratio/nn ./punct
+however/rb ,/punct it/prp is/vbz now/rb also/rb more/rbr clear/jj that/in it/prp performs/vbz better/jjr for/in very/rb low/jj degree/nn and/cc resource/nn availability/nn ./punct
+for/in this/dt experiment/nn with/in 40/cd agents/nns and/cc 20/cd tasks/nns ,/punct the/dt worst/jjs performance/nn is/vbz met/vbn for/in instances/nns with/in degree/nn six/cd and/cc resource/nn ratio/nn 0.6/cd to/to instances/nns with/in degree/nn twelve/cd and/cc resource/nn ratio/nn 0.3/cd ./punct
+but/cc even/rb for/in those/dt instances/nns ,/punct the/dt performance/nn lies/vbz above/in 0.7/cd ./punct
+the/dt consistent/jj standard/jj deviation/nn of/in about/rb 15/cd %/punct over/in the/dt first/jj graphs/nns ,/punct because/in it/prp would/md obfuscate/vb the/dt interesting/jj correlations/nns that/wdt can/md now/rb be/vb seen/vbn ./punct
+to/to study/vb the/dt robustness/nn of/in the/dt gdap/nn against/in different/jj problem/nn settings/nns ,/punct we/prp generate/vbp instances/nns where/wrb the/dt task/nn higher/jjr benefit/nn (/punct as/in described/vbn in/in setting/vbg 2/cd )/punct ./punct
+the/dt effect/nn of/in this/dt different/jj distribution/nn can/md be/vb seen/vbn in/in figure/nnp 6/cd ./punct
+these/dt two/cd graphs/nns show/vbp that/in the/dt results/nns for/in the/dt skewed/jj task/nn benefit/nn distribution/nn are/vbp slightly/rb better/jjr on/in average/nn ,/punct both/cc when/wrb varying/vbg the/dt resource/nn ratio/nn ,/punct and/cc when/wrb varying/vbg the/dt average/jj degree/nn greedy/jj nature/nn of/in gdap/nn ,/punct which/wdt causes/vbz the/dt tasks/nns with/in high/jj efficiency/nn to/to be/vb allocated/vbn first/rb ,/punct and/cc makes/vbz the/dt algorithm/nn perform/vb better/jjr in/in this/dt heterogeneous/jj setting/nn ./punct

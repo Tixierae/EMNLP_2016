@@ -1,0 +1,228 @@
+query/nnp expansion/nn ,/punct in/in the/dt form/nn of/in pseudo-relevance/nn feedback/nn or/cc relevance/nn feedback/nn ,/punct is/vbz a/dt common/jj technique/nn used/vbn to/to improve/vb retrieval/nn effectiveness/nn ./punct
+most/jjs previous/jj approaches/nns have/vbp ignored/vbn important/jj issues/nns ,/punct such/jj as/in the/dt role/nn of/in features/nns and/cc the/dt importance/nn of/in modeling/nn term/nn dependencies/nns ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp a/dt robust/jj query/nn expansion/nn technique/nn based/vbn on/in the/dt markov/nnp random/jj field/nn model/nn for/in information/nn retrieval/nn ./punct
+the/dt technique/nn ,/punct called/vbn latent/jj concept/nn expansion/nn ,/punct provides/vbz a/dt mechanism/nn for/in modeling/nn term/nn dependencies/nns during/in expansion/nn ./punct
+furthermore/rb ,/punct the/dt use/nn of/in arbitrary/jj features/nns within/in the/dt model/nn provides/vbz a/dt powerful/jj framework/nn for/in going/vbg beyond/in simple/jj term/nn occurrence/nn features/vbz that/dt are/vbp implicitly/rb used/vbn by/in most/jjs other/jj expansion/nn techniques/nns ./punct
+we/prp evaluate/vbp our/prp$ technique/nn against/in relevance/nn models/nns ,/punct a/dt state-of-the-art/jj language/nn modeling/nn query/nn expansion/nn technique/nn ./punct
+our/prp$ model/nn demonstrates/vbz consistent/jj and/cc significant/jj improvements/nns in/in retrieval/nn effectiveness/nn across/in several/jj trec/nns data/nns sets/nns ./punct
+we/prp also/rb describe/vbp how/wrb our/prp$ technique/nn can/md be/vb used/vbn to/to generate/vb meaningful/jj multi-term/jj concepts/nns for/in tasks/nns such/jj as/in query/nn suggestion/reformulation/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp h.3.3/nn [/punct information/nnp storage/nnp and/cc retrieval/nnp ]/punct :/punct information/nnp search/vb and/cc retrieval/nnp general/nnp terms/nns algorithms/nns ,/punct experimentation/nn ,/punct theory/nnp 1/cd ./punct
+introduction/nn users/nns of/in information/nn retrieval/nn systems/nns are/vbp required/vbn to/to express/vb complex/nn information/nn needs/vbz in/in terms/nns of/in boolean/jj expressions/nns ,/punct a/dt short/jj list/nn of/in keywords/nns ,/punct a/dt sentence/nn ,/punct a/dt question/nn ,/punct or/cc possibly/rb a/dt longer/rbr narrative/jj ./punct
+a/dt great/jj deal/nn of/in information/nn is/vbz lost/vbn during/in the/dt process/nn of/in translating/vbg from/in the/dt information/nn need/nn to/to the/dt actual/jj query/nn ./punct
+for/in this/dt reason/nn ,/punct there/ex has/vbz been/vbn a/dt strong/jj interest/nn in/in query/nn expansion/nn techniques/nns ./punct
+such/jj techniques/nns are/vbp used/vbn to/to augment/vb the/dt original/jj query/nn to/to produce/vb a/dt representation/nn that/wdt better/jjr reflects/vbz the/dt underlying/vbg information/nn need/nn ./punct
+query/nnp expansion/nn techniques/nns have/vbp been/vbn well/rb studied/vbn for/in various/jj models/nns in/in the/dt past/nn and/cc have/vbp shown/vbn to/to significantly/rb improve/vb effectiveness/nn in/in both/cc the/dt relevance/nn feedback/nn and/cc pseudo-relevance/nn feedback/nn setting/vbg [/punct 12/cd ,/punct 21/cd ,/punct 28/cd ,/punct 29/cd ]/punct ./punct
+recently/rb ,/punct a/dt markov/nnp random/jj field/nn (/punct mrf/nn )/punct model/nn for/in information/nn retrieval/nn was/vbd proposed/vbn that/in goes/vbz beyond/in the/dt simplistic/jj bag/nn of/in words/nns assumption/nn that/in underlies/vbz bm25/nn and/cc the/dt (/punct unigram/nn )/punct language/nn modeling/nn approach/nn to/to information/nn retrieval/nn [/punct 20/cd ,/punct 22/cd ]/punct ./punct
+the/dt mrf/nnp model/nn generalizes/vbz the/dt unigram/nn ,/punct bigram/nn ,/punct and/cc other/jj various/jj dependence/nn models/nns [/punct 14/cd ]/punct ./punct
+most/jjs past/jj term/nn dependence/nn models/nns have/vbp failed/vbn to/to show/vb consistent/jj ,/punct significant/jj improvements/nns over/in unigram/jj baselines/nns ,/punct with/in few/jj exceptions/nns [/punct 8/cd ]/punct ./punct
+the/dt mrf/nnp model/nn ,/punct however/rb ,/punct has/vbz been/vbn shown/vbn to/to be/vb highly/rb effective/jj across/in a/dt number/nn of/in tasks/nns ,/punct including/vbg ad/nn hoc/fw retrieval/nn [/punct 14/cd ,/punct 16/cd ]/punct ,/punct named-page/nn finding/nn [/punct 16/cd ]/punct ,/punct and/cc japanese/jj language/nn web/nn search/nn [/punct 6/cd ]/punct ./punct
+until/in now/rb ,/punct the/dt model/nn has/vbz been/vbn solely/rb used/vbn for/in ranking/jj documents/nns in/in response/nn to/to a/dt given/vbn query/nn ./punct
+in/in this/dt work/nn ,/punct we/prp show/vbp how/wrb the/dt model/nn can/md be/vb extended/vbn and/cc used/vbn for/in query/nn expansion/nn using/vbg a/dt technique/nn that/in we/prp call/vbp latent/jj concept/nn expansion/nn (/punct lce/nn )/punct ./punct
+there/ex are/vbp three/cd primary/jj contributions/nns of/in our/prp$ work/nn ./punct
+first/rb ,/punct lce/nn provides/vbz a/dt mechanism/nn for/in combining/vbg term/nn dependence/nn with/in query/nn expansion/nn ./punct
+previous/jj query/nn expansion/nn techniques/nns are/vbp based/vbn on/in bag/nn of/in words/nns models/nns ./punct
+therefore/rb ,/punct by/in performing/vbg query/nn expansion/nn using/vbg the/dt mrf/nnp model/nn ,/punct we/prp are/vbp able/jj to/to study/vb the/dt dynamics/nns between/in term/nn dependence/nn and/cc query/nn expansion/nn ./punct
+next/rb ,/punct as/in we/prp will/md show/vb ,/punct the/dt mrf/nnp model/nn allows/vbz arbitrary/jj features/nns to/to be/vb used/vbn within/in the/dt model/nn ./punct
+query/nnp expansion/nn techniques/nns in/in the/dt past/nn have/vbp implicitly/rb only/rb made/vbn use/nn of/in term/nn occurrence/nn features/nns ./punct
+by/in using/vbg more/jjr robust/jj feature/nn sets/nns ,/punct it/prp is/vbz possible/jj to/to produce/vb better/jjr expansion/nn terms/nns that/wdt discriminate/vbp between/in relevant/jj and/cc non-relevant/jj documents/nns better/rbr ./punct
+finally/rb ,/punct our/prp$ proposed/vbn approach/nn seamlessly/rb provides/vbz a/dt mechanism/nn for/in generating/vbg both/cc single/jj and/cc multi-term/jj concepts/nns ./punct
+most/jjs previous/jj techniques/nns ,/punct by/in default/nn ,/punct generate/vbp terms/nns independently/rb ./punct
+there/ex have/vbp been/vbn several/jj approaches/nns that/wdt make/vbp use/nn of/in generalized/vbn concepts/nns ,/punct however/rb such/jj approaches/nns were/vbd somewhat/rb heuristic/nn and/cc done/vbn outside/nn of/in the/dt model/nn [/punct 19/cd ,/punct 28/cd ]/punct ./punct
+our/prp$ approach/nn is/vbz both/cc formally/rb motivated/jj and/cc a/dt natural/jj extension/nn of/in the/dt underlying/vbg model/nn ./punct
+the/dt remainder/nn of/in this/dt paper/nn is/vbz laid/vbn out/rp as/in follows/vbz ./punct
+in/in section/nn 2/cd we/prp describe/vbp related/jj query/nn expansion/nn approaches/nns ./punct
+section/nn 3/cd provides/vbz an/dt overview/nn of/in the/dt mrf/nnp model/nn and/cc details/nns our/prp$ proposed/vbn latent/jj concept/nn expansion/nn technique/nn ./punct
+in/in section/nn 4/cd we/prp evaluate/vbp our/prp$ proposed/jj model/nn and/cc analyze/vb the/dt results/nns ./punct
+finally/rb ,/punct section/nn 5/cd concludes/vbz the/dt paper/nn and/cc summarizes/vbz the/dt major/jj results/nns ./punct
+2/ls ./punct
+related/jj work/vbp one/cd of/in the/dt classic/jj and/cc most/rbs widely/rb used/vbn approaches/nns to/to query/vb expansion/nn is/vbz the/dt rocchio/nnp algorithm/nn [/punct 21/cd ]/punct ./punct
+rocchio/nnp ''/'' s/vbz approach/nn ,/punct which/wdt was/vbd developed/vbn within/in the/dt vector/nn space/nn model/nn ,/punct reweights/vbz the/dt original/jj query/nn vector/nn by/in moving/vbg the/dt weights/nns towards/in the/dt set/nn of/in relevant/jj or/cc pseudo-relevant/jj documents/nns and/cc away/rb from/in the/dt non-relevant/jj documents/nns ./punct
+unfortunately/rb ,/punct it/prp is/vbz not/rb possible/jj to/to formally/rb apply/vb rocchio/nnp ''/'' s/vbz approach/nn to/to a/dt statistical/jj retrieval/nn model/nn ,/punct such/jj as/in language/nn modeling/nn for/in information/nn retrieval/nn ./punct
+a/dt number/nn of/in formalized/vbn query/nn expansion/nn techniques/nns have/vbp been/vbn developed/vbn for/in the/dt language/nn modeling/nn framework/nn ,/punct including/vbg zhai/nnp and/cc lafferty/nnp ''/'' s/vbz model-based/jj feedback/nn and/cc lavrenko/nn and/cc croft/nn ''/'' s/nns relevance/nn models/nns [/punct 12/cd ,/punct 29/cd ]/punct ./punct
+both/dt approaches/nns attempt/vbp to/to use/vb pseudo-relevant/jj or/cc relevant/jj documents/nns to/to estimate/vb a/dt better/jjr query/nn model/nn ./punct
+model-based/jj feedback/nn finds/vbz the/dt model/nn that/wdt best/jjs describes/vbz the/dt relevant/jj documents/nns while/in taking/vbg a/dt background/nn (/punct noise/nn )/punct model/nn into/in consideration/nn ./punct
+this/dt separates/vbz the/dt content/nn model/nn from/in the/dt background/nn model/nn ./punct
+the/dt content/nn model/nn is/vbz then/rb interpolated/vbn with/in the/dt original/jj query/nn model/nn to/to form/vb the/dt expanded/vbn query/nn ./punct
+the/dt other/jj technique/nn ,/punct relevance/nn models/nns ,/punct is/vbz more/rbr closely/rb related/jj to/to our/prp$ work/nn ./punct
+therefore/rb ,/punct we/prp go/vbp into/in the/dt details/nns of/in the/dt model/nn ./punct
+much/rb like/in model-based/jj feedback/nn ,/punct relevance/nn models/nns estimate/vbp an/dt improved/vbn query/nn model/nn ./punct
+the/dt only/jj difference/nn between/in the/dt two/cd approaches/nns is/vbz that/in relevance/nn models/nns do/vbp not/rb explicitly/rb model/vb the/dt relevant/jj or/cc pseudo-relevant/jj documents/nns ./punct
+instead/rb ,/punct they/prp model/vbp a/dt more/jjr generalized/vbn notion/nn of/in relevance/nn ,/punct as/in we/prp now/rb show/vbp ./punct
+given/vbn a/dt query/nn q/nnp ,/punct a/dt relevance/nn model/nn is/vbz a/dt multinomial/jj distribution/nn ,/punct p/nn (/punct ·|q/nn )/punct ,/punct that/wdt encodes/vbz the/dt likelihood/nn of/in each/dt term/nn given/vbn the/dt query/nn as/in evidence/nn ./punct
+it/prp is/vbz computed/vbn as/in :/punct p/nn (/punct w|q/nn )/punct =/punct d/nn p/nn (/punct w|d/nn )/punct p/nn (/punct d|q/nn )/punct ≈/cd d∈rq/nn p/nn (/punct w|d/nn )/punct p/nn (/punct q|d/nn )/punct p/nn (/punct d/nn )/punct w/nn d∈rq/nn p/nn (/punct w|d/nn )/punct p/nn (/punct q|d/nn )/punct p/nn (/punct d/nn )/punct (/punct 1/cd )/punct where/wrb rq/nn is/vbz the/dt set/nn of/in documents/nns that/wdt are/vbp relevant/jj or/cc pseudorelevant/jj to/to query/vb q./nnp in/in the/dt pseudo-relevant/jj case/nn ,/punct these/dt are/vbp the/dt top/jj ranked/vbd documents/nns for/in query/nn q./nnp furthermore/rb ,/punct it/prp is/vbz assumed/vbn that/in p/nn (/punct d/nn )/punct is/vbz uniform/jj over/in this/dt set/nn ./punct
+these/dt mild/jj assumptions/nns make/vbp computing/vbg the/dt bayesian/jj posterior/nn more/rbr practical/jj ./punct
+after/in the/dt model/nn is/vbz estimated/vbn ,/punct documents/nns are/vbp ranked/vbn by/in clipping/jj the/dt relevance/nn model/nn by/in choosing/vbg the/dt k/nn most/rbs likely/jj terms/nns from/in p/nn (/punct ·|q/nn )/punct ./punct
+this/dt clipped/vbd distribution/nn is/vbz then/rb interpolated/vbn with/in with/in the/dt original/jj ,/punct maximum/jj likelihood/nn query/nn model/nn [/punct 1/cd ]/punct ./punct
+this/dt can/md be/vb thought/vbn of/in as/in expanding/vbg the/dt original/jj query/nn by/in k/nn weighted/jj terms/nns ./punct
+throughout/in the/dt remainder/nn of/in this/dt work/nn ,/punct we/prp refer/vbp to/to this/dt instantiation/nn of/in relevance/nn models/nns as/in rm3/nn ./punct
+there/ex has/vbz been/vbn relatively/rb little/jj work/nn done/vbn in/in the/dt area/nn of/in query/nn expansion/nn in/in the/dt context/nn of/in dependence/nn models/nns [/punct 9/cd ]/punct ./punct
+however/rb ,/punct there/ex have/vbp been/vbn several/jj attempts/nns to/to expand/vb using/vbg multi-term/jj concepts/nns ./punct
+xu/nnp and/cc croft/nnp ''/'' s/vbz local/jj context/nn analysis/nn (/punct lca/nn )/punct method/nn combined/vbn passage-level/jj retrieval/nn with/in concept/nn expansion/nn ,/punct where/wrb concepts/nns were/vbd single/jj terms/nns and/cc phrases/nns [/punct 28/cd ]/punct ./punct
+expansion/nn concepts/nns were/vbd chosen/vbn and/cc weighted/vbn using/vbg a/dt metric/jj based/vbn on/in co-occurrence/nn statistics/nns ./punct
+however/rb ,/punct it/prp is/vbz not/rb clear/jj based/vbn on/in the/dt analysis/nn done/vbn how/wrb much/rb the/dt phrases/nns helped/vbd over/in the/dt single/jj terms/nns alone/rb ./punct
+papka/nn and/cc allan/nnp investigate/vbp using/vbg relevance/nn feedback/nn to/to perform/vb multi-term/jj concept/nn expansion/nn for/in document/nn routing/vbg [/punct 19/cd ]/punct ./punct
+the/dt concepts/nns used/vbn in/in their/prp$ work/nn are/vbp more/rbr general/jj than/in those/dt used/vbn in/in lca/nnp ,/punct and/cc include/vbp inquery/nnp query/nn language/nn structures/nns ,/punct such/jj as/in #/punct uw50/nn (/punct white/jj house/nn )/punct ,/punct which/wdt corresponds/vbz to/to the/dt concept/nn the/dt terms/nns white/jj and/cc house/nn occur/vbp ,/punct in/in any/dt order/nn ,/punct within/in 50/cd terms/nns of/in each/dt other/jj ./punct
+results/nns showed/vbd that/in combining/vbg single/jj term/nn and/cc large/jj window/nn multi-term/jj concepts/nns significantly/rb improved/vbd effectiveness/nn ./punct
+however/rb ,/punct it/prp is/vbz unclear/jj whether/in the/dt same/jj approach/nn is/vbz also/rb effective/jj for/in ad/nn hoc/fw retrieval/nn ,/punct due/jj to/to the/dt differences/nns in/in the/dt tasks/nns ./punct
+3/ls ./punct
+model/nn this/dt section/nn details/nns our/prp$ proposed/vbn latent/jj concept/nn expansion/nn technique/nn ./punct
+as/in mentioned/vbn previously/rb ,/punct the/dt technique/nn is/vbz an/dt extension/nn of/in the/dt mrf/nnp model/nn for/in information/nn retrieval/nn [/punct 14/cd ]/punct ./punct
+therefore/rb ,/punct we/prp begin/vbp by/in providing/vbg an/dt overview/nn of/in the/dt mrf/nnp model/nn and/cc our/prp$ proposed/vbn extensions/nns ./punct
+markov/nnp random/jj fields/nns ,/punct which/wdt are/vbp undirected/jj graphical/jj models/nns ,/punct provide/vbp a/dt compact/jj ,/punct robust/jj way/nn of/in modeling/nn a/dt joint/jj distribution/nn ./punct
+here/rb ,/punct we/prp are/vbp interested/jj in/in modeling/nn the/dt joint/jj documents/nns and/cc queries/nns is/vbz a/dt relevance/nn distribution/nn ./punct
+that/dt is/vbz ,/punct sampling/nn from/in the/dt distribution/nn gives/vbz pairs/nns of/in documents/nns and/cc queries/nns ,/punct such/jj that/in the/dt document/nn is/vbz relevant/jj to/to the/dt query/nn ./punct
+potential/jj functions/nns over/in the/dt cliques/nns in/in g./nnp the/nnp nodes/nns in/in the/dt graph/nn represent/vbp the/dt random/jj variables/nns and/cc the/dt edges/nns define/vbp the/dt independence/nn semantics/nns of/in the/dt distribution/nn ./punct
+a/dt mrf/nn satisfies/vbz the/dt markov/nnp property/nn ,/punct which/wdt states/vbz that/in a/dt node/nn is/vbz independent/jj of/in all/dt of/in its/prp$ non-neighboring/jj nodes/nns given/vbn observed/vbn values/nns for/in its/prp$ neighbors/nns ./punct
+convention/nn and/cc parameterize/vbp the/dt potentials/nns as/in ψi/nn (/punct c/nn ;/punct λ/nn )/punct =/punct exp/nn [/punct λifi/nn (/punct c/nn )/punct ]/punct ,/punct where/wrb fi/nn (/punct c/nn )/punct is/vbz a/dt real-valued/jj feature/nn function/nn ./punct
+number/nn of/in ways/nns ./punct
+however/rb ,/punct following/vbg previous/jj work/nn ,/punct we/prp consider/vbp three/cd simple/jj variants/nns ./punct
+these/dt variants/nns are/vbp full/jj independence/nn ,/punct where/wrb each/dt query/nn term/nn is/vbz independent/jj of/in each/dt other/jj given/vbn a/dt document/nn ,/punct sequential/jj dependence/nn ,/punct which/wdt assumes/vbz a/dt dependence/nn exists/vbz between/in adjacent/jj query/nn terms/nns ,/punct and/cc full/jj dependence/nn ,/punct which/wdt makes/vbz no/dt independence/nn assumptions/nns ./punct
+mrfs/nns are/vbp commonly/rb parameterized/vbn based/vbn on/in the/dt coarse/jj for/in our/prp$ needs/nns ./punct
+we/prp need/vbp a/dt parameterization/nn that/wdt allows/vbz grained/jj level/nn ,/punct while/in keeping/vbg the/dt number/nn of/in features/nns ,/punct and/cc thus/rb the/dt number/nn of/in parameters/nns ,/punct reasonable/jj ./punct
+therefore/rb ,/punct we/prp allow/vbp cliques/nns to/to share/vb feature/nn functions/nns and/cc parameters/nns based/vbn on/in clique/jj sets/nns ./punct
+that/dt is/vbz ,/punct all/dt of/in the/dt cliques/nns within/in a/dt clique/jj set/nn are/vbp associated/vbn with/in the/dt same/jj feature/nn function/nn and/cc share/nn a/dt single/jj parameter/nn ./punct
+this/dt effectively/rb ties/nns together/rb the/dt parameters/nns of/in the/dt features/nns associated/vbn with/in each/dt set/nn ,/punct which/wdt significantly/rb reduces/vbz the/dt number/nn of/in parameters/nns while/in still/rb providing/vbg a/dt mechanism/nn for/in fine-tuning/nn on/in the/dt level/nn of/in clique/jj sets/nns ./punct
+we/prp propose/vbp seven/cd clique/jj sets/nns for/in use/nn with/in information/nn retrieval/nn ./punct
+the/dt first/jj three/cd clique/jj sets/nns consist/vbp of/in cliques/nns that/wdt contain/vbp one/cd or/cc more/jjr query/nn terms/nns and/cc the/dt document/nn node/nn ./punct
+features/nns over/in these/dt cliques/nns should/md encode/vb how/wrb well/rb the/dt terms/nns in/in the/dt clique/jj configuration/nn describe/vbp the/dt document/nn ./punct
+these/dt exactly/rb one/cd query/nn term/nn ./punct
+two/cd or/cc more/jjr query/nn terms/nns that/wdt appear/vbp in/in sequential/jj order/nn within/in the/dt query/nn ./punct
+two/cd or/cc more/jjr query/nn terms/nns that/wdt appear/vbp in/in any/dt order/nn within/in the/dt query/nn ./punct
+among/in the/dt cliques/nns within/in each/dt set/nn we/prp can/md control/vb how/wrb much/jj influence/nn each/dt type/nn gets/vbz ./punct
+this/dt also/rb avoids/vbz the/dt problem/nn of/in trying/vbg to/to determine/vb how/wrb to/to estimate/vb weights/nns for/in each/dt clique/nn within/in the/dt sets/nns ./punct
+instead/rb ,/punct we/prp now/rb must/md only/rb estimate/vb a/dt single/jj parameter/nn per/in set/nn ./punct
+next/rb ,/punct we/prp consider/vbp cliques/nns that/wdt only/rb contain/vbp query/nn term/nn nodes/nns ./punct
+these/dt cliques/nns ,/punct which/wdt were/vbd not/rb considered/vbn in/in ,/punct are/vbp defined/vbn in/in an/dt analogous/jj way/nn to/to those/dt just/rb defined/vbn ,/punct except/in the/dt the/dt cliques/nns are/vbp only/rb made/vbn up/in of/in query/nn term/nn nodes/nns and/cc do/vbp not/rb contain/vb the/dt document/nn node/nn ./punct
+feature/nn functions/nns over/in these/dt cliques/nns should/md capture/vb how/wrb compatible/jj query/nn terms/nns are/vbp to/to one/cd another/dt ./punct
+these/dt clique/jj features/nns may/md take/vb on/rp the/dt form/nn of/in language/nn models/nns that/wdt impose/vbp well-formedness/nn of/in the/dt terms/nns ./punct
+therefore/rb ,/punct we/prp define/vbp following/vbg query-dependent/jj clique/nn sets/nns :/punct •/cd tq/sym -/punct set/nn of/in cliques/nns containing/vbg exactly/rb one/cd query/nn term/nn ./punct
+that/in appear/vbp in/in sequential/jj order/nn within/in the/dt query/nn ./punct
+that/in appear/vbp in/in any/dt order/nn within/in the/dt query/nn ./punct
+finally/rb ,/punct there/ex is/vbz the/dt clique/nn that/wdt only/rb contains/vbz the/dt document/nn node/nn ./punct
+features/nns over/in this/dt node/nn can/md be/vb used/vbn as/in a/dt type/nn of/in document/nn prior/rb ,/punct encoding/vbg document-centric/jj properties/nns ./punct
+we/prp note/vbp that/in our/prp$ clique/jj sets/nns form/vbp a/dt set/vbn cover/nn over/in the/dt cliques/nns of/in g/nn ,/punct but/cc are/vbp not/rb a/dt partition/nn ,/punct since/in some/dt cliques/nns appear/vbp in/in multiple/jj clique/nn sets/nns ./punct
+after/in tying/vbg the/dt parameters/nns in/in our/prp$ clique/jj sets/nns together/rb and/cc using/vbg the/dt exponential/jj potential/jj function/nn form/nn ,/punct we/prp end/vbp up/rp with/in the/dt following/vbg simplified/vbn form/nn of/in the/dt joint/jj distribution/nn :/punct where/wrb fdq/nnp ,/punct fq/nnp ,/punct and/cc fd/nn are/vbp convenience/nn functions/nns defined/vbn by/in the/dt document/nn and/cc query/nn dependent/jj ,/punct query/nn dependent/jj ,/punct and/cc document/nn dependent/jj components/nns of/in the/dt joint/jj distribution/nn ,/punct respectively/rb ./punct
+these/dt will/md be/vb used/vbn to/to simplify/vb and/cc clarify/vb expressions/nns derived/vbn throughout/in the/dt remainder/nn of/in the/dt paper/nn ./punct
+any/dt arbitrary/jj feature/nn function/nn over/in clique/jj configurations/nns can/md be/vb used/vbn in/in the/dt model/nn ./punct
+the/dt correct/jj choice/nn of/in features/nns depends/vbz largely/rb on/in the/dt retrieval/nn task/nn and/cc the/dt evaluation/nn applicable/jj set/nn of/in features/nns ./punct
+used/vbn ,/punct we/prp now/rb briefly/rb describe/vbp possible/jj types/nns of/in features/nns that/wdt could/md be/vb used/vbn ./punct
+possible/jj query/nn term/nn dependent/jj features/nns include/vbp tf/nn ,/punct idf/nn ,/punct named/vbn entities/nns ,/punct term/nn proximity/nn ,/punct and/cc text/nn style/nn to/to name/vb a/dt few/jj ./punct
+many/jj types/nns of/in document/nn dependent/jj features/nns can/md be/vb used/vbn ,/punct as/rb well/rb ,/punct including/vbg document/nn length/nn ,/punct pagerank/nn ,/punct readability/nn ,/punct and/cc genre/nn ,/punct among/in others/nns ./punct
+use/vb a/dt simple/jj ,/punct fixed/jj set/nn of/in features/nns that/wdt have/vbp been/vbn shown/vbn to/to of/in features/nns used/vbn ./punct
+these/dt features/nns attempt/vbp to/to capture/vb term/nn occurrence/nn and/cc term/nn proximity/nn ./punct
+better/nnp feature/nn selection/nn in/in the/dt future/nn will/md likely/rb lead/vb to/to improved/vbn effectiveness/nn ./punct
+descending/vbg order/nn according/vbg to/to pg/nnp ,/punct λ/nnp (/punct d|q/nn )/punct ./punct
+after/in dropping/vbg document/nn independent/jj expressions/nns from/in log/nn pg/nn ,/punct λ/nn (/punct q/nnp ,/punct d/nnp )/punct ,/punct we/prp derive/vbp the/dt which/wdt is/vbz a/dt simple/jj weighted/jj linear/jj combination/nn of/in feature/nn functions/nns that/wdt can/md be/vb computed/vbn efficiently/rb for/in reasonable/jj graphs/nns ./punct
+now/rb that/in the/dt model/nn has/vbz been/vbn fully/rb specified/vbn ,/punct the/dt final/jj step/nn is/vbz to/to estimate/vb the/dt model/nn parameters/nns ./punct
+although/in mrfs/nns are/vbp generative/jj models/nns ,/punct it/prp is/vbz inappropriate/jj to/to train/vb them/prp using/vbg phrase/nn features/nns ,/punct respectively/rb ./punct
+conventional/jj likelihood-based/jj approaches/nns because/in of/in metric/jj divergence/nn ./punct
+that/dt is/vbz ,/punct the/dt maximum/nn likelihood/nn estimate/nn is/vbz unlikely/jj to/to be/vb the/dt estimate/nn that/wdt maximizes/vbz our/prp$ evaluation/nn metric/nn ./punct
+for/in this/dt reason/nn ,/punct we/prp discriminatively/rb train/vb our/prp$ model/nn to/to directly/rb maximize/vb the/dt evaluation/nn metric/jj under/in consideration/nn ./punct
+since/in our/prp$ parameter/nn space/nn is/vbz small/jj ,/punct we/prp make/vbp use/nn of/in a/dt simple/jj hill/nn climbing/vbg strategy/nn ,/punct although/in other/jj more/rbr sophisticated/jj approaches/nns are/vbp possible/jj ./punct
+in/in this/dt section/nn we/prp describe/vbp how/wrb this/dt extended/vbn mrf/nnp model/nn multiterm/jj concepts/nns that/wdt are/vbp topically/rb related/vbn to/to some/dt original/jj query/nn ./punct
+as/in we/prp will/md show/vb ,/punct the/dt concepts/nns generated/vbn using/vbg our/prp$ technique/nn can/md be/vb used/vbn for/in query/nn expansion/nn or/cc other/jj tasks/nns ,/punct such/jj as/in suggesting/vbg alternative/jj query/nn formulations/nns ./punct
+we/prp assume/vbp that/in when/wrb a/dt user/nn formulates/vbz their/prp$ original/jj query/nn ,/punct they/prp have/vbp some/dt set/nn of/in concepts/nns in/in mind/nn ,/punct but/cc are/vbp only/rb query/nn ./punct
+we/prp treat/vbp the/dt concepts/nns that/in the/dt user/nn has/vbz in/in mind/nn ,/punct but/cc did/vbd not/rb explicitly/rb express/vb in/in the/dt query/nn ,/punct as/in latent/jj concepts/nns ./punct
+these/dt latent/jj concepts/nns can/md consist/vb of/in a/dt single/jj term/nn ,/punct multiple/jj terms/nns ,/punct or/cc some/dt combination/nn of/in the/dt two/cd ./punct
+it/prp is/vbz ,/punct therefore/rb ,/punct our/prp$ goal/nn to/to recover/vb these/dt latent/jj concepts/nns given/vbn some/dt original/jj query/nn ./punct
+this/dt can/md be/vb accomplished/vbn within/in our/prp$ framework/nn by/in first/jj expanding/vbg the/dt original/jj graph/nn g/nn to/to include/vb the/dt type/nn of/in concept/nn we/prp are/vbp interested/jj in/in generating/vbg ./punct
+we/prp call/vbp this/dt expanded/vbn of/in how/wrb to/to construct/vb an/dt expanded/vbn graph/nn that/wdt can/md generate/vb single/jj term/nn concepts/nns ./punct
+similarly/rb ,/punct the/dt graph/nn on/in the/dt right/jj illustrates/vbz an/dt expanded/vbn graph/nn that/wdt generates/vbz two/cd term/nn concepts/nns ./punct
+although/in these/dt two/cd examples/nns make/vbp use/nn of/in the/dt sequential/jj dependence/nn assumption/nn (/punct i.e/nn ./punct
+dependencies/nns between/in adjacent/jj query/nn terms/nns )/punct ,/punct it/prp is/vbz important/jj to/to note/vb that/in both/cc the/dt original/jj query/nn and/cc the/dt expansion/nn concepts/nns can/md use/vb any/dt independence/nn structure/nn ./punct
+probability/nn distribution/nn over/in latent/jj concepts/nns ,/punct according/vbg to/to :/punct is/vbz some/dt latent/jj concept/nn that/wdt may/md consist/vb of/in one/cd or/cc more/jjr terms/nns ./punct
+since/in it/prp is/vbz not/rb practical/jj to/to compute/vb this/dt highly/rb ranked/vbn according/vbg to/to query/vb q./nnp therefore/rb ,/punct we/prp approximate/jj ph/nn ,/punct λ/nn (/punct e|q/nn )/punct by/in only/rb summing/vbg over/in a/dt small/jj subset/nn of/in relevant/jj or/cc pseudo-relevant/jj documents/nns for/in query/nn q./nnp this/dt is/vbz for/in query/nn q/nnp and/cc all/dt clique/jj sets/nns are/vbp constructed/vbn using/vbg h./nnp as/in we/prp see/vbp ,/punct the/dt likelihood/nn contribution/nn for/in each/dt document/nn in/in document/nn (/punct see/vbp equation/nn 2/cd )/punct ,/punct concept/nn e/nn ''/'' s/nns score/vbp for/in the/dt document/nn ,/punct and/cc e/nn ''/'' s/nns document-independent/jj score/nn ./punct
+therefore/rb ,/punct this/dt account/nn for/in the/dt top/jj ranked/vbd documents/nns and/cc the/dt goodness/nn of/in e/nn ,/punct independent/jj of/in the/dt documents/nns ./punct
+for/in maximum/nn fqd/nn (/punct e/nn ,/punct d/nn )/punct ,/punct which/wdt allows/vbz us/prp to/to weight/vb the/dt term/nn ,/punct ordered/vbn ,/punct and/cc unordered/jj window/nn features/nns differently/rb for/in the/dt original/jj query/nn and/cc the/dt candidate/nn expansion/nn concept/nn ./punct
+to/to use/vb this/dt framework/nn for/in query/nn expansion/nn ,/punct we/prp first/rb choose/vb an/dt expansion/nn graph/nn h/nn that/wdt encodes/vbz the/dt latent/jj concept/nn structure/nn we/prp are/vbp interested/jj in/in expanding/vbg the/dt query/nn using/vbg ./punct
+we/prp then/rb select/vbp the/dt k/nn latent/jj concepts/nns with/in the/dt highest/jjs likelihood/nn augmenting/vbg the/dt original/jj graph/nn g/nn with/in the/dt k/nn expansion/nn to/to pg/nn ,/punct λ/nn (/punct d|q/nn ,/punct e1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ek/nnp )/punct using/vbg equation/nn 2/cd ./punct
+inspecting/vbg equations/nns 1/cd and/cc 3/cd reveals/vbz the/dt close/jj connection/nn that/wdt exists/vbz between/in lce/nnp and/cc relevance/nn models/nns ./punct
+both/dt models/nns essentially/rb compute/vbp the/dt likelihood/nn of/in a/dt term/nn (/punct or/cc relevance/nn models/nns ./punct
+there/ex are/vbp important/jj differences/nns between/in mrfs/lce/nnp and/cc unigram/jj language/nn models/relevance/nn models/nns ./punct
+see/vb figure/nnp 1/cd for/in graphical/jj model/nn representations/nns of/in both/dt models/nns ./punct
+unigram/jj language/nn models/nns and/cc relevance/nn models/nns are/vbp based/vbn on/in the/dt multinomial/jj distribution/nn ./punct
+this/dt distributional/jj assumption/nn locks/vbz the/dt model/nn into/in the/dt bag/nn of/in words/nns representation/nn and/cc the/dt implicit/jj use/nn of/in term/nn occurrence/nn features/nns ./punct
+however/rb ,/punct the/dt distribution/nn underlying/vbg the/dt mrf/nnp model/nn allows/vbz us/prp to/to move/vb beyond/in both/dt of/in these/dt assumptions/nns ,/punct by/in modeling/nn both/cc dependencies/nns between/in query/nn terms/nns and/cc allowing/vbg arbitrary/jj features/nns to/to be/vb explicitly/rb used/vbn ./punct
+moving/vbg beyond/in the/dt simplistic/jj bag/nn of/in words/nns assumption/nn in/in in/in the/dt next/jj section/nn ,/punct translates/vbz into/in significant/jj improvements/nns in/in retrieval/nn effectiveness/nn ./punct
+in/in order/nn to/to better/rbr understand/vb the/dt strengths/nns and/cc data/nns sets/nns ./punct
+table/nnp 2/cd provides/vbz a/dt summary/nn of/in the/dt trec/nn data/nns sets/vbz considered/vbn ./punct
+the/dt wsj/nnp ,/punct ap/nnp ,/punct and/cc robust/jj collections/nns are/vbp smaller/jjr and/cc consist/vbp entirely/rb of/in newswire/nn articles/nns ,/punct whereas/in wt10g/nn and/cc gov2/nn are/vbp large/jj web/nn collections/nns ./punct
+for/in each/dt data/nn set/nn ,/punct we/prp split/vbd the/dt available/jj topics/nns into/in a/dt training/nn and/cc test/nn set/nn ,/punct where/wrb the/dt training/nn set/nn is/vbz used/vbn solely/rb for/in parameter/nn estimation/nn and/cc the/dt test/nn set/nn is/vbz used/vbn for/in evaluation/nn purposes/nns ./punct
+all/dt experiments/nns were/vbd carried/vbn out/rp using/vbg a/dt modified/vbn version/nn of/in indri/nnp ,/punct which/wdt is/vbz part/nn of/in the/dt lemur/nnp toolkit/nnp ./punct
+all/dt collections/nns were/vbd stopped/vbn using/vbg a/dt standard/jj list/nn of/in 418/cd common/jj terms/nns and/cc stemmed/vbd using/vbg a/dt porter/nnp stemmer/nn ./punct
+in/in all/dt cases/nns ,/punct only/rb the/dt title/nn portion/nn of/in the/dt trec/nn topics/nns are/vbp used/vbn to/to construct/vb queries/nns ./punct
+we/prp construct/vbp g/nn using/vbg the/dt sequential/jj dependence/nn assumption/nn for/in all/dt data/nns sets/nns ./punct
+we/prp now/rb investigate/vbp how/wrb well/rb our/prp$ model/nn performs/vbz in/in practice/nn in/in a/dt pseudo-relevance/jj feedback/nn setting/nn ./punct
+we/prp compare/vbp unigram/jj language/nn modeling/nn (/punct with/in dirichlet/jj smoothing/nn )/punct ,/punct the/dt mrf/nnp model/nn (/punct without/in expansion/nn )/punct ,/punct relevance/nn models/nns ,/punct and/cc lce/nn to/to better/rbr understand/vb how/wrb each/dt model/nn performs/vbz across/in the/dt various/jj data/nns sets/nns ./punct
+for/in the/dt unigram/jj language/nn model/nn ,/punct the/dt smoothing/nn parameter/nn was/vbd trained/vbn ./punct
+for/in the/dt mrf/nnp model/nn ,/punct we/prp train/vbp the/dt model/nn parameters/nns (/punct i.e/nn ./punct
+λ/nn )/punct and/cc model/nn hyperparameters/nns (/punct i.e/nn ./punct
+α/nn ,/punct β/nn )/punct ./punct
+for/in rm3/nn and/cc lce/nn ,/punct we/prp also/rb train/vbp the/dt number/nn of/in wsj/nnp wall/nnp st/nnp ./punct
+relevant/jj feedback/nn documents/nns used/vbn and/cc the/dt number/nn of/in expansion/nn terms/nns ./punct
+we/prp begin/vbp by/in evaluating/vbg how/wrb well/rb our/prp$ model/nn performs/vbz when/wrb expanding/vbg using/vbg only/rb single/jj terms/nns ./punct
+before/in we/prp describe/vbp and/cc analyze/vbp the/dt results/nns ,/punct we/prp explicitly/rb state/vbp how/wrb expansion/nn term/nn likelihoods/nns are/vbp computed/vbn under/in this/dt setup/nn (/punct i.e/nn ./punct
+using/vbg the/dt sequential/jj dependence/nn assumption/nn ,/punct expanding/vbg with/in single/jj term/nn concepts/nns ,/punct and/cc using/vbg our/prp$ feature/nn set/vbd )/punct ./punct
+the/dt expansion/nn term/nn likelihoods/nns are/vbp computed/vbn as/in follows/vbz :/punct clearly/rb shows/vbz how/wrb lce/nnp differs/vbz from/in relevance/nn models/nns ./punct
+when/wrb we/prp obtain/vbp the/dt exact/jj formula/nn that/wdt is/vbz used/vbn to/to compute/vb term/nn likelihoods/nns in/in the/dt relevance/nn modeling/nn framework/nn ./punct
+therefore/rb ,/punct lce/nn adds/vbz two/cd very/rb important/jj factors/nns to/to the/dt equation/nn ./punct
+first/rb ,/punct it/prp adds/vbz the/dt ordered/vbn and/cc unordered/jj window/nn features/nns that/wdt are/vbp applied/vbn to/to the/dt original/jj query/nn ./punct
+second/rb ,/punct it/prp applies/vbz an/dt intuitive/jj tf.idf-like/jj form/nn to/to the/dt candidate/nn expansion/nn term/nn w./nn the/dt idf/nn factor/nn ,/punct which/wdt is/vbz not/rb present/jj in/in relevance/nn models/nns ,/punct plays/vbz an/dt important/jj role/nn in/in expansion/nn term/nn selection/nn ./punct
+the/dt results/nns ,/punct evaluated/vbn using/vbg mean/jj average/jj precision/nn ,/punct are/vbp models/nns ,/punct and/cc lce/nn always/rb significantly/rb outperform/vb the/dt unigram/jj language/nn model/nn ./punct
+in/in addition/nn ,/punct lce/nn shows/vbz significant/jj improvements/nns over/in relevance/nn models/nns across/in all/dt data/nns sets/nns ./punct
+the/dt relative/jj improvements/nns over/in relevance/nn models/nns is/vbz 6.9/cd %/punct for/in ap/nn ,/punct 12.9/cd %/punct for/in wsj/nnp ,/punct 6.5/cd %/punct for/in robust/nn ,/punct 16.7/cd %/punct for/in wt10g/nn ,/punct and/cc 7.3/cd %/punct for/in gov2/nn ./punct
+furthermore/rb ,/punct lce/nn shows/vbz small/jj ,/punct but/cc not/rb significant/jj ,/punct improvements/nns over/in relevance/nn modeling/nn for/in metrics/nns such/jj as/in precision/nn at/in 5/cd ,/punct 10/cd ,/punct and/cc 20/cd ./punct
+however/rb ,/punct both/dt relevance/nn modeling/nn and/cc lce/nn show/vbp statistically/rb significant/jj improvements/nns in/in such/jj metrics/nns over/in the/dt unigram/jj language/nn model/nn ./punct
+another/dt interesting/jj result/nn is/vbz that/in the/dt mrf/nnp model/nn is/vbz statistically/rb equivalent/jj to/to relevance/nn models/nns on/in the/dt two/cd web/nn data/nns sets/nns ./punct
+in/in fact/nn ,/punct the/dt mrf/nnp model/nn outperforms/vbz relevance/nn models/nns on/in the/dt wt10g/nn data/nn set/nn ./punct
+this/dt reiterates/vbz the/dt importance/nn of/in non-unigram/jj ,/punct proximity-based/jj features/nns for/in content-based/jj web/nn search/nn observed/vbn previously/rb ./punct
+although/in our/prp$ model/nn has/vbz more/jjr free/jj parameters/nns than/in relevance/nn models/nns ,/punct there/ex is/vbz surprisingly/rb little/jj overfitting/nn ./punct
+instead/rb ,/punct the/dt model/nn exhibits/vbz good/jj generalization/nn properties/nns ./punct
+we/prp also/rb investigated/vbd expanding/vbg using/vbg both/dt single/jj and/cc two/cd word/nn concepts/nns ./punct
+for/in each/dt query/nn ,/punct we/prp expanded/vbd using/vbg a/dt set/nn of/in single/jj term/nn concepts/nns and/cc a/dt set/nn of/in two/cd term/nn concepts/nns ./punct
+the/dt sets/nns were/vbd chosen/vbn independently/rb ./punct
+unfortunately/rb ,/punct only/rb negligible/jj increases/nns in/in mean/jj average/jj precision/nn were/vbd observed/vbn ./punct
+this/dt result/nn may/md be/vb due/jj to/to the/dt fact/nn that/in strong/jj correlations/nns exist/vbp between/in the/dt single/jj term/nn expansion/nn concepts/nns ./punct
+we/prp found/vbd that/in the/dt two/cd word/nn concepts/nns chosen/vbn often/rb consisted/vbn of/in two/cd highly/rb correlated/vbd terms/nns that/wdt are/vbp also/rb chosen/vbn as/in single/jj term/nn concepts/nns ./punct
+for/in example/nn ,/punct the/dt two/cd term/nn concept/nn stock/nn market/nn was/vbd chosen/vbn while/in the/dt single/jj term/nn concepts/nns stock/nn and/cc market/nn were/vbd also/rb chosen/vbn ./punct
+therefore/rb ,/punct many/jj two/cd word/nn concepts/nns are/vbp unlikely/jj to/to increase/vb the/dt discriminative/jj power/nn of/in the/dt expanded/vbn query/nn ./punct
+this/dt result/nn suggests/vbz that/in concepts/nns should/md be/vb chosen/vbn according/vbg to/to some/dt criteria/nns that/wdt also/rb takes/vbz novelty/nn ,/punct diversity/nn ,/punct or/cc term/nn correlations/nns into/in account/nn ./punct
+another/dt potential/jj issue/nn is/vbz the/dt feature/nn set/nn used/vbn ./punct
+other/jj feature/nn sets/nns may/md ultimately/rb yield/vb different/jj results/nns ,/punct especially/rb if/in they/prp reduce/vbp the/dt correlation/nn among/in the/dt expansion/nn concepts/nns ./punct
+therefore/rb ,/punct our/prp$ experiments/nns yield/vbp no/dt conclusive/jj results/nns with/in regard/nn to/to expansion/nn using/vbg multi-term/jj concepts/nns ./punct
+instead/rb ,/punct the/dt results/nns introduce/vbp interesting/jj open/jj questions/nns and/cc directions/nns for/in future/jj exploration/nn ./punct
+as/in we/prp have/vbp shown/vbn ,/punct relevance/nn models/nns and/cc latent/jj concept/nn expansion/nn can/md significantly/rb improve/vb retrieval/nn effectiveness/nn over/in the/dt baseline/nn query/nn likelihood/nn model/nn ./punct
+in/in this/dt section/nn we/prp analyze/vbp the/dt robustness/nn of/in these/dt two/cd methods/nns ./punct
+here/rb ,/punct we/prp define/vbp robustness/nn as/in the/dt number/nn queries/nns whose/wp$ effectiveness/nn are/vbp improved/hurt/jj (/punct and/cc by/in how/wrb much/jj )/punct as/in the/dt result/nn of/in applying/vbg these/dt methods/nns ./punct
+a/dt highly/rb robust/jj expansion/nn technique/nn will/md significantly/rb improve/vb many/jj queries/nns and/cc only/rb minimally/rb hurt/vb a/dt few/jj ./punct
+relevance/nn modeling/nn and/cc latent/jj concept/nn expansion/nn for/in the/dt ap/nn ,/punct robust/nn ,/punct and/cc wt10g/nn data/nns sets/nns ./punct
+the/dt analysis/nn for/in the/dt two/cd data/nns sets/vbz not/rb shown/vbn is/vbz similar/jj ./punct
+the/dt histograms/nns provide/vbp ,/punct for/in various/jj ranges/nns of/in relative/jj decreases/increases/nns in/in mean/jj average/jj precision/nn ,/punct the/dt number/nn of/in queries/nns that/wdt were/vbd hurt/improved/vbn with/in respect/nn to/to the/dt query/nn likelihood/nn baseline/nn ./punct
+as/in the/dt results/nns show/vbp ,/punct lce/vbp exhibits/vbz strong/jj robustness/nn for/in each/dt data/nn set/nn ./punct
+for/in ap/nn ,/punct relevance/nn models/nns improve/vbp 38/cd queries/nns and/cc hurt/vb 11/cd ,/punct whereas/in lce/nn improves/vbz 35/cd and/cc hurts/vbz 14/cd ./punct
+although/in relevance/nn models/nns improve/vbp the/dt effectiveness/nn of/in 3/cd more/jjr queries/nns than/in lce/nn ,/punct the/dt relative/jj improvement/nn exhibited/vbd by/in lce/nn is/vbz significantly/rb larger/jjr ./punct
+for/in the/dt robust/jj data/nn set/nn ,/punct relevance/nn models/nns improve/vbp 67/cd queries/nns and/cc hurt/vb 32/cd ,/punct and/cc lce/nn improves/vbz 77/cd and/cc hurts/vbz 22/cd ./punct
+finally/rb ,/punct for/in the/dt wt10g/nn collection/nn ,/punct relevance/nn models/nns improve/vbp 32/cd queries/nns and/cc hurt/vb 16/cd ,/punct and/cc lce/nn improves/vbz 35/cd and/cc hurts/vbz 14/cd ./punct
+as/in with/in ap/nn ,/punct the/dt amount/nn of/in improvement/nn exhibited/vbd by/in the/dt lce/nn versus/cc relevance/nn models/nns is/vbz significantly/rb larger/jjr for/in both/dt the/dt robust/nnp and/cc wt10g/nnp data/nns sets/nns ./punct
+in/in addition/nn ,/punct when/wrb lce/nn does/vbz hurt/vb performance/nn ,/punct it/prp is/vbz a/dt desirable/jj property/nn ./punct
+1/cd word/nn concepts/nns 2/cd word/nn concepts/nns 3/cd word/nn concepts/nns telescope/nn hubble/jj telescope/nn hubble/jj space/nn telescope/nn hubble/jj space/nn telescope/nn hubble/jj telescope/nn space/nn space/nn hubble/jj space/nn space/nn telescope/nn hubble/jj mirror/nn telescope/nn mirror/nn space/nn telescope/nn nasa/nnp nasa/nnp telescope/nn hubble/jj hubble/jj telescope/nn astronomy/nn launch/nn mirror/nn telescope/nn nasa/nnp hubble/jj space/nn astronomy/nn telescope/nn nasa/nnp space/nn telescope/nn mirror/nn shuttle/nn telescope/nn space/nn telescope/nn space/nn nasa/nnp test/nn hubble/jj mirror/nn hubble/jj telescope/nn mission/nn discovery/nn telescope/nn astronomy/nn space/nn telescope/nn launch/nn time/nn telescope/nn optical/jj space/nn telescope/nn discovery/nn universe/nn hubble/jj optical/jj shuttle/nn space/nn telescope/nn optical/jj telescope/nn discovery/nn hubble/jj telescope/nn flaw/nn light/jj telescope/nn shuttle/nn two/cd hubble/jj space/nn overall/rb ,/punct lce/nn improves/vbz effectiveness/nn for/in 65/cd %/punct -80/cd %/punct of/in queries/nns ,/punct depending/vbg on/in the/dt data/nn set/nn ./punct
+when/wrb used/vbn in/in combination/nn with/in a/dt highly/rb accurate/jj query/nn performance/nn prediction/nn system/nn ,/punct it/prp may/md be/vb possible/jj to/to selectively/rb expand/vb queries/nns and/cc minimize/vb the/dt loss/nn associated/vbn with/in sub-baseline/jj performance/nn ./punct
+although/in we/prp found/vbd that/in expansion/nn using/vbg multi-term/jj concepts/nns failed/vbd to/to produce/vb conclusive/jj improvements/nns in/in effectiveness/nn ,/punct there/ex are/vbp other/jj potential/jj tasks/nns that/in these/dt concepts/nns may/md be/vb useful/jj for/in ,/punct such/jj as/in query/nn suggestion/reformulation/nn ,/punct summarization/nn ,/punct and/cc concept/nn mining/nn ./punct
+for/in example/nn ,/punct for/in a/dt query/nn suggestion/nn task/nn ,/punct the/dt original/jj query/nn could/md be/vb used/vbn to/to generate/vb a/dt set/nn of/in latent/jj concepts/nns which/wdt correspond/vbp to/to alternative/jj query/nn formulations/nns ./punct
+although/in evaluating/vbg our/prp$ model/nn on/in these/dt tasks/nns is/vbz beyond/in example/nn of/in the/dt types/nns of/in concepts/nns generated/vbn using/vbg our/prp$ model/nn ./punct
+in/in it/prp is/vbz well/rb known/vbn that/in generating/vbg multi-term/jj concepts/nns using/vbg a/dt unigram-based/jj model/nn produces/vbz unsatisfactory/jj results/nns ,/punct since/in it/prp fails/vbz to/to consider/vb term/nn dependencies/nns ./punct
+this/dt is/vbz not/rb the/dt case/nn when/wrb generating/vbg multi-term/jj concepts/nns using/vbg our/prp$ model/nn ./punct
+instead/rb ,/punct a/dt majority/nn of/in the/dt concepts/nns generated/vbn are/vbp well-formed/jj and/cc meaningful/jj ./punct
+there/ex are/vbp several/jj cases/nns where/wrb the/dt concepts/nns are/vbp less/rbr coherent/jj ,/punct such/jj as/in mirror/nn mirror/nn mirror/nn ./punct
+in/in this/dt case/nn ,/punct the/dt likelihood/nn of/in the/dt term/nn mirror/nn appearing/vbg in/in a/dt pseudo-relevant/jj document/nn outweighs/vbz the/dt language/nn modeling/nn features/vbz (/punct e.g/nn ./punct
+foq/nn )/punct ,/punct which/wdt causes/vbz this/dt non-coherent/jj concept/nn to/to have/vb a/dt high/jj likelihood/nn ./punct
+such/jj examples/nns are/vbp in/in the/dt minority/nn ,/punct however/rb ./punct
+not/rb only/rb are/vbp the/dt concepts/nns generated/vbd well-formed/jj and/cc meaningful/jj ,/punct but/cc they/prp are/vbp also/rb topically/rb relevant/jj to/to the/dt original/jj interesting/jj to/to see/vb that/in the/dt concept/nn hubble/jj telescope/nn flaw/nn is/vbz one/cd of/in the/dt most/rbs likely/jj three/cd term/nn concepts/nns ,/punct given/vbn that/in it/prp is/vbz somewhat/rb contradictory/jj to/to the/dt original/jj query/nn ./punct
+despite/in this/dt contradiction/nn ,/punct documents/nns that/in discuss/vbp the/dt telescope/nn flaws/nns are/vbp also/rb likely/jj to/to describe/vb the/dt successes/nns ,/punct as/rb well/rb ,/punct and/cc therefore/rb this/dt is/vbz likely/jj to/to be/vb a/dt meaningful/jj concept/nn ./punct
+one/cd important/jj thing/nn to/to note/nn is/vbz that/in the/dt concepts/nns lce/nn generates/vbz are/vbp of/in a/dt different/jj nature/nn than/in those/dt that/wdt would/md be/vb generated/vbn using/vbg a/dt bigram/nn relevance/nn model/nn ./punct
+for/in example/nn ,/punct a/dt bigram/nn model/nn would/md be/vb unlikely/jj to/to generate/vb the/dt concept/nn telescope/nn space/nn nasa/nnp ,/punct since/in none/nn of/in the/dt bigrams/nns that/wdt make/vbp up/rp the/dt concept/nn have/vbp high/jj likelihood/nn ./punct
+however/rb ,/punct since/in our/prp$ model/nn ./punct
+although/in we/prp only/rb provided/vbd the/dt concepts/nns generated/vbn for/in a/dt single/jj query/nn ,/punct we/prp note/vbp that/in the/dt same/jj analysis/nn and/cc conclusions/nns generalize/vbp across/in other/jj data/nns sets/nns ,/punct with/in coherent/jj ,/punct topically/rb related/jj concepts/nns being/vbg consistently/rb generated/vbn using/vbg lce/nn ./punct

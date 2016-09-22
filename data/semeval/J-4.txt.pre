@@ -1,0 +1,313 @@
+keyword/nnp auctions/nns lie/vbp at/in the/dt core/nn of/in the/dt business/nn models/nns of/in today/nn ''/'' s/nns leading/vbg search/nn engines/nns ./punct
+advertisers/nns bid/vbd for/in placement/nn alongside/in search/nn results/nns ,/punct and/cc are/vbp charged/vbn for/in clicks/nns on/in their/prp$ ads/nns ./punct
+advertisers/nns are/vbp typically/rb ranked/vbn according/vbg to/to a/dt score/nn that/wdt takes/vbz into/in account/vbp their/prp$ bids/nns and/cc potential/jj clickthrough/jj rates/nns ./punct
+we/prp consider/vbp a/dt family/nn of/in ranking/jj rules/nns that/wdt contains/vbz those/dt typically/rb used/vbn to/to model/vb yahoo/nnp !/punct
+and/cc google/nnp ''/'' s/vbz auction/nn designs/nns as/in special/jj cases/nns ./punct
+we/prp find/vbp that/in in/in general/jj neither/cc of/in these/dt is/vbz necessarily/rb revenue-optimal/jj in/in equilibrium/nn ,/punct and/cc that/in the/dt choice/nn of/in ranking/jj rule/nn can/md be/vb guided/vbn by/in considering/vbg the/dt correlation/nn between/in bidders/nns ''/'' values/nns and/cc click-through/jj rates/nns ./punct
+we/prp propose/vbp a/dt simple/jj approach/nn to/to determine/vb a/dt revenue-optimal/jj ranking/nn rule/nn within/in our/prp$ family/nn ,/punct taking/vbg into/in account/nn effects/nns on/in advertiser/nn satisfaction/nn and/cc user/nn experience/nn ./punct
+we/prp illustrate/vbp the/dt approach/nn using/vbg monte-carlo/nnp simulations/nns based/vbn on/in distributions/nns fitted/vbn to/to yahoo/nnp !/punct
+bid/nn and/cc click-through/jj rate/nn data/nns for/in a/dt high-volume/jj keyword/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp j.4/nnp [/punct computer/nnp applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nnp general/nnp terms/nns economics/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nnp major/nnp search/nn engines/nns like/in google/nnp ,/punct yahoo/nnp !/punct ,/punct and/cc msn/nnp sell/vbp advertisements/nns by/in auctioning/vbg off/rp space/nn on/in keyword/nn search/nn results/vbz pages/nns ./punct
+for/in example/nn ,/punct when/wrb a/dt user/nn searches/vbz the/dt web/nn for/in ipod/nn ,/punct the/dt highest/jjs paying/vbg advertisers/nns (/punct for/in example/nn ,/punct apple/nnp or/cc best/jjs buy/jj )/punct for/in that/dt keyword/nn may/md appear/vb in/in a/dt separate/jj sponsored/vbn section/nn of/in the/dt page/nn above/in or/cc to/to the/dt right/nn of/in the/dt algorithmic/jj results/nns ./punct
+the/dt sponsored/vbn results/nns are/vbp displayed/vbn in/in a/dt format/nn similar/jj to/to algorithmic/jj results/nns :/punct as/in a/dt list/nn of/in items/nns each/dt containing/vbg a/dt title/nn ,/punct a/dt text/nn description/nn ,/punct and/cc a/dt hyperlink/nn to/to a/dt web/nn page/nn ./punct
+generally/rb ,/punct advertisements/nns that/wdt appear/vbp in/in a/dt higher/jjr position/nn on/in the/dt page/nn garner/vb more/jjr attention/nn and/cc more/jjr clicks/nns from/in users/nns ./punct
+thus/rb ,/punct all/dt else/rb being/vbg equal/jj ,/punct advertisers/nns prefer/vbp higher/jjr positions/nns to/to lower/jjr positions/nns ./punct
+advertisers/nns bid/vbd for/in placement/nn on/in the/dt page/nn in/in an/dt auctionstyle/nn format/nn where/wrb the/dt larger/jjr their/prp$ bid/nn the/dt more/rbr likely/jj their/prp$ listing/nn will/md appear/vb above/in other/jj ads/nns on/in the/dt page/nn ./punct
+by/in convention/nn ,/punct sponsored/vbn search/nn advertisers/nns generally/rb bid/nn and/cc pay/nn per/in click/vb ,/punct meaning/vbg that/in they/prp pay/vbp only/rb when/wrb a/dt user/nn clicks/vbz on/in their/prp$ ad/nn ,/punct and/cc do/vbp not/rb pay/vb if/in their/prp$ ad/nn is/vbz displayed/vbn but/cc not/rb clicked/vbn ./punct
+overture/nnp services/nnps ,/punct formerly/rb goto.com/nnp and/cc now/rb owned/vbn by/in yahoo/nnp !/punct
+inc./nnp ,/punct is/vbz credited/vbn with/in pioneering/jj sponsored/vbn search/nn advertising/nn ./punct
+overture/nnp ''/'' s/vbz success/nn prompted/vbd a/dt number/nn of/in companies/nns to/to adopt/vb similar/jj business/nn models/nns ,/punct most/jjs prominently/rb google/nnp ,/punct the/dt leading/vbg web/nn search/nn engine/nn today/nn ./punct
+microsoft/nnp ''/'' s/vbz msn/nnp ,/punct previously/rb an/dt affiliate/nn of/in overture/nnp ,/punct now/rb operates/vbz its/prp$ own/jj keyword/jj auction/nn marketplace/nn ./punct
+sponsored/vbn search/nn is/vbz one/cd of/in the/dt fastest/jjs growing/vbg ,/punct most/rbs effective/jj ,/punct and/cc most/jjs profitable/jj forms/nns of/in advertising/nn ,/punct generating/vbg roughly/rb $/punct 7/cd billion/cd in/in revenue/nn in/in 2005/cd after/in nearly/rb doubling/vbg every/dt year/nn for/in the/dt previous/jj five/cd years/nns ./punct
+the/dt search/nn engine/nn evaluates/vbz the/dt advertisers/nns ''/'' bids/nns and/cc allocates/vbz the/dt positions/nns on/in the/dt page/nn accordingly/rb ./punct
+notice/nnp that/in ,/punct although/in bids/nns are/vbp expressed/vbn as/in payments/nns per/in click/vbp ,/punct the/dt search/nn engine/nn can/md not/rb directly/rb allocate/vb clicks/nns ,/punct but/cc rather/rb allocates/vbz impressions/nns ,/punct or/cc placements/nns on/in the/dt screen/nn ./punct
+clicks/nnp relate/vbp only/rb stochastically/rb to/to impressions/nns ./punct
+until/in recently/rb ,/punct yahoo/nnp !/punct
+ranked/vbd bidders/nns in/in decreasing/vbg order/nn of/in advertisers/nns ''/'' stated/vbn values/nns per/in click/vbp ,/punct while/in google/nnp ranks/vbz in/in decreasing/vbg order/nn of/in advertisers/nns ''/'' stated/vbn values/nns per/in impression/nn ./punct
+in/in google/nnp ''/'' s/vbz case/nn ,/punct value/nn per/in impression/nn is/vbz computed/vbn by/in multiplying/vbg the/dt advertiser/nn ''/'' s/nns (/punct perclick/nn )/punct bid/nn by/in the/dt advertisement/nn ''/'' s/nns expected/vbn click-through/jj rate/nn ,/punct where/wrb this/dt expectation/nn may/md consider/vb a/dt number/nn of/in unspecified/jj factors/nns including/vbg historical/jj click-through/jj rate/nn ,/punct position/nn on/in the/dt page/nn ,/punct advertiser/nn identity/nn ,/punct user/nn identity/nn ,/punct and/cc the/dt context/nn of/in other/jj items/nns on/in the/dt page/nn ./punct
+we/prp refer/vbp to/to these/dt rules/nns as/in rank-by-bid/nn and/cc rank-by-revenue/nn ,/punct respectively.1/nn we/prp analyze/vbp a/dt family/nn of/in ranking/jj rules/nns that/wdt contains/vbz the/dt yahoo/nnp !/punct
+and/cc google/nnp models/nns as/in special/jj cases/nns ./punct
+we/prp consider/vbp rank1/nn these/dt are/vbp industry/nn terms/nns ./punct
+we/prp will/md see/vb ,/punct however/rb ,/punct that/in rankby-revenue/nn is/vbz not/rb necessarily/rb revenue-optimal/jj ./punct
+50/cd ing/nn rules/nns where/wrb bidders/nns are/vbp ranked/vbn in/in decreasing/vbg order/nn of/in score/nn eq/nn b/nn ,/punct where/wrb e/sym denotes/vbz an/dt advertiser/nn ''/'' s/nns click-through/jj rate/nn (/punct normalized/vbd for/in position/nn )/punct and/cc b/nn his/prp$ bid/nn ./punct
+notice/nnp that/in q/nn =/punct 0/cd corresponds/vbz to/to yahoo/nnp !/punct
+``/`` s/nns rank-by-bid/jj rule/nn and/cc q/nn =/punct 1/cd corresponds/vbz to/to google/nnp ''/'' s/nns rank-by-revenue/jj rule/nn ./punct
+our/prp$ premise/nn is/vbz that/in bidders/nns are/vbp playing/vbg a/dt symmetric/jj equilibrium/nn ,/punct as/in defined/vbn by/in edelman/nnp ,/punct ostrovsky/nnp ,/punct and/cc schwarz/nnp [/punct 3/cd ]/punct and/cc varian/nnp [/punct 11/cd ]/punct ./punct
+we/prp show/vbp through/in simulation/nn that/in although/in q/nn =/punct 1/cd yields/vbz the/dt efficient/jj allocation/nn ,/punct settings/nns of/in q/nn considerably/rb less/jjr than/in 1/cd can/md yield/vb superior/jj revenue/nn in/in equilibrium/nn under/in certain/jj conditions/nns ./punct
+the/dt key/jj parameter/nn is/vbz the/dt correlation/nn between/in advertiser/nn value/nn and/cc click-through/jj rate/nn ./punct
+if/in this/dt correlation/nn is/vbz strongly/rb positive/jj ,/punct then/rb smaller/jjr q/nn are/vbp revenue-optimal/jj ./punct
+our/prp$ simulations/nns are/vbp based/vbn on/in distributions/nns fitted/vbn to/to data/nns from/in yahoo/nnp !/punct
+keyword/nn auctions/nns ./punct
+we/prp propose/vbp that/in search/nn engines/nns set/vbd thresholds/nns of/in acceptable/jj loss/nn in/in advertiser/nn satisfaction/nn and/cc user/nn experience/nn ,/punct then/rb choose/vb the/dt revenue-optimal/jj q/nn consistent/jj with/in these/dt constraints/nns ./punct
+we/prp also/rb compare/vbp the/dt potential/jj gains/nns from/in tuning/nn q/nn with/in the/dt gains/nns from/in setting/vbg reserve/nn prices/nns ,/punct and/cc find/vb that/in the/dt former/jj may/md be/vb much/rb more/rbr significant/jj ./punct
+in/in section/nn 2/cd we/prp give/vbp a/dt formal/jj model/nn of/in keyword/jj auctions/nns ,/punct and/cc establish/vb its/prp$ equilibrium/nn properties/nns in/in section/nn 3/cd ./punct
+in/in section/nn 4/cd we/prp note/vbp that/in giving/vbg agents/nns bidding/vbg credits/nns can/md have/vb the/dt same/jj effect/nn as/in tuning/nn the/dt ranking/jj rule/nn explicitly/rb ./punct
+in/in section/nn 5/cd we/prp give/vbp a/dt general/jj formulation/nn of/in the/dt optimal/jj keyword/jj auction/nn design/nn problem/nn as/in an/dt optimization/nn problem/nn ,/punct in/in a/dt manner/nn analogous/jj to/to the/dt single-item/jj auction/nn setting/nn ./punct
+we/prp then/rb provide/vbp some/dt theoretical/jj insight/nn into/in how/wrb tuning/nn q/nn can/md improve/vb revenue/nn ,/punct and/cc why/wrb the/dt correlation/nn between/in bidders/nns ''/'' values/nns and/cc click-through/jj rates/nns is/vbz relevant/jj ./punct
+in/in section/nn 6/cd we/prp consider/vbp the/dt effect/nn of/in q/nn on/in advertiser/nn satisfaction/nn and/cc user/nn experience/nn ./punct
+in/in section/nn 7/cd we/prp describe/vbp our/prp$ simulations/nns and/cc interpret/vb their/prp$ results/nns ./punct
+related/jj work/nn ./punct
+as/in mentioned/vbn the/dt papers/nns of/in edelman/nnp et/fw al/fw ./punct
+[/punct 3/cd ]/punct and/cc varian/nnp [/punct 11/cd ]/punct lay/vbd the/dt groundwork/nn for/in our/prp$ study/nn ./punct
+both/dt papers/nns independently/rb define/vbp an/dt appealing/jj refinement/nn of/in nash/nnp equilibrium/nn for/in keyword/jj auctions/nns and/cc analyze/vb its/prp$ equilibrium/nn properties/nns ./punct
+they/prp called/vbd this/dt refinement/nn locally/rb envy-free/jj equilibrium/nn and/cc symmetric/jj equilibrium/nn ,/punct respectively/rb ./punct
+varian/nnp also/rb provides/vbz some/dt empirical/jj analysis/nn ./punct
+the/dt general/jj model/nn of/in keyword/jj auctions/nns used/vbn here/rb ,/punct where/wrb bidders/nns are/vbp ranked/vbn according/vbg to/to a/dt weight/nn times/nns their/prp$ bid/nn ,/punct was/vbd introduced/vbn by/in aggarwal/nnp ,/punct goel/nnp ,/punct and/cc motwani/nnp [/punct 1/cd ]/punct ./punct
+that/dt paper/nn also/rb makes/vbz a/dt connection/nn between/in the/dt revenue/nn of/in keyword/jj auctions/nns in/in incomplete/jj information/nn settings/nns with/in the/dt revenue/nn in/in symmetric/jj equilibrium/nn ./punct
+iyengar/nnp and/cc kumar/nnp [/punct 5/cd ]/punct study/nn the/dt optimal/jj keyword/jj auction/nn design/nn problem/nn in/in a/dt setting/nn of/in incomplete/jj information/nn ,/punct and/cc also/rb make/vbp the/dt connection/nn to/to symmetric/jj equilibrium/nn ./punct
+we/prp make/vbp use/nn of/in this/dt connection/nn when/wrb formulating/vbg the/dt optimal/jj auction/nn design/nn problem/nn in/in our/prp$ setting/nn ./punct
+the/dt work/nn most/rbs closely/rb related/jj to/to ours/prp is/vbz that/in of/in feng/nnp ,/punct bhargava/nnp ,/punct and/cc pennock/nnp [/punct 4/cd ]/punct ./punct
+they/prp were/vbd the/dt first/jj to/to realize/vb that/in the/dt correlation/nn between/in bidder/nn values/nns and/cc click-through/jj rates/nns should/md be/vb a/dt key/jj parameter/nn affecting/vbg the/dt revenue/nn performance/nn of/in various/jj ranking/jj mechanisms/nns ./punct
+for/in simplicity/nn ,/punct they/prp assume/vbp bidders/nns bid/vb their/prp$ true/jj values/nns ,/punct so/in their/prp$ model/nn is/vbz very/rb different/jj from/in ours/jj and/cc consequently/rb so/rb are/vbp their/prp$ findings/nns ./punct
+according/vbg to/to their/prp$ simulations/nns ,/punct rank-by-revenue/jj always/rb (/punct weakly/rb )/punct dominates/vbz rank-by-bid/nn in/in terms/nns of/in revenue/nn ,/punct whereas/in our/prp$ results/nns suggest/vbp that/in rank-by-bid/nn may/md do/vb much/rb better/jjr for/in negative/jj correlations/nns ./punct
+lahaie/nnp [/punct 8/cd ]/punct gives/vbz an/dt example/nn that/wdt suggests/vbz rank-by-bid/nn should/md yield/vb more/jjr revenue/nn when/wrb values/nns and/cc click-through/jj rates/nns are/vbp positively/rb correlated/vbn ,/punct whereas/in rank-by-revenue/nn should/md do/vb better/jjr when/wrb the/dt correlation/nn is/vbz negative/jj ./punct
+in/in this/dt work/nn we/prp make/vbp a/dt deeper/jjr study/nn of/in this/dt conjecture/nn ./punct
+2/ls ./punct
+model/nn there/ex are/vbp k/nnp positions/nns to/to be/vb allocated/vbn among/in n/nn bidders/nns ,/punct where/wrb n/nn >/punct k./nnp we/prp assume/vbp that/in the/dt (/punct expected/vbd )/punct click-through/jj rate/nn of/in bidder/nn s/nns in/in position/nn t/nn is/vbz of/in the/dt form/nn esxt/nn ,/punct i.e/nn ./punct
+separable/jj into/in an/dt advertiser/nn effect/nn es/vbz ∈/cd [/punct 0/cd ,/punct 1/cd ]/punct and/cc position/nn effect/nn xt/nn ∈/cd [/punct 0/cd ,/punct 1/cd ]/punct ./punct
+we/prp assume/vbp that/in x1/nn >/punct x2/cd >/punct ./punct
+./punct
+./punct
+>/punct xk/nn >/punct 0/cd and/cc let/vb xt/nn =/punct 0/cd for/in t/nn >/punct k./nnp we/prp also/rb refer/vbp to/to es/nns as/in the/dt relevance/nn of/in bidder/nn s./vbp it/prp is/vbz useful/jj to/to interpret/vb xt/nn as/in the/dt probability/nn that/in an/dt ad/nn in/in position/nn t/nn will/md be/vb noticed/vbn ,/punct and/cc es/vbz as/in the/dt probability/nn that/in it/prp will/md be/vb clicked/vbn on/in if/in noticed/vbn ./punct
+bidder/nn s/nns has/vbz value/nn vs/cc for/in each/dt click/vbp ./punct
+bidders/nns have/vbp quasilinear/jj utility/nn ,/punct so/rb that/in the/dt utility/nn to/to bidder/nn s/nns of/in obtaining/vbg position/nn t/nn at/in a/dt price/nn of/in p/nn per/in click/vb is/vbz esxt/vb (/punct vs/cc −/cd p/nn )/punct ./punct
+a/dt weight/nn ws/nn is/vbz associated/vbn with/in agent/nn s/nns ,/punct and/cc agents/nns bid/nn for/in position/nn ./punct
+if/in agent/nn s/nns bids/nns bs/nns ,/punct his/prp$ corresponding/jj score/nn is/vbz wsbs/nns ./punct
+agents/nns are/vbp ranked/vbn by/in score/nn ,/punct so/rb that/in the/dt agent/nn with/in highest/jjs score/nn is/vbz ranked/vbn first/rb ,/punct and/cc so/rb on/in ./punct
+we/prp assume/vbp throughout/in that/dt agents/nns are/vbp numbered/vbn such/jj that/in agent/nn s/nns obtains/vbz position/nn s./nn an/dt agent/nn pays/vbz per/in click/vbp the/dt lowest/jjs bid/nn necessary/jj to/to retain/vb his/prp$ position/nn ,/punct so/rb that/in the/dt agent/nn in/in slot/nn s/nns pays/vbz ws+1/nn ws/nns bs+1/nn ./punct
+the/dt auctioneer/nn may/md introduce/vb a/dt reserve/nn score/nn of/in r/nn ,/punct so/rb that/in an/dt agent/nn ''/'' s/nns ad/nn appears/vbz only/rb if/in his/prp$ score/nn is/vbz at/in least/jjs r./nn for/in agent/nn s/nns ,/punct this/dt translates/vbz into/in a/dt reserve/nn price/nn (/punct minimum/jj bid/nn )/punct of/in r/ws/nns ./punct
+3/ls ./punct
+equilibrium/nn we/prp consider/vbp the/dt pure-strategy/jj nash/nnp equilibria/nns of/in the/dt auction/nn game/nn ./punct
+this/dt is/vbz a/dt full-information/jj concept/nn ./punct
+the/dt motivation/nn for/in this/dt choice/nn is/vbz that/in in/in a/dt keyword/jj auction/nn ,/punct bidders/nns are/vbp allowed/vbn to/to continuously/rb adjust/vb their/prp$ bids/nns over/in time/nn ,/punct and/cc hence/rb obtain/vb estimates/nns of/in their/prp$ profits/nns in/in various/jj positions/nns ./punct
+as/in a/dt result/nn it/prp is/vbz reasonable/jj to/to assume/vb that/in if/in bids/nns stabilize/vbp ,/punct bidders/nns should/md be/vb playing/vbg best-responses/nns to/to each/dt other/jj ''/'' s/nns bids/nns [/punct 2/cd ,/punct 3/cd ,/punct 11/cd ]/punct ./punct
+formally/rb ,/punct in/in a/dt nash/nnp equilibrium/nn of/in this/dt game/nn the/dt following/vbg inequalities/nns hold/vbp ./punct
+esxs/fw „/fw vs/cc −/fw ws+1/fw ws/fw bs+1/fw «/fw ≥/fw esxt/fw „/fw vs/cc −/fw wt+1/fw ws/fw bt+1/fw «/fw ∀t/fw >/punct s/nns (/punct 1/cd )/punct esxs/nns „/cd vs/cc −/cd ws+1/nn ws/nns bs+1/nn «/cd ≥/nn esxt/nn „/cd vs/cc −/cd wt/jj ws/nns bt/nn «/cd ∀t/nn </punct s/nns (/punct 2/cd )/punct inequalities/nns (/punct 1/cd )/punct and/cc (/punct 2/cd )/punct state/nn that/wdt bidder/nn s/vbz does/vbz not/rb prefer/vb a/dt lower/jjr or/cc higher/jjr position/nn to/to his/prp$ own/jj ,/punct respectively/rb ./punct
+it/prp can/md be/vb hard/jj to/to derive/vb any/dt theoretical/jj insight/nn into/in the/dt properties/nns of/in these/dt nash/nnp equilibria-multiple/jj allocations/nns of/in positions/nns to/to bidders/nns can/md potentially/rb arise/vb in/in equilibrium/nn [/punct 2/cd ]/punct ./punct
+edelman/nnp ,/punct ostrovsky/nnp ,/punct and/cc schwarz/nnp [/punct 3/cd ]/punct introduced/vbd a/dt refinement/nn of/in nash/nnp equilibrium/nn called/vbd locally/rb envy-free/jj equilibrium/nn that/wdt is/vbz more/rbr tractable/jj to/to analyze/vb ;/punct varian/nnp [/punct 11/cd ]/punct independently/rb proposed/vbd this/dt solution/nn concept/nn and/cc called/vbd it/prp symmetric/jj equilibrium/nn ./punct
+in/in a/dt symmetric/jj equilibrium/nn ,/punct inequality/nn (/punct 1/cd )/punct holds/vbz for/in all/dt s/nns ,/punct t/nn rather/rb than/in just/rb for/in t/nn >/punct s./nn so/rb for/in all/dt s/nns and/cc all/dt t/nn =/punct s/nns ,/punct we/prp have/vbp esxs/nns „/cd vs/cc −/cd ws+1/nn ws/nns bs+1/nn «/cd ≥/nn esxt/nn „/cd vs/cc −/cd wt+1/nn ws/nns bt+1/nn «/nn ,/punct 51/cd or/cc equivalently/rb xs/nnps (/punct wsvs/fw −/fw ws+1bs+1/nn )/punct ≥/nn xt/nn (/punct wsvs/nns −/cd wt+1bt+1/nn )/punct ./punct
+(/punct 3/cd )/punct edelman/nnp et/fw al/fw ./punct
+[/punct 3/cd ]/punct note/nn that/in this/dt equilibrium/nn arises/vbz if/in agents/nns are/vbp raising/vbg their/prp$ bids/nns to/to increase/vb the/dt payments/nns of/in those/dt above/in them/prp ,/punct a/dt practice/nn which/wdt is/vbz believed/vbn to/to be/vb common/jj in/in actual/jj keyword/jj auctions/nns ./punct
+varian/nnp [/punct 11/cd ]/punct provides/vbz some/dt empirical/jj evidence/nn that/in google/nnp bid/nn data/nns agrees/vbz well/rb with/in the/dt hypothesis/nn that/in bidders/nns are/vbp playing/vbg a/dt symmetric/jj equilibrium/nn ./punct
+varian/nnp does/vbz a/dt thorough/jj analysis/nn of/in the/dt properties/nns of/in symmetric/jj equilibrium/nn ,/punct assuming/vbg ws/nn =/punct es/nn =/punct 1/cd for/in all/dt bidders/nns ./punct
+it/prp is/vbz straightforward/jj to/to adapt/vb his/prp$ analysis/nn to/to the/dt case/nn where/wrb bidders/nns are/vbp assigned/vbn arbitrary/jj weights/nns and/cc have/vbp separable/jj click-through/jj rates.2/nn as/in a/dt result/nn we/prp find/vbp that/in in/in symmetric/jj equilibrium/nn ,/punct bidders/nns are/vbp ranked/vbn in/in order/nn of/in decreasing/vbg wsvs/nns ./punct
+to/to be/vb clear/jj ,/punct although/in the/dt auctioneer/nn only/rb has/vbz access/nn to/to the/dt bids/nns bs/nns and/cc not/rb the/dt values/nns vs/cc ,/punct in/in symmetric/jj equilibrium/nn the/dt bids/nns are/vbp such/jj that/in ranking/jj according/vbg to/to wsbs/nns is/vbz equivalent/jj to/to ranking/jj according/vbg to/to wsvs/nns ./punct
+the/dt smallest/jjs possible/jj bid/nn profile/nn that/wdt can/md arise/vb in/in symmetric/jj equilibrium/nn is/vbz given/vbn by/in the/dt recursion/nn xsws+1bs+1/nn =/punct (/punct xs/nnps −/cd xs+1/nn )/punct ws+1vs+1/nn +/punct xs+1ws+2bs+2/nn ./punct
+in/in this/dt work/nn we/prp assume/vbp that/in bidders/nns are/vbp playing/vbg the/dt smallest/jjs symmetric/jj equilibrium/nn ./punct
+this/dt is/vbz an/dt appropriate/jj selection/nn for/in our/prp$ purposes/nns :/punct by/in optimizing/vbg revenue/nn in/in this/dt equilibrium/nn ,/punct we/prp are/vbp optimizing/vbg a/dt lower/jjr bound/vbn on/in the/dt revenue/nn in/in any/dt symmetric/jj equilibrium/nn ./punct
+unraveling/vbg the/dt recursion/nn yields/nns xsws+1bs+1/nn =/punct kx/nn t=s/nns (/punct xt/nn −/cd xt+1/nn )/punct wt+1vt+1/nn ./punct
+(/punct 4/cd )/punct agent/nnp s/nns ''/'' s/vbz total/nn expected/jj payment/nn is/vbz es/ws/jj times/nns the/dt quantity/nn on/in the/dt left-hand/jj side/nn of/in (/punct 4/cd )/punct ./punct
+the/dt base/nn case/nn of/in the/dt recursion/nn occurs/vbz for/in s/nns =/punct k/nn ,/punct where/wrb we/prp find/vbp that/in the/dt first/jj excluded/vbn bidder/nn bids/nns his/prp$ true/jj value/nn ,/punct as/in in/in the/dt original/jj analysis/nn ./punct
+multiplying/vbg each/dt of/in the/dt inequalities/nns (/punct 4/cd )/punct by/in the/dt corresponding/jj es/ws/nns to/to obtain/vb total/jj payments/nns ,/punct and/cc summing/nn over/in all/dt positions/nns ,/punct we/prp obtain/vbp a/dt total/jj equilibrium/nn revenue/nn of/in kx/nnp s=1/nn kx/nn t=s/vbz wt+1/nn ws/nns es/vbz (/punct xt/nn −/cd xt+1/nn )/punct vt+1/nn ./punct
+(/punct 5/cd )/punct to/to summarize/vb ,/punct the/dt minimum/jj possible/jj revenue/nn in/in symmetric/jj equilibrium/nn can/md be/vb computed/vbn as/in follows/vbz ,/punct given/vbn the/dt agents/nns ''/'' relevance-value/jj pairs/nns (/punct es/nns ,/punct vs/cc )/punct :/punct first/jj rank/nn the/dt agents/nns in/in decreasing/vbg order/nn of/in wsvs/nns ,/punct and/cc then/rb evaluate/vb (/punct 5/cd )/punct ./punct
+with/in a/dt reserve/nn score/nn of/in r/nn ,/punct it/prp follows/vbz from/in inequality/nn (/punct 3/cd )/punct that/in no/dt bidder/nn with/in wsvs/nns </punct r/nn would/md want/vb to/to participate/vb in/in the/dt auction/nn ./punct
+let/vb k/nnp (/punct r/nn )/punct be/vb the/dt number/nn of/in bidders/nns with/in wsvs/nns ≥/cd r/nn ,/punct and/cc assume/vb it/prp is/vbz at/in most/jjs k./nnp we/prp can/md impose/vb a/dt reserve/nn score/nn of/in r/nn by/in introducing/vbg a/dt bidder/nn with/in value/nn r/nn and/cc weight/nn 1/cd ,/punct and/cc making/vbg him/prp the/dt first/jj excluded/vbn bidder/nn (/punct who/wp in/in symmetric/jj equilibrium/nn bids/nns truthfully/rb )/punct ./punct
+in/in this/dt case/nn the/dt recursion/nn yields/nns xsws+1bs+1/nn =/punct k/nn (/punct r/nn )/punct −1/cd x/nn t=s/nns (/punct xt/nn −/cd xt+1/nn )/punct wt+1vt+1/nn +/punct xk/nn (/punct r/nn )/punct r/nn and/cc the/dt revenue/nn formula/nn is/vbz adapted/vbn similarly/rb ./punct
+2/cd if/in we/prp redefine/vbp wsvs/nns to/to be/vb vs/cc and/cc wsbs/nns to/to be/vb bs/nns ,/punct we/prp recover/vbp varian/nnp ''/'' s/vbz setup/nn and/cc his/prp$ original/jj analysis/nn goes/vbz through/in unchanged/jj ./punct
+4/ls ./punct
+bidding/nn credits/nns an/dt indirect/jj way/nn to/to influence/vb the/dt allocation/nn is/vbz to/to introduce/vb bidding/nn credits.3/nn suppose/vb bidder/nn s/nns is/vbz only/rb required/vbn to/to pay/vb a/dt fraction/nn cs/vbz ∈/cd [/punct 0/cd ,/punct 1/cd ]/punct of/in the/dt price/nn he/prp faces/vbz ,/punct or/cc equivalently/rb a/dt (/punct 1/cd −/cd cs/nns )/punct fraction/nn of/in his/prp$ clicks/nns are/vbp received/vbn for/in free/jj ./punct
+then/rb in/in a/dt symmetric/jj equilibrium/nn ,/punct we/prp have/vbp esxs/nns „/cd vs/cc −/cd ws+1/nn ws/nns csbs+1/vbp «/cd ≥/cd esxt/nn „/cd vs/cc −/cd wt+1/nn ws/nns csbt+1/vbp «/cd or/cc equivalently/rb xs/nnps „/fw ws/fw cs/fw vs/cc −/fw ws+1bs+1/fw «/fw ≥/fw xt/fw „/fw ws/fw cs/fw vs/cc −/fw wt+1bt+1/fw «/fw ./punct
+if/in we/prp define/vbp ws/nn =/punct ws/nns cs/nns and/cc bs/nn =/punct csbs/nns ,/punct we/prp recover/vbp inequality/nn (/punct 3/cd )/punct ./punct
+hence/rb the/dt equilibrium/nn revenue/nn will/md be/vb as/in if/in we/prp had/vbd used/vbn weights/nns w/nn rather/rb than/in w./vb the/dt bids/nns will/md be/vb scaled/vbn versions/nns of/in the/dt bids/nns that/wdt arise/vbp with/in weights/nns w/vbp (/punct and/cc no/dt credits/nns )/punct ,/punct where/wrb each/dt bid/nn is/vbz scaled/vbn by/in the/dt corresponding/jj factor/nn 1/cs/nns ./punct
+this/dt technique/nn allows/vbz one/cd to/to use/vb credits/nns instead/rb of/in explicit/jj changes/nns in/in the/dt weights/nns to/to affect/vb revenue/nn ./punct
+for/in instance/nn ,/punct rankby-revenue/nn will/md yield/vb the/dt same/jj revenue/nn as/in rank-by-bid/nn if/in we/prp set/vbd credits/nns to/to cs/nn =/punct es/nns ./punct
+5/cd ./punct
+revenue/nn we/prp are/vbp interested/jj in/in setting/vbg the/dt weights/nns w/vbp to/to achieve/vb optimal/jj expected/vbn revenue/nn ./punct
+the/dt setup/nn is/vbz as/in follows/vbz ./punct
+the/dt auctioneer/nn chooses/vbz a/dt function/nn g/nn so/in that/in the/dt weighting/nn scheme/nn is/vbz ws/jj ≡/cd g/nn (/punct es/vbz )/punct ./punct
+we/prp do/vbp not/rb consider/vb weights/nns that/wdt also/rb depend/vbp on/in the/dt agents/nns ''/'' bids/nns because/in this/dt would/md invalidate/vb the/dt equilibrium/nn analysis/nn of/in the/dt previous/jj section.4/nn a/dt pool/nn of/in n/nn bidders/nns is/vbz then/rb obtained/vbn by/in i.i.d/nn ./punct
+draws/vbz of/in value-relevance/nn pairs/nns from/in a/dt common/jj probability/nn density/nn f/fw (/punct es/nns ,/punct vs/cc )/punct ./punct
+we/prp assume/vbp the/dt density/nn is/vbz continuous/jj and/cc has/vbz full/jj support/nn on/in [/punct 0/cd ,/punct 1/cd ]/punct ×/cd [/punct 0/cd ,/punct ∞/cd )/punct ./punct
+the/dt revenue/nn to/to the/dt auctioneer/nn is/vbz then/rb the/dt revenue/nn generated/vbn in/in symmetric/jj equilibrium/nn under/in weighting/nn scheme/nn w./vbd this/dt assumes/vbz the/dt auctioneer/nn is/vbz patient/jj enough/rb not/rb to/to care/vb about/in revenue/nn until/in bids/nns have/vbp stabilized/vbn ./punct
+the/dt problem/nn of/in finding/vbg an/dt optimal/jj weighting/nn scheme/nn can/md be/vb formulated/vbn as/in an/dt optimization/nn problem/nn very/rb similar/jj to/to the/dt one/cd derived/vbn by/in myerson/nnp [/punct 9/cd ]/punct for/in the/dt single-item/jj auction/nn case/nn (/punct with/in incomplete/jj information/nn )/punct ./punct
+let/vb qsk/nnp (/punct e/ls ,/punct v/ls ;/punct w/nn )/punct =/punct 1/cd if/in agent/nn s/nns obtains/vbz slot/nn k/nn in/in equilibrium/nn under/in weighting/nn scheme/nn w/nn ,/punct where/wrb e/sym =/punct (/punct e1/nn ,/punct ./punct
+./punct
+./punct
+,/punct en/nn )/punct and/cc v/ls =/punct (/punct v1/nn ,/punct ./punct
+./punct
+./punct
+,/punct vn/nn )/punct ,/punct and/cc let/vb it/prp be/vb 0/cd otherwise/rb ./punct
+note/vb that/in the/dt total/jj payment/nn of/in agent/nn s/nns in/in equilibrium/nn is/vbz esxs/jj ws+1/nn ws/nns bs+1/nn =/punct kx/nn t=s/nns es/vbz (/punct xt/nn −/cd xt+1/nn )/punct wt+1/nn ws/nns vt+1/nn =/punct esxsvs/nns −/vbp z/nn vs/cc 0/cd kx/nn k=1/nn esxkqsk/nn (/punct es/nns ,/punct e−s/nns ,/punct y/nn ,/punct v−s/nns ;/punct w/nn )/punct dy/nn ./punct
+the/dt derivation/nn then/rb continues/vbz just/rb as/rb in/in the/dt case/nn of/in a/dt singleitem/nn auction/nn [/punct 7/cd ,/punct 9/cd ]/punct ./punct
+we/prp take/vbp the/dt expectation/nn of/in this/dt payment/nn ,/punct 3/cd hal/nnp varian/nnp suggested/vbd to/to us/prp that/in bidding/nn credits/nns could/md be/vb used/vbn to/to affect/vb revenue/nn in/in keyword/jj auctions/nns ,/punct which/wdt prompted/vbd us/prp to/to look/vb into/in this/dt connection/nn ./punct
+4/cd the/dt analysis/nn does/vbz not/rb generalize/vb to/to weights/nns that/wdt depend/vbp on/in bids/nns ./punct
+it/prp is/vbz unclear/jj whether/in an/dt equilibrium/nn would/md exist/vb at/in all/dt with/in such/jj weights/nns ./punct
+52/cd and/cc sum/nn over/in all/dt agents/nns to/to obtain/vb the/dt objective/jj z/nn ∞/nn 0/cd z/nn ∞/nn 0/cd ``/`` nx/nn s=1/nn kx/nn k=1/nn esxkψ/nn (/punct es/nns ,/punct vs/cc )/punct qsk/nn (/punct e/ls ,/punct v/ls ;/punct w/nn )/punct #/punct f/fw (/punct e/ls ,/punct v/ls )/punct dv/fw de/fw ,/punct where/wrb ψ/nn is/vbz the/dt virtual/jj valuation/nn ψ/nn (/punct es/nns ,/punct vs/cc )/punct =/punct vs/cc −/nn 1/cd −/cd f/nn (/punct vs|es/nns )/punct f/fw (/punct vs|es/fw )/punct ./punct
+according/vbg to/to this/dt analysis/nn ,/punct we/prp should/md rank/vb bidders/nns by/in virtual/jj score/nn esψ/nn (/punct es/nns ,/punct vs/cc )/punct to/to optimize/vb revenue/nn (/punct and/cc exclude/vb any/dt bidders/nns with/in negative/jj virtual/jj score/nn )/punct ./punct
+however/rb ,/punct unlike/in in/in the/dt incomplete/jj information/nn setting/nn ,/punct here/rb we/prp are/vbp constrained/vbn to/to ranking/jj rules/nns that/wdt correspond/vbp to/to a/dt certain/jj weighting/nn scheme/nn ws/nns ≡/cd g/nn (/punct es/vbz )/punct ./punct
+we/prp remark/vbp that/in the/dt virtual/jj score/nn can/md not/rb be/vb reproduced/vbn exactly/rb via/in a/dt weighting/nn scheme/nn ./punct
+lemma/nnp 1/cd ./punct
+there/ex is/vbz no/dt weighting/nn scheme/nn g/nn such/jj that/in the/dt virtual/jj score/nn equals/vbz the/dt score/nn ,/punct for/in any/dt density/nn f./nn proof/nnp ./punct
+assume/vb there/ex is/vbz a/dt g/nn such/jj that/in eψ/nn (/punct e/ls ,/punct v/ls )/punct =/punct g/nn (/punct e/sym )/punct v/ls ./punct
+(/punct the/dt subscript/jj s/nns is/vbz suppressed/vbn for/in clarity/nn ./punct
+)/punct this/dt is/vbz equivalent/jj to/to d/nn dv/nn log/nn (/punct 1/cd −/cd f/nn (/punct v|e/nn )/punct )/punct =/punct h/nn (/punct e/sym )/punct /v/nn ,/punct (/punct 6/cd )/punct where/wrb h/nn (/punct e/sym )/punct =/punct (/punct g/nn (/punct e/sym )/punct /e−1/fw )/punct −1/nn ./punct
+let/vb ¯v/nnp be/vb such/jj that/in f/nn (/punct ¯v|e/nn )/punct </punct 1/cd ;/punct under/in the/dt assumption/nn of/in full/jj support/nn ,/punct there/ex is/vbz always/rb such/jj a/dt ¯v/nn ./punct
+integrating/vbg (/punct 6/cd )/punct with/in respect/nn to/to v/ls from/in 0/cd to/to ¯v/vb ,/punct we/prp find/vbp that/in the/dt left-hand/jj side/nn converges/vbz whereas/in the/dt right-hand/jj side/nn diverges/vbz ,/punct a/dt contradiction/nn ./punct
+of/in course/nn ,/punct to/to rank/vb bidders/nns by/in virtual/jj score/nn ,/punct we/prp only/rb need/vbp g/nn (/punct es/vbz )/punct vs/cc =/punct h/nn (/punct esψ/nn (/punct es/nns ,/punct vs/cc )/punct )/punct for/in some/dt monotonically/rb increasing/vbg transformation/nn h/nn ./punct
+(/punct a/nn necessary/jj condition/nn for/in this/dt is/vbz that/in ψ/nn (/punct es/nns ,/punct vs/cc )/punct be/vb increasing/vbg in/in vs/cc for/in all/dt es/nns ./punct
+)/punct absent/jj this/dt regularity/nn condition/nn ,/punct the/dt optimization/nn problem/nn seems/vbz quite/rb difficult/jj because/in it/prp is/vbz so/rb general/jj :/punct we/prp need/vbp to/to maximize/vb expected/jj revenue/nn over/in the/dt space/nn of/in all/dt functions/nns g./vbp to/to simplify/vb matters/nns ,/punct we/prp now/rb restrict/vbp our/prp$ attention/nn to/to the/dt family/nn of/in weights/nns ws/nn =/punct eq/nn s/nns for/in q/jj ∈/nn (/punct −∞/cd ,/punct +∞/cd )/punct ./punct
+it/prp should/md be/vb much/jj simpler/jjr to/to find/vb the/dt optimum/nn within/in this/dt family/nn ,/punct since/in it/prp is/vbz just/rb one-dimensional/jj ./punct
+note/vb that/in it/prp covers/vbz rank-by-bid/jj (/punct q/nn =/punct 0/cd )/punct and/cc rank-by-revenue/jj (/punct q/nn =/punct 1/cd )/punct as/in special/jj cases/nns ./punct
+to/to see/vb how/wrb tuning/nn q/nn can/md improve/vb matters/nns ,/punct consider/vb again/rb the/dt equilibrium/nn revenue/nn :/punct r/nn (/punct q/nn )/punct =/punct kx/nn s=1/nn kx/nn t=s/nns „/vbp et+1/nn es/vbz «q/cd es/nns (/punct xt/nn −/cd xt+1/nn )/punct vt+1/nn ./punct
+(/punct 7/cd )/punct if/in the/dt bidders/nns are/vbp ranked/vbn in/in decreasing/vbg order/nn of/in relevance/nn ,/punct then/rb et/fw es/fw ≤/cd 1/cd for/in t/nn >/punct s/nns and/cc decreasing/vbg q/rb slightly/rb without/in affecting/vbg the/dt allocation/nn will/md increase/vb revenue/nn ./punct
+similarly/rb ,/punct if/in bidders/nns are/vbp ranked/vbn in/in increasing/vbg order/nn of/in relevance/nn ,/punct increasing/vbg q/rb slightly/rb will/md yield/vb an/dt improvement/nn ./punct
+now/rb suppose/vb there/ex is/vbz perfect/jj positive/jj correlation/nn between/in value/nn and/cc relevance/nn ./punct
+in/in this/dt case/nn ,/punct rank-by-bid/nn will/md always/rb lead/vb to/to the/dt same/jj allocation/nn as/in rank-by-revenue/nn ,/punct and/cc bidders/nns will/md always/rb be/vb ranked/vbn in/in decreasing/vbg order/nn of/in relevance/nn ./punct
+it/prp then/rb follows/vbz from/in (/punct 7/cd )/punct that/wdt q/vbd =/punct 0/cd will/md yield/vb more/jjr revenue/nn in/in equilibrium/nn than/in q/nn =/punct 1.5/cd 5/cd it/prp may/md appear/vb that/in this/dt contradicts/vbz the/dt revenue-equivalence/nn theorem/nn [/punct 7/cd ,/punct 9/cd ]/punct ,/punct because/in mechanisms/nns that/wdt always/rb lead/vbp to/to the/dt same/jj allocation/nn in/in equilibrium/nn should/md yield/vb the/dt same/jj revenue/nn ./punct
+note/vb though/in that/dt with/in perfect/jj correlation/nn ,/punct there/ex are/vbp if/in a/dt good/jj estimate/nn of/in f/fw is/vbz available/jj ,/punct monte-carlo/jj simulations/nns can/md be/vb used/vbn to/to estimate/vb the/dt revenue/nn curve/nn as/in a/dt function/nn of/in q/nn ,/punct and/cc the/dt optimum/nn can/md be/vb located/jj ./punct
+simulations/nns can/md also/rb be/vb used/vbn to/to quantify/vb the/dt effect/nn of/in correlation/nn on/in the/dt location/nn of/in the/dt optimum/nn ./punct
+we/prp do/vbp this/dt in/in section/nn 7/cd ./punct
+6/cd ./punct
+efficiency/nn and/cc relevance/nn in/in principle/nn the/dt revenue-optimal/jj parameter/nn q/nn may/md lie/vb anywhere/rb in/in (/punct −∞/cd ,/punct ∞/cd )/punct ./punct
+however/rb ,/punct tuning/nn the/dt ranking/jj rule/nn also/rb has/vbz consequences/nns for/in advertiser/nn satisfaction/nn and/cc user/nn experience/nn ,/punct and/cc taking/vbg these/dt into/in account/nn reduces/vbz the/dt range/nn of/in allowable/jj q./nn the/dt total/jj relevance/nn of/in the/dt equilibrium/nn allocation/nn is/vbz l/nn (/punct q/nn )/punct =/punct kx/nn s=1/nn esxs/nns ,/punct i.e/nn ./punct
+the/dt aggregate/jj click-through/jj rate/nn ./punct
+presumably/rb users/nns find/vb the/dt ad/nn display/nn more/rbr interesting/jj and/cc less/jjr of/in a/dt nuisance/nn if/in they/prp are/vbp more/rbr inclined/jj to/to click/vb on/in the/dt ads/nns ,/punct so/in we/prp adopt/vbp total/jj relevance/nn as/in a/dt measure/nn of/in user/nn experience/nn ./punct
+let/vb ps/nn =/punct ws+1/nn ws/nns bs+1/nn be/vb the/dt price/nn per/in click/vb faced/vbn by/in bidder/nn s./nn the/dt total/jj value/nn (/punct efficiency/nn )/punct generated/vbn by/in the/dt auction/nn in/in equilibrium/nn is/vbz v/nnp (/punct q/vb )/punct =/punct kx/nn s=1/nn esxsvs/nn =/punct kx/nn s=1/nn esxs/nns (/punct vs/cc −/cd ps/nns )/punct +/punct kx/nn s=1/nn esxsps/nns ./punct
+as/in we/prp see/vbp total/jj value/nn can/md be/vb reinterpreted/vbn as/in total/jj profits/nns to/to the/dt bidders/nns and/cc auctioneer/nn combined/vbn ./punct
+since/in we/prp only/rb consider/vbp deviations/nns from/in maximum/jj efficiency/nn that/wdt increase/vbp the/dt auctioneer/nn ''/'' s/nns profits/nns ,/punct any/dt decrease/nn in/in efficiency/nn in/in our/prp$ setting/vbg corresponds/vbz to/to a/dt decrease/nn in/in bidder/nn profits/nns ./punct
+we/prp therefore/rb adopt/vb efficiency/nn as/in a/dt measure/nn of/in advertiser/nn satisfaction/nn ./punct
+we/prp would/md expect/vb total/jj relevance/nn to/to increase/vb with/in q/nn ,/punct since/in more/jjr weight/nn is/vbz placed/vbn on/in each/dt bidder/nn ''/'' s/nns individual/jj relevance/nn ./punct
+we/prp would/md expect/vb efficiency/nn to/to be/vb maximized/vbn at/in q/nn =/punct 1/cd ,/punct since/in in/in this/dt case/nn a/dt bidder/nn ''/'' s/nns weight/nn is/vbz exactly/rb his/prp$ relevance/nn ./punct
+proposition/nn 1/cd ./punct
+total/jj relevance/nn is/vbz non-decreasing/jj in/in q./nnp proof/nnp ./punct
+recall/vb that/in in/in symmetric/jj equilibrium/nn ,/punct bidders/nns are/vbp ranked/vbn in/in order/nn of/in decreasing/vbg wsvs/nns ./punct
+let/vb >/punct 0/cd ./punct
+perform/vb an/dt exchange/nn sort/nn to/to obtain/vb the/dt ranking/nn that/wdt arises/vbz with/in q/nn +/punct starting/vbg from/in the/dt ranking/nn that/wdt arises/vbz with/in q/jj (/punct for/in a/dt description/nn of/in exchange/nn sort/nn and/cc its/prp$ properties/nns ,/punct see/vbp knuth/nnp [/punct 6/cd ]/punct pp/nn ./punct
+106110/cd )/punct ./punct
+assume/vb that/dt is/vbz large/jj enough/rb to/to make/vb the/dt rankings/nns distinct/jj ./punct
+agents/nns s/nns and/cc t/nn ,/punct where/wrb s/nns is/vbz initially/rb ranked/vbd lower/jjr than/in t/nn ,/punct are/vbp swapped/vbn in/in the/dt process/nn if/in and/cc only/rb if/in the/dt following/jj conditions/nns hold/vbp :/punct eq/nn svs/nns ≤/cd eq/nn t/nn vt/nn eq+/jj s/nns vs/cc >/punct eq+/jj t/nn vt/nn which/wdt together/rb imply/vbp that/in es/vbz >/punct et/fw and/cc hence/rb es/vbz >/punct et/fw as/in >/punct 0/cd ./punct
+at/in some/dt point/nn in/in the/dt sort/nn ,/punct agent/nn s/nns occupies/vbz some/dt slot/nn α/nn ,/punct β/nn such/jj that/in vs/cc =/punct αes/nns +/punct β./nn so/in the/dt assumption/nn of/in full/jj support/nn is/vbz violated/vbn ,/punct which/wdt is/vbz necessary/jj for/in revenue/nn equivalence/jj ./punct
+recall/vb that/in a/dt density/nn has/vbz full/jj support/nn over/in a/dt given/vbn domain/nn if/in every/dt point/nn in/in the/dt domain/nn has/vbz positive/jj density/nn ./punct
+53/cd k/nn while/in agent/nn t/nn occupies/vbz slot/nn k/nn −/cd 1/cd ./punct
+after/in the/dt swap/nn ,/punct total/jj relevance/nn will/md have/vb changed/vbn by/in the/dt amount/nn esxk−1/nn +/punct etxk/nn −/cd etxk−1/nn −/cd esxk/nn =/punct (/punct es/nns −/cd et/fw )/punct (/punct xk−1/nn −/cd xk/nn )/punct >/punct 0/cd as/in relevance/nn strictly/rb increases/vbz with/in each/dt swap/nn in/in the/dt sort/nn ,/punct total/jj relevance/nn is/vbz strictly/rb greater/jjr when/wrb using/vbg q/nn +/punct rather/rb than/in q./jj proposition/nn 2/cd ./punct
+total/jj value/nn is/vbz non-decreasing/jj in/in q/nn for/in q/jj ≤/nn 1/cd and/cc non-increasing/jj in/in q/nn for/in q/jj ≥/nn 1/cd ./punct
+proof/nn ./punct
+let/vb q/nnp ≥/cd 1/cd and/cc let/vb >/punct 0/cd ./punct
+perform/vb an/dt exchange/nn sort/nn to/to obtain/vb the/dt second/jj ranking/nn from/in the/dt first/jj as/in in/in the/dt previous/jj proof/nn ./punct
+if/in agents/nns s/nns and/cc t/nn are/vbp swapped/vbn ,/punct where/wrb s/nns was/vbd initially/rb ranked/vbd lower/jjr than/in t/nn ,/punct then/rb es/vbz >/punct et/fw ./punct
+this/dt follows/vbz by/in the/dt same/jj reasoning/nn as/in in/in the/dt previous/jj proof/nn ./punct
+now/rb e1−q/nn s/nns ≤/vbp e1−q/nn t/nn as/in 1/cd −/cd q/nn ≤/nn 0/cd ./punct
+this/dt together/rb with/in eq/nn svs/nns ≤/cd eq/nn t/nn vt/nn implies/vbz that/in esvs/fw ≤/fw etvt/fw ./punct
+hence/rb after/in swapping/vbg agents/nns s/nns and/cc t/nn ,/punct total/jj value/nn has/vbz not/rb increased/vbn ./punct
+the/dt case/nn for/in q/jj ≤/nn 1/cd is/vbz similar/jj ./punct
+since/in the/dt trends/nns described/vbn in/in propositions/nns 1/cd and/cc 2/cd hold/nn pointwise/nn (/punct i.e/nn ./punct
+for/in any/dt set/nn of/in bidders/nns )/punct ,/punct they/prp also/rb hold/vbp in/in expectation/nn ./punct
+proposition/nn 2/cd confirms/vbz that/in efficiency/nn is/vbz indeed/rb maximized/vbn at/in q/nn =/punct 1/cd ./punct
+these/dt results/nns motivate/vbp the/dt following/vbg approach/nn ./punct
+although/in tuning/nn q/nn can/md optimize/vb current/jj revenue/nn ,/punct this/dt may/md come/vb at/in the/dt price/nn of/in future/jj revenue/nn because/in advertisers/nns and/cc users/nns may/md be/vb lost/vbn ,/punct seeing/vbg as/in their/prp$ satisfaction/nn decreases/vbz ./punct
+to/to guarantee/vb future/jj revenue/nn will/md not/rb be/vb hurt/vbn too/rb much/rb ,/punct the/dt auctioneer/nn can/md impose/vb bounds/nns on/in the/dt percent/nn efficiency/nn and/cc relevance/nn loss/nn he/prp is/vbz willing/jj to/to tolerate/vb ,/punct with/in q/nn =/punct 1/cd being/vbg a/dt natural/jj baseline/nn ./punct
+by/in proposition/nn 2/cd ,/punct a/dt lower/jjr bound/vbn on/in efficiency/nn will/md yield/vb upper/jj and/cc lower/jjr bounds/nns on/in the/dt search/nn space/nn for/in q./nn by/in proposition/nn 1/cd ,/punct a/dt lower/jjr bound/vbn on/in relevance/nn will/md yield/vb another/dt lower/jjr bound/vbn on/in q./nn the/dt revenue/nn curve/nn can/md then/rb be/vb plotted/vbn within/in the/dt allowable/jj range/nn of/in q/nn to/to find/vb the/dt revenue-optimal/jj setting/nn ./punct
+7/cd ./punct
+simulations/nns to/to add/vb a/dt measure/nn of/in reality/nn to/to our/prp$ simulations/nns ,/punct we/prp fit/vbp distributions/nns for/in value/nn and/cc relevance/nn to/to yahoo/nnp !/punct
+bid/nn and/cc clickthrough/jj rate/nn data/nns for/in a/dt certain/jj keyword/nn that/wdt draws/vbz over/in a/dt million/cd searches/nns per/in month/nn ./punct
+(/punct we/prp do/vbp not/rb reveal/vb the/dt identity/nn of/in the/dt keyword/nn to/to respect/vb the/dt privacy/nn of/in the/dt advertisers/nns ./punct
+)/punct we/prp obtained/vbd click/vb and/cc impression/nn data/nns for/in the/dt advertisers/nns bidding/nn on/in the/dt keyword/nn ./punct
+from/in this/dt we/prp estimated/vbd advertiser/nn and/cc position/nn effects/nns using/vbg a/dt maximum-likelihood/jj criterion/nn ./punct
+we/prp found/vbd that/in ,/punct indeed/rb ,/punct position/nn effects/nns are/vbp monotonically/rb decreasing/vbg with/in lower/jjr rank/nn ./punct
+we/prp then/rb fit/vbp a/dt beta/nn distribution/nn to/to the/dt advertiser/nn effects/nns resulting/vbg in/in parameters/nns a/dt =/punct 2.71/cd and/cc b/nn =/punct 25.43/cd ./punct
+we/prp obtained/vbd bids/nns of/in advertisers/nns for/in the/dt keyword/nn ./punct
+using/vbg varian/nnp ''/'' s/vbz [/punct 11/cd ]/punct technique/nn ,/punct we/prp derived/vbd bounds/nns on/in the/dt bidders/nns ''/'' actual/jj values/nns given/vbn these/dt bids/nns ./punct
+by/in this/dt technique/nn ,/punct upper/jj and/cc lower/jjr bounds/nns are/vbp obtained/vbn on/in bidder/nn values/nns given/vbn the/dt bids/nns according/vbg to/to inequality/nn (/punct 3/cd )/punct ./punct
+if/in the/dt interval/nn for/in a/dt given/vbn value/nn is/vbz empty/jj ,/punct i.e/nn ./punct
+its/prp$ upper/jj bound/vbn lies/nns below/in its/prp$ lower/jjr bound/vbd ,/punct then/rb we/prp compute/vbp the/dt smallest/jjs perturbation/nn to/to the/dt bids/nns necessary/jj to/to make/vb the/dt interval/jj non-empty/jj ,/punct which/wdt involves/vbz solving/vbg a/dt quadratic/jj program/nn ./punct
+we/prp found/vbd that/in the/dt mean/nn absolute/jj deviation/nn required/vbn to/to fit/vb bids/nns to/to symmetric/jj equilibrium/nn was/vbd 0/cd 1/cd 2/cd 3/cd 4/cd 5/cd 6/cd 7/cd 0/cd 0.05/cd 0.1/cd 0.15/cd 0.2/cd 0.25/cd 0.3/cd 0.35/cd 0.4/cd 0.45/cd value/nn density/nn 0/cd 0.05/cd 0.1/cd 0.15/cd 0.2/cd 0.25/cd 0/cd 2/cd 4/cd 6/cd 8/cd 10/cd relevance/nn density/nn figure/nn 1/cd :/punct empirical/jj marginal/jj distributions/nns of/in value/nn and/cc relevance/nn ./punct
+always/rb at/in most/jjs 0.08/cd ,/punct and/cc usually/rb significantly/rb less/rbr ,/punct over/in different/jj days/nns in/in a/dt period/nn of/in two/cd weeks.6/cd we/prp fit/vbp a/dt lognormal/jj distribution/nn to/to the/dt lower/jjr bounds/nns on/in the/dt bidders/nns ''/'' values/nns ,/punct resulting/vbg in/in parameters/nns μ/nn =/punct 0.35/cd and/cc σ/nn =/punct 0.71/cd ./punct
+the/dt empirical/jj distributions/nns of/in value/nn and/cc relevance/nn together/rb with/in the/dt fitted/jj lognormal/nn and/cc beta/nn curves/nns are/vbp given/vbn in/in figure/nnp 1/cd ./punct
+it/prp appears/vbz that/in mixtures/nns of/in beta/nn and/cc lognormal/jj distributions/nns might/md be/vb better/jjr fits/nns ,/punct but/cc since/in these/dt distributions/nns are/vbp used/vbn mainly/rb for/in illustration/nn purposes/nns ,/punct we/prp err/vbp on/in the/dt side/nn of/in simplicity/nn ./punct
+we/prp used/vbd a/dt gaussian/jj copula/nn to/to create/vb dependence/nn between/in value/nn and/cc relevance.7/nn given/vbn the/dt marginal/jj distributions/nns for/in value/nn and/cc relevance/nn together/rb with/in this/dt copula/nn ,/punct we/prp simulated/jj the/dt revenue/nn effect/nn of/in varying/vbg q/nn for/in different/jj levels/nns of/in spearman/nnp correlation/nn ,/punct with/in 12/cd slots/nns and/cc 13/cd bidders/nns ./punct
+the/dt results/nns are/vbp shown/vbn in/in figure/nn 2.8/cd it/prp is/vbz apparent/jj from/in the/dt figure/nn that/in the/dt optimal/jj choice/nn of/in q/jj moves/nns to/to the/dt right/nn as/in correlation/nn decreases/vbz ;/punct this/dt agrees/vbz with/in our/prp$ intuition/nn from/in section/nn 5/cd ./punct
+the/dt choice/nn is/vbz very/rb sensitive/jj to/to the/dt level/nn of/in correlation/nn ./punct
+if/in choosing/vbg only/rb between/in rankby-bid/jj and/cc rank-by-revenue/jj ,/punct rank-by-bid/jj is/vbz best/jjs for/in positive/jj correlation/nn whereas/in rank-by-revenue/nn is/vbz best/jjs for/in negative/jj correlation/nn ./punct
+at/in zero/cd correlation/nn ,/punct they/prp give/vbp about/in the/dt same/jj expected/vbn revenue/nn in/in this/dt instance/nn ./punct
+figure/nn 2/cd also/rb shows/vbz that/in in/in principle/nn ,/punct the/dt optimal/jj q/nn may/md be/vb negative/jj ./punct
+it/prp may/md also/rb occur/vb beyond/in 1/cd for/in different/jj distributions/nns ,/punct but/cc we/prp do/vbp not/rb know/vb if/in these/dt would/md be/vb realistic/jj ./punct
+the/dt trends/nns in/in efficiency/nn and/cc relevance/nn are/vbp as/in described/vbn in/in the/dt results/nns from/in section/nn 6/cd ./punct
+(/punct any/dt small/jj deviation/nn from/in these/dt trends/nns is/vbz due/jj to/to the/dt randomness/nn inherent/jj in/in the/dt simulations/nns ./punct
+)/punct the/dt curves/nns level/nn off/rp as/in q/nn →/cd +∞/nn because/in eventually/rb agents/nns are/vbp ranked/vbn purely/rb according/vbg to/to relevance/nn ,/punct and/cc similarly/rb as/in q/jj →/nn −∞/nn ./punct
+a/dt typical/jj spearman/nnp correlation/nn between/in value/nn and/cc relevance/nn for/in the/dt keyword/nn was/vbd about/in 0.4-for/jj different/jj days/nns in/in a/dt week/nn the/dt correlation/nn lay/vbd within/in [/punct 0.36/cd ,/punct 0.55/cd ]/punct ./punct
+simulation/nn results/vbz with/in this/dt correlation/nn are/vbp in/in figure/nnp 3/cd ./punct
+in/in this/dt instance/nn rank-by-bid/nn is/vbz in/in fact/nn optimal/jj ,/punct yielding/vbg 25/cd %/punct more/jjr revenue/nn than/in rank-by-revenue/jj ./punct
+however/rb ,/punct at/in q/nn =/punct 0/cd efficiency/nn and/cc relevance/nn are/vbp 9/cd %/punct and/cc 17/cd %/punct lower/jjr than/in at/in q/nn =/punct 1/cd ,/punct respectively/rb ./punct
+imposing/vbg a/dt bound/vbn of/in ,/punct say/vb ,/punct 5/cd %/punct on/in efficiency/nn and/cc relevance/nn loss/nn from/in the/dt baseline/nn at/in q/nn =/punct 1/cd ,/punct the/dt optimal/jj setting/nn is/vbz q/nn =/punct 0.6/cd ,/punct yielding/vbg 11/cd %/punct more/jjr revenue/nn than/in the/dt baseline/nn ./punct
+6/cd see/vb varian/nnp [/punct 11/cd ]/punct for/in a/dt definition/nn of/in mean/nn absolute/jj deviation/nn ./punct
+7/cd a/dt copula/nn is/vbz a/dt function/nn that/wdt takes/vbz marginal/jj distributions/nns and/cc gives/vbz a/dt joint/jj distribution/nn with/in these/dt marginals/nns ./punct
+it/prp can/md be/vb designed/vbn so/rb that/in the/dt variables/nns are/vbp correlated/vbn ./punct
+see/vb for/in example/nn nelsen/nnp [/punct 10/cd ]/punct ./punct
+8/cd the/dt y-axes/nns in/in figures/nns 2-4/cd have/vbp been/vbn normalized/vbn because/in the/dt simulations/nns are/vbp based/vbn on/in proprietary/jj data/nns ./punct
+only/rb relative/jj values/nns are/vbp meaningful/jj ./punct
+54/cd 0/cd 1/cd 2/cd 3/cd 4/cd 5/cd 6/cd 7/cd -2/cd -1.5/cd -1/cd -0.5/cd 0/cd 0.5/cd 1/cd 1.5/cd 2/cd r/nn (/punct q/nn )/punct q/nnp revenue/nn 0/cd 1/cd 2/cd 3/cd 4/cd 5/cd 6/cd 7/cd 8/cd 9/cd 10/cd -2/cd -1.5/cd -1/cd -0.5/cd 0/cd 0.5/cd 1/cd 1.5/cd 2/cd v/nn (/punct q/nn )/punct q/nn efficiency/nn 0.6/cd 0.8/cd 1/cd 1.2/cd 1.4/cd 1.6/cd 1.8/cd 2/cd 2.2/cd 2.4/cd 2.6/cd -2/cd -1.5/cd -1/cd -0.5/cd 0/cd 0.5/cd 1/cd 1.5/cd 2/cd l/nn (/punct q/nn )/punct q/nn relevance/nn figure/nn 2/cd :/punct revenue/nn ,/punct efficiency/nn ,/punct and/cc relevance/nn for/in different/jj parameters/nns q/vbp under/in varying/vbg spearman/nnp correlation/nn (/punct key/nn at/in right/jj )/punct ./punct
+estimated/jj standard/jj errors/nns are/vbp less/jjr than/in 1/cd %/punct of/in the/dt values/nns shown/vbn ./punct
+-1/cd -0.5/cd 0/cd 0.5/cd 1/cd 1/cd 1.5/cd 2/cd 2.5/cd 3/cd 3.5/cd -2/cd -1.5/cd -1/cd -0.5/cd 0/cd 0.5/cd 1/cd 1.5/cd 2/cd r/nn (/punct q/nn )/punct q/nnp revenue/nn 2/cd 2.5/cd 3/cd 3.5/cd 4/cd 4.5/cd 5/cd 5.5/cd 6/cd 6.5/cd 7/cd 7.5/cd -2/cd -1.5/cd -1/cd -0.5/cd 0/cd 0.5/cd 1/cd 1.5/cd 2/cd v/nn (/punct q/nn )/punct q/nn efficiency/nn 0.8/cd 1/cd 1.2/cd 1.4/cd 1.6/cd 1.8/cd 2/cd 2.2/cd 2.4/cd -2/cd -1.5/cd -1/cd -0.5/cd 0/cd 0.5/cd 1/cd 1.5/cd 2/cd l/nn (/punct q/nn )/punct q/nn relevance/nn figure/nn 3/cd :/punct revenue/nn ,/punct efficiency/nn ,/punct and/cc relevance/nn for/in different/jj parameters/nns q/vbp with/in spearman/nn correlation/nn of/in 0.4/cd ./punct
+estimated/jj standard/jj errors/nns are/vbp less/jjr than/in 1/cd %/punct of/in the/dt values/nns shown/vbn ./punct
+we/prp also/rb looked/vbd into/in the/dt effect/nn of/in introducing/vbg a/dt reserve/nn score/nn ./punct
+results/nns are/vbp shown/vbn in/in figure/nnp 4/cd ./punct
+naturally/rb ,/punct both/dt efficiency/nn and/cc relevance/nn suffer/vbp with/in an/dt increasing/vbg reserve/nn score/nn ./punct
+the/dt optimal/jj setting/nn is/vbz r/nn =/punct 0.2/cd ,/punct which/wdt gives/vbz only/rb an/dt 8/cd %/punct increase/nn in/in revenue/nn from/in r/nn =/punct 0/cd ./punct
+however/rb ,/punct it/prp results/vbz in/in a/dt 13/cd %/punct efficiency/nn loss/nn and/cc a/dt 26/cd %/punct relevance/nn loss/nn ./punct
+tuning/vbg weights/nns seems/vbz to/to be/vb a/dt much/rb more/rbr desirable/jj approach/nn than/in introducing/vbg a/dt reserve/nn score/nn in/in this/dt instance/nn ./punct
+the/dt reason/nn why/wrb efficiency/nn and/cc relevance/nn suffer/vbp more/rbr with/in a/dt reserve/nn score/nn is/vbz that/in this/dt approach/nn will/md often/rb exclude/vb bidders/nns entirely/rb ,/punct whereas/in this/dt never/rb occurs/vbz when/wrb tuning/nn weights/nns ./punct
+the/dt two/cd approaches/nns are/vbp not/rb mutually/rb exclusive/jj ,/punct however/rb ,/punct and/cc some/dt combination/nn of/in the/dt two/cd might/md prove/vb better/jjr than/in either/dt alone/rb ,/punct although/in we/prp did/vbd not/rb investigate/vb this/dt possibility/nn ./punct
+8/cd ./punct
+conclusions/nns in/in this/dt work/nn we/prp looked/vbd into/in the/dt revenue/nn properties/nns of/in a/dt family/nn of/in ranking/jj rules/nns that/wdt contains/vbz the/dt yahoo/nnp !/punct
+and/cc google/nnp models/nns as/in special/jj cases/nns ./punct
+in/in practice/nn ,/punct it/prp should/md be/vb very/rb simple/jj to/to move/vb between/in rules/nns within/in the/dt family/nn :/punct this/dt simply/rb involves/vbz changing/vbg the/dt exponent/nn q/vbd applied/vbn to/to advertiser/nn effects/nns ./punct
+we/prp also/rb showed/vbd that/in ,/punct in/in principle/nn ,/punct the/dt same/jj effect/nn could/md be/vb obtained/vbn by/in using/vbg bidding/nn credits/nns ./punct
+despite/in the/dt simplicity/nn of/in the/dt rule/nn change/nn ,/punct simulations/nns revealed/vbd that/in properly/rb tuning/nn q/nn can/md significantly/rb improve/vb revenue/nn ./punct
+in/in the/dt simulations/nns ,/punct the/dt revenue/nn improvements/nns were/vbd greater/jjr than/in what/wp could/md be/vb obtained/vbn using/vbg reserve/nn prices/nns ./punct
+on/in the/dt other/jj hand/nn ,/punct we/prp showed/vbd that/in advertiser/nn satisfaction/nn and/cc user/nn experience/nn could/md suffer/vb if/in q/nn is/vbz made/vbn too/rb small/jj ./punct
+we/prp proposed/vbd that/in the/dt auctioneer/nn set/vbn bounds/nns on/in the/dt decrease/nn in/in advertiser/nn and/cc user/nn satisfaction/nn he/prp is/vbz willing/jj to/to tolerate/vb ,/punct which/wdt would/md imply/vb bounds/nns on/in the/dt range/nn of/in allowable/jj q./nn with/in appropriate/jj estimates/nns for/in the/dt distributions/nns of/in value/nn and/cc relevance/nn ,/punct and/cc knowledge/nn of/in their/prp$ correlation/nn ,/punct the/dt revenue/nn curve/nn can/md then/rb be/vb plotted/vbn within/in this/dt range/nn to/to locate/vb the/dt optimum/nn ./punct
+there/ex are/vbp several/jj ways/nns to/to push/vb this/dt research/nn further/rb ./punct
+it/prp would/md be/vb interesting/jj to/to do/vb this/dt analysis/nn for/in a/dt variety/nn of/in keywords/nns ,/punct to/to see/vb if/in the/dt optimal/jj setting/nn of/in q/nn is/vbz always/rb so/rb sensitive/jj to/to the/dt level/nn of/in correlation/nn ./punct
+if/in it/prp is/vbz ,/punct then/rb simply/rb using/vbg rank-bybid/jj where/wrb there/ex is/vbz positive/jj correlation/nn ,/punct and/cc rank-by-revenue/nn where/wrb there/ex is/vbz negative/jj correlation/nn ,/punct could/md be/vb fine/jj to/to a/dt first/jj approximation/nn and/cc already/rb improve/vb revenue/nn ./punct
+it/prp would/md also/rb be/vb interesting/jj to/to compare/vb the/dt effects/nns of/in tuning/nn q/nn versus/cc reserve/nn pricing/nn for/in keywords/nns that/wdt have/vbp few/jj bidders/nns ./punct
+in/in this/dt instance/nn reserve/nn pricing/nn should/md be/vb more/rbr competitive/jj ,/punct but/cc this/dt is/vbz still/rb an/dt open/jj question/nn ./punct
+in/in principle/nn the/dt minimum/nn revenue/nn in/in nash/nnp equilibrium/nn can/md be/vb found/vbn by/in linear/jj programming/nn ./punct
+however/rb ,/punct many/jj allocations/nns can/md arise/vb in/in nash/nnp equilibrium/nn ,/punct and/cc a/dt linear/jj program/nn needs/vbz to/to be/vb solved/vbn for/in each/dt of/in these/dt ./punct
+there/ex is/vbz as/rb yet/rb no/dt efficient/jj way/nn to/to enumerate/vb all/dt possible/jj nash/nnp allocations/nns ,/punct so/rb finding/vbg the/dt minimum/nn revenue/nn is/vbz currently/rb infeasible/jj ./punct
+if/in this/dt problem/nn could/md be/vb solved/vbn ,/punct we/prp could/md run/vb simulations/nns for/in nash/nnp equilibrium/nn instead/rb of/in symmetric/jj equilibrium/nn ,/punct to/to see/vb if/in our/prp$ insights/nns are/vbp robust/jj to/to the/dt choice/nn of/in solution/nn concept/nn ./punct
+larger/jjr classes/nns of/in ranking/jj rules/nns could/md be/vb relevant/jj ./punct
+for/in instance/nn ,/punct it/prp is/vbz possible/jj to/to introduce/vb discounts/nns ds/jj and/cc rank/jj according/vbg to/to wsbs/nns −/cd ds/jj ;/punct the/dt equilibrium/nn analysis/nn generalizes/vbz to/to this/dt case/nn as/rb well/rb ./punct
+with/in this/dt larger/jjr class/nn the/dt virtual/jj score/nn can/md equal/vb the/dt score/nn ,/punct e.g/nn ./punct
+in/in the/dt case/nn of/in a/dt uniform/jj marginal/jj distribution/nn over/in values/nns ./punct
+it/prp is/vbz unclear/jj ,/punct though/rb ,/punct whether/in such/jj extensions/nns help/vbp with/in more/jjr realistic/jj distributions/nns ./punct
+55/cd 0/cd 0.5/cd 1/cd 1.5/cd 2/cd 2.5/cd 3/cd 0/cd 0.2/cd 0.4/cd 0.6/cd 0.8/cd 1/cd 1.2/cd 1.4/cd 1.6/cd r/nn (/punct r/nn )/punct r/nn revenue/nn 0/cd 1/cd 2/cd 3/cd 4/cd 5/cd 6/cd 7/cd 8/cd 0/cd 0.2/cd 0.4/cd 0.6/cd 0.8/cd 1/cd 1.2/cd 1.4/cd 1.6/cd v/nn (/punct r/nn )/punct r/nn efficiency/nn 0/cd 0.5/cd 1/cd 1.5/cd 2/cd 2.5/cd 0/cd 0.2/cd 0.4/cd 0.6/cd 0.8/cd 1/cd 1.2/cd 1.4/cd 1.6/cd l/nn (/punct r/nn )/punct r/nn relevance/nn figure/nn 4/cd :/punct revenue/nn ,/punct efficiency/nn ,/punct and/cc relevance/nn for/in different/jj reserve/nn scores/nns r/nn ,/punct with/in spearman/nn correlation/nn of/in 0.4/cd and/cc q/nn =/punct 1/cd ./punct
+estimates/nns are/vbp averaged/vbn over/in 1000/cd samples/nns ./punct
+acknowledgements/nns we/prp thank/vbp pavel/nnp berkhin/nnp ,/punct chad/nnp carson/nnp ,/punct yiling/nnp chen/nnp ,/punct ashvin/nnp kannan/nnp ,/punct darshan/nnp kantak/nnp ,/punct chris/nnp luvogt/nnp ,/punct jan/nnp pedersen/nnp ,/punct michael/nnp schwarz/nnp ,/punct tong/nnp zhang/nnp ,/punct and/cc other/jj members/nns of/in yahoo/nnp !/punct
+research/nnp and/cc yahoo/nnp !/punct
+search/vb marketing/nnp ./punct
+9/cd ./punct
+references/nns [/punct 1/cd ]/punct g./nnp aggarwal/nnp ,/punct a./nnp goel/nnp ,/punct and/cc r./nnp motwani/nnp ./punct
+truthful/jj auctions/nns for/in pricing/nn search/nn keywords/nns ./punct
+in/in proceedings/nnp of/in the/dt 7th/jj acm/nnp conference/nn on/in electronic/jj commerce/nnp ,/punct ann/nnp arbor/nnp ,/punct mi/nnp ,/punct 2006/cd ./punct
+[/punct 2/cd ]/punct t./nnp b¨orgers/nnp ,/punct i./nnp cox/nnp ,/punct m./nnp pesendorfer/nnp ,/punct and/cc v./nnp petricek/nnp ./punct
+equilibrium/nn bids/nns in/in auctions/nns of/in sponsored/vbn links/nns :/punct theory/nnp and/cc evidence/nn ./punct
+working/vbg paper/nn ,/punct november/nnp 2006/cd ./punct
+[/punct 3/cd ]/punct b./nnp edelman/nnp ,/punct m./nnp ostrovsky/nnp ,/punct and/cc m./nnp schwarz/nnp ./punct
+internet/nnp advertising/nn and/cc the/dt generalized/nnp second/nnp price/nnp auction/nn :/punct selling/vbg billions/nns of/in dollars/nns worth/nn of/in keywords/nns ./punct
+american/jj economic/nnp review/nnp ,/punct forthcoming/jj ./punct
+[/punct 4/cd ]/punct j./nnp feng/nnp ,/punct h./nnp k./nnp bhargava/nnp ,/punct and/cc d./nnp m./nnp pennock/nnp ./punct
+implementing/vbg sponsored/vbn search/nn in/in web/nn search/nn engines/nns :/punct computational/jj evaluation/nn of/in alternative/jj mechanisms/nns ./punct
+informs/nnp journal/nnp on/in computing/nnp ,/punct forthcoming/jj ./punct
+[/punct 5/cd ]/punct g./nnp iyengar/nnp and/cc a./nnp kumar/nnp ./punct
+characterizing/vbg optimal/jj keyword/nn auctions/nns ./punct
+in/in proceedings/nnp of/in the/dt 2nd/jj workshop/nnp on/in sponsored/nnp search/vb auctions/nns ,/punct ann/nnp arbor/nnp ,/punct mi/nnp ,/punct 2006/cd ./punct
+[/punct 6/cd ]/punct d./nnp knuth/nnp ./punct
+the/dt art/nnp of/in computer/nnp programming/nnp ,/punct volume/nn 3/cd ./punct
+addison-wesley/nnp ,/punct 1997/cd ./punct
+[/punct 7/cd ]/punct v./nnp krishna/nnp ./punct
+auction/nn theory/nnp ./punct
+academic/nnp press/nnp ,/punct 2002/cd ./punct
+[/punct 8/cd ]/punct s./nnp lahaie/nnp ./punct
+an/dt analysis/nn of/in alternative/jj slot/nn auction/nn designs/nns for/in sponsored/vbn search/nn ./punct
+in/in proceedings/nnp of/in the/dt 7th/jj acm/nnp conference/nn on/in electronic/jj commerce/nnp ,/punct ann/nnp arbor/nnp ,/punct mi/nnp ,/punct 2006/cd ./punct
+[/punct 9/cd ]/punct r./nnp b./nnp myerson/nnp ./punct
+optimal/jj auction/nn design/nn ./punct
+mathematics/nn of/in operations/nnp research/nnp ,/punct 6/cd (/punct 1/cd )/punct ,/punct february/nnp 1981/cd ./punct
+[/punct 10/cd ]/punct r./nnp b./nnp nelsen/nnp ./punct
+an/dt introduction/nn to/to copulas/nnp ./punct
+springer/nnp ,/punct 2006/cd ./punct
+[/punct 11/cd ]/punct h./nnp r./nnp varian/nnp ./punct
+position/nn auctions/nns ./punct
+international/nnp journal/nnp of/in industrial/nnp organization/nnp ,/punct forthcoming/jj ./punct
+56/cd

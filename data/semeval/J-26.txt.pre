@@ -1,0 +1,294 @@
+much/jj recent/jj research/nn concerns/nns systems/nns ,/punct such/jj as/in the/dt internet/nn ,/punct whose/wp$ components/nns are/vbp owned/vbn and/cc operated/vbn by/in different/jj parties/nns ,/punct each/dt with/in his/prp$ own/jj selfish/jj goal/nn ./punct
+the/dt field/nn of/in algorithmic/jj mechanism/nn design/nn handles/vbz the/dt issue/nn of/in private/jj information/nn held/vbn by/in the/dt different/jj parties/nns in/in such/jj computational/jj settings/nns ./punct
+this/dt paper/nn deals/vbz with/in a/dt complementary/jj problem/nn in/in such/jj settings/nns :/punct handling/vbg the/dt hidden/jj actions/nns that/wdt are/vbp performed/vbn by/in the/dt different/jj parties/nns ./punct
+our/prp$ model/nn is/vbz a/dt combinatorial/jj variant/nn of/in the/dt classical/jj principalagent/nn problem/nn from/in economic/jj theory/nn ./punct
+in/in our/prp$ setting/vbg a/dt principal/nn must/md motivate/vb a/dt team/nn of/in strategic/jj agents/nns to/to exert/vb costly/jj effort/nn on/in his/prp$ behalf/nn ,/punct but/cc their/prp$ actions/nns are/vbp hidden/vbn from/in him/prp ./punct
+our/prp$ focus/nn is/vbz on/in cases/nns where/wrb complex/jj combinations/nns of/in the/dt efforts/nns of/in the/dt agents/nns influence/vbp the/dt outcome/nn ./punct
+the/dt principal/jj motivates/vbz the/dt agents/nns by/in offering/vbg to/to them/prp a/dt set/nn of/in contracts/nns ,/punct which/wdt together/rb put/vbd the/dt agents/nns in/in an/dt equilibrium/nn point/nn of/in the/dt induced/vbn game/nn ./punct
+we/prp present/vbp formal/jj models/nns for/in this/dt setting/nn ,/punct suggest/vbp and/cc embark/vbp on/in an/dt analysis/nn of/in some/dt basic/jj issues/nns ,/punct but/cc leave/vbp many/jj questions/nns open/jj ./punct
+categories/nns and/cc subject/nnp descriptors/nnp j.4/nn [/punct social/nnp and/cc behavioral/nnp sciences/nnps ]/punct :/punct economics/nnp ;/punct k.4.4/nn [/punct electronic/jj commerce/nnp ]/punct :/punct payment/nn schemes/nns ;/punct c.2.4/nn [/punct computercommunication/nnp networks/nnp ]/punct :/punct distributed/vbn systems/nnp general/nnp terms/nns design/nn ,/punct economics/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nn
+one/cd of/in the/dt most/rbs striking/jj characteristics/nns of/in modern/jj parts/nns of/in it/prp are/vbp owned/vbn and/cc operated/vbn by/in different/jj individuals/nns ,/punct firms/nns ,/punct and/cc organizations/nns ./punct
+the/dt analysis/nn and/cc design/nn of/in protocols/nns for/in this/dt environment/nn thus/rb naturally/rb needs/vbz to/to take/vb into/in account/nn the/dt different/jj selfish/jj economic/jj interests/nns of/in the/dt different/jj participants/nns ./punct
+indeed/rb ,/punct the/dt last/jj few/jj years/nns have/vbp seen/vbn much/jj work/nn addressing/vbg this/dt issue/nn using/vbg game-theoretic/jj notions/nns (/punct see/vb for/in an/dt influential/jj survey/nn )/punct ./punct
+a/dt significant/jj part/nn of/in the/dt difficulty/nn stems/vbz from/in underlying/vbg asymmetries/nns of/in information/nn :/punct one/cd participant/nn may/md not/rb know/vb everything/nn that/wdt is/vbz algorithmic/jj mechanism/nn design/nn uses/vbz appropriate/jj incentives/nns to/to extract/vb the/dt private/jj information/nn from/in the/dt participants/nns ./punct
+this/dt paper/nn deals/vbz with/in the/dt complementary/jj lack/nn of/in knowledge/nn ,/punct that/dt of/in hidden/jj actions/nns ./punct
+in/in many/jj cases/nns the/dt actual/jj behaviors/nns -/punct actions/nns -/punct of/in the/dt different/jj participants/nns are/vbp hidden/vbn from/in others/nns and/cc only/rb influence/vbp the/dt final/jj outcome/nn indirectly/rb ./punct
+hidden/vbn here/rb covers/vbz a/dt wide/jj range/nn of/in situations/nns including/vbg not/rb precisely/rb measurable/jj ,/punct costly/jj to/to determine/vb ,/punct or/cc even/rb non-contractible/jj -/punct meaning/vbg that/in it/prp can/md not/rb be/vb formally/rb used/vbn in/in a/dt legal/jj contract/nn ./punct
+routing/vbg in/in a/dt network/nn :/punct every/dt intermediate/jj link/nn or/cc router/nn may/md exert/vb a/dt different/jj amount/nn of/in effort/nn (/punct priority/nn ,/punct bandwidth/nn ,/punct .../: )/punct when/wrb attempting/vbg to/to forward/rb a/dt packet/nn of/in information/nn ./punct
+while/in the/dt final/jj outcome/nn of/in whether/in a/dt packet/nn reached/vbd its/prp$ destination/nn amount/nn of/in effort/nn exerted/vbn by/in each/dt intermediate/jj link/nn -/punct how/wrb can/md we/prp ensure/vb that/in they/prp really/rb do/vbp exert/vb the/dt appropriate/jj amount/nn of/in effort/nn ?/punct
+many/jj other/jj complex/jj resource/nn allocation/nn problems/nns exhibit/vbp similar/jj hidden/jj actions/nns ,/punct e.g./fw ,/punct a/dt task/nn that/wdt runs/vbz on/in a/dt collection/nn of/in shared/jj servers/nns may/md be/vb allocated/vbn ,/punct by/in each/dt server/nn ,/punct an/dt unknown/jj percentage/nn of/in the/dt cpu/nnp ''/'' s/vbz processing/nn power/nn or/cc of/in the/dt physical/jj memory/nn ./punct
+how/wrb can/md we/prp ensure/vb that/in the/dt right/jj combination/nn of/in allocations/nns is/vbz actually/rb made/vbn by/in the/dt different/jj servers/nns ?/punct
+a/dt related/jj class/nn of/in examples/nns concerns/nns security/nn issues/nns :/punct each/dt link/nn in/in a/dt complex/jj system/nn may/md exert/vb different/jj levels/nns of/in effort/nn for/in protecting/vbg some/dt desired/vbn security/nn property/nn of/in the/dt system/nn ./punct
+how/wrb can/md we/prp ensure/vb that/in the/dt desired/vbn level/nn of/in collective/jj security/nn is/vbz obtained/vbn ?/punct
+our/prp$ approach/nn to/to this/dt problem/nn is/vbz based/vbn on/in the/dt well/rb studied/vbn principal-agent/jj problem/nn in/in economic/jj theory/nn :/punct how/wrb can/md a/dt principal/jj motivate/vbp a/dt rational/jj agent/nn to/to exert/vb costly/jj effort/nn towards/in the/dt welfare/nn of/in the/dt principal/nn ?/punct
+the/dt crux/nn of/in the/dt model/nn is/vbz that/in the/dt agent/nn ''/'' s/nns action/nn (/punct i.e/nn ./punct
+whether/in he/prp exerts/vbz effort/nn or/cc not/rb )/punct is/vbz invisible/jj to/to the/dt principal/nn and/cc only/rb the/dt final/jj outcome/nn ,/punct which/wdt is/vbz probabilistic/jj and/cc also/rb influenced/vbn by/in other/jj factors/nns ,/punct classical/jj economic/jj theory/nn and/cc we/prp refer/vbp the/dt readers/nns to/to introductory/jj texts/nns on/in economic/jj theory/nn such/jj as/in chapter/nn 14/cd ./punct
+the/dt solution/nn is/vbz based/vbn on/in the/dt observation/nn that/in a/dt properly/rb designed/vbn contract/nn ,/punct in/in which/wdt the/dt payments/nns are/vbp contingent/jj upon/in the/dt final/jj outcome/nn ,/punct can/md influence/vb a/dt rational/jj agent/nn to/to exert/vb the/dt required/vbn effort/nn ./punct
+combinations/nns of/in agents/nns rather/rb than/in a/dt single/jj agent/nn ./punct
+while/in much/jj work/nn was/vbd already/rb done/vbn on/in motivating/vbg teams/nns of/in agents/nns ,/punct our/prp$ emphasis/nn is/vbz on/in dealing/vbg with/in the/dt complex/nn combinatorial/jj structure/nn of/in dependencies/nns between/in agents/nns ''/'' actions/nns ./punct
+in/in the/dt general/jj case/nn ,/punct each/dt combination/nn of/in efforts/nns exerted/vbn by/in the/dt n/nn different/jj agents/nns may/md result/vb in/in a/dt different/jj expected/vbn gain/nn for/in the/dt principal/nn ./punct
+the/dt general/jj question/nn asks/vbz which/wdt conditional/jj payments/nns should/md the/dt principal/jj offer/nn to/to which/wdt agents/nns as/in to/to maximize/vb his/prp$ net/jj utility/nn ?/punct
+in/in our/prp$ setting/nn and/cc unlike/in in/in previous/jj work/nn (/punct see/vbp ,/punct e.g./fw ,/punct )/punct ,/punct the/dt main/jj challenge/nn is/vbz to/to determine/vb the/dt optimal/jj amount/nn of/in effort/nn desired/vbn from/in each/dt agent/nn ./punct
+this/dt paper/nn suggest/vbp models/nns for/in and/cc provides/vbz some/dt interesting/jj initial/jj results/nns about/in this/dt combinatorial/jj agency/nn problem/nn ./punct
+we/prp believe/vbp that/in we/prp have/vbp only/rb scratched/vbn the/dt surface/nn and/cc leave/vbp many/jj open/jj questions/nns ,/punct conjectures/nns ,/punct and/cc directions/nns for/in further/jj research/nn ./punct
+we/prp believe/vbp that/in this/dt type/nn of/in analysis/nn may/md also/rb find/vb applications/nns in/in regular/jj economic/jj activity/nn ./punct
+consider/vb for/in example/nn individuals/nns (/punct or/cc other/jj firms/nns )/punct ./punct
+it/prp will/md often/rb not/rb be/vb possible/jj to/to exactly/rb monitor/vb the/dt actual/jj effort/nn level/nn of/in each/dt sub-contractor/nn (/punct e.g./fw ,/punct in/in cases/nns of/in public-relations/nns activities/nns ,/punct consulting/vbg activities/nns ,/punct or/cc any/dt activities/nns that/wdt require/vbp cooperation/nn between/in different/jj sub-contractors/nns ./punct
+)/punct when/wrb the/dt dependencies/nns between/in the/dt different/jj subtasks/nns are/vbp complex/jj ,/punct we/prp believe/vbp that/in combinatorial/jj agency/nn models/nns can/md offer/vb a/dt foundation/nn for/in the/dt design/nn of/in contracts/nns with/in appropriate/jj incentives/nns ./punct
+research/nn agenda/nn stemming/vbg from/in the/dt fact/nn that/in all/dt types/nns of/in economic/jj activity/nn are/vbp increasingly/rb being/vbg handled/vbn with/in the/dt aid/nn of/in sophisticated/jj computer/nn systems/nns ./punct
+in/in general/jj ,/punct in/in such/jj computerized/jj settings/nns ,/punct complex/jj scenarios/nns involving/vbg multiple/jj agents/nns and/cc goods/nns can/md naturally/rb occur/vb ,/punct and/cc they/prp need/vbp to/to be/vb algorithmically/rb handled/vbn ./punct
+this/dt calls/vbz for/in the/dt study/nn of/in the/dt standard/jj issues/nns in/in economic/jj theory/nn in/in new/jj complex/jj settings/nns ./punct
+the/dt principal-agent/jj problem/nn is/vbz a/dt prime/jj example/nn where/wrb such/jj complex/jj settings/nns introduce/vb new/jj challenges/nns ./punct
+combination/nn of/in actions/nns by/in the/dt players/nns results/vbz in/in some/dt outcome/nn ,/punct where/wrb this/dt happens/vbz probabilistically/rb ./punct
+the/dt main/jj part/nn of/in the/dt specifies/vbz this/dt distribution/nn for/in each/dt n-tuple/nn of/in agents/nns ''/'' actions/nns ./punct
+additionally/rb ,/punct the/dt problem/nn specifies/vbz the/dt principal/nn ''/'' s/nns utility/nn for/in each/dt possible/jj outcome/nn ,/punct and/cc for/in each/dt agent/nn ,/punct the/dt agent/nn ''/'' s/nns cost/nn for/in each/dt possible/jj action/nn ./punct
+the/dt principal/jj motivates/vbz the/dt agents/nns payment/nn for/in each/dt possible/jj outcome/nn of/in the/dt whole/jj project1/nn here/rb is/vbz that/in the/dt actions/nns of/in the/dt players/nns are/vbp non-observable/jj and/cc thus/rb the/dt contract/nn can/md not/rb make/vb the/dt payments/nns directly/rb contingent/jj on/in the/dt actions/nns of/in the/dt players/nns ,/punct but/cc rather/rb only/rb on/in the/dt outcome/nn of/in the/dt whole/jj project/nn ./punct
+given/vbn a/dt set/nn of/in contracts/nns ,/punct the/dt agents/nns will/md each/dt optimize/vb his/prp$ own/jj utility/nn :/punct i.e/nn ./punct
+will/md choose/vb the/dt action/nn that/wdt maximizes/vbz his/prp$ expected/jj payment/nn minus/cc the/dt cost/nn of/in his/prp$ action/nn ./punct
+since/in the/dt outcome/nn depends/vbz on/in the/dt actions/nns of/in all/dt players/nns together/rb ,/punct the/dt ./punct
+the/dt principal/nn ''/'' s/nns problem/nn ,/punct our/prp$ problem/nn in/in this/dt paper/nn ,/punct is/vbz of/in designing/vbg an/dt optimal/jj set/nn of/in contracts/nns :/punct i.e/nn ./punct
+contracts/nns that/wdt maximize/vbp his/prp$ expected/jj utility/nn from/in the/dt outcome/nn ,/punct minus/cc his/prp$ expected/jj total/jj payment/nn ./punct
+the/dt main/jj difficulty/nn is/vbz that/in of/in determining/vbg the/dt required/vbn nash/nnp equilibrium/nn point/nn ./punct
+deals/nns with/in the/dt basic/jj binary/jj case/nn :/punct each/dt agent/nn has/vbz only/rb two/cd possible/jj actions/nns exert/vbp effort/nn and/cc shirk/vb and/cc there/ex are/vbp only/rb two/cd possible/jj outcomes/nns success/nn and/cc failure/nn ./punct
+it/prp seems/vbz that/in this/dt case/nn already/rb captures/vbz the/dt main/jj interesting/jj ingredients3/nn ./punct
+in/in this/dt case/nn ,/punct each/dt agent/nn ''/'' s/nns problem/nn boils/vbz down/rp to/to whether/in to/to exert/vb effort/nn or/cc not/rb ,/punct and/cc the/dt principal/nn ''/'' s/nns problem/nn boils/vbz down/rp to/to which/wdt agents/nns should/md be/vb contracted/vbn to/to exert/vb effort/nn ./punct
+this/dt model/nn is/vbz still/rb pretty/rb abstract/jj ,/punct and/cc every/dt problem/nn description/nn contains/vbz a/dt complete/jj table/nn specifying/vbg the/dt success/nn probability/nn for/in each/dt subset/nn of/in the/dt agents/nns who/wp exert/vbp effort/nn ./punct
+we/prp then/rb consider/vbp a/dt more/rbr concrete/jj model/nn which/wdt concerns/vbz a/dt subclass/nn of/in problem/nn instances/nns where/wrb this/dt exponential/jj size/nn table/nn is/vbz succinctly/rb represented/vbn ./punct
+this/dt subclass/nn will/md provide/vb many/jj natural/jj types/nns of/in problem/nn instances/nns ./punct
+in/in this/dt subclass/nn every/dt agent/nn performs/vbz a/dt subtask/nn which/wdt succeeds/vbz with/in a/dt low/jj probability/nn γ/nn if/in the/dt agent/nn does/vbz not/rb exert/vb effort/nn and/cc with/in a/dt whole/jj project/nn succeeds/vbz as/in a/dt deterministic/jj boolean/jj function/nn of/in the/dt success/nn of/in the/dt subtasks/nns ./punct
+this/dt boolean/jj function/nn can/md now/rb be/vb represented/vbn in/in various/jj ways/nns ./punct
+two/cd basic/jj examples/nns are/vbp the/dt and/cc function/nn in/in which/wdt the/dt project/nn succeeds/vbz only/rb if/in all/dt subtasks/nns succeed/vbp ,/punct and/cc the/dt or/nn function/nn which/wdt succeeds/vbz if/in any/dt of/in the/dt subtasks/nns succeeds/vbz ./punct
+a/dt more/rbr complex/jj example/nn considers/vbz a/dt communication/nn network/nn ,/punct where/wrb each/dt agent/nn controls/vbz a/dt single/jj edge/nn ,/punct and/cc success/nn of/in the/dt subtask/nn means/vbz that/in increases/vbz this/dt success/nn probability/nn ./punct
+the/dt complete/jj project/nn a/dt given/vbn source/nn and/cc sink/nn ./punct
+complete/jj definitions/nns of/in the/dt models/nns appear/vbp in/in section/nn 2/cd ./punct
+one/cd could/md think/vb of/in a/dt different/jj model/nn in/in which/wdt the/dt agents/nns have/vbp intrinsic/jj utility/nn from/in the/dt outcome/nn and/cc payments/nns may/md not/rb be/vb needed/vbn ,/punct as/in in/in ./punct
+in/in this/dt paper/nn our/prp$ philosophy/nn is/vbz that/in the/dt principal/nn can/md suggest/vb a/dt nash/nnp equilibrium/nn point/nn to/to the/dt agents/nns ,/punct thus/rb focusing/vbg on/in the/dt best/jjs nash/nnp equilibrium/nn ./punct
+one/cd may/md alternatively/rb study/vb the/dt worst/jjs case/nn equilibrium/nn as/in in/in ,/punct or/cc alternatively/rb ,/punct attempt/nn modeling/nn some/dt kind/nn of/in an/dt extensive/jj game/nn between/in the/dt agents/nns ,/punct as/in in/in ./punct
+however/rb ,/punct some/dt of/in the/dt more/rbr advanced/jj questions/nns we/prp ask/vbp for/in this/dt case/nn can/md be/vb viewed/vbn as/in instances/nns of/in the/dt general/jj model/nn ./punct
+of/in results/nns ./punct
+we/prp believe/vbp that/in despite/in the/dt large/jj amount/nn of/in work/nn that/wdt appears/vbz here/rb ,/punct we/prp have/vbp only/rb scratched/vbn the/dt surface/nn ./punct
+in/in many/jj cases/nns we/prp were/vbd not/rb able/jj to/to achieve/vb the/dt general/jj characterization/nn theorems/nns that/in we/prp desired/vbd and/cc had/vbd to/to settle/vb for/in analyzing/vbg special/jj cases/nns or/cc proving/vbg partial/jj results/nns ./punct
+in/in many/jj cases/nns ,/punct simulations/nns reveal/vbp structure/nn that/in we/prp were/vbd not/rb able/jj to/to formally/rb prove/vb ./punct
+we/prp present/vbp here/rb an/dt informal/jj overview/nn of/in the/dt issues/nns that/in we/prp studied/vbd ,/punct what/wp we/prp were/vbd able/jj to/to do/vb ,/punct and/cc what/wp we/prp were/vbd not/rb ./punct
+the/dt full/jj treatment/nn of/in most/jjs of/in our/prp$ results/nns appears/vbz only/rb in/in the/dt extended/vbn version/nn ,/punct and/cc only/rb some/dt are/vbp discussed/vbn ,/punct often/rb with/in associated/vbn simulation/nn results/nns ,/punct in/in the/dt body/nn of/in the/dt paper/nn ./punct
+sets/nns of/in agents/nns that/wdt can/md be/vb contracted/vbn for/in a/dt given/vbn problem/nn instance/nn ./punct
+let/vb us/prp fix/vb a/dt given/vbn function/nn describing/vbg success/nn probabilities/nns ,/punct fix/vb the/dt agent/nn ''/'' s/vbz costs/nns ,/punct and/cc let/vb us/prp consider/vb the/dt set/nn of/in contracted/vbn agents/nns for/in different/jj values/nns of/in the/dt principal/nn ''/'' s/nns associated/vbn value/nn from/in success/nn ./punct
+for/in very/rb low/jj values/nns ,/punct no/dt agent/nn will/md be/vb contracted/vbn since/in even/rb a/dt single/jj agent/nn ''/'' s/nns cost/nn is/vbz higher/jjr than/in the/dt principal/nn ''/'' s/nns value/nn ./punct
+for/in very/rb high/jj values/nns ,/punct all/dt agents/nns will/md always/rb be/vb contracted/vbn since/in the/dt marginal/jj contribution/nn of/in an/dt agent/nn multiplied/vbn by/in the/dt principal/nn ''/'' s/nns value/nn will/md overtake/vb any/dt associated/jj payment/nn ./punct
+what/wp happens/vbz for/in intermediate/jj principal/nn ''/'' s/nns values/nns ?/punct
+transitions/nns between/in different/jj sets/nns ,/punct as/in the/dt principal/nn ''/'' s/nns project/nn value/nn increases/nns ./punct
+these/dt transitions/nns behave/vbp very/rb differently/rb for/in different/jj functions/nns ./punct
+for/in example/nn ,/punct we/prp show/vbp that/in for/in the/dt and/cc function/nn only/rb a/dt single/jj transition/nn occurs/vbz :/punct for/in low/jj enough/jj values/nns no/dt agent/nn will/md be/vb contracted/vbn ,/punct while/in for/in higher/jjr values/nns all/dt which/wdt only/rb some/dt of/in the/dt agents/nns are/vbp contracted/vbn ./punct
+for/in the/dt or/nn function/nn ,/punct the/dt situation/nn is/vbz opposite/jj :/punct as/in the/dt principal/nn ''/'' s/nns value/nn increases/nns ,/punct the/dt set/nn of/in contracted/vbn agents/nns increases/vbz one-by-one/rb ./punct
+we/prp are/vbp able/jj to/to fully/rb characterize/vb the/dt types/nns of/in functions/nns for/in which/wdt these/dt two/cd extreme/jj types/nns of/in transitions/nns behavior/nn occur/vbp ./punct
+however/rb ,/punct the/dt structure/nn of/in these/dt transitions/nns in/in general/jj seems/vbz quite/rb complex/jj ,/punct and/cc we/prp were/vbd not/rb able/jj to/to fully/rb analyze/vb them/prp even/rb in/in simple/jj cases/nns like/in the/dt majority/nnp function/nn (/punct the/dt project/nn networks/nns ./punct
+we/prp do/vbp have/vb several/jj partial/jj results/nns ,/punct including/vbg a/dt construction/nn with/in an/dt exponential/jj number/nn of/in transitions/nns ./punct
+during/in the/dt previous/jj analysis/nn we/prp also/rb study/vb what/wp we/prp term/vbp the/dt price/nn of/in unaccountability/nn :/punct how/wrb much/jj is/vbz the/dt social/jj utility/nn achieved/vbn under/in the/dt optimal/jj contracts/nns worse/jjr than/in what/wp could/md be/vb achieved/vbn in/in the/dt non-strategic/jj case4/nn socially/rb optimal/jj actions/nns are/vbp simply/rb dictated/vbn by/in the/dt principal/nn ?/punct
+we/prp are/vbp able/jj to/to fully/rb analyze/vb this/dt price/nn for/in the/dt and/cc agents/nns tends/vbz to/to infinity/nn ./punct
+more/rbr general/jj analysis/nn remains/vbz an/dt open/jj problem/nn ./punct
+our/prp$ analysis/nn of/in these/dt questions/nns sheds/vbz light/nn on/in the/dt difficulty/nn of/in the/dt various/jj natural/jj associated/vbn algorithmic/jj problems/nns ./punct
+in/in particular/jj ,/punct we/prp observe/vbp that/in the/dt optimal/jj contract/nn can/md be/vb found/vbn in/in time/nn polynomial/jj in/in the/dt explicit/jj representation/nn of/in the/dt probability/nn function/nn ./punct
+we/prp prove/vbp a/dt lower/jjr bound/vbd that/dt shows/vbz that/in the/dt optimal/jj contract/nn can/md not/rb be/vb found/vbn in/in agents/nns ,/punct in/in a/dt general/jj black-box/jj model/nn ./punct
+we/prp also/rb show/vbp that/in when/wrb the/dt probability/nn function/nn is/vbz succinctly/rb represented/vbn as/in the/dt non-strategic/jj case/nn is/vbz often/rb referred/vbn to/to as/in the/dt case/nn with/in contractible/jj actions/nns or/cc the/dt principal/nn ''/'' s/nns first-best/jj solution/nn ./punct
+a/dt read-once/jj network/nn ,/punct the/dt problem/nn becomes/vbz #/punct p-hard/nn ./punct
+the/dt status/nn of/in some/dt algorithmic/jj questions/nns remains/vbz open/jj ,/punct in/in particular/jj that/in of/in finding/vbg the/dt optimal/jj contract/nn for/in technologies/nns defined/vbn by/in serial-parallel/jj networks/nns ./punct
+strategies/nns and/cc show/vbp that/in the/dt principal/nn can/md gain/vb from/in inducing/vbg a/dt mixed-nash/jj equilibrium/nn between/in the/dt agents/nns rather/rb than/in a/dt pure/jj one/cd ./punct
+we/prp also/rb show/vbp cases/nns where/wrb the/dt principal/nn can/md gain/vb by/in asking/vbg agents/nns to/to reduce/vb their/prp$ effort/nn level/nn ,/punct even/rb when/wrb this/dt effort/nn comes/vbz for/in free/jj ./punct
+both/dt phenomena/nns can/md not/rb occur/vb in/in the/dt non-strategic/jj setting/nn ./punct
++/punct )/punct ./punct
+the/dt actions/nns of/in all/dt players/nns determine/vbp ,/punct in/in a/dt probabilistic/jj each/dt possible/jj outcome/nn ,/punct given/vbn by/in the/dt function/nn v/ls :/punct o/nn →/nn ./punct
+as/in we/prp will/md only/rb consider/vb risk-neutral/jj players/nns in/in this/dt paper5/nn expected/vbn value/nn ./punct
+actions/nns of/in the/dt players/nns are/vbp invisible/jj ,/punct but/cc the/dt the/dt court/nn )/punct ,/punct and/cc he/prp may/md design/vb enforceable/jj contracts/nns based/vbn as/in a/dt function/nn on/in δ/nn (/punct o/nn )/punct ./punct
+given/vbn this/dt setting/nn ,/punct the/dt agents/nns have/vbp been/vbn put/vbn in/in a/dt game/nn ,/punct will/md be/vb assumed/vbn to/to reach/vb nash/nnp equilibrium/nn ,/punct if/in such/jj equilibrium/nn exists/vbz ./punct
+the/dt principal/nn ''/'' s/nns problem/nn (/punct which/wdt is/vbz our/prp$ problem/nn maximize/vb his/prp$ own/jj expected/jj utility/nn u/fw (/punct a/dt )/punct =/punct v/ls (/punct t/nn (/punct a/dt )/punct )/punct −/cd case/nn of/in multiple/jj nash/nnp equilibria/nn we/prp let/vbd the/dt principal/jj choose/vb the/dt equilibrium/nn ,/punct thus/rb focusing/vbg on/in the/dt best/jjs nash/nnp implementation/nn in/in mechanism/nn design/nn would/md be/vb to/to take/vb the/dt worst/jjs nash/nnp equilibrium/nn ,/punct or/cc even/rb ,/punct stronger/jjr yet/rb ,/punct to/to require/vb that/in only/rb a/dt single/jj equilibrium/nn exists/vbz ./punct
+finally/rb ,/punct the/dt social/jj welfare/nn for/in i∈n/nn ci/nn (/punct ai/vbp )/punct ./punct
+we/prp wish/vbp to/to concentrate/vb on/in the/dt complexities/nns introduced/vbd restrict/vb ourselves/prp to/to a/dt simpler/jjr setting/nn that/wdt seems/vbz to/to focus/vb used/vbn in/in ./punct
+we/prp first/rb restrict/vb the/dt action/nn spaces/nns to/to have/vb only/rb two/cd states/nns (/punct binary-action/jj )/punct :/punct 0/cd (/punct low/jj effort/nn )/punct and/cc 1/cd (/punct high/jj 0/cd denoting/vbg the/dt cost/nn of/in exerting/vbg high/jj effort/nn (/punct where/wrb the/dt low/jj the/dt risk-averse/jj case/nn would/md obviously/rb be/vb a/dt natural/jj second/jj step/nn in/in the/dt research/nn of/in this/dt model/nn ,/punct as/in has/vbz been/vbn for/in noncombinatorial/jj scenarios/nns ./punct
+such/pdt a/dt binary-outcome/jj model/nn ./punct
+we/prp then/rb restrict/vbp the/dt outcome/nn space/nn to/to have/vb only/rb two/cd states/nns (/punct binary-outcome/jj )/punct :/punct 0/cd (/punct project/nn failure/nn )/punct and/cc 1/cd (/punct project/nn success/nn )/punct ./punct
+the/dt principal/nn ''/'' s/nns value/nn for/in value/nn of/in project/nn failure/nn is/vbz 0/cd )/punct ./punct
+we/prp assume/vbp that/in the/dt principal/nn can/md pay/vb the/dt agents/nns but/cc not/rb fine/vb them/prp (/punct known/vbn as/in the/dt limited/jj liability/nn constraint/nn )/punct ./punct
+the/dt contract/nn to/to agent/nn i/fw is/vbz thus/rb now/rb agent/nn gets/vbz 0/cd ./punct
+when/wrb the/dt lowest/jjs cost/nn action/nn has/vbz zero/cd cost/nn (/punct as/in we/prp assume/vbp )/punct ,/punct this/dt immediately/rb implies/vbz that/in the/dt participation/nn constraint/nn holds/vbz ./punct
+effort/nn and/cc incur/vb a/dt cost/nn of/in ci/nn ./punct
+than/in on/in the/dt coordination/nn between/in agents/nns ,/punct we/prp assume/vbp that/in of/in success/nn ,/punct i.e/nn ./punct
+that/in the/dt success/nn function/nn t/nn is/vbz strictly/rb 1/cd )/punct dimensional/jj vector/nn of/in the/dt actions/nns of/in all/dt agents/nns excluding/vbg equivalently/rb ,/punct t/nn (/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct >/punct 0/cd )/punct ./punct
+function/nn ./punct
+at/in this/dt point/nn we/prp can/md already/rb make/vb some/dt simple/jj a−i/jj ∈/nn a−i/nn ,/punct and/cc his/prp$ contract/nn pi/nn ./punct
+this/dt allows/vbz us/prp to/to specify/vb the/dt contracts/nns that/wdt are/vbp the/dt principal/nn ''/'' s/nns optimal/jj ,/punct for/in inducing/vbg a/dt given/vbn equilibrium/nn ./punct
+observation/nn 1/cd ./punct
+the/dt best/jjs contracts/nns (/punct for/in the/dt principal/jj )/punct i/fw who/wp exerts/vbz effort/nn (/punct ai/vbp =/punct 1/cd )/punct ./punct
+in/in this/dt case/nn ,/punct the/dt expected/vbn utility/nn of/in agent/nn i/fw who/wp exerts/vbz effort/nn ./punct
+choosing/vbg a/dt set/vbn s/nn of/in agents/nns that/wdt exert/vbp effort/nn (/punct s/nn =/punct {/punct i|ai/nn =/punct 1/cd }/punct )/punct ./punct
+i/ls =/punct 1/cd }/punct )/punct an/dt optimal/jj contract/nn for/in the/dt principal/nn at/in value/nn v./cc we/prp sometimes/rb abuse/vbp notation/nn and/cc denote/vbp t/nn (/punct s/nn )/punct effort/nn in/in a/dt ∈/cd a./nn a/nnp natural/jj yardstick/nn by/in which/wdt to/to measure/vb this/dt decision/nn is/vbz the/dt non-strategic/jj case/nn ,/punct i.e/nn ./punct
+when/wrb the/dt agents/nns need/vbp not/rb be/vb motivated/vbn but/cc are/vbp rather/rb controlled/vbn directly/rb by/in the/dt principal/jj (/punct who/wp also/rb bears/vbz their/prp$ costs/nns )/punct ./punct
+in/in this/dt case/nn the/dt principal/nn will/md simply/rb choose/vb the/dt profile/nn a/dt ∈/nn a/nn that/wdt optimizes/vbz the/dt social/jj ratio/nn between/in the/dt social/jj welfare/nn in/in this/dt non-strategic/jj case/nn principal/nn in/in the/dt agency/nn case/nn ,/punct may/md be/vb termed/vbn the/dt price/nn of/in unaccountability/nn ./punct
+contract/nn in/in the/dt non-strategic/jj case/nn ,/punct when/wrb the/dt principal/nn ''/'' s/nns value/nn non-strategic/jj cases/nns )/punct ./punct
+pou/nn to/to denote/vb the/dt price/nn of/in unaccountability/nn for/in technology/nn (/punct t/nn ,/punct c/nn )/punct ./punct
+note/vb that/in the/dt pou/nn is/vbz at/in least/jjs 1/cd for/in any/dt technology/nn ./punct
+will/md deal/vb with/in the/dt case/nn where/wrb all/dt agents/nns have/vbp an/dt identical/jj (/punct t/nn ,/punct c/nn )/punct with/in identical/jj costs/nns by/in (/punct t/nn ,/punct c/nn )/punct ./punct
+for/in the/dt simplicity/nn of/in the/dt presentation/nn ,/punct we/prp sometimes/rb use/vbp the/dt term/nn technology/nn function/nn to/to refer/vb to/to the/dt success/nn function/nn of/in the/dt technology/nn ./punct
+technology/nn functions/vbz whose/wp$ structure/nn can/md be/vb described/vbn easily/rb as/in being/vbg derived/vbn from/in independent/jj agent/nn tasks/nns -/punct we/prp call/vbp these/dt structured/jj technology/nn functions/nns ./punct
+this/dt subclass/nn will/md first/rb give/vb us/prp some/dt natural/jj examples/nns of/in technology/nn function/nn ,/punct and/cc will/md also/rb provide/vb a/dt succinct/jj and/cc natural/jj way/nn to/to represent/vb the/dt technology/nn functions/vbz ./punct
+in/in a/dt structured/jj technology/nn function/nn ,/punct each/dt individual/jj succeeds/vbz or/cc fails/vbz in/in his/prp$ own/jj task/nn independently/rb ./punct
+the/dt project/nn ''/'' s/nns set/vbn of/in successful/jj sub-tasks/nns ./punct
+thus/rb we/prp will/md assume/vb a/dt does/vbz not/rb exert/vb effort/nn ,/punct and/cc δi/nn (/punct >/punct γi/nn )/punct denotes/vbz the/dt probability/nn number/nn of/in parameters/nns ,/punct we/prp will/md restrict/vb our/prp$ attention/nn to/to the/dt case/nn ./punct
+under/in this/dt structure/nn ,/punct the/dt technology/nn function/nn t/nn is/vbz defined/vbn xi/nn =/punct 1/cd with/in probability/nn 1/cd −/nn γ/nn and/cc xi/nn =/punct 0/cd with/in probability/nn γ./nn we/prp denote/vbp x/nn =/punct (/punct x1/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn )/punct ./punct
+the/dt question/nn of/in the/dt representation/nn of/in the/dt technology/nn function/nn is/vbz now/rb reduced/vbn to/to that/dt of/in representing/vbg the/dt underlying/vbg monotone/nn boolean/jj function/nn f./nn in/in the/dt most/rbs general/jj case/nn ,/punct circuit/nn ./punct
+an/dt especially/rb natural/jj sub-class/nn of/in functions/nns in/in the/dt structured/jj technologies/nns setting/vbg would/md be/vb functions/nns that/wdt can/md source/nn and/cc sink/nn ,/punct where/wrb every/dt edge/nn is/vbz labeled/vbn by/in a/dt different/jj player/nn ./punct
+the/dt project/nn succeeds/vbz if/in the/dt edges/nns that/wdt belong/vbp to/to player/nn ''/'' s/nns whose/wp$ task/nn succeeded/vbd form/nn a/dt path/nn between/in the/dt ./punct
+a/dt few/jj simple/jj examples/nns should/md be/vb in/in order/nn here/rb :/punct succeeds/vbz only/rb if/in all/dt agents/nns succeed/vb in/in their/prp$ tasks/nns ./punct
+this/dt tasks/nns ./punct
+this/dt is/vbz shown/vbn graphically/rb as/in a/dt read-once/jj network/nn in/in figure/nnp 1/cd (/punct b/nn )/punct ./punct
+if/in m/nn agents/nns exert/vbp effort/nn ,/punct then/rb ./punct
+3/ls ./punct
+the/dt or-of-ands/nnp (/punct ooa/nn )/punct technology/nn :/punct f/ls (/punct x/cc )/punct is/vbz the/dt logical/jj disjunction/nn of/in conjunctions/nns ./punct
+in/in the/dt simplest/jjs case/nn k/nn )/punct ./punct
+thus/rb the/dt project/nn succeeds/vbz if/in in/in at/in least/jjs one/cd clause/nn all/dt agents/nns succeed/vb in/in their/prp$ tasks/nns ./punct
+this/dt is/vbz shown/vbn so/rb on/in ./punct
+one/cd may/md view/vb this/dt representation/nn as/in directly/rb corresponding/jj sink/nn in/in a/dt real/jj network/nn of/in computers/nns ,/punct with/in the/dt edges/nns being/vbg controlled/vbn by/in selfish/jj agents/nns ./punct
+4/ls ./punct
+the/dt and-of-ors/nnp (/punct aoo/nnp )/punct technology/nn :/punct f/ls (/punct x/cc )/punct is/vbz the/dt logical/jj conjunction/nn of/in disjunctions/nns ./punct
+in/in the/dt simplest/jjs case/nn k/nn )/punct ./punct
+thus/rb the/dt project/nn succeeds/vbz if/in at/in least/jjs one/cd agent/nn from/in each/dt disjunctive-form-clause/jj succeeds/vbz in/in his/prp$ tasks/nns ./punct
+this/dt four/cd players/nns ,/punct the/dt technology/nn function/nn t/nn (/punct a1/nn )/punct ,/punct and/cc so/rb on/in ./punct
+the/dt values/nns xi/nn are/vbp 1/cd ./punct
+thus/rb the/dt project/nn succeeds/vbz if/in most/jjs players/nns succeed/vb ./punct
+the/dt majority/nn function/nn ,/punct even/rb on/in 3/cd inputs/nns ,/punct can/md not/rb be/vb represented/vbn by/in a/dt read-once/jj network/nn ,/punct but/cc is/vbz easily/rb represented/vbn by/in a/dt monotone/nn boolean/jj technology/nn function/nn is/vbz given/vbn by/in t/nn (/punct 000/cd )/punct =/punct 3γ2/nn etc/nn ./punct
+i∈n/nn ai/vbp (/punct the/dt number/nn of/in agents/nns that/wdt exert/vbp effort/nn )/punct ./punct
+a/dt identical/jj to/to all/dt agents/nns ./punct
+of/in the/dt examples/nns presented/vbn above/in ,/punct the/dt and/nnp ,/punct or/nn ,/punct and/cc majority/nn technologies/nns were/vbd anonymous/jj (/punct but/cc not/rb aoo/nn and/cc ooa/nn )/punct ./punct
+as/in for/in an/dt anonymous/jj t/nn only/rb the/dt number/nn of/in agents/nns that/wdt exert/vbp effort/nn is/vbz important/jj ,/punct we/prp can/md shorten/vb the/dt identical/jj cost/nn c./nn let/vb us/prp start/vb with/in a/dt direct/jj and/cc full/jj analysis/nn of/in the/dt and/nnp and/cc or/nn technologies/nns for/in two/cd players/nns for/in the/dt case/nn γ/nn =/punct 1/4/cd and/cc c/nn =/punct 1/cd ./punct
+example/nn 1/cd ./punct
+and/cc technology/nn with/in two/cd agents/nns ,/punct c/nn =/punct =/punct 9/16/cd thus/rb δ0/nn =/punct 1/8/cd and/cc δ1/nn =/punct 3/8/cd ./punct
+agents/nns ./punct
+let/vb us/prp write/vb down/rp the/dt expressions/nns for/in his/prp$ utility/nn in/in utility/nn is/vbz u0/nn =/punct t0/nn ·/cd v/ls =/punct v/16/nn ./punct
+3/2/cd ./punct
+9v/16/nn −/cd 3/cd ./punct
+notice/nnp that/in the/dt option/nn of/in contracting/nn with/in one/cd agent/nn is/vbz always/rb inferior/jj to/to either/cc contracting/nn with/in both/dt or/cc with/in none/nn ,/punct and/cc will/md never/rb be/vb taken/vbn by/in the/dt principal/nn ./punct
+the/dt principal/nn will/md contract/vb and/cc with/in either/cc non/jj or/cc both/dt for/in v/ls =/punct 6/cd ./punct
+this/dt should/md be/vb contrasted/vbn with/in the/dt non-strategic/jj case/nn in/in which/wdt the/dt principal/nn completely/rb controls/vbz the/dt agents/nns (/punct and/cc bears/vbz their/prp$ costs/nns )/punct and/cc thus/rb simply/rb optimizes/vbz globally/rb ./punct
+in/in this/dt case/nn the/dt principal/nn will/md make/vb both/dt agents/nns exert/vbp effort/nn whenever/wrb v/ls ≥/cd 2/cd =/punct 11/8/cd while/in the/dt principal/nn ''/'' s/nns decision/nn (/punct in/in the/dt agency/nn case/nn )/punct would/md give/vb a/dt global/jj utility/nn of/in 3/8/cd ,/punct giving/vbg a/dt ratio/nn of/in 11/3/cd ./punct
+it/prp turns/vbz out/rp that/in this/dt is/vbz the/dt worst/jjs price/nn of/in unaccountability/nn point/nn of/in the/dt agency/nn case/nn ,/punct as/in we/prp show/vbp below/in ./punct
+and/cc δ1/nn =/punct 1/8/cd ./punct
+let/vb us/prp write/vb down/rp the/dt expressions/nns for/in the/dt principal/nn ''/'' s/nns utility/nn in/in these/dt three/cd cases/nns :/punct is/vbz u0/nn =/punct t0/nn ·/cd v/ls =/punct 7v/16/cd ./punct
+13v/16/nn −/cd 13/6/cd ./punct
+15v/16/nn −/cd 15/2/cd ./punct
+now/rb contracting/vbg with/in one/cd agent/nn is/vbz better/jjr than/in contracting/nn 52/9/cd )/punct ,/punct and/cc contracting/nn with/in both/dt agents/nns is/vbz better/jjr than/in contracting/nn with/in one/cd agent/nn whenever/wrb v/ls >/punct 128/3/cd (/punct and/cc is/vbz equivalent/jj for/in v/ls =/punct 128/3/cd )/punct ,/punct thus/rb the/dt principal/nn will/md contract/vb with/in 128/3/cd ,/punct and/cc with/in both/dt agents/nns for/in v/ls ≥/cd 128/3/cd ./punct
+in/in the/dt non-strategic/jj case/nn ,/punct in/in comparison/nn ,/punct the/dt principal/nn will/md make/vb a/dt single/jj agent/nn exert/vbp effort/nn for/in v/ls >/punct 8/3/cd ,/punct and/cc the/dt second/jj one/cd exert/vbp effort/nn as/rb well/rb when/wrb v/ls >/punct 8/cd ./punct
+it/prp turns/vbz out/rp that/in the/dt price/nn of/in unaccountability/nn here/rb is/vbz case/nn ./punct
+this/dt is/vbz not/rb a/dt coincidence/nn that/wdt in/in both/cc the/dt and/cc and/cc transition/nn point/nn (/punct see/vbp full/jj proof/nn in/in )/punct ./punct
+for/in any/dt value/nn lower/jjr than/in the/dt first/jj transition/nn point/nn ,/punct 0/cd agents/nns are/vbp contracted/vbn in/in both/dt cases/nns ,/punct and/cc the/dt social/jj welfare/nn ratio/nn is/vbz 1/cd ./punct
+similarly/rb ,/punct for/in any/dt value/nn higher/jjr than/in the/dt last/jj transition/nn point/nn ,/punct n/nn agents/nns are/vbp contracted/vbn in/in both/dt cases/nns ,/punct and/cc the/dt interval/nn between/in the/dt first/jj and/cc last/jj transition/nn points/nns ./punct
+between/in any/dt pair/nn of/in consecutive/jj points/nns ,/punct the/dt social/jj welfare/nn ratio/nn is/vbz between/in two/cd linear/jj functions/nns of/in v/ls (/punct the/dt optimal/jj contracts/nns are/vbp fixed/vbn on/in such/pdt a/dt segment/nn )/punct ./punct
+we/prp then/rb show/vbp that/in for/in each/dt segment/nn ,/punct the/dt (/punct a/dt transition/nn point/nn )/punct ./punct
+as/in there/ex are/vbp finitely/rb many/jj such/jj points/nns ,/punct the/dt global/jj suprimum/nn is/vbz obtained/vbn at/in the/dt transition/nn point/nn with/in we/prp already/rb see/vbp a/dt qualitative/jj difference/nn between/in the/dt and/nnp and/cc or/nn technologies/nns (/punct even/rb with/in 2/cd agents/nns )/punct :/punct in/in the/dt first/jj case/nn either/cc all/dt agents/nns are/vbp contracted/vbn or/cc none/nn ,/punct while/in in/in the/dt second/jj case/nn ,/punct for/in some/dt intermediate/jj range/nn of/in values/nns v/ls ,/punct exactly/rb one/cd agent/nn is/vbz contracted/vbn ./punct
+figure/nnp 3/cd shows/vbz the/dt same/jj phenomena/nns for/in and/cc and/cc or/nn technologies/nns with/in 3/cd players/nns ./punct
+and/cc technology/nn with/in any/dt number/nn of/in agents/nns n/nn and/cc any/dt γ/nn ,/punct and/cc any/dt identical/jj cost/nn c./nn v∗/nn is/vbz a/dt function/nn of/in n/nn ,/punct γ/nn ,/punct c./nn transition/nn point/nn of/in the/dt agency/nn case/nn ,/punct and/cc is/vbz claim/nn about/in the/dt price/nn of/in unaccountability/nn for/in and/cc with/in a/dt single/jj transition/nn in/in the/dt agency/nn and/cc the/dt non-strategic/jj case/nn ./punct
+the/dt property/nn of/in a/dt single/jj transition/nn occurs/vbz in/in both/cc the/dt agency/nn and/cc the/dt non-strategic/jj cases/nns ,/punct where/wrb the/dt transition/nn that/in the/dt pou/nn is/vbz not/rb bounded/vbn across/in the/dt and/nnp family/nn of/in )/punct )/punct ./punct
+next/in we/prp consider/vbp the/dt or/nn technology/nn and/cc show/vbp that/in it/prp exhibits/vbz all/dt n/nn transitions/nns ./punct
+value/nn for/in which/wdt the/dt principal/nn is/vbz indifferent/jj between/in contracted/vbn agents/nns is/vbz monotonic/jj non-decreasing/jj in/in the/dt value/nn (/punct due/jj the/dt same/jj behavior/nn occurs/vbz in/in both/cc the/dt agency/nn and/cc the/dt nonstrategic/jj case/nn ./punct
+this/dt characterization/nn is/vbz a/dt direct/jj corollary/nn of/in a/dt more/rbr general/jj characterization/nn given/vbn in/in ./punct
+while/in in/in the/dt and/cc technology/nn we/prp were/vbd able/jj to/to fully/rb determine/vb the/dt pou/nn analytically/rb ,/punct the/dt or/nn technology/nn is/vbz more/rbr difficult/jj to/to analyze/vb ./punct
+agents/nns ?/punct
+is/vbz it/prp bounded/vbn by/in a/dt constant/jj for/in every/dt n/nn ?/punct
+technology/nn for/in the/dt case/nn of/in two/cd agents/nns ./punct
+even/rb for/in the/dt 2/cd agents/nns case/nn we/prp already/rb observe/vbp a/dt qualitative/jj difference/nn between/in the/dt pou/nn in/in the/dt and/nnp and/cc or/nn technologies/nns ./punct
+observation/nn 2/cd ./punct
+while/in in/in the/dt and/cc technology/nn the/dt pou/nn pou/nn in/in or/nn technology/nn with/in two/cd agents/nns is/vbz 2/cd (/punct for/in γ/jj →/nn 0/cd )/punct ./punct
+characterization/nn of/in the/dt sufficient/jj and/cc necessary/jj conditions/nns for/in general/jj anonymous/jj technologies/nns to/to have/vb a/dt single/jj transition/nn and/cc all/dt n/nn transitions/nns ./punct
+we/prp find/vbp that/in the/dt conditions/nns in/in the/dt agency/nn case/nn are/vbp different/jj than/in the/dt ones/nns in/in the/dt non-strategic/jj case/nn ./punct
+we/prp are/vbp able/jj to/to determine/vb the/dt pou/nn for/in any/dt anonymous/jj technology/nn that/wdt exhibits/vbz a/dt single/jj transition/nn in/in both/cc the/dt agency/nn and/cc the/dt non-strategic/jj cases/nns (/punct see/vb full/jj proof/nn in/in )/punct ./punct
+substituting/vbg the/dt transition/nn point/nn of/in the/dt agency/nn case/nn into/in the/dt pou/nn expression/nn yields/vbz the/dt required/vbn expression/nn ./punct
+the/dt project/nn under/in the/dt majority/nn function/nn succeeds/vbz if/in the/dt majority/nn of/in the/dt agents/nns succeed/vb in/in their/prp$ tasks/nns (/punct see/vb section/nn 2.3/cd )/punct ./punct
+we/prp are/vbp unable/jj to/to characterize/vb the/dt transition/nn behavior/nn of/in the/dt majority/nn technology/nn analytically/rb ./punct
+figure/nnp 4/cd presents/vbz the/dt optimal/jj number/nn of/in contracted/vbn agents/nns as/in a/dt the/dt following/vbg conjecture/nn ./punct
+conjecture/nn 1/cd ./punct
+for/in any/dt majority/nnp technology/nn (/punct any/dt n/nn ,/punct γ/nn n/nn −/cd l/nn transitions/nns exist/vbp ./punct
+{/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/2/nn }/punct )/punct ,/punct and/cc l/nn =/punct n/2/nn when/wrb γ/nn is/vbz close/rb enough/jj to/to 0/cd ./punct
+in/in non-anonymous/jj technologies/nns (/punct even/rb with/in identical/jj costs/nns )/punct ,/punct we/prp need/vbp to/to talk/vb about/in the/dt contracted/vbn set/nn of/in agents/nns and/cc not/rb only/rb about/in the/dt number/nn of/in contracted/vbn agents/nns ./punct
+in/in this/dt section/nn ,/punct optimal/jj contract/nn for/in some/dt v./cc these/dt sets/nns construct/vbp the/dt orbit/nn of/in a/dt technology/nn ./punct
+exactly/rb with/in the/dt set/vbn s/nn of/in agents/nns (/punct where/wrb ties/nns between/in different/jj s/nn ''/'' s/nns are/vbp broken/vbn according/vbg to/to a/dt lexicographic/jj order9/nn orbit/nn ./punct
+observe/vb that/in in/in the/dt non-strategic/jj case/nn the/dt k-orbit/nn of/in any/dt of/in size/nn k/nn has/vbz the/dt same/jj cost/nn ,/punct only/rb the/dt one/cd with/in the/dt maximal/jj probability/nn can/md be/vb on/in the/dt orbit/nn )/punct ./punct
+thus/rb ,/punct the/dt orbit/nn of/in any/dt such/jj technology/nn in/in the/dt non-strategic/jj case/nn is/vbz of/in size/nn at/in most/jjs n/nn +/punct 1/cd ./punct
+we/prp show/vbp that/in the/dt picture/nn in/in the/dt agency/nn case/nn is/vbz very/rb different/jj ./punct
+determined/vbn by/in the/dt following/vbg lemma/nn ./punct
+expected/vbn utility/nn of/in the/dt principal/nn at/in the/dt optimal/jj contracts/nns ,/punct the/dt success/nn probability/nn of/in the/dt optimal/jj contracts/nns ,/punct and/cc the/dt expected/jj payment/nn of/in the/dt optimal/jj contract/nn ,/punct are/vbp all/dt monotonically/rb nondecreasing/jj with/in the/dt value/nn ./punct
+next/in we/prp show/vbp that/in the/dt success/nn probability/nn is/vbz monotonic/jj summing/vbg these/dt two/cd equations/nns ,/punct we/prp get/vbp that/in (/punct t/nn (/punct s1/nn )/punct −/nn t/nn (/punct s2/nn )/punct )/punct ·/nn t/nn (/punct s2/nn )/punct ./punct
+finally/rb we/prp show/vbp that/in the/dt expected/jj payment/nn is/vbz monotonic/jj to/to show/vb ./punct
+we/prp begin/vbp our/prp$ discussion/nn of/in non-anonymous/jj technologies/nns with/in two/cd examples/nns ;/punct the/dt and-of-ors/nnp (/punct aoo/nn )/punct and/cc or-of-ands/jj (/punct ooa/nn )/punct technologies/nns ./punct
+the/dt aoo/nnp technology/nn (/punct see/vbp figure/nn 2/cd )/punct is/vbz composed/vbn of/in multiple/jj or-components/nns that/wdt are/vbp anded/vbn together/rb ./punct
+inputs/nns ./punct
+then/rb for/in any/dt value/nn v/ls ,/punct an/dt optimal/jj contract/nn contracts/nns with/in the/dt same/jj number/nn of/in agents/nns in/in each/dt or-component/nn ./punct
+number/nn of/in agents/nns in/in h./nn part/nn of/in the/dt proof/nn of/in the/dt theorem/nn (/punct for/in the/dt complete/jj proof/nn see/vb )/punct ,/punct is/vbz based/vbn on/in such/jj aoo/nn technology/nn being/vbg a/dt special/jj disjoint/nn anonymous/jj technologies/nns are/vbp and-ed/vbn together/rb ,/punct as/in explained/vbn in/in the/dt next/jj section/nn ./punct
+we/prp conjecture/nn that/in a/dt similar/jj result/nn holds/vbz for/in the/dt ooa/nn technology/nn ./punct
+disjunction/nn of/in the/dt same/jj anonymous/jj paths/nns (/punct with/in the/dt same/jj number/nn of/in agents/nns ,/punct γ/nn and/cc c/nn ,/punct but/cc over/in disjoint/nn inputs/nns )/punct ,/punct for/in any/dt value/nn v/ls the/dt optimal/jj contract/nn is/vbz constructed/vbn from/in some/dt number/nn of/in fully-contracted/jj paths/nns ./punct
+moreover/rb ,/punct there/ex exist/vbp v1/nn </punct are/vbp contracted/vbn ./punct
+the/dt case/nn of/in an/dt ooa/nn technology/nn with/in two/cd paths/nns of/in length/nn two/cd (/punct see/vbp )/punct ./punct
+the/dt same/jj holds/vbz for/in the/dt ooa/nn technology/nn ./punct
+what/wdt can/md be/vb said/vbn about/in the/dt orbit/nn size/nn of/in a/dt general/jj non-anonymous/jj technology/nn ?/punct
+that/in the/dt 1-orbit/jj (/punct a/dt single/jj agent/nn that/wdt exerts/vbz effort/nn )/punct is/vbz of/in size/nn at/in most/jjs 1/cd ./punct
+only/rb the/dt agent/nn that/wdt gives/vbz the/dt highest/jjs success/nn probability/nn (/punct when/wrb only/rb he/prp exerts/vbz effort/nn )/punct can/md be/vb on/in the/dt orbit/nn next/jj show/nn that/in the/dt orbit/nn can/md have/vb exponential/jj size/nn ./punct
+elements/nns (/punct e.g/nn ./punct
+for/in k=3/nn ,/punct 123/cd and/cc 234/cd can/md not/rb be/vb together/rb in/in the/dt collection/nn ,/punct but/cc 123/cd and/cc 345/cd can/md be/vb )/punct ./punct
+corresponds/vbz to/to s/nn maximizes/vbz the/dt utility/nn of/in the/dt principal/nn ./punct
+this/dt result/nn is/vbz obtained/vbn by/in taking/vbg the/dt derivative/nn of/in u/fw (/punct s/nn ,/punct v/ls )/punct ./punct
+that/dt at/in vs/nn ,/punct the/dt set/nn s/nn yields/vbz a/dt higher/jjr utility/nn than/in any/dt other/jj the/dt full/jj proofs/nns of/in all/dt other/jj claims/nns presented/vbn in/in this/dt section/nn without/in such/pdt a/dt proof/nn ./punct
+we/prp next/rb show/vbp that/in there/ex exist/vbp very/rb large/jj admissible/jj collections/nns ./punct
+)/punct ./punct
+thus/rb ,/punct we/prp are/vbp able/jj to/to construct/vb a/dt technology/nn with/in exponential/jj orbit/nn ,/punct but/cc this/dt technology/nn is/vbz not/rb a/dt network/nn technology/nn or/cc a/dt structured/jj technology/nn ./punct
+open/nnp question/nnp 2/cd ./punct
+is/vbz there/ex a/dt read/nnp once/rb network/nn with/in exponential/jj orbit/nn ?/punct
+is/vbz there/ex a/dt structured/jj technology/nn with/in exponential/jj orbit/nn ?/punct
+nevertheless/rb ,/punct so/rb far/rb ,/punct we/prp have/vbp not/rb seen/vbn examples/nns of/in seriesparallel/nn networks/nns whose/wp$ orbit/nn size/nn is/vbz larger/jjr than/in n/nn +/punct 1/cd ./punct
+open/nnp question/nnp 3/cd ./punct
+how/wrb big/jj can/md the/dt orbit/nn size/nn of/in a/dt seriesparallel/nn network/nn be/vb ?/punct
+we/prp make/vbp the/dt first/jj step/nn towards/in a/dt solution/nn of/in this/dt question/nn sum/nn of/in the/dt two/cd networks/nns ''/'' orbit/nn sizes/nns ./punct
+h/nn (/punct i.e./fw ,/punct take/vb their/prp$ networks/nns in/in series/nn )/punct ./punct
+the/dt of/in some/dt agents/nns from/in the/dt h-part/nn and/cc some/dt from/in the/dt g-part/nn ,/punct call/vb them/prp t/nn and/cc r/nn respectively/rb ./punct
+is/vbz an/dt optimal/jj contract/nn for/in g/nn on/in v/ls ·/fw th/dt (/punct t/nn )/punct ./punct
+by/in substituting/vbg these/dt expressions/nns and/cc f/fw (/punct s/nn )/punct =/punct h/nn (/punct t/nn )/punct ·/cd g/nn (/punct r/nn )/punct ,/punct v/ls if/in and/cc only/rb if/in t/nn is/vbz an/dt optimal/jj contract/nn for/in h/nn on/in v/ls ·/fw tg/nn (/punct r/nn )/punct ./punct
+non-decreasing/jj (/punct and/cc similarly/rb for/in the/dt function/nn v/ls →/cd tg/nn (/punct r/nn )/punct )/punct ./punct
+contradiction/nn that/wdt h/nn (/punct t1/nn )/punct </punct h/nn (/punct t2/nn )/punct ,/punct then/rb since/in h/nn (/punct t1/nn )/punct ·g/nn (/punct r1/nn )/punct ≥/cd h/nn (/punct t2/nn )/punct ·g/nn (/punct r2/nn )/punct this/dt implies/vbz that/in g/nn (/punct r1/nn )/punct >/punct g/nn (/punct r2/nn )/punct ./punct
+by/in lemma/nn 5/cd ,/punct a/dt contradiction/nn ./punct
+and/cc h/nn ;/punct then/rb ,/punct the/dt orbit/nn size/nn of/in f/fw is/vbz less/rbr or/cc equal/jj to/to x/nn +/punct y/nn −/cd 1/cd ./punct
+by/in induction/nn we/prp get/vbp the/dt following/vbg corollary/nn ./punct
+in/in particular/jj ,/punct this/dt holds/vbz for/in aoo/nnp technology/nn where/wrb each/dt or-component/nn is/vbz anonymous/jj ./punct
+two/cd boolean/jj functions/nns ./punct
+open/nnp question/nnp 4/cd ./punct
+does/vbz lemma/nnp 7/cd hold/nn also/rb for/in the/dt boolean/nnp h/nn (/punct i.e./fw ,/punct when/wrb the/dt networks/nns g/nn ,/punct h/nn are/vbp taken/vbn in/in parallel/jj )/punct ?/punct
+we/prp conjecture/nn that/in this/dt is/vbz indeed/rb the/dt case/nn ,/punct and/cc that/in the/dt corresponding/jj lemmas/nnp 5/cd and/cc 7/cd exist/vbp for/in the/dt or/nn case/nn as/rb well/rb ./punct
+if/in this/dt is/vbz true/jj ,/punct this/dt will/md show/vb that/in series-parallel/jj networks/nns have/vbp polynomial/jj size/nn orbit/nn ./punct
+our/prp$ analysis/nn throughout/in the/dt paper/nn sheds/vbz some/dt light/nn on/in the/dt algorithmic/jj aspects/nns of/in computing/vbg the/dt best/jjs contract/nn ./punct
+in/in this/dt section/nn we/prp state/vbp these/dt implications/nns (/punct for/in the/dt proofs/nns see/vbp )/punct ./punct
+we/prp first/rb consider/vb the/dt general/jj model/nn where/wrb the/dt technology/nn function/nn is/vbz given/vbn by/in an/dt arbitrary/jj monotone/nn function/nn t/nn (/punct with/in rational/jj values/nns )/punct ,/punct and/cc we/prp then/rb consider/vbp the/dt case/nn of/in structured/jj technologies/nns given/vbn by/in a/dt network/nn representation/nn of/in the/dt underlying/vbg boolean/jj function/nn ./punct
+here/rb we/prp assume/vbp that/in we/prp are/vbp given/vbn a/dt technology/nn and/cc value/nn v/ls as/in the/dt input/nn ,/punct and/cc our/prp$ output/nn should/md be/vb the/dt optimal/jj anonymous/jj technologies/nns ,/punct the/dt description/nn of/in t/nn is/vbz only/rb the/dt n+1/nn completely/rb suffices/vbz for/in computing/vbg the/dt optimal/jj contract/nn ./punct
+an/dt anonymous/jj technology/nn ,/punct or/cc the/dt value/nn t/nn (/punct s/nn )/punct for/in all/pdt the/dt 2n/nn c/nn for/in non-anonymous/jj technologies/nns )/punct ,/punct the/dt following/vbg can/md all/dt be/vb •/jj the/dt orbit/nn of/in the/dt technology/nn in/in both/cc the/dt agency/nn and/cc the/dt non-strategic/jj cases/nns ./punct
+•/nn an/dt optimal/jj contract/nn for/in any/dt given/vbn value/nn v/ls ,/punct for/in both/cc the/dt agency/nn and/cc the/dt non-strategic/jj cases/nns ./punct
+•/nn the/dt price/nn of/in unaccountability/nn pou/nn (/punct t/nn ,/punct c/nn )/punct ./punct
+we/prp first/rb show/vb how/wrb to/to construct/vb the/dt orbit/nn of/in the/dt technology/nn (/punct the/dt same/jj procedure/nn apply/vb in/in both/dt cases/nns )/punct ./punct
+to/to construct/vb the/dt orbit/nn we/prp find/vbp all/dt transition/nn points/nns and/cc the/dt sets/nns that/wdt are/vbp in/in the/dt orbit/nn ./punct
+the/dt empty/jj contract/nn is/vbz always/rb optimal/jj for/in v/ls =/punct 0/cd ./punct
+assume/vb that/in we/prp have/vbp calculated/vbn the/dt optimal/jj contracts/nns and/cc the/dt transition/nn points/vbz up/rp to/to some/dt transition/nn point/nn v/ls for/in which/wdt s/nn is/vbz an/dt optimal/jj contract/nn with/in the/dt highest/jjs success/nn probability/nn ./punct
+we/prp show/vbp how/wrb to/to calculate/vb the/dt next/jj transition/nn point/nn and/cc the/dt next/jj optimal/jj contract/nn ./punct
+by/in lemma/nn 3/cd the/dt next/jj contract/nn on/in the/dt orbit/nn (/punct for/in higher/jjr values/nns )/punct has/vbz a/dt higher/jjr success/nn probability/nn (/punct there/ex are/vbp no/dt two/cd sets/nns with/in the/dt same/jj success/nn probability/nn on/in the/dt orbit/nn )/punct ./punct
+we/prp calculate/vbp the/dt next/jj optimal/jj contract/nn by/in the/dt following/vbg procedure/nn ./punct
+calculate/vb the/dt value/nn for/in which/wdt the/dt principal/nn is/vbz indifferent/jj between/in contracting/nn with/in t/nn and/cc contracting/nn with/in s./nnp the/nnp minimal/jj indifference/nn value/nn is/vbz the/dt next/jj transition/nn point/nn and/cc the/dt contract/nn that/wdt has/vbz the/dt minimal/jj indifference/nn value/nn is/vbz the/dt next/jj optimal/jj contract/nn ./punct
+linearity/nn of/in the/dt utility/nn in/in the/dt value/nn and/cc monotonicity/nn of/in the/dt success/nn probability/nn of/in the/dt optimal/jj contracts/nns ensure/vb that/in the/dt above/jj works/nns ./punct
+clearly/rb the/dt above/jj calculation/nn is/vbz polynomial/jj in/in the/dt input/nn size/nn ./punct
+for/in any/dt given/vbn value/nn v/ls can/md be/vb calculated/vbn ./punct
+we/prp find/vbp the/dt largest/jjs transition/nn point/nn that/wdt is/vbz not/rb larger/jjr than/in the/dt value/nn v/ls ,/punct and/cc the/dt optimal/jj contract/nn at/in v/ls is/vbz the/dt set/vbn with/in the/dt higher/jjr success/nn probability/nn at/in this/dt transition/nn point/nn ./punct
+both/cc the/dt agency/nn and/cc the/dt non-strategic/jj cases/nns in/in polynomial/jj time/nn ,/punct we/prp can/md find/vb the/dt price/nn of/in unaccountability/nn in/in polynomial/jj time/nn ./punct
+by/in lemma/nn 1/cd the/dt price/nn of/in unaccountability/nn pou/nn (/punct t/nn )/punct over/in all/dt transition/nn points/nns ,/punct and/cc find/vb the/dt one/cd with/in the/dt maximal/jj social/jj welfare/nn ratio/nn ./punct
+a/dt more/jjr interesting/jj question/nn is/vbz whether/in if/in given/vbn the/dt function/nn t/nn (/punct when/wrb the/dt costs/nns are/vbp identical/jj )/punct ,/punct and/cc a/dt value/nn v/ls ,/punct the/dt the/dt optimal/jj contract/nn is/vbz exponential/jj in/in n./nn is/vbz negative/jj )/punct ./punct
+of/in size/nn k/nn ,/punct then/rb it/prp can/md not/rb always/rb determine/vb the/dt optimal/jj contract/nn (/punct as/in any/dt of/in the/dt sets/nns that/in it/prp has/vbz not/rb queried/vbn about/in might/md are/vbp needed/vbn to/to determine/vb the/dt optimal/jj contract/nn ,/punct and/cc this/dt is/vbz exponential/jj in/in n/nn ./punct

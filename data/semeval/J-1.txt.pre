@@ -1,0 +1,202 @@
+when/wrb designing/vbg a/dt mechanism/nn there/ex are/vbp several/jj desirable/jj properties/nns to/to maintain/vb such/jj as/in incentive/nn compatibility/nn (/punct ic/nn )/punct ,/punct individual/jj rationality/nn (/punct ir/nn )/punct ,/punct and/cc budget/nn balance/nn (/punct bb/nn )/punct ./punct
+it/prp is/vbz well/rb known/vbn [/punct 15/cd ]/punct that/in it/prp is/vbz impossible/jj for/in a/dt mechanism/nn to/to maximize/vb social/jj welfare/nn whilst/in also/rb being/vbg ir/nnp ,/punct ic/nn ,/punct and/cc bb/nn ./punct
+there/ex have/vbp been/vbn several/jj attempts/nns to/to circumvent/vb [/punct 15/cd ]/punct by/in trading/vbg welfare/nn for/in bb/nn ,/punct e.g./fw ,/punct in/in domains/nns such/jj as/in double-sided/jj auctions/nns [/punct 13/cd ]/punct ,/punct distributed/vbn markets/nns [/punct 3/cd ]/punct and/cc supply/nn chain/nn problems/nns [/punct 2/cd ,/punct 4/cd ]/punct ./punct
+in/in this/dt paper/nn we/prp provide/vbp a/dt procedure/nn called/vbd a/dt generalized/nnp trade/nnp reduction/nnp (/punct gtr/nnp )/punct for/in single-value/jj players/nns ,/punct which/wdt given/vbn an/dt ir/nn and/cc ic/nn mechanism/nn ,/punct outputs/vbz a/dt mechanism/nn which/wdt is/vbz ir/nnp ,/punct ic/nn and/cc bb/nn with/in a/dt loss/nn of/in welfare/nn ./punct
+we/prp bound/vbd the/dt welfare/nn achieved/vbn by/in our/prp$ procedure/nn for/in a/dt wide/jj range/nn of/in domains/nns ./punct
+in/in particular/jj ,/punct our/prp$ results/nns improve/vb on/in existing/vbg solutions/nns for/in problems/nns such/jj as/in double/jj sided/vbd markets/nns with/in homogenous/jj goods/nns ,/punct distributed/vbn markets/nns and/cc several/jj kinds/nns of/in supply/nn chains/nns ./punct
+furthermore/rb ,/punct our/prp$ solution/nn provides/vbz budget/nn balanced/jj mechanisms/nns for/in several/jj open/jj problems/nns such/jj as/in combinatorial/jj double-sided/jj auctions/nns and/cc distributed/vbn markets/nns with/in strategic/jj transportation/nn edges/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp j.4/nn [/punct social/nnp and/cc behavioral/nnp sciences/nnps ]/punct :/punct economics/nnp ;/punct k.4.4/nn [/punct electronic/jj commerce/nnp ]/punct :/punct payment/nn scheme/nn general/nnp terms/nns algorithms/nns ,/punct design/nn ,/punct economics/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nnp when/wrb designing/vbg a/dt mechanism/nn there/ex are/vbp several/jj key/jj properties/nns that/wdt are/vbp desirable/jj to/to maintain/vb ./punct
+some/dt of/in the/dt more/rbr important/jj ones/nns are/vbp individual/jj rationality/nn (/punct ir/nn )/punct -/punct to/to make/vb it/prp worthwhile/jj for/in all/dt players/nns to/to participate/vb ,/punct incentive/nn compatibility/nn (/punct ic/nn )/punct -/punct to/to give/vb incentive/nn to/to players/nns to/to report/vb their/prp$ true/jj value/nn to/to the/dt mechanism/nn and/cc budget/nn balance/nn (/punct bb/nn )/punct -/punct not/rb to/to run/vb the/dt mechanism/nn on/in a/dt loss/nn ./punct
+in/in many/jj of/in the/dt mechanisms/nns the/dt goal/nn function/nn that/in a/dt mechanism/nn designer/nn attempts/vbz to/to maximize/vb is/vbz the/dt social/jj welfare1/nn -/punct the/dt total/jj benefit/nn to/to society/nn ./punct
+however/rb ,/punct it/prp is/vbz well/rb known/vbn from/in [/punct 15/cd ]/punct that/in any/dt mechanism/nn that/wdt maximizes/vbz social/jj welfare/nn while/in maintaining/vbg individual/jj rationality/nn and/cc incentive/nn compatibility/nn runs/vbz a/dt deficit/nn perforce/nn ,/punct i.e./fw ,/punct is/vbz not/rb budget/nn balanced/jj ./punct
+of/in course/nn ,/punct for/in many/jj applications/nns of/in practical/jj importance/nn we/prp lack/vbp the/dt will/nn and/cc the/dt capability/nn to/to allow/vb the/dt mechanism/nn to/to run/vb a/dt deficit/nn and/cc hence/rb one/cd must/md balance/vb the/dt payments/nns made/vbn by/in the/dt mechanism/nn ./punct
+to/to maintain/vb the/dt bb/nn property/nn in/in an/dt ir/nn and/cc ic/nn mechanism/nn it/prp is/vbz necessary/jj to/to compromise/vb on/in the/dt optimality/nn of/in the/dt social/jj welfare/nn ./punct
+there/ex have/vbp been/vbn several/jj attempts/nns to/to design/vb budget/nn balanced/jj mechanisms/nns for/in particular/jj domains2/nn for/in double-sided/jj auctions/nns where/wrb both/cc the/dt buyers/nns and/cc sellers/nns are/vbp strategic/jj and/cc the/dt goods/nns are/vbp homogeneous/jj (/punct or/cc when/wrb the/dt goods/nns are/vbp heterogeneous/jj )/punct ./punct
+developed/vbd a/dt mechanism/nn that/wdt given/vbn valuations/nns of/in buyers/nns and/cc sellers/nns produces/vbz an/dt allocation/nn (/punct which/wdt are/vbp the/dt trading/nn players/nns )/punct and/cc a/dt matching/nn between/in buyers/nns and/cc sellers/nns such/jj that/in the/dt mechanism/nn is/vbz ir/nnp ,/punct ic/nn ,/punct and/cc bb/nn while/in retaining/vbg most/jjs of/in the/dt social/jj welfare/nn ./punct
+in/in the/dt distributed/vbn markets/nns problem/nn (/punct and/cc closely/rb related/jj problems/nns )/punct goods/nns are/vbp transported/vbn between/in geographic/jj locations/nns while/in incurring/vbg some/dt constant/jj cost/nn for/in transportation/nn ./punct
+[/punct 16/cd ,/punct 9/cd ,/punct 3/cd ]/punct present/jj mechanisms/nns that/wdt approximate/jj the/dt social/jj welfare/nn while/in achieving/vbg an/dt ir/nn ,/punct ic/nn and/cc bb/nn mechanism/nn ./punct
+for/in supply/nn chain/nn problems/nns bounds/vbz the/dt loss/nn of/in social/jj welfare/nn that/in the/dt desired/vbn combination/nn of/in ir/nnp ,/punct ic/nn ,/punct and/cc bb/nn ./punct
+despite/in the/dt works/nns discussed/vbn above/in ,/punct the/dt question/nn of/in how/wrb to/to design/vb a/dt general/jj mechanism/nn that/wdt achieves/vbz ir/nnp ,/punct ic/nn ,/punct and/cc bb/nn independently/rb of/in the/dt problem/nn domain/nn remains/vbz open/jj ./punct
+furthermore/rb ,/punct there/ex are/vbp several/jj domains/nns where/wrb the/dt question/nn of/in economics/nns literature/nn ./punct
+imates/vbz the/dt social/jj welfare/nn remains/vbz an/dt open/jj problem/nn ./punct
+for/in example/nn ,/punct in/in the/dt important/jj domain/nn of/in combinatorial/jj doublesided/jj auctions/nns there/ex is/vbz no/dt known/jj result/nn that/in bounds/vbz the/dt loss/nn of/in social/jj welfare/nn needed/vbn to/to achieve/vb budget/nn balance/nn ./punct
+another/dt interesting/jj example/nn is/vbz the/dt open/jj question/nn left/vbn by/in :/punct how/wrb can/md one/prp bound/vbd the/dt loss/nn in/in social/jj welfare/nn that/wdt is/vbz needed/vbn to/to achieve/vb the/dt transportation/nn edges/nns are/vbp strategic/jj ./punct
+naturally/rb an/dt answer/nn to/to the/dt bb/nn distributed/vbn market/nn with/in strategic/jj edges/nns has/vbz vast/jj practical/jj implications/nns ,/punct for/in example/nn to/to transportation/nn networks/nns ./punct
+in/in this/dt paper/nn we/prp unify/vbp all/pdt the/dt problems/nns discussed/vbn above/in (/punct both/cc the/dt solved/vbn as/rb well/rb as/in the/dt open/jj ones/nns )/punct into/in one/cd solution/nn concept/nn procedure/nn ./punct
+the/dt solution/nn procedure/nn called/vbd the/dt generalized/nnp trade/nnp reduction/nnp (/punct gtr/nnp )/punct ./punct
+gtr/nn accepts/vbz an/dt ir/nn and/cc ic/nn mechanism/nn for/in single-valued/jj players/nns and/cc outputs/nns an/dt ir/nn ,/punct ic/nn and/cc bb/nn mechanism/nn ./punct
+the/dt output/nn mechanism/nn may/md suffer/vb some/dt welfare/nn loss/nn as/in a/dt tradeoff/nn of/in achieving/vbg bb/nn ./punct
+there/ex are/vbp problem/nn instances/nns in/in which/wdt no/dt welfare/nn loss/nn is/vbz necessary/jj but/cc by/in there/ex are/vbp problem/nn instances/nns in/in which/wdt there/ex is/vbz welfare/nn bound/vbd the/dt loss/nn in/in welfare/nn ./punct
+a/dt particularly/rb interesting/jj case/nn is/vbz one/cd in/in which/wdt the/dt input/nn mechanism/nn is/vbz an/dt efficient/jj allocation/nn ./punct
+a/dt single/jj solution/nn concept/nn ,/punct the/dt gtr/nn procedure/nn improves/vbz on/in existing/vbg results/nns and/cc solves/vbz several/jj open/jj problems/nns in/in the/dt literature/nn ./punct
+the/dt existing/vbg solutions/nns our/prp$ gtr/nn procedure/nn improves/vbz are/vbp homogeneous/jj double-sided/jj auctions/nns ,/punct distributed/vbn markets/nns doublesided/vbd auctions/nns the/dt gtr/nn solution/nn procedure/nn improves/vbz on/in the/dt well/rb known/vbn solution/nn by/in allowing/vbg for/in some/dt cases/nns of/in no/dt trade/nn reduction/nn at/in all/dt ./punct
+for/in the/dt distributed/vbn markets/nns and/cc the/dt supply/nn chain/nn the/dt gtr/nn solution/nn procedure/nn improves/vbz on/in the/dt welfare/nn losses/nns ''/'' bound/vbn ,/punct i.e./fw ,/punct allows/vbz one/cd to/to achieve/vb an/dt ir/nn ,/punct ic/nn and/cc bb/nn mechanism/nn with/in smaller/jjr loss/nn on/in the/dt social/jj welfare/nn ./punct
+recently/rb we/prp also/rb learned/vbd that/in the/dt gtr/nn procedure/nn allows/vbz one/cd to/to turn/vb the/dt model/nn newly/rb presented/vbn into/in a/dt bb/nn mechanism/nn ./punct
+the/dt open/jj problems/nns that/wdt are/vbp answered/vbn by/in gtr/nn are/vbp distributed/vbn markets/nns with/in strategic/jj transportation/nn edges/nns and/cc bounded/vbd paths/nns ,/punct combinatorial/jj double-sided/jj auctions/nns with/in bounded/vbn size/nn of/in the/dt trading/nn group/nn i.e./fw ,/punct a/dt buyer/nn and/cc its/prp$ bundle/nn goods/nns ''/'' sellers/nns ,/punct combinatorial/jj double-sided/jj auctions/nns with/in bounded/vbn number/nn of/in possible/jj trading/nn groups/nns ./punct
+in/in addition/nn to/to the/dt main/jj contribution/nn described/vbn above/in ,/punct this/dt paper/nn also/rb defines/vbz an/dt important/jj classification/nn of/in problem/nn domains/nns ./punct
+we/prp define/vbp class/nn based/jj domain/nn and/cc procurement/nn class/nn based/jj domains/nns ./punct
+the/dt above/jj definitions/nns build/vbp on/in the/dt different/jj competition/nn powers/nns of/in players/nns in/in a/dt mechanisms/nns called/vbn internal/jj and/cc external/jj competition/nn ./punct
+most/jjs of/in the/dt studied/vbn problem/nn domains/nns are/vbp of/in the/dt more/rbr restrictive/jj procurement/nn class/nn domains/nns and/cc we/prp believe/vbp that/in the/dt more/jjr general/jj setting/nn will/md inspire/vb more/jjr research/nn ./punct
+and/cc ic/nn mechanism/nn outputs/vbz a/dt mechanism/nn that/wdt maintains/vbz the/dt ic/nn and/cc ir/nn properties/nns while/in achieving/vbg bb/nn ./punct
+for/in some/dt classes/nns of/in mechanisms/nns we/prp bound/vbd the/dt competitive/jj approximation/nn of/in welfare/nn ./punct
+in/in our/prp$ model/nn there/ex are/vbp n/nn players/nns divided/vbn into/in sets/nns of/in trade/nn ./punct
+the/dt sets/nns of/in trade/nn are/vbp called/vbn procurement/nn sets/nns and/cc are/vbp defined/vbn for/in example/nn ,/punct in/in a/dt double-sided/jj auction/nn ,/punct a/dt procurement/nn set/vbn combinatorial/jj double-sided/jj auction/nn a/dt procurement/nn set/nn can/md consist/vb of/in a/dt buyer/nn and/cc several/jj sellers/nns ./punct
+we/prp mark/vbp the/dt set/nn of/in all/dt union/nn of/in procurement/nn sets/nns ./punct
+value/nn player/nn ,/punct meaning/vbg that/in if/in vi/ls (/punct sj/nn )/punct >/punct 0/cd then/rb for/in every/dt other/jj for/in any/dt procurement/nn set/vbn s/nns such/jj that/in vi/ls (/punct s/nns )/punct >/punct 0/cd ./punct
+the/dt set/nn vector/nn of/in valuations/nns of/in all/pdt the/dt players/nns besides/in player/nn i/fw ,/punct and/cc let/vb v−i/nnp be/vb the/dt set/nn of/in all/dt possible/jj vectors/nns v−i/nns ./punct
+function/nn that/in assigns/vbz a/dt constant/jj to/to procurement/nn sets/nns ./punct
+for/in a/dt distributed/vbn market/nn problem/nn ./punct
+let/vb the/dt size/nn of/in a/dt procurement/nn set/vbn s/nns be/vb denoted/vbn as/in |s|/nn ./punct
+procurement/nn sets/nns and/cc therefore/rb one/prp can/md say/vb that/in an/dt allocation/nn partitions/vbz the/dt players/nns into/in two/cd sets/nns ;/punct a/dt set/nn of/in players/nns that/wdt trade/vbp and/cc a/dt set/nn of/in players/nns that/wdt do/vbp not/rb trade/vb ./punct
+allocation/nn a/nn into/in procurement/nn sets/nns ./punct
+the/dt value/nn w/nn (/punct a/dt )/punct of/in an/dt partition/nn to/to procurement/nn sets/nns ,/punct that/dt is/vbz w/nnp (/punct a/dt )/punct =/punct maxs∈o/nn s∈s/nn w/nn (/punct s/nns )/punct ./punct
+this/dt means/vbz that/in w/nnp (/punct a/dt )/punct =/punct i∈a/nnp vi/ls +maxs∈o/nn s∈s/nn f/nn (/punct s/nns )/punct ./punct
+in/in the/dt case/nn where/wrb f/nn is/vbz identically/rb zero/cd ,/punct then/rb w/nnp (/punct a/dt )/punct =/punct i∈a/nn vi/ls ./punct
+(/punct a/nn )/punct )/punct (/punct note/nn that/in the/dt value/nn can/md depend/vb on/in f/nn )/punct ./punct
+we/prp say/vbp w.l.o.g/nn ./punct
+that/in there/ex are/vbp no/dt two/cd allocations/nns with/in the/dt same/jj ./punct
+a/dt mechanism/nn m/nn defines/vbz an/dt allocation/nn and/cc payment/nn rules/nns ,/punct ties/nnps can/md be/vb broken/vbn using/vbg the/dt identities/nns of/in the/dt players/nns ./punct
+in/in which/wdt players/nns are/vbp required/vbn to/to report/vb their/prp$ values/nns ./punct
+an/dt example/nn of/in such/pdt a/dt mechanism/nn is/vbz the/dt vcg/nnp mechanism/nn [/punct 17/cd ,/punct bid/nn and/cc might/md be/vb different/jj from/in his/prp$ private/jj value/nn vi/ls ./punct
+let/vb make/vb the/dt standard/jj assumption/nn that/in players/nns have/vbp quasi-linear/jj utility/nn so/in that/in when/wrb player/nn i/fw trades/nns and/cc pays/vbz pi/nn then/rb his/prp$ that/wdt players/nns are/vbp rational/jj utility/nn maximizers/nns ./punct
+ui/nn (/punct vi/ls ,/punct b−i/fw )/punct ≥/fw ui/fw (/punct b/nn )/punct meaning/nn that/wdt for/in any/dt player/nn i/fw ,/punct bidding/vbg vi/ls maximized/vbn i/fw ''/'' s/vbz utility/nn over/in all/dt possible/jj bids/nns of/in the/dt other/jj players/nns ./punct
+m/nn is/vbz (/punct ex-post/nn )/punct individually/rb rational/jj (/punct ir/nn )/punct if/in for/in any/dt meaning/nn that/wdt for/in all/dt possible/jj bids/nns of/in the/dt other/jj players/nns ,/punct player/nn ''/'' s/nns i/fw utility/nn is/vbz non-negative/jj ./punct
+note/vb that/dt since/in our/prp$ mechanisms/nns are/vbp normalized/vbn ir/nnp ,/punct if/in a/dt player/nn does/vbz not/rb trade/vb then/rb the/dt player/nn pays/vbz 0/cd and/cc has/vbz utility/nn 0/cd ./punct
+our/prp$ algorithm/nn presented/vbn in/in the/dt next/jj section/nn employs/vbz a/dt commonly/rb used/vbn payment/nn scheme/nn ,/punct the/dt critical/jj value/nn payment/nn scheme/nn ./punct
+we/prp denote/vbp by/in ci/nn the/dt critical/jj value/nn price/nn computed/vbn for/in player/nn i./nn in/in this/dt paper/nn we/prp present/vbp two/cd generalized/vbn trade/nn reduction/nn algorithms/nns ./punct
+the/dt two/cd algorithms/nns are/vbp such/jj that/in given/vbn an/dt ir/nn domain/nn (/punct different/jj domains/nns are/vbp formally/rb defined/vbn below/in )/punct ,/punct turns/vbz m/nn into/in ir/nnp ,/punct ic/nn and/cc bb/nn mechanism/nn ./punct
+the/dt algorithm/nn presented/vbd finds/vbz procurement/nn sets/nns and/cc removes/vbz them/prp in/in iterations/nns until/in the/dt right/jj conditions/nns are/vbp fulfilled/vbn and/cc the/dt mechanism/nn m/nn is/vbz turned/vbn into/in a/dt bb/nn one/cd ./punct
+the/dt right/jj conditions/nns that/wdt need/vbp to/to be/vb met/vbn are/vbp conditions/nns of/in competition/nn among/in the/dt players/nns in/in the/dt given/vbn problem/nn ./punct
+the/dt following/jj definitions/nns leads/vbz us/prp to/to the/dt competition/nn conditions/nns we/prp are/vbp looking/vbg for/in ./punct
+procurement/nn set/vbd s/nns ∈/cd s/nn such/jj that/in i/fw ∈/fw s/nns and/cc ri∩s/nn =/punct ∅/nn ,/punct s\/nn {/punct i/fw }/punct ∪ri/fw ∈/fw s./fw for/in example/nn ,/punct in/in a/dt (/punct homogeneous/jj )/punct double-sided/jj auction/nn (/punct see/vbp problem/nn b.1/nn )/punct the/dt replacement/nn set/vbn for/in any/dt buyer/nn is/vbz simply/rb any/dt other/jj buyer/nn ./punct
+in/in an/dt auction/nn for/in transportation/nn slots/nns (/punct see/vb between/in the/dt endpoints/nns of/in the/dt edge/nn ./punct
+note/vb that/in a/dt set/nn can/md replace/vb a/dt single/jj player/nn ./punct
+furthermore/rb ,/punct this/dt relationship/nn is/vbz transitive/jj j/nn ,/punct it/prp is/vbz not/rb necessarily/rb true/jj that/in j/nn is/vbz a/dt replacement/nn set/nn for/in i./nnp we/prp will/md assume/vb ,/punct without/in loss/nn of/in generality/nn ,/punct that/in there/ex are/vbp no/dt ties/nns between/in the/dt values/nns of/in any/dt allocations/nns ,/punct and/cc in/in particular/jj there/ex are/vbp no/dt ties/nns between/in values/nns of/in procurement/nn sets/nns ./punct
+and/cc player/nn i/fw with/in external/jj competition/nn ei/nn (/punct a/nn ,/punct s/vbz )/punct ,/punct there/ex exists/vbz exactly/rb one/cd set/nn representing/vbg the/dt maximally/rb valued/vbn external/jj competition/nn ./punct
+the/dt following/vbg defines/vbz the/dt required/jj competition/nn needed/vbn to/to competition/nn and/cc is/vbz closed/vbn under/in replacement/nn ./punct
+in/in the/dt remainder/nn of/in the/dt paper/nn we/prp will/md assume/vb that/in all/dt of/in our/prp$ sets/nns which/wdt define/vbp competition/nn in/in a/dt mechanism/nn are/vbp closed/vbn under/in replacement/nn ./punct
+replacement/nn ,/punct we/prp say/vbp that/in the/dt mechanism/nn is/vbz an/dt x-external/nn 1/cd ./punct
+each/dt player/nn i/fw ∈/fw x/nn has/vbz an/dt external/jj competition/nn ./punct
+2/ls ./punct
+each/dt player/nn i/fw /∈/fw x/nn has/vbz an/dt internal/jj competition/nn ./punct
+fact/nn even/rb for/in the/dt same/jj domain/nn the/dt welfare/nn (/punct and/cc revenue/nn )/punct can/md greatly/rb different/jj results/nns ./punct
+although/in we/prp show/vbp that/in x/nn should/md problem/nn ./punct
+our/prp$ two/cd generalized/vbn trade/nn reduction/nn algorithms/nns will/md ensure/vb that/in for/in any/dt allocation/nn we/prp have/vbp the/dt desired/vbn types/nns of/in into/in an/dt x-external/jj mechanism/nn ./punct
+the/dt two/cd generalized/vbn trade/nn reduction/nn algorithms/nns utilize/vbp a/dt dividing/vbg function/nn d/nn which/wdt divides/vbz allocation/nn a/nn into/in disjoint/nn procurement/nn sets/nns ./punct
+the/dt algorithms/nns order/vbp the/dt procurements/nns sets/vbz defined/vbn by/in d/nn in/in order/nn of/in increasing/vbg value/nn ./punct
+for/in any/dt procurement/nn set/vbn there/ex is/vbz a/dt desired/vbn type/nn of/in competition/nn that/wdt depends/vbz only/rb on/in the/dt players/nns who/wp compose/vbp the/dt procurement/nn set/nn ./punct
+the/dt generalized/vbn trade/nn reduction/nn algorithms/nns go/vbp over/in the/dt procurement/nn sets/vbz in/in order/nn (/punct from/in the/dt smallest/jjs to/to the/dt largest/jjs )/punct and/cc remove/vb any/dt procurement/nn set/vbd that/in does/vbz not/rb have/vb the/dt desired/vbn competition/nn when/wrb the/dt set/nn is/vbz reached/vbn ./punct
+the/dt reduction/nn of/in procurement/nn sets/nns will/md also/rb be/vb referred/vbn to/to as/in a/dt trade/nn reduction/nn ./punct
+the/dt details/nns of/in how/wrb to/to break/vb ties/nns in/in allocations/nns are/vbp standard/jj and/cc are/vbp omitted/vbn ./punct
+we/prp present/vbp some/dt tradeoffs/nns between/in the/dt different/jj possible/jj sets/nns in/in appendix/nnp c./nnp allocation/nn a/nn and/cc the/dt players/nns ''/'' value/nn vector/nn v/ls ,/punct d/nnp divides/vbz the/dt a/nn and/cc for/in any/dt player/nn i/fw with/in value/nn vi/ls if/in i/fw ∈/fw sj1/nn and/cc t/nn ∈/cd sj2/nn s.t/nn ./punct
+then/rb j1/nn >/punct j2/nn ./punct
+the/dt two/cd generalized/vbn trade/nn reduction/nn algorithms/nns presented/vbn accept/vbp problems/nns in/in different/jj domains/nns ./punct
+the/dt formal/jj domain/nn i/fw ,/punct j/nn ,/punct i/fw =/punct j/nn if/in j/nn =/punct ri/nn then/rb i/fw =/punct rj/nn ./punct
+intuitively/rb ,/punct this/dt means/vbz that/in replacement/nn sets/nns are/vbp of/in size/nn 1/cd and/cc the/dt replacing/vbg relationship/nn is/vbz symmetric/jj ./punct
+important/jj to/to note/vb that/in since/in replacement/nn sets/nns are/vbp transitive/jj relations/nns and/cc since/in class/nn domains/nns also/rb impose/vbp symmetric/jj actually/rb an/dt equivalence/jj class/nn for/in i./nnp example/nnp 2.1/cd ./punct
+a/dt (/punct homogeneous/jj )/punct double-sided/jj auction/nn (/punct see/vbp problem/nn b.1/nn )/punct is/vbz a/dt procurement-class/jj based/jj domain/nn ./punct
+for/in the/dt (/punct homogeneous/jj )/punct double-sided/jj auction/nn each/dt procurement/nn set/nn consists/vbz of/in a/dt buyer/nn and/cc a/dt seller/nn ./punct
+the/dt double/jj sided/vbd combinatorial/jj auction/nn consisting/vbg of/in a/dt single/jj multi-minded/jj buyer/nn and/cc multiple/jj sellers/nns of/in heterogenous/jj goods/nns (/punct see/vb problem/nn b.9/nn )/punct ,/punct is/vbz a/dt class/nn based/vbn domain/nn (/punct as/in we/prp have/vbp a/dt single/jj buyer/nn )/punct but/cc not/rb a/dt procurement-class/jj based/jj domain/nn ./punct
+bijection/nn between/in the/dt different/jj the/dt procurement/nn sets/nns of/in the/dt bundles/nns of/in goods/nns the/dt buyer/nn is/vbz interested/jj in/in ./punct
+the/dt spatial-distributed/jj market/nn with/in strategic/jj edges/nns (/punct see/vb problem/nn b.6/nn )/punct is/vbz not/rb a/dt class-based/jj domain/nn (/punct and/cc therefore/rb not/rb a/dt procurement-class/jj domain/nn )/punct ./punct
+for/in example/nn ,/punct even/rb for/in a/dt fixed/vbn buyer/nn and/cc a/dt fixed/vbn seller/nn there/ex are/vbp two/cd different/jj procurement/nn sets/nns consisting/vbg of/in different/jj paths/nns between/in the/dt buyers/nns and/cc sellers/nns ./punct
+the/dt next/jj sections/nns present/jj two/cd algorithms/nns gtr-1/nn and/cc gtr2/nn ./punct
+gtr-1/nn accepts/vbz problems/nns in/in procurement-class/jj based/jj domains/nns ,/punct its/prp$ properties/nns are/vbp proved/vbn with/in a/dt general/jj dividing/vbg function/nn d./nnp the/nnp gtr-2/nn algorithm/nn accepts/vbz problems/nns in/in any/dt domain/nn ./punct
+we/prp prove/vbp the/dt gtr-2/nn ''/'' s/nns properties/nns with/in specific/jj dividing/vbg function/nn d0/nn ./punct
+the/dt function/nn will/md be/vb defined/vbn in/in section/nn 4/cd ./punct
+since/in the/dt dividing/vbg function/nn can/md have/vb a/dt large/jj practical/jj (/punct albeit/in in/in special/jj domains/nns )/punct can/md be/vb an/dt important/jj practical/jj consideration/nn ./punct
+this/dt section/nn focuses/vbz on/in the/dt problems/nns that/wdt are/vbp procurementclass/jj based/jj domains/nns ./punct
+for/in this/dt domain/nn ,/punct we/prp present/vbp an/dt algorithm/nn called/vbn gtr-1/nn ,/punct which/wdt given/vbn a/dt mechanism/nn that/wdt is/vbz ir/nnp and/cc ic/nn outputs/vbz a/dt mechanism/nn with/in reduced/vbn welfare/nn which/wdt is/vbz ir/nnp ,/punct ic/nn and/cc budget/nn balanced/jj ./punct
+although/in procurement/nn class/nn domains/nns appear/vbp to/to be/vb a/dt relatively/rb restricted/jj model/nn ,/punct in/in fact/nn many/jj domains/nns studied/vbn in/in the/dt literature/nn are/vbp procurement/jj class/nn domains/nns ./punct
+example/nn 3.1/cd ./punct
+the/dt following/jj domains/nns are/vbp procurement/jj •/cd double-sided/jj auctions/nns with/in homogenous/jj goods/nns (/punct problem/nn b.1/nn )/punct ./punct
+in/in this/dt domain/nn there/ex are/vbp two/cd classes/nns ./punct
+the/dt class/nn of/in buyers/nns and/cc the/dt class/nn of/in sellers/nns ./punct
+each/dt procurement/nn set/nn consists/vbz of/in a/dt single/jj buyer/nn and/cc a/dt single/jj seller/nn ./punct
+since/in every/dt pair/nn of/in (/punct buyer/nn ,/punct seller/nn )/punct is/vbz a/dt valid/jj procurement/nn set/vbd (/punct albeit/in possible/jj with/in negative/jj value/nn )/punct this/dt is/vbz a/dt procurement/nn class/nn domain/nn ./punct
+in/in this/dt domain/nn the/dt constant/jj assigned/vbn to/to the/dt procurement/nn sets/nns is/vbz f/nn =/punct 0/cd ./punct
+•/nn spatially/rb distributed/vbn markets/nns with/in non/jj strategic/jj edges/nns (/punct problem/nn b.3/nn )/punct ./punct
+like/in the/dt double-sided/jj auctions/nns with/in homogenous/jj goods/nns ,/punct their/prp$ are/vbp two/cd classes/nns in/in the/dt domain/nn ./punct
+class/nn of/in buyers/nns and/cc class/nn of/in sellers/nns with/in procurement/nn sets/nns consisting/vbg of/in single/jj buyer/nn and/cc single/jj seller/nn ./punct
+the/dt sellers/nns and/cc buyers/nns are/vbp nodes/nns in/in a/dt graph/nn and/cc the/dt edge/nn )/punct which/wdt represent/vbp transport/nn costs/nns ./punct
+these/dt costs/nns differ/vbp between/in different/jj (/punct buyer/nn ,/punct seller/nn )/punct pairs/nns ./punct
+•/nn supply/nn chains/nns (/punct problem/nn b.5/nn )/punct ./punct
+the/dt assumption/nn as/in turning/vbg general/jj supply/nn chains/nns (/punct which/wdt need/md not/rb be/vb a/dt procurement/nn class/nn domain/nn )/punct into/in a/dt procurement/nn class/nn domain/nn ./punct
+•/rb single/jj minded/vbn combinatorial/jj auctions/nns (/punct problem/nn b.8/nn )/punct ./punct
+in/in this/dt context/nn each/dt seller/nn sells/vbz a/dt single/jj good/jj and/cc each/dt buyer/nn wants/vbz a/dt set/nn of/in goods/nns ./punct
+the/dt classes/nns are/vbp the/dt sets/nns of/in sellers/nns selling/vbg the/dt same/jj good/jj as/rb well/rb as/in the/dt buyers/nns who/wp desire/vbp the/dt same/jj bundle/nn ./punct
+a/dt procurement/nn set/nn consists/vbz of/in that/dt buyer/nn ./punct
+2/ls ./punct
+order/nnp the/dt procurement/nn sets/nns by/in increasing/vbg value/nn ./punct
+3/ls ./punct
+for/in each/dt sj/nn ,/punct starting/vbg from/in the/dt lowest/jjs value/nn procurement/nn keep/vb sj/nn ./punct
+otherwise/rb reduce/vb the/dt trade/nn sj/nn (/punct i.e./fw ,/punct remove/vb 4/cd ./punct
+all/dt trading/nn players/nns are/vbp charged/vbn the/dt critical/jj value/nn for/in trading/nn ./punct
+all/dt non/jj trading/nn players/nns are/vbp charged/vbn nothing/nn ./punct
+remark/nn 3.1/cd ./punct
+the/dt special/jj case/nn where/wrb x/nn =/punct n/nn has/vbz received/vbn attention/nn under/in different/jj guises/nns in/in various/jj special/jj cases/nns ,/punct such/jj as/in (/punct )/punct ./punct
+in/in this/dt subsection/nn we/prp prove/vbp that/in the/dt gtr-1/nn algorithm/nn produces/vbz an/dt x-external/jj mechanism/nn that/wdt is/vbz ir/nnp ,/punct ic/nn and/cc bb/nn ./punct
+to/to prove/vb gtr-1/nn ''/'' s/nns properties/nns we/prp make/vbp use/nn of/in theorem/nn 3.1/cd which/wdt is/vbz a/dt well/rb known/jj result/nn (/punct e.g./fw ,/punct )/punct ./punct
+theorem/nnp 3.1/cd characterizes/vbz necessary/jj and/cc sufficient/jj conditions/nns for/in a/dt mechanism/nn for/in single/jj value/nn players/nns to/to be/vb ir/nnp and/cc ic/nn :/punct intuitively/rb ,/punct a/dt bid/nn monotonic/jj allocation/nn rule/nn ensures/vbz that/in no/dt trading/nn player/nn can/md become/vb a/dt non-trading/jj player/nn by/in improving/vbg his/prp$ bid/nn ./punct
+rule/nn which/wdt is/vbz bid/nn monotonic/jj uniquely/rb defines/vbz the/dt critical/jj values/nns for/in all/pdt the/dt players/nns and/cc thus/rb the/dt payments/nns ./punct
+mechanisms/nns with/in the/dt same/jj allocation/nn rule/nn ./punct
+then/rb m1/nn and/cc m2/nn must/md have/vb the/dt same/jj payment/nn rule/nn ./punct
+in/in the/dt following/vbg we/prp prove/vbp that/in the/dt x-external/jj gtr-1/nn subsidiary/nn lemma/nn is/vbz shown/vbn ./punct
+although/in the/dt definition/nn of/in an/dt x-external/jj mechanism/nn requires/vbz that/in x/nn intersects/nns every/dt procurement/nn set/nn ,/punct this/dt is/vbz not/rb not/rb intersect/vb every/dt possible/jj procurement/nn set/nn ./punct
+in/in this/dt case/nn ,/punct any/dt procurement/nn set/vbd s/nns ∈/cd s/nn s.t/nn ./punct
+s/nns ∩/cd x/nn =/punct ∅/cd will/md be/vb reduced/vbn ./punct
+note/vb that/in this/dt is/vbz not/rb true/jj for/in mechanisms/nns which/wdt are/vbp not/rb as/in the/dt x-external/jj gtr-1/nn algorithm/nn is/vbz ir/nnp and/cc applies/vbz the/dt critical/jj value/nn payment/nn scheme/nn according/vbg to/to theorem/vb 3.1/cd ,/punct in/in order/nn to/to show/vb that/in the/dt produced/vbn x-external/jj mechanism/nn with/in the/dt critical/jj value/nn payment/nn scheme/nn is/vbz ic/nn ,/punct it/prp remains/vbz to/to show/vb that/in the/dt produced/vbn mechanism/nn ''/'' s/nns allocation/nn rule/nn is/vbz bid/nn monotonic/jj ./punct
+since/in gtr-1/nn orders/nns the/dt procurement/nn sets/vbz according/vbg to/to then/rb for/in any/dt division/nn function/nn d/nn of/in procurement/nn sets/nns ,/punct the/dt procurement/nn set/vbn s/nns containing/vbg i/fw always/rb appears/vbz later/rb with/in the/dt bid/nn bi/nn than/in with/in the/dt bid/nn bi/nn ./punct
+so/in the/dt likelihood/nn of/in competition/nn can/md only/rb increase/vb if/in i/fw appears/vbz in/in later/jj procurement/nn sets/nns ./punct
+this/dt follows/vbz as/in gtr-1/nn can/md reduce/vb more/jjr of/in the/dt lower/jjr value/nn procurement/nn sets/nns which/wdt will/md result/vb in/in more/jjr non-trading/jj players/nns ./punct
+therefore/rb if/in s/nns has/vbz the/dt required/jj competition/nn and/cc is/vbz not/rb reduced/vbn with/in bi/nn then/rb it/prp will/md have/vb the/dt required/jj competition/nn with/in bi/nn and/cc will/md not/rb be/vb reduced/vbn ./punct
+definition/nn 2.7/cd and/cc the/dt gtr-1/nn algorithm/nn 3.1/cd i/fw has/vbz an/dt external/jj have/vbp internal/jj competition/nn ./punct
+let/vb a/dt be/vb the/dt allocation/nn after/in the/dt procurement/nn sets/vbz reduction/nn by/in the/dt gtr-1/nn algorithm/nn ./punct
+according/vbg to/to the/dt definition/nn of/in w/nn (/punct i∪ei/nn (/punct a/nn ,/punct s/vbz )/punct )/punct =/punct vi/ls +w/nn (/punct ei/nn (/punct a/nn ,/punct s/vbz )/punct )/punct then/rb vi/ls ≥/cd −w/nn (/punct ei/nn (/punct a/nn ,/punct s/vbz )/punct )/punct ./punct
+by/in the/dt critical/jj value/nn pricing/nn scheme/nn definition/nn 2.2/cd it/prp means/vbz that/in if/in player/nn i/fw bids/nns any/dt less/jjr than/in −w/nn (/punct ei/nn (/punct a/nn ,/punct s/vbz )/punct )/punct he/prp will/md not/rb have/vb external/jj competition/nn and/cc therefore/rb will/md be/vb removed/vbn from/in trading/nn ./punct
+thus/rb i/fw pays/vbz no/dt less/jjr than/in min/nn −w/nn (/punct ei/nn (/punct a/nn ,/punct s/vbz )/punct )/punct ./punct
+since/in all/dt other/jj players/nns j/vbp ∈/cd s/nns have/vbp internal/jj competition/nn their/prp$ critical/jj price/nn can/md not/rb be/vb less/jjr than/in their/prp$ maximal/jj value/nn internal/jj competitor/nn (/punct set/vbd )/punct i.e./fw ,/punct max/nn w/nn (/punct rj/nn (/punct a/nn ,/punct s/vbz )/punct )/punct ./punct
+if/in any/dt player/nn j/nn ∈/cd s/nns bids/nns less/rbr then/rb its/prp$ maximal/jj internal/jj competitor/nn (/punct set/vbd )/punct (/punct set/nn )/punct will/md ./punct
+maximal/jj value/nn of/in i/fw ''/'' s/vbz external/jj competition/nn w/nn (/punct ei/nn (/punct a/nn ,/punct s/vbz )/punct )/punct by/in since/in the/dt domain/nn is/vbz a/dt procurement/nn class/nn domain/nn we/prp can/md use/vb internal/jj competition/nn i.e./fw ,/punct j∈s/nns max/nn w/nn (/punct rj/nn (/punct a/nn ,/punct s/vbz )/punct )/punct ./punct
+therefore/rb w/nnp (/punct s/nns )/punct =/punct min/nn −w/nn (/punct ei/nn (/punct a/nn ,/punct s/vbz )/punct )/punct +/punct (/punct j∈s/nns max/nn w/nn (/punct rj/nn (/punct a/nn ,/punct s/nns )/punct )/punct )/punct +f/nn (/punct s/vbz )/punct ≥/nn follows/vbz that/in the/dt produced/vbn x-external/jj mechanism/nn is/vbz bb/nnp ./punct
+the/dt above/in two/cd lemmas/nns yield/vbp the/dt following/vbg theorem/nn :/punct remark/nn 3.2/cd ./punct
+the/dt proof/nn of/in the/dt theorem/nn yields/nns bounds/vbz on/in the/dt payments/nns any/dt player/nn has/vbz to/to make/vb to/to the/dt mechanism/nn ./punct
+the/dt main/jj reason/nn that/wdt gtr-1/nn works/vbz for/in the/dt procurementclass/nn domains/nns is/vbz that/in each/dt player/nn ''/'' s/nns possibility/nn of/in being/vbg later/jj procurement/nn set/vbn sj/nn and/cc hence/rb has/vbz a/dt higher/jjr chance/nn of/in having/vbg the/dt desired/vbn competition/nn ./punct
+therefore/rb ,/punct the/dt chance/nn of/in i/fw lacking/vbg the/dt requisite/jj competition/nn is/vbz decreased/vbn ./punct
+since/in the/dt domain/nn is/vbz a/dt procurement/nn class/nn to/to have/vb competition/nn since/in members/nns of/in their/prp$ class/nn continue/vb reduced/vbn is/vbz decreased/vbn ./punct
+since/in by/in theorem/nn 3.1/cd a/dt necessary/jj and/cc monotonicity/nn ./punct
+gtr-1/nn is/vbz ic/nn for/in procurement-class/jj domains/nns ./punct
+however/rb ,/punct for/in domains/nns that/wdt are/vbp not/rb procurement/jj class/nn domains/nns this/dt does/vbz not/rb suffice/vb even/rb if/in the/dt domain/nn is/vbz a/dt class/nn based/vbn domain/nn ./punct
+although/in ,/punct all/dt members/nns of/in sj/nn continue/vbp to/to have/vb the/dt required/jj competition/nn it/prp is/vbz possible/jj that/in there/ex are/vbp members/nns of/in competition/nn ./punct
+hence/rb i/fw might/md be/vb reduced/vbn after/in increasing/vbg his/prp$ value/nn which/wdt by/in lemma/nn 3.1/cd means/vbz the/dt mechanism/nn is/vbz not/rb ic/nn ./punct
+we/prp therefore/rb define/vbp a/dt different/jj algorithm/nn for/in non/jj procurement/nn class/nn domains/nns ./punct
+our/prp$ modified/vbn algorithm/nn requires/vbz a/dt special/jj dividing/vbg function/nn in/in order/nn to/to maintain/vb the/dt ic/nn property/nn ./punct
+although/in our/prp$ restriction/nn to/to this/dt special/jj dividing/vbg function/nn appears/vbz way/nn that/in procurement/nn sets/nns are/vbp chosen/vbn in/in procurement-class/jj based/jj domains/nns e.g./fw ,/punct ./punct
+for/in ease/nn of/in presentation/nn in/in this/dt section/nn we/prp assume/vbp that/in f/nn =/punct 0/cd ./punct
+the/dt dividing/vbg function/nn for/in general/jj domains/nns is/vbz defined/vbn by/in looking/vbg at/in all/dt possible/jj dividing/vbg functions/nns ./punct
+for/in each/dt dividing/vbg function/nn di/nnp and/cc each/dt set/nn of/in bids/nns ,/punct the/dt gtr-1/nn algorithm/nn divides/vbz the/dt players/nns into/in sets/nns s.t/vbp ./punct
+the/dt welfare/nn that/wdt gtr-1/nn ./punct
+gtr-1/nn is/vbz ic/nn only/rb for/in procurement/nn class/nn domains/nns and/cc not/rb the/dt welfare/nn achieved/vbn by/in the/dt mechanism/nn produced/vbn by/in gtr1/nn (/punct d/nn ,/punct ¯b/nn )/punct ./punct
+denote/vb by/in d0/nn (/punct ¯b/nn )/punct =/punct argmaxd∈d/nn (/punct gtr1/nn (/punct d/nn ,/punct ¯b/nn )/punct )/punct ./punct
+dependence/nn on/in b/nn is/vbz clear/jj from/in the/dt context/nn ./punct
+functions/nns ,/punct and/cc therefore/rb is/vbz a/dt dividing/vbg function/nn ./punct
+the/dt second/jj generalized/vbn trade/nn reduction/nn algorithm/nn gtr-2/nn follows/vbz ./punct
+procurement/nn sets/vbz s1/nn ,/punct ./punct
+./punct
+./punct
+,/punct sk/nn ∈/cd s/nn ./punct
+3/ls ./punct
+for/in each/dt sj/nn ,/punct starting/vbg from/in the/dt lowest/jjs value/nn internal/jj competition/nn then/rb keep/vb sj/nn ./punct
+otherwise/rb ,/punct reduce/vb the/dt trade/nn sj/nn ./punct
+4/ls ./punct
+all/dt trading/nn players/nns are/vbp charged/vbn the/dt critical/jj value/nn for/in trading/nn ./punct
+all/dt non/jj trading/nn players/nns are/vbp charged/vbn zero/cd ./punct
+we/prp will/md prove/vb that/in the/dt mechanism/nn produced/vbn by/in gtr-2/nn maintains/vbz the/dt desired/vbn properties/nns of/in ir/nnp ,/punct ic/nn ,/punct and/cc bb/nn ./punct
+the/dt following/vbg lemma/nn shows/vbz that/in the/dt gtr-2/nn produced/vbd mechanism/nn is/vbz ir/nnp ,/punct and/cc ic/nn ./punct
+in/in the/dt full/jj version/nn gtr-2/nn is/vbz extend/vb such/jj that/in it/prp suffices/vbz that/in there/ex exists/vbz some/dt time/nn in/in which/wdt the/dt third/jj step/nn holds/vbz ./punct
+that/dt extension/nn is/vbz omitted/vbn from/in current/jj version/nn due/jj to/to lack/nn of/in space/nn ./punct
+with/in the/dt dividing/vbg function/nn d1/nn and/cc gained/vbd a/dt greater/jjr welfare/nn than/in gtr1/nn (/punct d1/nn ,/punct b/nn )/punct ./punct
+thus/rb a/dt contradiction/nn arises/vbz and/cc and/cc gtr-2/nn does/vbz not/rb reduce/vb i/fw from/in the/dt trade/nn when/wrb i/fw reports/vbz bi/nn >/punct bi/nn ./punct
+appendix/nn a/nn shows/vbz how/wrb to/to calculate/vb d0/nn for/in procurement/nn class/nn domains/nns in/in polynomial/jj time/nn ,/punct it/prp is/vbz not/rb generally/rb known/vbn how/wrb to/to easily/rb calculate/vb d0/nn ./punct
+creating/vbg a/dt general/jj method/nn for/in calculating/vbg the/dt needed/vbn dividing/vbg function/nn in/in polynomial/jj time/nn remains/vbz as/in an/dt open/jj question/nn ./punct

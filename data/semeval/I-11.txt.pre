@@ -1,0 +1,212 @@
+reasoning/nn about/in agents/nns that/in we/prp observe/vbp in/in the/dt world/nn is/vbz challenging/vbg ./punct
+our/prp$ available/jj information/nn is/vbz often/rb limited/vbn to/to observations/nns of/in the/dt agent/nn ''/'' s/nns external/jj behavior/nn in/in the/dt past/nn and/cc present/jj ./punct
+to/to understand/vb these/dt actions/nns ,/punct we/prp need/vbp to/to deduce/vb the/dt agent/nn ''/'' s/nns internal/jj state/nn ,/punct which/wdt includes/vbz not/rb only/rb rational/jj elements/nns (/punct such/jj as/in intentions/nns and/cc plans/nns )/punct ,/punct but/cc also/rb emotive/jj ones/nns (/punct such/jj as/in fear/nn )/punct ./punct
+in/in addition/nn ,/punct we/prp often/rb want/vbp to/to predict/vb the/dt agent/nn ''/'' s/vbz future/jj actions/nns ,/punct which/wdt are/vbp constrained/vbn not/rb only/rb by/in these/dt inward/jj characteristics/nns ,/punct but/cc also/rb by/in the/dt dynamics/nns of/in the/dt agent/nn ''/'' s/nns interaction/nn with/in its/prp$ environment/nn ./punct
+bee/nn (/punct behavior/nn evolution/nn and/cc extrapolation/nn )/punct uses/vbz a/dt faster-than-real-time/jj agentbased/jj model/nn of/in the/dt environment/nn to/to characterize/vb agents/nns ''/'' internal/jj state/nn by/in evolution/nn against/in observed/vbn behavior/nn ,/punct and/cc then/rb predict/vbp their/prp$ future/jj behavior/nn ,/punct taking/vbg into/in account/nn the/dt dynamics/nns of/in their/prp$ interaction/nn with/in the/dt environment/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp i.2.6/nnp [/punct artificial/nnp intelligence/nnp ]/punct :/punct learning/nnp -/punct parameter/nn learning/nn ./punct
+i.2.11/nn [/punct artificial/nnp intelligence/nnp ]/punct :/punct distributed/vbn artificial/jj intelligence-/nn multiagent/jj systems/nns ./punct
+general/nnp terms/nns algorithms/nns ,/punct measurement/nnp ,/punct experimentation/nn ./punct
+1/ls ./punct
+introduction/nn reasoning/nn about/in agents/nns that/in we/prp observe/vbp in/in the/dt world/nn must/md integrate/vb two/cd disparate/jj levels/nns ./punct
+our/prp$ observations/nns are/vbp often/rb limited/vbn to/to the/dt agent/nn ''/'' s/nns external/jj behavior/nn ,/punct which/wdt can/md frequently/rb be/vb summarized/vbn numerically/rb as/in a/dt trajectory/nn in/in space-time/jj (/punct perhaps/rb punctuated/vbn by/in actions/nns from/in a/dt fairly/rb limited/jj vocabulary/nn )/punct ./punct
+however/rb ,/punct this/dt behavior/nn is/vbz driven/vbn by/in the/dt agent/nn ''/'' s/nns internal/jj state/nn ,/punct which/wdt (/punct in/in the/dt case/nn of/in a/dt human/jj )/punct may/md involve/vb high-level/jj psychological/jj and/cc cognitive/jj concepts/nns such/jj as/in intentions/nns and/cc emotions/nns ./punct
+a/dt central/jj challenge/nn in/in many/jj application/nn domains/nns is/vbz reasoning/nn from/in external/jj observations/nns of/in agent/nn behavior/nn to/to an/dt estimate/nn of/in their/prp$ internal/jj state/nn ./punct
+such/jj reasoning/nn is/vbz motivated/vbn by/in a/dt desire/nn to/to predict/vb the/dt agent/nn ''/'' s/nns behavior/nn ./punct
+this/dt problem/nn has/vbz traditionally/rb been/vbn addressed/vbn under/in the/dt rubric/nn of/in plan/nn recognition/nn or/cc plan/nn inference/nn ./punct
+work/nn to/to date/nn focuses/vbz almost/rb entirely/rb on/in recognizing/vbg the/dt rational/jj state/nn (/punct as/in opposed/vbn to/to the/dt emotional/jj state/nn )/punct of/in a/dt single/jj agent/nn (/punct as/in opposed/vbn to/to an/dt interacting/vbg community/nn )/punct ,/punct and/cc frequently/rb takes/vbz advantage/nn of/in explicit/jj communications/nns between/in agents/nns (/punct as/in in/in managing/vbg conversational/jj protocols/nns )/punct ./punct
+many/jj realistic/jj problems/nns deviate/vbp from/in these/dt conditions/nns ./punct
+increasing/vbg the/dt number/nn of/in agents/nns leads/vbz to/to a/dt combinatorial/jj explosion/nn that/wdt can/md swamp/vb conventional/jj analysis/nn ./punct
+environmental/jj dynamics/nns can/md frustrate/vb agent/nn intentions/nns ./punct
+the/dt agents/nns often/rb are/vbp trying/vbg to/to hide/vb their/prp$ intentions/nns (/punct and/cc even/rb their/prp$ presence/nn )/punct ,/punct rather/rb than/in intentionally/rb sharing/vbg information/nn ./punct
+an/dt agent/nn ''/'' s/nns emotional/jj state/nn may/md be/vb at/in least/jjs as/rb important/jj as/in its/prp$ rational/jj state/nn in/in determining/vbg its/prp$ behavior/nn ./punct
+domains/nns that/wdt exhibit/vbp these/dt constraints/nns can/md often/rb be/vb characterized/vbn as/in adversarial/jj ,/punct and/cc include/vbp military/jj combat/nn ,/punct competitive/jj business/nn tactics/nns ,/punct and/cc multi-player/jj computer/nn games/nns ./punct
+bee/nn (/punct behavioral/nnp evolution/nn and/cc extrapolation/nn )/punct is/vbz a/dt novel/jj approach/nn to/to recognizing/vbg the/dt rational/jj and/cc emotional/jj state/nn of/in multiple/jj interacting/vbg agents/nns based/vbn solely/rb on/in their/prp$ behavior/nn ,/punct without/in recourse/nn to/to intentional/jj communications/nns from/in them/prp ./punct
+it/prp is/vbz inspired/vbn by/in techniques/nns used/vbn to/to predict/vb the/dt behavior/nn of/in nonlinear/jj dynamical/jj systems/nns ,/punct in/in which/wdt a/dt representation/nn of/in the/dt system/nn is/vbz continually/rb fit/vbn to/to its/prp$ recent/jj past/jj behavior/nn ./punct
+for/in nonlinear/jj dynamical/jj systems/nns ,/punct the/dt representation/nn is/vbz a/dt closed-form/jj mathematical/jj equation/nn ./punct
+in/in bee/nn ,/punct it/prp is/vbz a/dt set/nn of/in parameters/nns governing/vbg the/dt behavior/nn of/in software/nn agents/nns representing/vbg the/dt individuals/nns being/vbg analyzed/vbn ./punct
+the/dt current/jj version/nn of/in bee/nn characterizes/vbz and/cc predicts/vbz the/dt behavior/nn of/in agents/nns representing/vbg soldiers/nns engaged/vbn in/in urban/jj combat/nn [/punct 8/cd ]/punct ./punct
+section/nn 2/cd reviews/nns relevant/jj previous/jj work/nn ./punct
+section/nn 3/cd describes/vbz the/dt architecture/nn of/in bee/nn ./punct
+section/nn 4/cd reports/nns results/vbz from/in experiments/nns with/in the/dt system/nn ./punct
+section/nn 5/cd concludes/vbz ./punct
+further/jj details/nns that/wdt can/md not/rb be/vb included/vbn here/rb for/in the/dt sake/nn of/in space/nn are/vbp available/jj in/in an/dt on-line/jj technical/jj report/nn [/punct 16/cd ]/punct ./punct
+2/ls ./punct
+previous/jj work/vbp bee/nn bears/nns comparison/nn with/in previous/jj research/nn in/in ai/nnp (/punct plan/nn recognition/nn )/punct ,/punct hidden/nnp markov/nnp models/nns ,/punct and/cc nonlinear/jj dynamics/nns systems/nns (/punct trajectory/nn prediction/nn )/punct ./punct
+agent/nnp theory/nn commonly/rb describes/vbz an/dt agent/nn ''/'' s/nns cognitive/jj state/nn in/in terms/nns of/in its/prp$ beliefs/nns ,/punct desires/nns ,/punct and/cc intentions/nns (/punct the/dt so-called/jj bdi/nnp model/nn )/punct ./punct
+an/dt agent/nn ''/'' s/nns beliefs/nns are/vbp propositions/nns about/in the/dt state/nn of/in the/dt world/nn that/in it/prp considers/vbz true/jj ,/punct based/vbn on/in its/prp$ perceptions/nns ./punct
+its/prp$ desires/nns are/vbp propositions/nns about/in the/dt world/nn that/in it/prp would/md like/vb to/to be/vb true/jj ./punct
+desires/nns are/vbp not/rb necessarily/rb consistent/jj with/in one/cd another/dt :/punct an/dt that/in it/prp has/vbz selected/vbn ,/punct based/vbn on/in its/prp$ beliefs/nns ,/punct to/to guide/vb its/prp$ future/jj actions/nns ./punct
+unlike/in desires/nns ,/punct goals/nns must/md be/vb consistent/jj with/in one/cd another/dt (/punct or/cc at/in least/jjs believed/vbn to/to be/vb consistent/jj by/in the/dt agent/nn )/punct ./punct
+an/dt agent/nn ''/'' s/nns goals/nns guide/vbp its/prp$ actions/nns ./punct
+thus/rb one/cd ought/md to/to be/vb able/jj to/to learn/vb something/nn about/in an/dt agent/nn ''/'' s/nns goals/nns by/in observing/vbg its/prp$ past/jj actions/nns ,/punct and/cc knowledge/nn of/in the/dt agent/nn ''/'' s/nns goals/nns in/in turn/nn enables/vbz conclusions/nns about/in what/wp the/dt agent/nn may/md do/vb in/in the/dt future/nn ./punct
+this/dt process/nn of/in reasoning/nn from/in an/dt agent/nn ''/'' s/nns actions/nns to/to its/prp$ goals/nns work/vbp (/punct surveyed/vbn recently/rb at/in )/punct is/vbz rich/jj and/cc varied/vbd ./punct
+it/prp covers/vbz both/dt single-agent/jj and/cc multi-agent/jj (/punct e.g./fw ,/punct robot/nn soccer/nn team/nn )/punct plans/nns ,/punct intentional/jj vs/cc ./punct
+non-intentional/jj actions/nns ,/punct speech/nn vs/cc ./punct
+non-speech/jj behavior/nn ,/punct adversarial/jj vs/cc ./punct
+cooperative/jj intent/nn ,/punct complete/jj vs/cc ./punct
+incomplete/jj world/nn knowledge/nn ,/punct and/cc correct/jj vs/cc ./punct
+faulty/jj plans/nns ,/punct among/in other/jj dimensions/nns ./punct
+plan/nnp recognition/nn is/vbz seldom/rb pursued/vbn for/in its/prp$ own/jj sake/nn ./punct
+it/prp usually/rb supports/vbz a/dt higher-level/jj function/nn ./punct
+for/in example/nn ,/punct in/in humancomputer/nn interfaces/nns ,/punct recognizing/vbg a/dt user/nn ''/'' s/nns plan/vbp can/md enable/vb the/dt system/nn to/to provide/vb more/jjr appropriate/jj information/nn and/cc options/nns for/in user/nn step/nn to/to identifying/vbg buggy/nn plans/nns and/cc providing/vbg appropriate/jj remediation/nn ./punct
+in/in many/jj cases/nns ,/punct the/dt higher-level/jj function/nn is/vbz predicting/vbg likely/jj future/jj actions/nns by/in the/dt entity/nn whose/wp$ plan/nn is/vbz being/vbg inferred/vbn ./punct
+behavior/nn ,/punct but/cc hardly/rb a/dt sufficient/jj one/cd ./punct
+at/in least/jjs two/cd other/jj influences/nns ,/punct one/cd internal/jj and/cc one/cd external/jj ,/punct need/vb to/to be/vb taken/vbn into/in account/nn ./punct
+the/dt external/jj influence/nn is/vbz the/dt dynamics/nns of/in the/dt environment/nn ,/punct which/wdt may/md include/vb other/jj agents/nns ./punct
+the/dt dynamics/nns of/in the/dt real/jj world/nn impose/vb significant/jj constraints/nns ./punct
+the/dt environment/nn may/md interfere/vb with/in the/dt desires/nns of/in the/dt agent/nn [/punct 4/cd ,/punct 10/cd ]/punct ./punct
+most/jjs interactions/nns among/in agents/nns ,/punct and/cc between/in agents/nns and/cc the/dt world/nn ,/punct are/vbp nonlinear/jj ./punct
+when/wrb iterated/vbn ,/punct these/dt can/md generate/vb chaos/nn (/punct extreme/jj sensitivity/nn to/to initial/jj conditions/nns )/punct ./punct
+predict/vb what/wp it/prp will/md attempt/vb ,/punct but/cc any/dt nontrivial/jj plan/nn with/in several/jj steps/nns will/md depend/vb sensitively/rb at/in each/dt step/nn to/to the/dt reaction/nn of/in the/dt environment/nn ,/punct and/cc our/prp$ prediction/nn must/md take/vb this/dt reaction/nn into/in account/nn know/vbp now/rb )/punct to/to deal/vb with/in the/dt impact/nn of/in environmental/jj dynamics/nns on/in an/dt agent/nn ''/'' s/nns actions/nns ./punct
+human/jj agents/nns are/vbp also/rb subject/jj to/to an/dt internal/jj influence/nn ./punct
+the/dt agent/nn ''/'' s/nns emotional/jj state/nn can/md modulate/vb its/prp$ decision/nn process/nn and/cc its/prp$ focus/nn of/in attention/nn (/punct and/cc thus/rb its/prp$ perception/nn of/in the/dt environment/nn )/punct ./punct
+in/in extreme/jj cases/nns ,/punct emotion/nn can/md lead/vb an/dt agent/nn to/to choose/vb actions/nns that/wdt from/in the/dt standpoint/nn of/in a/dt logical/jj analysis/nn may/md appear/vb irrational/jj ./punct
+prediction/nn focuses/vbz on/in the/dt rational/jj plan/nn ,/punct and/cc does/vbz not/rb take/vb into/in account/nn either/cc external/jj environmental/jj influences/nns or/cc internal/jj emotional/jj biases/nns ./punct
+bee/nn integrates/vbz all/dt three/cd elements/nns into/in its/prp$ predictions/nns ./punct
+bee/nn is/vbz superficially/rb similar/jj to/to hidden/nnp markov/nnp models/nns (/punct hmm/nn ''/'' s/nns )/punct ./punct
+in/in both/dt cases/nns ,/punct the/dt agent/nn has/vbz hidden/vbn internal/jj state/nn (/punct the/dt agent/nn ''/'' s/nns personality/nn )/punct and/cc observable/jj state/nn (/punct its/prp$ outward/jj behavior/nn )/punct ,/punct and/cc we/prp wish/vbp to/to learn/vb the/dt hidden/jj state/nn from/in the/dt observable/jj state/nn (/punct by/in evolution/nn in/in bee/nnp ,/punct by/in the/dt baum-welch/nnp algorithm/nn in/in hmm/nnp ''/'' s/vbz )/punct and/cc then/rb predict/vbp the/dt agent/nn ''/'' s/vbz future/jj behavior/nn (/punct by/in extrapolation/nn via/in ghosts/nns in/in bee/nnp ,/punct by/in the/dt forward/jj algorithm/nn in/in hmm/nnp ''/'' s/vbz )/punct ./punct
+bee/nn offers/vbz two/cd important/jj benefits/nns over/in hmm/nnp ''/'' s./nnp first/nnp ,/punct a/dt single/jj agent/nn ''/'' s/nns hidden/vbn variables/nns do/vbp not/rb satisfy/vb the/dt their/prp$ values/nns at/in t/nn ,/punct but/cc also/rb on/in the/dt hidden/jj variables/nns of/in other/jj agents/nns ./punct
+one/cd could/md avoid/vb this/dt limitation/nn by/in constructing/vbg a/dt single/jj hmm/nn over/in the/dt joint/jj state/nn space/nn of/in all/dt of/in the/dt agents/nns ,/punct but/cc this/dt approach/nn is/vbz combinatorially/rb prohibitive/jj ./punct
+bee/nn combines/vbz the/dt efficiency/nn of/in independently/rb modeling/nn individual/jj agents/nns with/in the/dt reality/nn of/in taking/vbg into/in account/nn interactions/nns among/in them/prp ./punct
+second/rb ,/punct markov/nnp models/nns assume/vbp that/in transition/nn probabilities/nns are/vbp stationary/jj ./punct
+this/dt assumption/nn is/vbz unrealistic/jj in/in dynamic/jj situations/nns ./punct
+bee/nn ''/'' s/nns evolutionary/jj process/nn continually/rb updates/nns the/dt agents/nns ''/'' personalities/nns based/vbn on/in actual/jj observations/nns ,/punct and/cc thus/rb automatically/rb accounts/vbz for/in changes/nns in/in the/dt agents/nns ''/'' personalities/nns ./punct
+vector/nn define/vb the/dt system/nn ''/'' s/nns state/nn space/nn ./punct
+one/cd typically/rb analyzes/vbz such/jj systems/nns as/in vector/nn differential/jj equations/nns ,/punct e.g./fw ,/punct ./punct
+when/wrb f/fw is/vbz nonlinear/jj ,/punct the/dt system/nn can/md be/vb formally/rb chaotic/jj ,/punct and/cc starting/vbg points/nns arbitrarily/rb close/rb to/to one/cd another/dt can/md lead/vb to/to trajectories/nns that/wdt diverge/vbp exponentially/rb rapidly/rb ./punct
+long-range/jj prediction/nn of/in anticipate/vbp the/dt system/nn ''/'' s/nns behavior/nn a/dt short/jj distance/nn into/in the/dt future/nn ./punct
+a/dt system/nn ''/'' s/nns trajectory/nn in/in the/dt recent/jj past/nn ,/punct then/rb extrapolate/vbp this/dt fit/nn into/in the/dt future/jj (/punct figure/nn 1/cd ,/punct )/punct ./punct
+this/dt process/nn is/vbz repeated/vbn constantly/rb ,/punct providing/vbg the/dt user/nn with/in a/dt limited/jj look-ahead/jj ./punct
+this/dt approach/nn is/vbz robust/jj and/cc widely/rb applied/vbn ,/punct but/cc requires/vbz systems/nns that/wdt can/md efficiently/rb be/vb described/vbn with/in mathematical/jj equations/nns ./punct
+bee/nn extends/vbz this/dt approach/nn to/to agent/nn behaviors/nns ,/punct which/wdt it/prp fits/vbz to/to observed/vbn behavior/nn using/vbg a/dt genetic/jj algorithm/nn ./punct
+bee/nn predicts/vbz the/dt future/nn by/in observing/vbg the/dt emergent/nn behavior/nn agent/nn simulation/nn ./punct
+key/nn elements/nns of/in the/dt bee/nn architecture/nn include/vbp the/dt model/nn of/in an/dt individual/jj agent/nn ,/punct the/dt pheromone/nn infrastructure/nn through/in which/wdt agents/nns interact/vbp ,/punct the/dt information/nn sources/nns that/wdt guide/vbp them/prp ,/punct and/cc the/dt overall/jj evolutionary/jj cycle/nn that/in they/prp execute/vbp ./punct
+bodies/nns of/in work/nn :/punct our/prp$ previous/jj work/nn on/in fine-grained/jj agents/nns that/wdt coordinate/vbp their/prp$ actions/nns through/in digital/jj pheromones/nns in/in a/dt shared/jj environment/nn [/punct 2/cd ,/punct 13/cd ,/punct 17/cd ,/punct 18/cd ,/punct 21/cd ]/punct ,/punct and/cc the/dt success/nn of/in previous/jj agentbased/jj combat/nn modeling/nn ./punct
+digital/nnp pheromones/nns are/vbp scalar/jj variables/nns that/wdt agents/nns deposit/nn and/cc sense/nn at/in their/prp$ current/jj location/nn in/in the/dt environment/nn ./punct
+agents/nns respond/vbp to/to local/jj concentrations/nns of/in these/dt variables/nns tropistically/rb ,/punct climbing/vbg or/cc descending/vbg local/jj gradients/nns ./punct
+their/prp$ movements/nns change/vbp the/dt deposit/nn patterns/nns ./punct
+this/dt feedback/nn loop/nn ,/punct together/rb with/in processes/nns of/in evaporation/nn and/cc propagation/nn in/in the/dt environment/nn ,/punct support/nn complex/nn patterns/nns of/in interaction/nn and/cc coordination/nn among/in the/dt agents/nns ./punct
+table/nnp 1/cd shows/vbz the/dt bee/nn ''/'' s/nns current/jj pheromone/nn flavors/nns ./punct
+for/in example/nn ,/punct a/dt living/vbg member/nn of/in the/dt adversary/nn emits/vbz a/dt red-alive/nn pheromone/nn ,/punct while/in roads/nns emit/vbp a/dt mobility/nn pheromone/nn ./punct
+our/prp$ soldier/nn agents/nns are/vbp inspired/vbn by/in einstein/nn and/cc mana/nn ./punct
+[/punct -1/cd ,/punct 1/cd ]/punct ,/punct describing/vbg the/dt agent/nn ''/'' s/nns response/nn to/to six/cd kinds/nns of/in information/nn ./punct
+four/cd of/in these/dt describe/vbp the/dt number/nn of/in alive/jj friendly/jj ,/punct alive/jj enemy/nn ,/punct injured/vbn friendly/jj ,/punct and/cc injured/jj enemy/nn troops/nns within/in the/dt agent/nn ''/'' s/nns sensor/nn range/nn ./punct
+the/dt other/jj two/cd weights/nns relate/vbp to/to the/dt agent/nn ''/'' s/nns distance/nn to/to its/prp$ own/jj flag/nn and/cc that/in of/in the/dt adversary/nn ,/punct representing/vbg objectives/nns that/in it/prp seeks/vbz to/to protect/vb and/cc attack/vb ,/punct respectively/rb ./punct
+a/dt positive/jj weight/nn indicates/vbz attraction/nn to/to the/dt entity/nn described/vbn by/in the/dt weight/nn ,/punct while/in a/dt negative/jj weight/nn indicates/vbz repulsion/nn ./punct
+mana/nnp extends/vbz the/dt concepts/nns in/in einstein/nn ./punct
+friendly/jj and/cc enemy/nn flags/nns are/vbp replaced/vbn by/in the/dt waypoints/nns pursued/vbn by/in each/dt side/nn ./punct
+mana/nn includes/vbz low/jj ,/punct medium/nn ,/punct and/cc high/jj threat/nn enemies/nns ./punct
+in/in shot/nn at/in ,/punct making/vbg contact/nn with/in the/dt enemy/nn ,/punct being/vbg injured/vbn )/punct that/dt shift/nn the/dt agent/nn from/in one/cd personality/nn vector/nn to/to another/dt ./punct
+a/dt default/nn state/nn defines/vbz the/dt personality/nn vector/nn when/wrb no/dt trigger/nn state/nn is/vbz active/jj ./punct
+the/dt personality/nn vectors/nns in/in mana/nnp and/cc einstein/nnp reflect/vbp both/dt rational/jj and/cc emotive/jj aspects/nns of/in decision-making/nn ./punct
+the/dt notion/nn of/in informally/rb think/vb of/in as/in emotion/nn (/punct e.g./fw ,/punct fear/nn ,/punct compassion/nn ,/punct aggression/nn )/punct ,/punct and/cc the/dt use/nn of/in the/dt term/nn personality/nn in/in both/cc einstein/nn and/cc mana/nn suggests/vbz that/in the/dt system/nn designers/nns are/vbp thinking/vbg anthropomorphically/rb ,/punct though/in they/prp do/vbp not/rb use/vb emotion/nn to/to describe/vb the/dt effect/nn they/prp are/vbp trying/vbg to/to achieve/vb ./punct
+the/dt notion/nn of/in waypoints/nns to/to which/wdt an/dt agent/nn is/vbz attracted/vbn reflects/vbz goal-oriented/jj rationality/nn ./punct
+bee/nn uses/vbz an/dt integrated/jj rational-emotive/jj personality/nn model/nn ./punct
+are/vbp values/nns in/in [/punct -1/cd ,/punct +1/cd ]/punct :/punct protectred/nnp (/punct the/dt adversary/nn )/punct ,/punct protectblue/nnp (/punct friendly/jj forces/nns )/punct ,/punct protectgreen/nnp (/punct civilians/nns )/punct ,/punct protectkeysites/nnp ,/punct avoidcombat/nnp ,/punct avoiddetection/nnp ,/punct and/cc survive/vb ./punct
+negative/jj values/nns reverse/vb the/dt sense/nn suggested/vbn by/in the/dt label/nn ./punct
+for/in example/nn ,/punct a/dt negative/jj redalive/nn ,/punct red-casualty/nn ,/punct and/cc mobility/nn pheromone/nn ,/punct and/cc will/md move/vb at/in maximum/jj speed/nn ./punct
+the/dt ortony-clore-collins/nnp (/punct occ/nnp )/punct framework/nn ,/punct and/cc is/vbz described/vbn in/in detail/nn elsewhere/rb ./punct
+occ/nn define/vbp emotions/nns as/in valanced/jj reactions/nns to/to agents/nns ,/punct states/nns ,/punct or/cc events/nns in/in the/dt environment/nn ./punct
+this/dt notion/nn advance/nn in/in bee/nn ''/'' s/nns emotional/jj model/nn is/vbz the/dt recognition/nn that/wdt agents/nns may/md differ/vb in/in how/wrb sensitive/jj they/prp are/vbp to/to triggers/nns ./punct
+for/in example/nn ,/punct threatening/vbg situations/nns tend/vbp to/to stimulate/vb the/dt emotion/nn of/in fear/nn ,/punct but/cc a/dt given/vbn level/nn of/in threat/nn will/md produce/vb more/jjr fear/nn in/in a/dt new/jj recruit/vb than/in in/in a/dt seasoned/jj veteran/nn ./punct
+thus/rb our/prp$ model/nn includes/vbz not/rb only/rb emotions/nns ,/punct but/cc dispositions/nnps ./punct
+each/dt emotion/nn has/vbz a/dt corresponding/jj disposition/nnp ./punct
+dispositions/nns are/vbp relatively/rb stable/jj ,/punct and/cc considered/vbn constant/jj over/in the/dt time/nn horizon/nn of/in a/dt run/nn of/in the/dt bee/nn ,/punct while/in emotions/nns vary/vbp exposed/vbn ./punct
+interviews/nns with/in military/jj domain/nn experts/nns identified/vbd the/dt two/cd most/rbs crucial/jj emotions/nns for/in combat/nn behavior/nn as/in anger/nn (/punct with/in the/dt corresponding/jj disposition/nn irritability/nn )/punct and/cc fear/nn (/punct whose/wp$ disposition/nn is/vbz cowardice/nnp )/punct ./punct
+table/nnp 2/cd shows/nns which/wdt pheromones/vbz trigger/nn which/wdt emotions/nns ./punct
+for/in example/nn ,/punct red-casualty/nn pheromone/nn stimulates/vbz both/cc anger/nn and/cc fear/nn in/in a/dt red/jj agent/nn ,/punct but/cc not/rb in/in a/dt blue/jj agent/nn ./punct
+emotions/nns are/vbp modeled/vbn as/in agent/nn hormones/nns (/punct internal/jj pheromones/nns )/punct that/dt are/vbp augmented/jj in/in the/dt presence/nn of/in the/dt triggering/vbg environmental/jj condition/nn and/cc evaporate/vb over/in time/nn ./punct
+a/dt non-zero/jj emotion/nn modifies/vbz the/dt agent/nn ''/'' s/nns actions/nns ./punct
+elevated/jj level/nn anger/nn increases/vbz movement/nn likelihood/nn ,/punct weapon/nn firing/nn likelihood/nn ,/punct and/cc tendency/nn toward/in an/dt exposed/vbn posture/nn ./punct
+elevated/jj fear/nn decreases/vbz these/dt likelihoods/nns ./punct
+extending/vbg the/dt nonlinear/jj systems/nns technique/nn of/in section/nn describes/vbz this/dt process/nn at/in a/dt high/jj implements/vbz it/prp ./punct
+behavior/nn evolution/nn and/cc extrapolation/nn ./punct
+each/dt representing/vbg itself/prp ./punct
+we/prp call/vbp the/dt combined/jj modeling/nn entity/nn consisting/vbg of/in avatar/nn and/cc ghosts/nns a/dt polyagent/nn ./punct
+and/cc runs/vbz into/in the/dt future/nn ./punct
+is/vbz offset/vbn with/in respect/nn to/to the/dt current/jj time/nn t./in the/dt timeline/nn is/vbz divided/vbn into/in discrete/jj pages/nns ,/punct each/dt representing/vbg =/punct -30/cd ,/punct meaning/vbg that/in ghosts/nns are/vbp inserted/vbn into/in a/dt page/nn representing/vbg the/dt state/nn of/in the/dt world/nn 30/cd minutes/nns ago/rb ./punct
+at/in the/dt insertion/nn horizon/nn ,/punct each/dt ghost/nn ''/'' s/nns behavioral/jj parameters/nns (/punct desires/nns and/cc dispositions/nns )/punct are/vbp sampled/vbn from/in distributions/nns to/to explore/vb alternative/jj personalities/nns of/in the/dt entity/nn it/prp represents/vbz ./punct
+each/dt page/nn between/in the/dt insertion/nn horizon/nn and/cc =/punct t/nn (/punct now/rb )/punct which/wdt it/prp corresponds/vbz ./punct
+as/in ghosts/nns move/vbp from/in page/nn to/to page/nn ,/punct they/prp interact/vbp with/in this/dt past/jj state/nn ,/punct based/vbn on/in their/prp$ behavioral/jj parameters/nns ./punct
+these/dt interactions/nns mean/vbp that/in their/prp$ fitness/nn depends/vbz not/rb just/rb on/in their/prp$ own/jj actions/nns ,/punct but/cc also/rb on/in the/dt behaviors/nns of/in the/dt rest/nn of/in the/dt population/nn ,/punct which/wdt is/vbz also/rb evolving/vbg ./punct
+because/in advances/nns faster/rbr than/in real/jj evaluated/vbn based/vbn on/in its/prp$ location/nn compared/vbn with/in the/dt actual/jj location/nn of/in its/prp$ corresponding/jj real-world/jj entity/nn ./punct
+the/dt fittest/jjs ghosts/nns have/vbp three/cd functions/nns ./punct
+rest/nn of/in the/dt system/nn as/in the/dt likely/jj personality/nn of/in that/dt entity/nn ./punct
+this/dt information/nn enables/vbz us/prp to/to characterize/vb individual/jj warriors/nns as/in unusually/rb cowardly/jj or/cc brave/vb ./punct
+2/ls ./punct
+the/dt fittest/jjs ghosts/nns breed/vbp genetically/rb and/cc their/prp$ offspring/nn return/nn to/to the/dt insertion/nn horizon/nn to/to continue/vb the/dt fitting/jj process/nn ./punct
+3/ls ./punct
+the/dt fittest/jjs ghosts/nns for/in each/dt entity/nn form/vbp the/dt basis/nn for/in a/dt population/nn of/in ghosts/nns that/wdt run/vbp past/in the/dt avatar/nn 's/pos present/jj into/in the/dt future/nn ./punct
+each/dt ghost/nn that/wdt runs/vbz into/in the/dt future/jj explores/vbz a/dt different/jj possible/jj future/nn of/in the/dt battle/nn ,/punct analogous/jj to/to how/wrb some/dt people/nns plan/vbp ahead/rb by/in mentally/rb simulating/vbg different/jj ways/nns that/in a/dt situation/nn might/md unfold/vb ./punct
+analysis/nn of/in the/dt behaviors/nns of/in these/dt different/jj possible/jj futures/nns yields/nns predictions/nns ./punct
+thus/rb bee/nnp has/vbz three/cd distinct/jj notions/nns of/in time/nn ,/punct all/dt of/in which/wdt may/md be/vb distinct/jj from/in real-world/jj time/nn ./punct
+bee/nn to/to a/dt simulated/jj battle/nn ,/punct and/cc domain/nn time/nn is/vbz the/dt time/nn stamp/nn published/vbn by/in the/dt simulator/nn ./punct
+during/in actual/jj runs/nns ,/punct the/dt simulator/nn is/vbz often/rb paused/vbn ,/punct so/rb domain/jj time/nn runs/vbz slower/jjr than/in real/jj time/nn ./punct
+when/wrb we/prp replay/nn logs/nns from/in simulation/nn runs/nns ,/punct we/prp can/md speed/vb than/in real/jj time/nn ./punct
+time/nn ./punct
+3/ls ./punct
+shift/nn time/nn is/vbz incremented/jj every/dt time/nn the/dt ghosts/nns move/vbp from/in one/cd page/nn to/to the/dt next/jj ./punct
+the/dt relation/nn between/in shift/nn time/nn and/cc real/jj resources/nns available/jj ./punct
+we/prp use/vbp simple/jj agents/nns coordinated/vbn using/vbg pheromone/nn mechanisms/nns ./punct
+we/prp have/vbp described/vbn the/dt basic/jj dynamics/nns of/in our/prp$ pheromone/nn infrastructure/nn elsewhere/rb ./punct
+this/dt infrastructure/nn runs/vbz on/in the/dt nodes/nns of/in a/dt graph-structured/jj environment/nn (/punct in/in the/dt case/nn of/in bee/nn ,/punct a/dt rectangular/jj lattice/nn )/punct ./punct
+each/dt node/nn maintains/vbz a/dt scalar/jj value/nn for/in each/dt flavor/nn of/in pheromone/nn ,/punct and/cc provides/vbz three/cd functions/nns :/punct it/prp aggregates/nns deposits/nns from/in individual/jj agents/nns ,/punct fusing/vbg information/nn across/in multiple/jj agents/nns and/cc through/in time/nn ./punct
+it/prp evaporates/vbz pheromones/nns over/in time/nn ,/punct providing/vbg an/dt innovative/jj alternative/nn to/to traditional/jj truth/nn maintenance/nn ./punct
+traditionally/rb ,/punct knowledge/nn bases/nns remember/vbp everything/nn they/prp are/vbp told/vbn unless/in they/prp have/vbp a/dt reason/nn to/to forget/vb ./punct
+pheromone-based/jj systems/nns immediately/rb begin/vb to/to forget/vb everything/nn they/prp learn/vbp ,/punct unless/in it/prp is/vbz continually/rb reinforced/vbn ./punct
+thus/rb inconsistencies/nns automatically/rb remove/vb themselves/prp within/in a/dt known/jj period/nn ./punct
+it/prp diffuses/vbz pheromones/nns to/to nearby/jj places/nns ,/punct disseminating/vbg information/nn for/in access/nn by/in nearby/jj agents/nns ./punct
+the/dt distribution/nn of/in each/dt pheromone/nn flavor/nn over/in the/dt environment/nn forms/vbz a/dt field/nn that/wdt represents/vbz some/dt aspect/nn of/in the/dt state/nn of/in the/dt complete/jj pheromone/nn field/nn for/in the/dt world/nn at/in the/dt bee/nn time/nn represented/vbn by/in that/dt page/nn ./punct
+the/dt behavior/nn of/in the/dt pheromones/nns on/in each/dt page/nn depends/vbz on/in whether/in the/dt page/nn represents/vbz the/dt past/jj or/cc the/dt future/nn ./punct
+in/in pages/nns representing/vbg the/dt future/jj (/punct >/punct t/nn )/punct ,/punct the/dt usual/jj pheromone/nn mechanisms/nns apply/vbp ./punct
+ghosts/nns deposit/nn pheromone/nn each/dt time/nn they/prp move/vbp to/to a/dt new/jj page/nn ,/punct and/cc pheromones/nns evaporate/vbp and/cc propagate/vbp from/in one/cd page/nn to/to the/dt next/jj ./punct
+state/nn of/in the/dt real/jj world/nn ./punct
+this/dt has/vbz two/cd consequences/nns for/in pheromone/nn management/nn ./punct
+first/rb ,/punct we/prp can/md generate/vb the/dt pheromone/nn fields/nns directly/rb need/vbp for/in the/dt ghosts/nns to/to make/vb deposits/nns ./punct
+second/rb ,/punct we/prp can/md adjust/vb the/dt pheromone/nn intensities/nns based/vbn on/in the/dt changed/vbn locations/nns of/in entities/nns the/dt pheromones/nns ./punct
+both/dt of/in these/dt simplifications/nns reflect/vbp the/dt fact/nn that/in in/in our/prp$ current/jj system/nn ,/punct we/prp have/vbp complete/jj knowledge/nn of/in the/dt past/nn ./punct
+when/wrb we/prp introduce/vbp noise/nn and/cc uncertainty/nn ,/punct we/prp will/md probably/rb need/vb to/to introduce/vb dynamic/jj pheromones/nns in/in the/dt past/nn as/rb well/rb as/in the/dt future/nn ./punct
+execution/nn of/in the/dt pheromone/nn infrastructure/nn proceeds/vbz on/in two/cd time/nn scales/nns ,/punct running/vbg in/in separate/jj threads/nns ./punct
+the/dt first/jj thread/nn updates/nns the/dt book/nn of/in pages/nns each/dt time/nn the/dt domain/nn time/nn advances/nns past/in the/dt next/jj page/nn boundary/nn ./punct
+at/in each/dt step/nn ,/punct the/dt former/jj now/rb +/punct 1page/nn is/vbz replaced/vbn with/in a/dt new/jj current/jj page/nn ,/punct whose/wp$ pheromones/nns correspond/vbp to/to the/dt locations/nns and/cc strengths/nns of/in an/dt empty/jj page/nn is/vbz added/vbn at/in the/dt prediction/nn horizon/nn ;/punct the/dt oldest/jjs page/nn is/vbz discarded/vbn ,/punct since/in it/prp has/vbz passed/vbn the/dt insertion/nn horizon/nn ./punct
+the/dt second/jj thread/nn moves/vbz the/dt ghosts/nns from/in one/cd page/nn to/to the/dt next/jj ,/punct as/in fast/jj as/in the/dt processor/nn allows/vbz ./punct
+at/in each/dt step/nn ,/punct ghosts/nns reaching/vbg the/dt =/punct t/nn page/nn are/vbp evaluated/vbn for/in fitness/nn and/cc new/jj ghosts/nns from/in the/dt avatars/nns and/cc from/in the/dt evolutionary/jj process/nn ghosts/nns that/wdt have/vbp moved/vbn beyond/in the/dt prediction/nn horizon/nn are/vbp all/dt ghosts/nns plan/vbp their/prp$ next/jj actions/nns based/vbn on/in the/dt pheromone/nn field/nn the/dt system/nn computes/vbz the/dt next/jj state/nn of/in each/dt page/nn ,/punct including/vbg executing/vbg the/dt actions/nns elected/vbn by/in the/dt ghosts/nns ,/punct and/cc (/punct in/in future/jj pages/nns )/punct evaporating/vbg pheromones/nns and/cc recording/vbg new/jj deposits/nns from/in the/dt recently/rb arrived/vbn ghosts/nns ./punct
+ghost/nn movement/nn based/vbn on/in pheromone/nn gradients/nns is/vbz a/dt simple/jj process/nn ,/punct so/rb this/dt system/nn can/md support/vb realistic/jj agent/nn populations/nns without/in excessive/jj computer/nn load/nn ./punct
+in/in our/prp$ current/jj system/nn ,/punct each/dt avatar/nn generates/vbz eight/cd ghosts/nns per/in shift/nn ./punct
+since/in there/ex are/vbp about/in 50/cd entities/nns in/in the/dt battlespace/nn (/punct about/in 20/cd units/nns each/dt of/in red/nnp and/cc blue/nnp and/cc about/in 24000/cd over/in the/dt entire/jj book/nn ./punct
+of/in n/p/nn shifts/nns per/in second/nn will/md permit/vb ghosts/nns to/to run/vb from/in the/dt generated/vbn ./punct
+empirically/rb ,/punct this/dt level/nn is/vbz a/dt lower/jjr bound/vbn for/in reasonable/jj performance/nn ,/punct and/cc easily/rb achievable/jj on/in stock/nn wintel/nnp platforms/nns ./punct
+the/dt flexibility/nn of/in the/dt bee/nn ''/'' s/nns pheromone/nn infrastructure/nn permits/vbz the/dt integration/nn of/in numerous/jj information/nn sources/nns as/in input/nn to/to our/prp$ characterizations/nns of/in entity/nn personalities/nns and/cc predictions/nns of/in their/prp$ future/jj behavior/nn ./punct
+our/prp$ current/jj system/nn draws/vbz on/in three/cd sources/nns of/in information/nn ,/punct but/cc others/nns can/md readily/rb be/vb added/vbn ./punct
+real-world/jj observations.-observations/nns from/in the/dt real/jj world/nn are/vbp encoded/vbn into/in the/dt pheromone/nn field/nn each/dt increment/nn of/in the/dt entities/nns that/wdt generate/vbp each/dt flavor/nn of/in pheromone/nn ./punct
+statistical/jj estimates/nns of/in threat/nn regions.-statistical/jj techniques1/nn estimate/nn the/dt level/nn of/in threat/nn to/to each/dt force/nn (/punct red/jj or/cc blue/jj )/punct ,/punct based/vbn on/in the/dt topology/nn of/in the/dt battlefield/nn and/cc the/dt known/jj disposition/nn threatening/vbg ,/punct especially/rb if/in the/dt opposite/jj force/nn occupies/vbz its/prp$ margins/nns ./punct
+the/dt results/nns of/in this/dt process/nn are/vbp posted/vbn to/to the/dt pheromone/nn pages/nns as/in redthreat/nn pheromone/nn (/punct representing/vbg a/dt threat/nn to/to red/jj )/punct and/cc bluethreat/nn pheromone/nn (/punct representing/vbg a/dt threat/nn to/to blue/jj )/punct ./punct
+ai-based/jj plan/nn recognition.-while/jj plan/nn recognition/nn is/vbz not/rb dynamically/rb configure/vb a/dt bayes/nnp net/nn based/vbn on/in heuristics/nns to/to identify/vb the/dt likely/jj goals/nns that/wdt each/dt entity/nn may/md hold.2/vb the/dt destinations/nns of/in these/dt goals/nns function/vbp as/in virtual/jj pheromones/nns ./punct
+ghosts/nns include/vbp their/prp$ distance/nn to/to such/jj points/nns in/in their/prp$ action/nn decisions/nns ,/punct achieving/vbg the/dt result/nn of/in gradient/nn following/vbg without/in the/dt computational/jj expense/nn of/in maintaining/vbg a/dt pheromone/nn field/nn ./punct
+human/jj wargamers/nns make/vbp decisions/nns that/wdt are/vbp played/vbn out/rp in/in a/dt battlefield/nn simulator/nn ./punct
+the/dt commander/nn for/in each/dt side/nn (/punct red/nnp and/cc blue/nnp )/punct has/vbz at/in his/prp$ disposal/nn a/dt team/nn of/in pucksters/nns ,/punct human/jj operators/nns who/wp set/vbp waypoints/nns for/in individual/jj units/nns in/in the/dt simulator/nn ./punct
+each/dt puckster/nn is/vbz responsible/jj for/in four/cd to/to six/cd units/nns ./punct
+the/dt simulator/nn moves/vbz the/dt units/nns ,/punct determines/vbz firing/nn actions/nns ,/punct and/cc resolves/vbz the/dt outcome/nn of/in conflicts/nns ./punct
+it/prp is/vbz important/jj to/to emphasize/vb that/in this/dt simulator/nn is/vbz simply/rb a/dt surrogate/nn for/in a/dt sensor/nn feed/nn from/in a/dt real-world/jj battlefield/nn to/to test/vb our/prp$ ability/nn to/to fit/vb personalities/nns based/vbn on/in behavior/nn ,/punct one/cd red/jj puckster/nn responsible/jj for/in four/cd units/nns is/vbz designated/vbn the/dt (/punct chickens/nns )/punct and/cc two/cd to/to be/vb irritable/jj (/punct rambos/nns )/punct ./punct
+he/prp does/vbz not/rb disclose/vb this/dt assignment/nn during/in the/dt run/nn ./punct
+he/prp moves/vbz each/dt unit/nn according/vbg to/to the/dt commander/nn ''/'' s/nns orders/nns until/in the/dt unit/nn encounters/vbz circumstances/nns that/wdt would/md trigger/vb the/dt emotion/nn associated/vbn with/in the/dt unit/nn ''/'' s/nns disposition/nn ./punct
+then/rb he/prp manipulates/vbz chickens/nns as/in though/in they/prp are/vbp fearful/jj (/punct avoiding/vbg combat/nn and/cc moving/vbg away/rb from/in blue/jj )/punct ,/punct and/cc moves/vbz rambos/nnps into/in combat/nn as/rb quickly/rb as/in possible/jj ./punct
+our/prp$ software/nn receives/vbz position/nn reports/nns on/in all/dt units/nns ,/punct every/dt twenty/cd seconds/nns ./punct
+this/dt process/nn ,/punct known/vbn as/in sad/jj (/punct statistical/jj anomaly/nnp detection/nn )/punct ,/punct is/vbz developed/vbn by/in our/prp$ colleagues/nns rafael/nnp alonso/nnp ,/punct hua/nnp li/nnp ,/punct and/cc john/nnp asmuth/nnp at/in sarnoff/nnp corporation/nnp ./punct
+alonso/nnp and/cc li/nnp are/vbp now/rb at/in set/nnp corporation/nnp ./punct
+this/dt process/nn ,/punct known/vbn as/in kip/nnp (/punct knowledge-based/jj intention/nnp projection/nnp )/punct ,/punct is/vbz developed/vbn by/in our/prp$ colleagues/nns paul/nnp nielsen/nnp ,/punct jacob/nnp crossman/nnp ,/punct and/cc rich/nnp frederiksen/nnp at/in soar/nnp technology/nnp ./punct
+the/dt difference/nn between/in the/dt two/cd disposition/nn values/vbz the/dt emotional/jj state/nn of/in the/dt corresponding/jj entity/nn than/in either/cc value/nn by/in itself/prp ./punct
+figure/nnp 4/cd shows/vbz the/dt delta/nn disposition/nn for/in each/dt of/in the/dt eight/cd fittest/jjs ghosts/nns at/in each/dt time/nn step/nn ,/punct plotted/vbn against/in the/dt time/nn in/in seconds/nns ,/punct for/in a/dt unit/nn played/vbd as/in a/dt chicken/nn ./punct
+the/dt values/nns clearly/rb trend/vbp negative/jj ./punct
+early/rb ,/punct and/cc often/rb do/vbp not/rb give/vb their/prp$ ghosts/nns enough/jj time/nn to/to evolve/vb a/dt clear/jj picture/nn of/in their/prp$ personality/nn ,/punct but/cc in/in this/dt case/nn the/dt positive/jj delta/nn disposition/nnp is/vbz evident/jj before/in the/dt unit/nn ''/'' s/nns demise/nn ./punct
+disposition/nnp ,/punct and/cc declare/vb the/dt unit/nn to/to be/vb a/dt negative/jj or/cc positive/jj threshold/nn ,/punct respectively/rb ./punct
+currently/rb ,/punct this/dt threshold/nn is/vbz set/vbn at/in 0.25/cd ./punct
+we/prp are/vbp exploring/vbg additional/jj filters/nns ./punct
+for/in example/nn ,/punct rambo/nnp ;/punct units/nns that/wdt seek/vbp to/to avoid/vb detection/nn and/cc avoid/vb combat/nn are/vbp more/rbr readily/rb called/vbn chicken/nn ./punct
+that/in in/in fact/nn the/dt unit/nn was/vbd being/vbg played/vbn aggressively/rb ,/punct rushing/vbg toward/in oncoming/vbg blue/jj forces/nns ./punct
+the/dt brave/vbp die/vb young/jj ,/punct so/in we/prp almost/rb never/rb detect/vb units/nns played/vbn intentionally/rb as/in rambos/nns ./punct
+experiments/nns of/in our/prp$ emotion/nn detector/nn compared/vbn with/in humans/nns ./punct
+two/cd cowards/nns were/vbd played/vbn in/in each/dt of/in eleven/nns games/nns ./punct
+human/jj observers/nns in/in was/vbd able/jj to/to detect/vb cowards/nns (/punct =/punct chickens/nns )/punct much/rb earlier/jjr than/in the/dt human/jj ,/punct while/in missing/vbg only/rb one/cd chicken/nn that/in the/dt humans/nns detected/vbn ./punct
+emotional/jj ,/punct bee/nn sometimes/rb detects/vbz other/jj units/nns as/in cowardly/jj or/cc brave/vb ./punct
+analysis/nn of/in these/dt units/nns shows/vbz that/in these/dt characterizations/nns were/vbd appropriate/jj :/punct units/nns that/wdt flee/vbp in/in the/dt face/nn of/in enemy/nn forces/nns or/cc weapons/nns fire/nn are/vbp detected/vbn as/in chickens/nns ,/punct while/in those/dt that/wdt stand/vbp their/prp$ ground/nn or/cc rush/vb the/dt adversary/nn are/vbp denominated/vbn as/in rambos/nns ./punct

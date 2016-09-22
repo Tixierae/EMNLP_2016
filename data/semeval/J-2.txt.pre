@@ -1,0 +1,943 @@
+for/in allocation/nn problems/nns with/in one/cd or/cc more/jjr items/nns ,/punct the/dt wellknown/jj vickrey-clarke-groves/nnp (/punct vcg/nnp )/punct mechanism/nn is/vbz efficient/jj ,/punct strategy-proof/jj ,/punct individually/rb rational/jj ,/punct and/cc does/vbz not/rb incur/vb a/dt deficit/nn ./punct
+however/rb ,/punct the/dt vcg/nnp mechanism/nn is/vbz not/rb (/punct strongly/rb )/punct budget/nn balanced/jj :/punct generally/rb ,/punct the/dt agents/nns ''/'' payments/nns will/md sum/vb to/to more/jjr than/in 0/cd ./punct
+if/in there/ex is/vbz an/dt auctioneer/nn who/wp is/vbz selling/vbg the/dt items/nns ,/punct this/dt may/md be/vb desirable/jj ,/punct because/in the/dt surplus/nn payment/nn corresponds/vbz to/to revenue/nn for/in the/dt auctioneer/nn ./punct
+however/rb ,/punct if/in the/dt items/nns do/vbp not/rb have/vb an/dt owner/nn and/cc the/dt agents/nns are/vbp merely/rb interested/jj in/in allocating/vbg the/dt items/nns efficiently/rb among/in themselves/prp ,/punct any/dt surplus/jj payment/nn is/vbz undesirable/jj ,/punct because/in it/prp will/md have/vb to/to flow/vb out/in of/in the/dt system/nn of/in agents/nns ./punct
+in/in 2006/cd ,/punct cavallo/nnp [/punct 3/cd ]/punct proposed/vbd a/dt mechanism/nn that/wdt redistributes/vbz some/dt of/in the/dt vcg/nnp payment/nn back/rb to/to the/dt agents/nns ,/punct while/in maintaining/vbg efficiency/nn ,/punct strategy-proofness/nn ,/punct individual/jj rationality/nn ,/punct and/cc the/dt non-deficit/jj property/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp extend/vbp this/dt result/nn in/in a/dt restricted/jj setting/nn ./punct
+we/prp study/vbp allocation/nn settings/nns where/wrb there/ex are/vbp multiple/jj indistinguishable/jj units/nns of/in a/dt single/jj good/jj ,/punct and/cc agents/nns have/vbp unit/nn demand/nn ./punct
+(/punct for/in this/dt specific/jj setting/nn ,/punct cavallo/nnp ''/'' s/vbz mechanism/nn coincides/vbz with/in a/dt mechanism/nn proposed/vbn by/in bailey/nnp in/in 1997/cd [/punct 2/cd ]/punct ./punct
+)/punct here/rb we/prp propose/vbp a/dt family/nn of/in mechanisms/nns that/wdt redistribute/vbp some/dt of/in the/dt vcg/nnp payment/nn back/rb to/to the/dt agents/nns ./punct
+all/dt mechanisms/nns in/in the/dt family/nn are/vbp efficient/jj ,/punct strategyproof/nn ,/punct individually/rb rational/jj ,/punct and/cc never/rb incur/vbp a/dt deficit/nn ./punct
+the/dt family/nn includes/vbz the/dt bailey-cavallo/jj mechanism/nn as/in a/dt special/jj case/nn ./punct
+we/prp then/rb provide/vbp an/dt optimization/nn model/nn for/in finding/vbg the/dt optimal/jj mechanism-that/nn is/vbz ,/punct the/dt mechanism/nn that/wdt maximizes/vbz redistribution/nn in/in the/dt worst/jjs case-inside/nn the/dt family/nn ,/punct and/cc show/vb how/wrb to/to cast/vb this/dt model/nn as/in a/dt linear/jj program/nn ./punct
+we/prp give/vbp both/dt numerical/jj and/cc analytical/jj solutions/nns of/in this/dt linear/jj program/nn ,/punct and/cc the/dt (/punct unique/jj )/punct resulting/vbg mechanism/nn shows/nns significant/jj improvement/nn over/in the/dt bailey-cavallo/nnp mechanism/nn (/punct in/in the/dt worst/jjs case/nn )/punct ./punct
+finally/rb ,/punct we/prp prove/vbp that/in the/dt obtained/vbn mechanism/nn is/vbz optimal/jj among/in all/dt anonymous/jj deterministic/jj mechanisms/nns that/wdt satisfy/vbp the/dt above/jj properties/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp j.4/nnp [/punct computer/nnp applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nnp ;/punct i.2.11/nn [/punct distributed/vbn artificial/nnp intelligence/nnp ]/punct :/punct multiagent/nnp systems/nnp general/nnp terms/nns algorithms/nns ,/punct economics/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nn many/jj important/jj problems/nns in/in computer/nn science/nn and/cc electronic/jj commerce/nn can/md be/vb modeled/vbn as/in resource/nn allocation/nn problems/nns ./punct
+in/in such/jj problems/nns ,/punct we/prp want/vbp to/to allocate/vb the/dt resources/nns (/punct or/cc items/nns )/punct to/to the/dt agents/nns that/in value/nn them/prp the/dt most/jjs ./punct
+unfortunately/rb ,/punct agents/nns ''/'' valuations/nns are/vbp private/jj knowledge/nn ,/punct and/cc self-interested/jj agents/nns will/md lie/vb about/in their/prp$ valuations/nns if/in this/dt is/vbz to/to their/prp$ benefit/nn ./punct
+one/cd solution/nn is/vbz to/to auction/vb off/rp the/dt items/nns ,/punct possibly/rb in/in a/dt combinatorial/jj auction/nn where/wrb agents/nns can/md bid/vb on/in bundles/nns of/in items/nns ./punct
+there/ex exist/vbp ways/nns of/in determining/vbg the/dt payments/nns that/in the/dt agents/nns make/vbp in/in such/jj an/dt auction/nn that/wdt incentivizes/vbz the/dt agents/nns to/to report/vb their/prp$ true/jj valuations-that/nn is/vbz ,/punct the/dt payments/nns make/vbp the/dt auction/nn strategy-proof/nn ./punct
+one/cd very/rb general/jj way/nn of/in doing/vbg so/rb is/vbz to/to use/vb the/dt vcg/nnp mechanism/nn [/punct 23/cd ,/punct 4/cd ,/punct 12/cd ]/punct ./punct
+(/punct the/dt vcg/nnp mechanism/nn is/vbz also/rb known/vbn as/in the/dt clarke/nnp mechanism/nn or/cc ,/punct in/in the/dt specific/jj context/nn of/in auctions/nns ,/punct the/dt generalized/nnp vickrey/nnp auction/nnp ./punct
+)/punct besides/in strategy-proofness/nn ,/punct the/dt vcg/nnp mechanism/nn has/vbz several/jj other/jj nice/jj properties/nns in/in the/dt context/nn of/in resource/nn allocation/nn problems/nns ./punct
+it/prp is/vbz efficient/jj :/punct the/dt chosen/vbn allocation/nn always/rb maximizes/vbz the/dt sum/nn of/in the/dt agents/nns ''/'' valuations/nns ./punct
+it/prp is/vbz also/rb (/punct expost/fw )/punct individually/rb rational/jj :/punct participating/vbg in/in the/dt mechanism/nn never/rb makes/vbz an/dt agent/nn worse/jjr off/rb than/in not/rb participating/vbg ./punct
+finally/rb ,/punct it/prp has/vbz a/dt no-deficit/jj property/nn :/punct the/dt sum/nn of/in the/dt agents/nns ''/'' payments/nns is/vbz always/rb nonnegative/jj ./punct
+in/in many/jj settings/nns ,/punct another/dt property/nn that/wdt would/md be/vb desirable/jj is/vbz (/punct strong/jj )/punct budget/nn balance/nn ,/punct meaning/vbg that/in the/dt payments/nns sum/nn to/to exactly/rb 0/cd ./punct
+suppose/vb the/dt agents/nns are/vbp trying/vbg to/to distribute/vb some/dt resources/nns among/in themselves/prp that/dt do/vbp not/rb have/vb a/dt previous/jj owner/nn ./punct
+for/in example/nn ,/punct the/dt agents/nns may/md be/vb trying/vbg to/to allocate/vb the/dt right/nn to/to use/vb a/dt shared/jj good/jj on/in a/dt given/vbn day/nn ./punct
+or/cc ,/punct the/dt agents/nns may/md be/vb trying/vbg to/to allocate/vb a/dt resource/nn that/in they/prp have/vbp collectively/rb constructed/vbn ,/punct discovered/vbn ,/punct or/cc otherwise/rb obtained/vbn ./punct
+if/in the/dt agents/nns use/vbp an/dt auction/nn to/to allocate/vb these/dt resources/nns ,/punct and/cc the/dt sum/nn of/in the/dt agents/nns ''/'' payments/nns in/in the/dt auction/nn is/vbz positive/jj ,/punct then/rb this/dt surplus/nn payment/nn must/md leave/vb the/dt system/nn 30/cd of/in the/dt agents/nns (/punct for/in example/nn ,/punct the/dt agents/nns must/md give/vb the/dt money/nn to/to an/dt outside/jj party/nn ,/punct or/cc burn/vbp it/prp )/punct ./punct
+na¨ıve/nn redistribution/nn of/in the/dt surplus/nn payment/nn (/punct e.g/nn ./punct
+each/dt of/in the/dt n/nn agents/nns receives/vbz 1/n/nn of/in the/dt surplus/nn )/punct will/md generally/rb result/vb in/in a/dt mechanism/nn that/wdt is/vbz not/rb strategy-proof/jj (/punct e.g/nn ./punct
+in/in a/dt vickrey/nnp auction/nn ,/punct the/dt second-highest/jj bidder/nn would/md want/vb to/to increase/vb her/prp$ bid/nn to/to obtain/vb a/dt larger/jjr redistribution/nn payment/nn )/punct ./punct
+unfortunately/rb ,/punct the/dt vcg/nnp mechanism/nn is/vbz not/rb budget/nn balanced/jj :/punct typically/rb ,/punct there/ex is/vbz surplus/jj payment/nn ./punct
+unfortunately/rb ,/punct in/in general/jj settings/nns ,/punct it/prp is/vbz in/in fact/nn impossible/jj to/to design/vb mechanisms/nns that/wdt satisfy/vbp budget/nn balance/nn in/in addition/nn to/to the/dt other/jj desirable/jj properties/nns [/punct 16/cd ,/punct 11/cd ,/punct 21/cd ]/punct ./punct
+in/in light/nn of/in this/dt impossibility/nn result/nn ,/punct several/jj authors/nns have/vbp obtained/vbn budget/nn balance/nn by/in sacrificing/vbg some/dt of/in the/dt other/jj desirable/jj properties/nns [/punct 2/cd ,/punct 6/cd ,/punct 22/cd ,/punct 5/cd ]/punct ./punct
+another/dt approach/nn that/wdt is/vbz perhaps/rb preferable/jj is/vbz to/to use/vb a/dt mechanism/nn that/wdt is/vbz more/rbr budget/nn balanced/jj than/in the/dt vcg/nnp mechanism/nn ,/punct and/cc maintains/vbz all/pdt the/dt other/jj desirable/jj properties/nns ./punct
+one/cd way/nn of/in trying/vbg to/to design/vb such/pdt a/dt mechanism/nn is/vbz to/to redistribute/vb some/dt of/in the/dt vcg/nnp payment/nn back/rb to/to the/dt agents/nns in/in a/dt way/nn that/wdt will/md not/rb affect/vb the/dt agents/nns ''/'' incentives/nns (/punct so/in that/in strategy-proofness/nn is/vbz maintained/jj )/punct ,/punct and/cc that/dt will/md maintain/vb the/dt other/jj properties/nns ./punct
+in/in 2006/cd ,/punct cavallo/nnp [/punct 3/cd ]/punct pursued/vbd exactly/rb this/dt idea/nn ,/punct and/cc designed/vbn a/dt mechanism/nn that/wdt redistributes/vbz a/dt large/jj amount/nn of/in the/dt total/jj vcg/nnp payment/nn while/in maintaining/vbg all/dt of/in the/dt other/jj desirable/jj properties/nns of/in the/dt vcg/nnp mechanism/nn ./punct
+for/in example/nn ,/punct in/in a/dt single-item/jj auction/nn (/punct where/wrb the/dt vcg/nnp mechanism/nn coincides/vbz with/in the/dt second-price/jj sealed-bid/jj auction/nn )/punct ,/punct the/dt amount/nn redistributed/vbd to/to bidder/nn i/fw by/in cavallo/nnp ''/'' s/vbz mechanism/nn is/vbz 1/n/jj times/nns the/dt second-highest/jj bid/nn among/in bids/nns other/jj than/in i/fw ''/'' s/vbz bid/nn ./punct
+the/dt total/jj redistributed/jj is/vbz at/in most/jjs the/dt second-highest/jj bid/nn overall/rb ,/punct and/cc the/dt redistribution/nn to/to agent/nn i/fw does/vbz not/rb affect/vb i/fw ''/'' s/vbz incentives/nns because/in it/prp does/vbz not/rb depend/vb on/in i/fw ''/'' s/vbz own/jj bid/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp restrict/vbp our/prp$ attention/nn to/to a/dt limited/jj setting/nn ,/punct and/cc in/in this/dt setting/nn we/prp extend/vbp cavallo/nnp ''/'' s/vbz result/nn ./punct
+we/prp study/vbp allocation/nn settings/nns where/wrb there/ex are/vbp multiple/jj indistinguishable/jj units/nns of/in a/dt single/jj good/jj ,/punct and/cc all/dt agents/nns have/vbp unit/nn demand/nn ,/punct i.e/nn ./punct
+they/prp want/vbp only/rb a/dt single/jj unit/nn ./punct
+for/in this/dt specific/jj setting/nn ,/punct cavallo/nnp ''/'' s/vbz mechanism/nn coincides/vbz with/in a/dt mechanism/nn proposed/vbn by/in bailey/nnp in/in 1997/cd [/punct 2/cd ]/punct ./punct
+here/rb we/prp propose/vbp the/dt family/nn of/in linear/jj vcg/nnp redistribution/nn mechanisms/nns ./punct
+all/dt mechanisms/nns in/in this/dt family/nn are/vbp efficient/jj ,/punct strategy-proof/jj ,/punct individually/rb rational/jj ,/punct and/cc never/rb incur/vbp a/dt deficit/nn ./punct
+the/dt family/nn includes/vbz the/dt bailey-cavallo/jj mechanism/nn as/in a/dt special/jj case/nn (/punct with/in the/dt caveat/nn that/in we/prp only/rb study/nn allocation/nn settings/nns with/in multiple/jj indistinguishable/jj units/nns of/in a/dt single/jj good/jj and/cc unit/nn demand/nn ,/punct while/in bailey/nnp ''/'' s/nns and/cc cavallo/nnp ''/'' s/vbz mechanisms/nns can/md be/vb applied/vbn outside/in these/dt settings/nns as/rb well/rb )/punct ./punct
+we/prp then/rb provide/vbp an/dt optimization/nn model/nn for/in finding/vbg the/dt optimal/jj mechanism/nn inside/in the/dt family/nn ,/punct based/vbn on/in worst-case/jj analysis/nn ./punct
+both/dt numerical/jj and/cc analytical/jj solutions/nns of/in this/dt model/nn are/vbp provided/vbn ,/punct and/cc the/dt resulting/vbg mechanism/nn shows/nns significant/jj improvement/nn over/in the/dt baileycavallo/nnp mechanism/nn (/punct in/in the/dt worst/jjs case/nn )/punct ./punct
+for/in example/nn ,/punct for/in the/dt problem/nn of/in allocating/vbg a/dt single/jj unit/nn ,/punct when/wrb the/dt number/nn of/in agents/nns is/vbz 10/cd ,/punct our/prp$ mechanism/nn always/rb redistributes/vbz more/jjr than/in 98/cd %/punct of/in the/dt total/jj vcg/nnp payment/nn back/rb to/to the/dt agents/nns (/punct whereas/in the/dt bailey-cavallo/nnp mechanism/nn redistributes/vbz only/rb 80/cd %/punct in/in the/dt worst/jjs case/nn )/punct ./punct
+finally/rb ,/punct we/prp prove/vbp that/in our/prp$ mechanism/nn is/vbz in/in fact/nn optimal/jj among/in all/dt anonymous/jj deterministic/jj mechanisms/nns (/punct even/rb nonlinear/jj ones/nns )/punct that/in satisfy/vbp the/dt desirable/jj properties/nns ./punct
+around/in the/dt same/jj time/nn ,/punct the/dt same/jj mechanism/nn has/vbz been/vbn independently/rb derived/vbn by/in moulin/nnp [/punct 19/cd ]/punct .1/cd moulin/nnp actually/rb pursues/vbz a/dt different/jj objective/jj (/punct also/rb based/vbn on/in worst-case/jj analysis/nn )/punct :/punct whereas/in our/prp$ objective/nn is/vbz to/to maximize/vb the/dt percentage/nn of/in vcg/nnp payments/nns that/wdt are/vbp redistributed/vbn ,/punct moulin/nnp tries/vbz to/to minimize/vb the/dt overall/jj payments/nns from/in agents/nns as/in a/dt percentage/nn of/in efficiency/nn ./punct
+it/prp turns/vbz out/rp that/in the/dt resulting/vbg mechanisms/nns are/vbp the/dt same/jj ./punct
+towards/in the/dt end/nn of/in this/dt paper/nn ,/punct we/prp consider/vbp dropping/vbg the/dt individual/jj rationality/nn requirement/nn ,/punct and/cc show/vbp that/in this/dt does/vbz not/rb change/vb the/dt optimal/jj mechanism/nn for/in our/prp$ objective/nn ./punct
+for/in moulin/nnp ''/'' s/vbz objective/nn ,/punct dropping/vbg individual/jj rationality/nn does/vbz change/vb the/dt optimal/jj mechanism/nn (/punct but/cc only/rb if/in there/ex are/vbp multiple/jj units/nns )/punct ./punct
+2/ls ./punct
+problem/nn description/nn let/vb n/nn denote/vbp the/dt number/nn of/in agents/nns ,/punct and/cc let/vb m/nn denote/vbp the/dt number/nn of/in units/nns ./punct
+we/prp only/rb consider/vbp the/dt case/nn where/wrb m/nn </punct n/nn (/punct otherwise/rb the/dt problem/nn becomes/vbz trivial/jj )/punct ./punct
+we/prp also/rb assume/vbp that/in m/nn and/cc n/nn are/vbp always/rb known/vbn ./punct
+(/punct this/dt assumption/nn is/vbz not/rb harmful/jj :/punct in/in environments/nns where/wrb anyone/nn can/md join/vb the/dt auction/nn ,/punct running/vbg a/dt redistribution/nn mechanism/nn is/vbz typically/rb not/rb a/dt good/jj idea/nn anyway/rb ,/punct because/in everyone/nn would/md want/vb to/to join/vb to/to collect/vb part/nn of/in the/dt redistribution/nn ./punct
+)/punct let/vb the/dt set/nn of/in agents/nns be/vb {/punct a1/nn ,/punct a2/nn ,/punct ./punct
+./punct
+./punct
+,/punct an/dt }/punct ,/punct where/wrb ai/vbp is/vbz the/dt agent/nn with/in ith/nn highest/jjs report/nn value/nn ˆvi-that/nn is/vbz ,/punct we/prp have/vbp ˆv1/nn ≥/cd ˆv2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn ˆvn/nn ≥/cd 0/cd ./punct
+let/vb vi/ls denote/vbp the/dt true/jj value/nn of/in ai/vbp ./punct
+given/vbn that/in the/dt mechanism/nn is/vbz strategy-proof/jj ,/punct we/prp can/md assume/vb vi/ls =/punct ˆvi/nns ./punct
+under/in the/dt vcg/nnp mechanism/nn ,/punct each/dt agent/nn among/in a1/nn ,/punct ./punct
+./punct
+./punct
+,/punct am/vbp wins/vbz a/dt unit/nn ,/punct and/cc pays/vbz ˆvm+1/nn for/in this/dt unit/nn ./punct
+thus/rb ,/punct the/dt total/jj vcg/nnp payment/nn equals/vbz mˆvm+1/nn ./punct
+when/wrb m/nn =/punct 1/cd ,/punct this/dt is/vbz the/dt second-price/nn or/cc vickrey/jj auction/nn ./punct
+we/prp modify/vbp the/dt mechanism/nn as/in follows/vbz ./punct
+after/in running/vbg the/dt original/jj vcg/nnp mechanism/nn ,/punct the/dt center/nn returns/nns to/to each/dt agent/nn ai/vbp some/dt amount/nn zi/nn ,/punct agent/nn ai/vbp ''/'' s/vbz redistribution/nn payment/nn ./punct
+we/prp do/vbp not/rb allow/vb zi/nn to/to depend/vb on/in ˆvi/nns ;/punct because/in of/in this/dt ,/punct ai/vbp ''/'' s/vbz incentives/nns are/vbp unaffected/jj by/in this/dt redistribution/nn payment/nn ,/punct and/cc the/dt mechanism/nn remains/vbz strategy-proof/jj ./punct
+3/ls ./punct
+linear/jj vcg/nnp redistribution/nnp mechanisms/nnps we/prp are/vbp now/rb ready/jj to/to introduce/vb the/dt family/nn of/in linear/jj vcg/nnp redistribution/nn mechanisms/nns ./punct
+such/pdt a/dt mechanism/nn is/vbz defined/vbn by/in a/dt vector/nn of/in constants/nns c0/nn ,/punct c1/nn ,/punct ./punct
+./punct
+./punct
+,/punct cn−1/nn ./punct
+the/dt amount/nn that/in the/dt mechanism/nn returns/nns to/to agent/nn ai/vbp is/vbz zi/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct ./punct
+./punct
+./punct
++/punct ci−1ˆvi−1/nn +/punct ciˆvi+1/nn +/punct ./punct
+./punct
+./punct
++/punct cn−1ˆvn/nn ./punct
+that/dt is/vbz ,/punct an/dt agent/nn receives/vbz c0/nn ,/punct plus/cc c1/nn times/nns the/dt highest/jjs bid/nn other/jj than/in the/dt agent/nn ''/'' s/nns own/jj bid/nn ,/punct plus/cc c2/nn times/nns the/dt second-highest/jj other/jj bid/nn ,/punct etc/fw ./punct
+the/dt mechanism/nn is/vbz strategy-proof/jj ,/punct because/in for/in all/dt i/fw ,/punct zi/nn is/vbz independent/jj of/in ˆvi/nns ./punct
+also/rb ,/punct the/dt mechanism/nn is/vbz anonymous/jj ./punct
+it/prp is/vbz helpful/jj to/to see/vb the/dt entire/jj list/nn of/in redistribution/nn payments/nns :/punct z1/nn =/punct c0/nn +/punct c1ˆv2/nn +/punct c2ˆv3/nn +/punct c3ˆv4/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−1/nn +/punct cn−1ˆvn/nn z2/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv3/nn +/punct c3ˆv4/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−1/nn +/punct cn−1ˆvn/nn z3/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct c3ˆv4/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−1/nn +/punct cn−1ˆvn/nn z4/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct c3ˆv3/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−1/nn +/punct cn−1ˆvn/nn ./punct
+./punct
+./punct
+zi/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct ./punct
+./punct
+./punct
++/punct ci−1ˆvi−1/nn +/punct ciˆvi+1/nn +/punct ./punct
+./punct
+./punct
++/punct cn−1ˆvn/nn ./punct
+./punct
+./punct
+zn−2/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct c3ˆv3/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−1/nn +/punct cn−1ˆvn/nn zn−1/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct c3ˆv3/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−2/nn +/punct cn−1ˆvn/nn zn/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct c3ˆv3/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−2/nn +/punct cn−1ˆvn−1/nn 1/cd we/prp thank/vbp rakesh/nnp vohra/nnp for/in pointing/vbg us/prp to/to moulin/nnp ''/'' s/nns working/vbg paper/nn ./punct
+31/cd not/rb all/dt choices/nns of/in the/dt constants/nns c0/nn ,/punct ./punct
+./punct
+./punct
+,/punct cn−1/nn produce/vbp a/dt mechanism/nn that/wdt is/vbz individually/rb rational/jj ,/punct and/cc not/rb all/dt choices/nns of/in the/dt constants/nns produce/vbp a/dt mechanism/nn that/wdt never/rb incurs/vbz a/dt deficit/nn ./punct
+hence/rb ,/punct to/to obtain/vb these/dt properties/nns ,/punct we/prp need/vbp to/to place/vb some/dt constraints/nns on/in the/dt constants/nns ./punct
+to/to satisfy/vb the/dt individual/jj rationality/nn criterion/nn ,/punct each/dt agent/nn ''/'' s/nns utility/nn should/md always/rb be/vb non-negative/jj ./punct
+an/dt agent/nn that/wdt does/vbz not/rb win/vb a/dt unit/nn obtains/vbz a/dt utility/nn that/wdt is/vbz equal/jj to/to the/dt agent/nn ''/'' s/nns redistribution/nn payment/nn ./punct
+an/dt agent/nn that/wdt wins/vbz a/dt unit/nn obtains/vbz a/dt utility/nn that/wdt is/vbz equal/jj to/to the/dt agent/nn ''/'' s/nns valuation/nn for/in the/dt unit/nn ,/punct minus/cc the/dt vcg/nnp payment/nn ˆvm+1/nn ,/punct plus/cc the/dt agent/nn ''/'' s/nns redistribution/nn payment/nn ./punct
+consider/vb agent/nn an/dt ,/punct the/dt agent/nn with/in the/dt lowest/jjs bid/nn ./punct
+since/in this/dt agent/nn does/vbz not/rb win/vb an/dt item/nn (/punct m/nn </punct n/nn )/punct ,/punct her/prp$ utility/nn is/vbz just/rb her/prp$ redistribution/nn payment/nn zn/nn ./punct
+hence/rb ,/punct for/in the/dt mechanism/nn to/to be/vb individually/rb rational/jj ,/punct the/dt ci/nn must/md be/vb such/jj that/in zn/nn is/vbz always/rb nonnegative/jj ./punct
+if/in the/dt ci/nns have/vbp this/dt property/nn ,/punct then/rb it/prp actually/rb follows/vbz that/in zi/nn is/vbz nonnegative/jj for/in every/dt i/fw ,/punct for/in the/dt following/vbg reason/nn ./punct
+suppose/vb there/rb exists/vbz some/dt i/fw </punct n/nn and/cc some/dt vector/nn of/in bids/nns ˆv1/nn ≥/cd ˆv2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn ˆvn/nn ≥/nn 0/cd such/jj that/in zi/nn </punct 0/cd ./punct
+then/rb ,/punct consider/vb the/dt bid/nn vector/nn that/wdt results/vbz from/in replacing/vbg ˆvj/nn by/in ˆvj+1/nn for/in all/dt j/fw ≥/fw i/fw ,/punct and/cc letting/vbg ˆvn/nn =/punct 0/cd ./punct
+if/in we/prp omit/vbp ˆvn/rb from/in this/dt vector/nn ,/punct the/dt same/jj vector/nn results/vbz that/in results/vbz from/in omitting/vbg ˆvi/nns from/in the/dt original/jj vector/nn ./punct
+therefore/rb ,/punct an/dt ''/'' s/vbz redistribution/nn payment/nn under/in the/dt new/jj vector/nn should/md be/vb the/dt same/jj as/in ai/vbp ''/'' s/vbz redistribution/nn payment/nn under/in the/dt old/jj vector-but/nn this/dt payment/nn is/vbz negative/jj ./punct
+if/in all/dt redistribution/nn payments/nns are/vbp always/rb nonnegative/jj ,/punct then/rb the/dt mechanism/nn must/md be/vb individually/rb rational/jj (/punct because/in the/dt vcg/nnp mechanism/nn is/vbz individually/rb rational/jj ,/punct and/cc the/dt redistribution/nn payment/nn only/rb increases/vbz an/dt agent/nn ''/'' s/nns utility/nn )/punct ./punct
+therefore/rb ,/punct the/dt mechanism/nn is/vbz individually/rb rational/jj if/in and/cc only/rb if/in for/in any/dt bid/nn vector/nn ,/punct zn/nn ≥/nn 0/cd ./punct
+to/to satisfy/vb the/dt non-deficit/jj criterion/nn ,/punct the/dt sum/nn of/in the/dt redistribution/nn payments/nns should/md be/vb less/jjr than/in or/cc equal/jj to/to the/dt total/jj vcg/nnp payment/nn ./punct
+so/rb for/in any/dt bid/nn vector/nn ˆv1/nn ≥/cd ˆv2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn ˆvn/nn ≥/cd 0/cd ,/punct the/dt constants/nns ci/nn should/md make/vb z1/nn +/punct z2/nn +/punct ./punct
+./punct
+./punct
++/punct zn/nn ≤/cd mˆvm+1/nn ./punct
+we/prp define/vbp the/dt family/nn of/in linear/jj vcg/nnp redistribution/nn mechanisms/nns to/to be/vb the/dt set/nn of/in all/dt redistribution/nn mechanisms/nns corresponding/vbg to/to constants/nns ci/vbp that/in satisfy/vbp the/dt above/jj constraints/nns (/punct so/rb that/in the/dt mechanisms/nns will/md be/vb individually/rb rational/jj and/cc have/vbp the/dt no-deficit/jj property/nn )/punct ./punct
+we/prp now/rb give/vbp two/cd examples/nns of/in mechanisms/nns in/in this/dt family/nn ./punct
+example/nn 1/cd (/punct bailey-cavallo/nnp mechanism/nn )/punct :/punct consider/vb the/dt mechanism/nn corresponding/vbg to/to cm+1/nn =/punct m/nn n/nn and/cc ci/nn =/punct 0/cd for/in all/dt other/jj i./nnp under/in this/dt mechanism/nn ,/punct each/dt agent/nn receives/vbz a/dt redistribution/nn payment/nn of/in m/nn n/nn times/nns the/dt (/punct m+1/nn )/punct th/dt highest/jjs bid/nn from/in another/dt agent/nn ./punct
+hence/rb ,/punct a1/nn ,/punct ./punct
+./punct
+./punct
+,/punct am+1/nn receive/vbp a/dt redistribution/nn payment/nn of/in m/nn n/nn ˆvm+2/nn ,/punct and/cc the/dt others/nns receive/vbp m/nn n/nn ˆvm+1/nn ./punct
+thus/rb ,/punct the/dt total/jj redistribution/nn payment/nn is/vbz (/punct m+1/nn )/punct m/nn n/nn ˆvm+2/nn +/punct (/punct n−m−/nn 1/cd )/punct m/nn n/nn ˆvm+1/nn ./punct
+this/dt redistribution/nn mechanism/nn is/vbz individually/rb rational/jj ,/punct because/in all/pdt the/dt redistribution/nn payments/nns are/vbp nonnegative/jj ,/punct and/cc never/rb incurs/vbz a/dt deficit/nn ,/punct because/in (/punct m/nn +/punct 1/cd )/punct m/nn n/nn ˆvm+2/nn +/punct (/punct n−m−1/nn )/punct m/nn n/nn ˆvm+1/nn ≤/cd nm/nn n/nn ˆvm+1/nn =/punct mˆvm+1/nn ./punct
+(/punct we/prp note/vbp that/in for/in this/dt mechanism/nn to/to make/vb sense/nn ,/punct we/prp need/vbp n/nn ≥/nn m/nn +/punct 2/cd ./punct
+)/punct example/nn 2/cd :/punct consider/vb the/dt mechanism/nn corresponding/vbg to/to cm+1/nn =/punct m/nn n−m−1/nn ,/punct cm+2/nn =/punct −/nn m/nn (/punct m+1/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct ,/punct and/cc ci/nn =/punct 0/cd for/in all/dt other/jj i./nnp in/in this/dt mechanism/nn ,/punct each/dt agent/nn receives/vbz a/dt redistribution/nn payment/nn of/in m/nn n−m−1/nn times/nns the/dt (/punct m/nn +/punct 1/cd )/punct th/dt highest/jjs reported/vbn value/nn from/in other/jj agents/nns ,/punct minus/cc m/nn (/punct m+1/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct times/nns the/dt (/punct m+2/nn )/punct th/dt highest/jjs reported/vbn value/nn from/in other/jj agents/nns ./punct
+thus/rb ,/punct the/dt total/jj redistribution/nn payment/nn is/vbz mˆvm+1/nn −/nn m/nn (/punct m+1/nn )/punct (/punct m+2/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct ˆvm+3/nn ./punct
+if/in n/nn ≥/cd 2m+3/nn (/punct which/wdt is/vbz equivalent/jj to/to m/nn n−m−1/nn ≥/nn m/nn (/punct m+1/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct )/punct ,/punct then/rb each/dt agent/nn always/rb receives/vbz a/dt nonnegative/jj redistribution/nn payment/nn ,/punct thus/rb the/dt mechanism/nn is/vbz individually/rb rational/jj ./punct
+also/rb ,/punct the/dt mechanism/nn never/rb incurs/vbz a/dt deficit/nn ,/punct because/in the/dt total/jj vcg/nnp payment/nn is/vbz mˆvm+1/nn ,/punct which/wdt is/vbz greater/jjr than/in the/dt amount/nn mˆvm+1/nn −/nn m/nn (/punct m+1/nn )/punct (/punct m+2/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct ˆvm+3/nn that/wdt is/vbz redistributed/vbn ./punct
+which/wdt of/in these/dt two/cd mechanisms/nns is/vbz better/jjr ?/punct
+is/vbz there/ex another/dt mechanism/nn that/wdt is/vbz even/rb better/jjr ?/punct
+this/dt is/vbz what/wp we/prp study/vbp in/in the/dt next/jj section/nn ./punct
+4/ls ./punct
+optimal/jj redistribution/nn mechanisms/nns among/in all/dt linear/jj vcg/nnp redistribution/nn mechanisms/nns ,/punct we/prp would/md like/vb to/to be/vb able/jj to/to identify/vb the/dt one/cd that/wdt redistributes/vbz the/dt greatest/jjs percentage/nn of/in the/dt total/jj vcg/nnp payment.2/nn this/dt is/vbz not/rb a/dt well-defined/jj notion/nn :/punct it/prp may/md be/vb that/in one/cd mechanism/nn redistributes/vbz more/rbr on/in some/dt bid/nn vectors/nns ,/punct and/cc another/dt more/rbr on/in other/jj bid/nn vectors/nns ./punct
+we/prp emphasize/vbp that/in we/prp do/vbp not/rb assume/vb that/in a/dt prior/jj distribution/nn over/in bidders/nns ''/'' valuations/nns is/vbz available/jj ,/punct so/in we/prp can/md not/rb compare/vb them/prp based/vbn on/in expected/vbn redistribution/nn ./punct
+below/in ,/punct we/prp study/vbd three/cd well-defined/jj ways/nns of/in comparing/vbg redistribution/nn mechanisms/nns :/punct best-case/jj performance/nn ,/punct dominance/nn ,/punct and/cc worst-case/jj performance/nn ./punct
+best-case/jj performance/nn ./punct
+one/cd way/nn of/in evaluating/vbg a/dt mechanism/nn is/vbz by/in considering/vbg the/dt highest/jjs redistribution/nn percentage/nn that/in it/prp achieves/vbz ./punct
+consider/vb the/dt previous/jj two/cd examples/nns ./punct
+for/in the/dt first/jj example/nn ,/punct the/dt total/jj redistribution/nn payment/nn is/vbz (/punct m/nn +/punct 1/cd )/punct m/nn n/nn ˆvm+2/nn +/punct (/punct n/nn −/nn m/nn −/cd 1/cd )/punct m/nn n/nn ˆvm+1/nn ./punct
+when/wrb ˆvm+2/nn =/punct ˆvm+1/nn ,/punct this/dt is/vbz equal/jj to/to the/dt total/jj vcg/nnp payment/nn mˆvm+1/nn ./punct
+thus/rb ,/punct this/dt mechanism/nn redistributes/vbz 100/cd %/punct of/in the/dt total/jj vcg/nnp payment/nn in/in the/dt best/jjs case/nn ./punct
+for/in the/dt second/jj example/nn ,/punct the/dt total/jj redistribution/nn payment/nn is/vbz mˆvm+1/nn −/nn m/nn (/punct m+1/nn )/punct (/punct m+2/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct ˆvm+3/nn ./punct
+when/wrb ˆvm+3/nn =/punct 0/cd ,/punct this/dt is/vbz equal/jj to/to the/dt total/jj vcg/nnp payment/nn mˆvm+1/nn ./punct
+thus/rb ,/punct this/dt mechanism/nn also/rb redistributes/vbz 100/cd %/punct of/in the/dt total/jj vcg/nnp payment/nn in/in the/dt best/jjs case/nn ./punct
+moreover/rb ,/punct there/ex are/vbp actually/rb infinitely/rb many/jj mechanisms/nns that/wdt redistribute/vbp 100/cd %/punct of/in the/dt total/jj vcg/nnp payment/nn in/in the/dt best/jjs case-for/nn example/nn ,/punct any/dt convex/nn combination/nn of/in the/dt above/jj two/cd will/md redistribute/vb 100/cd %/punct if/in both/dt ˆvm+2/nn =/punct ˆvm+1/nn and/cc ˆvm+3/nn =/punct 0/cd ./punct
+dominance/nn ./punct
+inside/in the/dt family/nn of/in linear/jj vcg/nnp redistribution/nn mechanisms/nns ,/punct we/prp say/vbp one/cd mechanism/nn dominates/vbz another/dt mechanism/nn if/in the/dt first/jj one/cd redistributes/vbz at/in least/jjs as/rb much/rb as/in the/dt other/jj for/in any/dt bid/nn vector/nn ./punct
+for/in the/dt previous/jj two/cd examples/nns ,/punct neither/cc dominates/vbz the/dt other/jj ,/punct because/in they/prp each/dt redistribute/vbp 100/cd %/punct in/in different/jj cases/nns ./punct
+it/prp turns/vbz out/rp that/in there/ex is/vbz no/dt mechanism/nn in/in the/dt family/nn that/wdt dominates/vbz all/dt other/jj mechanisms/nns in/in the/dt family/nn ./punct
+for/in suppose/vb such/jj a/dt mechanism/nn exists/vbz ./punct
+then/rb ,/punct it/prp should/md dominate/vb both/dt examples/nns above/in ./punct
+consider/vb the/dt remaining/vbg vcg/nnp payment/nn (/punct the/dt vcg/nnp payment/nn failed/vbd to/to be/vb redistributed/vbn )/punct ./punct
+the/dt remaining/vbg vcg/nnp payment/nn of/in the/dt dominant/jj mechanism/nn should/md be/vb 0/cd whenever/wrb ˆvm+2/nn =/punct ˆvm+1/nn or/cc ˆvm+3/nn =/punct 0/cd ./punct
+now/rb ,/punct the/dt remaining/vbg vcg/nnp payment/nn is/vbz a/dt linear/jj function/nn of/in the/dt ˆvi/jj (/punct linear/jj redistribution/nn )/punct ,/punct and/cc therefore/rb also/rb a/dt polynomial/jj function/nn ./punct
+the/dt above/jj implies/vbz that/in this/dt function/nn can/md be/vb written/vbn as/in (/punct ˆvm+2/nn −/cd ˆvm+1/nn )/punct (/punct ˆvm+3/nn )/punct p/nn (/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct ,/punct where/wrb p/nn is/vbz a/dt 2/cd the/dt percentage/nn redistributed/vbd seems/vbz the/dt natural/jj criterion/nn to/to use/vb ,/punct among/in other/jj things/nns because/in it/prp is/vbz scale-invariant/jj :/punct if/in we/prp multiply/vbp all/dt bids/nns by/in the/dt same/jj positive/jj constant/jj (/punct for/in example/nn ,/punct if/in we/prp change/vbp the/dt units/nns by/in re-expressing/vbg the/dt bids/nns in/in euros/nns instead/rb of/in dollars/nns )/punct ,/punct we/prp would/md not/rb want/vb the/dt behavior/nn of/in our/prp$ mechanism/nn to/to change/vb ./punct
+32/cd polynomial/jj function/nn ./punct
+but/cc since/in the/dt function/nn must/md be/vb linear/jj (/punct has/vbz degree/nn at/in most/jjs 1/cd )/punct ,/punct it/prp follows/vbz that/in p/nn =/punct 0/cd ./punct
+thus/rb ,/punct a/dt dominant/jj mechanism/nn would/md always/rb redistribute/vb all/dt of/in the/dt vcg/nnp payment/nn ,/punct which/wdt is/vbz not/rb possible/jj ./punct
+(/punct if/in it/prp were/vbd possible/jj ,/punct then/rb our/prp$ worst-case/jj optimal/jj redistribution/nn mechanism/nn would/md also/rb always/rb redistribute/vb all/dt of/in the/dt vcg/nnp payment/nn ,/punct and/cc we/prp will/md see/vb later/rb that/in it/prp does/vbz not/rb ./punct
+)/punct worst-case/jj performance/nn ./punct
+finally/rb ,/punct we/prp can/md evaluate/vb a/dt mechanism/nn by/in considering/vbg the/dt lowest/jjs redistribution/nn percentage/nn that/in it/prp guarantees/vbz ./punct
+for/in the/dt first/jj example/nn ,/punct the/dt total/jj redistribution/nn payment/nn is/vbz (/punct m+1/nn )/punct m/nn n/nn ˆvm+2/nn +/punct (/punct n−m−1/nn )/punct m/nn n/nn ˆvm+1/nn ,/punct which/wdt is/vbz greater/jjr than/in or/cc equal/jj to/to (/punct n−m−1/nn )/punct m/nn n/nn ˆvm+1/nn ./punct
+so/rb in/in the/dt worst/jjs case/nn ,/punct which/wdt is/vbz when/wrb ˆvm+2/nn =/punct 0/cd ,/punct the/dt percentage/nn redistributed/vbd is/vbz n−m−1/nn n/nn ./punct
+for/in the/dt second/jj example/nn ,/punct the/dt total/jj redistribution/nn payment/nn is/vbz mˆvm+1/nn −/nn m/nn (/punct m+1/nn )/punct (/punct m+2/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct ˆvm+3/nn ,/punct which/wdt is/vbz greater/jjr than/in or/cc equal/jj to/to mˆvm+1/vb (/punct 1−/cd (/punct m+1/nn )/punct (/punct m+2/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct )/punct ./punct
+so/rb in/in the/dt worst/jjs case/nn ,/punct which/wdt is/vbz when/wrb ˆvm+3/nn =/punct ˆvm+1/nn ,/punct the/dt percentage/nn redistributed/vbd is/vbz 1/cd −/cd (/punct m+1/nn )/punct (/punct m+2/nn )/punct (/punct n−m−1/nn )/punct (/punct n−m−2/nn )/punct ./punct
+since/in we/prp assume/vbp that/in the/dt number/nn of/in agents/nns n/nn and/cc the/dt number/nn of/in units/nns m/nn are/vbp known/vbn ,/punct we/prp can/md determine/vb which/wdt example/nn mechanism/nn has/vbz better/jjr worst-case/jj performance/nn by/in comparing/vbg the/dt two/cd quantities/nns ./punct
+when/wrb n/nn =/punct 6/cd and/cc m/nn =/punct 1/cd ,/punct for/in the/dt first/jj example/nn (/punct bailey-cavallo/jj mechanism/nn )/punct ,/punct the/dt percentage/nn redistributed/vbd in/in the/dt worst/jjs case/nn is/vbz 2/cd 3/cd ,/punct and/cc for/in the/dt second/jj example/nn ,/punct this/dt percentage/nn is/vbz 1/cd 2/cd ,/punct which/wdt implies/vbz that/in for/in this/dt pair/nn of/in n/nn and/cc m/nn ,/punct the/dt first/jj mechanism/nn has/vbz better/jjr worst-case/jj performance/nn ./punct
+on/in the/dt other/jj hand/nn ,/punct when/wrb n/nn =/punct 12/cd and/cc m/nn =/punct 1/cd ,/punct for/in the/dt first/jj example/nn ,/punct the/dt percentage/nn redistributed/vbd in/in the/dt worst/jjs case/nn is/vbz 5/cd 6/cd ,/punct and/cc for/in the/dt second/jj example/nn ,/punct this/dt percentage/nn is/vbz 14/cd 15/cd ,/punct which/wdt implies/vbz that/in this/dt time/nn the/dt second/jj mechanism/nn has/vbz better/jjr worst-case/jj performance/nn ./punct
+thus/rb ,/punct it/prp seems/vbz most/rbs natural/jj to/to compare/vb mechanisms/nns by/in the/dt percentage/nn of/in total/jj vcg/nnp payment/nn that/in they/prp redistribute/vbp in/in the/dt worst/jjs case/nn ./punct
+this/dt percentage/nn is/vbz undefined/jj when/wrb the/dt total/jj vcg/nnp payment/nn is/vbz 0/cd ./punct
+to/to deal/vb with/in this/dt ,/punct technically/rb ,/punct we/prp define/vbp the/dt worst-case/jj redistribution/nn percentage/nn as/in the/dt largest/jjs k/nn so/in that/in the/dt total/jj amount/nn redistributed/vbn is/vbz at/in least/jjs k/nn times/nns the/dt total/jj vcg/nnp payment/nn ,/punct for/in all/dt bid/nn vectors/nns ./punct
+(/punct hence/rb ,/punct as/rb long/rb as/in the/dt total/jj amount/nn redistributed/vbn is/vbz at/in least/jjs 0/cd when/wrb the/dt total/jj vcg/nnp payment/nn is/vbz 0/cd ,/punct these/dt cases/nns do/vbp not/rb affect/vb the/dt worst-case/jj percentage/nn ./punct
+)/punct this/dt corresponds/vbz to/to the/dt following/vbg optimization/nn problem/nn :/punct maximize/vb k/nn (/punct the/dt percentage/nn redistributed/vbd in/in the/dt worst/jjs case/nn )/punct subject/nn to/to :/punct for/in every/dt bid/nn vector/nn ˆv1/nn ≥/cd ˆv2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn ˆvn/nn ≥/nn 0/cd zn/nn ≥/nn 0/cd (/punct individual/jj rationality/nn )/punct z1/nn +/punct z2/nn +/punct ./punct
+./punct
+./punct
++/punct zn/nn ≤/cd mˆvm+1/nn (/punct non-deficit/jj )/punct z1/nn +/punct z2/nn +/punct ./punct
+./punct
+./punct
++/punct zn/nn ≥/cd kmˆvm+1/nn (/punct worst-case/jj constraint/nn )/punct we/prp recall/vbp that/in zi/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct ./punct
+./punct
+./punct
++/punct ci−1ˆvi−1/nn +/punct ciˆvi+1/nn +/punct ./punct
+./punct
+./punct
++/punct cn−1ˆvn/nn ./punct
+5/cd ./punct
+transformation/nn to/to linear/nnp programming/nnp the/nnp optimization/nn problem/nn given/vbn in/in the/dt previous/jj section/nn can/md be/vb rewritten/vbn as/in a/dt linear/jj program/nn ,/punct based/vbn on/in the/dt following/vbg observations/nns ./punct
+claim/nn 1/cd ./punct
+if/in c0/nn ,/punct c1/nn ,/punct ./punct
+./punct
+./punct
+,/punct cn−1/nn satisfy/vb both/cc the/dt individual/jj rationality/nn and/cc the/dt non-deficit/jj constraints/nns ,/punct then/rb ci/nn =/punct 0/cd for/in i/fw =/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct m./nnp proof/nnp ./punct
+first/rb ,/punct let/vb us/prp prove/vb that/dt c0/nn =/punct 0/cd ./punct
+consider/vb the/dt bid/nn vector/nn in/in which/wdt ˆvi/nn =/punct 0/cd for/in all/dt i./fw to/to obtain/vb individual/jj rationality/nn ,/punct we/prp must/md have/vb c0/nn ≥/nn 0/cd ./punct
+to/to satisfy/vb the/dt non-deficit/jj constraint/nn ,/punct we/prp must/md have/vb c0/nn ≤/nn 0/cd ./punct
+thus/rb we/prp know/vbp c0/nn =/punct 0/cd ./punct
+now/rb ,/punct if/in ci/nn =/punct 0/cd for/in all/dt i/fw ,/punct there/ex is/vbz nothing/nn to/to prove/vb ./punct
+otherwise/rb ,/punct let/vb j/nn =/punct min/nn {/punct i|ci/nn =/punct 0/cd }/punct ./punct
+assume/vb that/in j/nn ≤/cd m./nn we/prp recall/vbp that/in we/prp can/md write/vb the/dt individual/jj rationality/nn constraint/nn as/in follows/vbz :/punct zn/nn =/punct c0/nn +c1ˆv1/nn +c2ˆv2/nn +c3ˆv3/nn +/punct ./punct
+./punct
+.+cn−2ˆvn−2/nn +cn−1ˆvn−1/nn ≥/nn 0/cd for/in any/dt bid/nn vector/nn ./punct
+let/vb us/prp consider/vb the/dt bid/nn vector/nn in/in which/wdt ˆvi/nn =/punct 1/cd for/in i/fw ≤/fw j/nn and/cc ˆvi/nn =/punct 0/cd for/in the/dt rest/nn ./punct
+in/in this/dt case/nn zn/nn =/punct cj/nn ,/punct so/in we/prp must/md have/vb cj/nn ≥/nn 0/cd ./punct
+the/dt non-deficit/jj constraint/nn can/md be/vb written/vbn as/in follows/vbz :/punct z1/nn +/punct z2/nn +/punct ./punct
+./punct
+./punct
++/punct zn/nn ≤/cd mˆvm+1/nn for/in any/dt bid/nn vector/nn ./punct
+consider/vb the/dt same/jj bid/nn vector/nn as/in above/jj ./punct
+we/prp have/vbp zi/nn =/punct 0/cd for/in i/fw ≤/fw j/nn ,/punct because/in for/in these/dt bids/nns ,/punct the/dt jth/nn highest/jjs other/jj bid/nn has/vbz value/nn 0/cd ,/punct so/rb all/pdt the/dt ci/nn that/wdt are/vbp nonzero/nn are/vbp multiplied/vbn by/in 0/cd ./punct
+for/in i/fw >/punct j/nn ,/punct we/prp have/vbp zi/nn =/punct cj/nn ,/punct because/in the/dt jth/nn highest/jjs other/jj bid/nn has/vbz value/nn 1/cd ,/punct and/cc all/dt lower/jjr bids/nns have/vbp value/nn 0/cd ./punct
+so/in the/dt non-deficit/jj constraint/nn tells/vbz us/prp that/in cj/nn (/punct n/nn −/cd j/nn )/punct ≤/cd mˆvm+1/nn ./punct
+because/in j/nn ≤/nn m/nn ,/punct ˆvm+1/nn =/punct 0/cd ,/punct so/rb the/dt right/jj hand/nn side/nn is/vbz 0/cd ./punct
+we/prp also/rb have/vbp n/nn −/cd j/nn >/punct 0/cd because/in j/nn ≤/nn m/nn </punct n./cd so/cc cj/nn ≤/nn 0/cd ./punct
+because/in we/prp have/vbp already/rb established/vbn that/in cj/nn ≥/nn 0/cd ,/punct it/prp follows/vbz that/in cj/nn =/punct 0/cd ;/punct but/cc this/dt is/vbz contrary/jj to/to assumption/nn ./punct
+so/rb j/nn >/punct m./nn incidentally/rb ,/punct this/dt claim/nn also/rb shows/vbz that/in if/in m/nn =/punct n/nn −/nn 1/cd ,/punct then/rb ci/nn =/punct 0/cd for/in all/dt i./nn thus/rb ,/punct we/prp are/vbp stuck/vbn with/in the/dt vcg/nnp mechanism/nn ./punct
+from/in here/rb on/in ,/punct we/prp only/rb consider/vbp the/dt case/nn where/wrb m/nn </punct n/nn −/cd 1/cd ./punct
+claim/nn 2/cd ./punct
+the/dt individual/jj rationality/nn constraint/nn can/md be/vb written/vbn as/in follows/vbz :/punct pj/nn i=m+1/nn ci/nn ≥/nn 0/cd for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd ./punct
+before/in proving/vbg this/dt claim/nn ,/punct we/prp introduce/vbp the/dt following/vbg lemma/nn ./punct
+lemma/nnp 1/cd ./punct
+given/vbn a/dt positive/jj integer/nn k/nn and/cc a/dt set/nn of/in real/jj constants/nns s1/nn ,/punct s2/nn ,/punct ./punct
+./punct
+./punct
+,/punct sk/nn ,/punct (/punct s1t1/nn +/punct s2t2/nn +/punct ./punct
+./punct
+./punct
++/punct sktk/nn ≥/nn 0/cd for/in any/dt t1/nn ≥/cd t2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn tk/nn ≥/nn 0/cd )/punct if/in and/cc only/rb if/in (/punct pj/nn i=1/nn si/nn ≥/cd 0/cd for/in j/nn =/punct 1/cd ,/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct k/nn )/punct ./punct
+proof/nn ./punct
+let/vb di/fw =/punct ti/nn −ti+1/nn for/in i/fw =/punct 1/cd ,/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct k−1/nn ,/punct and/cc dk/nn =/punct tk/nn ./punct
+then/rb (/punct s1t1/nn +s2t2/nn +/punct ./punct
+./punct
+.+sktk/jj ≥/nn 0/cd for/in any/dt t1/nn ≥/cd t2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn tk/nn ≥/cd 0/cd )/punct is/vbz equivalent/jj to/to (/punct (/punct p1/nn i=1/nn si/fw )/punct d1/nn +/punct (/punct p2/nn i=1/nn si/fw )/punct d2/nn +/punct ./punct
+./punct
+./punct
++/punct (/punct pk/nn i=1/nn si/nn )/punct dk/nn ≥/nn 0/cd for/in any/dt set/nn of/in arbitrary/jj non-negative/jj dj/nn )/punct ./punct
+when/wrb pj/nnp i=1/nn si/nn ≥/cd 0/cd for/in j/nn =/punct 1/cd ,/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct k/nn ,/punct the/dt above/jj inequality/nn is/vbz obviously/rb true/jj ./punct
+if/in for/in some/dt j/nn ,/punct pj/nn i=1/nn si/nn </punct 0/cd ,/punct if/in we/prp set/vbd dj/nn >/punct 0/cd and/cc di/fw =/punct 0/cd for/in all/dt i/fw =/punct j/nn ,/punct then/rb the/dt above/jj inequality/nn becomes/vbz false/jj ./punct
+so/rb pj/nn i=1/nn si/nn ≥/cd 0/cd for/in j/nn =/punct 1/cd ,/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct k/nn is/vbz both/cc necessary/jj and/cc sufficient/jj ./punct
+we/prp are/vbp now/rb ready/jj to/to present/vb the/dt proof/nn of/in claim/nn 2/cd ./punct
+proof/nn ./punct
+the/dt individual/jj rationality/nn constraint/nn can/md be/vb written/vbn as/in zn/nn =/punct c0/nn +/punct c1ˆv1/nn +/punct c2ˆv2/nn +/punct c3ˆv3/nn +/punct ./punct
+./punct
+./punct
++/punct cn−2ˆvn−2/nn +/punct cn−1ˆvn−1/nn ≥/nn 0/cd for/in any/dt bid/nn vector/nn ˆv1/nn ≥/cd ˆv2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn ˆvn−1/nn ≥/cd ˆvn/nn ≥/nn 0/cd ./punct
+we/prp have/vbp already/rb shown/vbn that/in ci/nn =/punct 0/cd for/in i/fw ≤/fw m./fw thus/rb ,/punct the/dt above/jj can/md be/vb simplified/vbn to/to zn/nn =/punct cm+1ˆvm+1/nn +/punct cm+2ˆvm+2+/nn ./punct
+./punct
+.+cn−2ˆvn−2+cn−1ˆvn−1/nn ≥/nn 0/cd for/in any/dt bid/nn vector/nn ./punct
+by/in the/dt above/jj lemma/nn ,/punct this/dt is/vbz equivalent/jj to/to pj/nn i=m+1/nn ci/nn ≥/nn 0/cd for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd ./punct
+claim/nn 3/cd ./punct
+the/dt non-deficit/jj constraint/nn and/cc the/dt worst-case/jj constraint/nn can/md also/rb be/vb written/vbn as/in linear/jj inequalities/nns involving/vbg only/rb the/dt ci/nn and/cc k./nn proof/nn ./punct
+the/dt non-deficit/jj constraint/nn requires/vbz that/in for/in any/dt bid/nn vector/nn ,/punct z1/nn +z2/nn +/punct ./punct
+./punct
+.+zn/nn ≤/cd mˆvm+1/nn ,/punct where/wrb zi/nn =/punct c0/nn +c1ˆv1/nn +/punct 33/cd c2ˆv2/nn +/punct ./punct
+./punct
+.+ci−1ˆvi−1/nn +ciˆvi+1/nn +/punct ./punct
+./punct
+.+cn−1ˆvn/nn for/in i/fw =/punct 1/cd ,/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./nnp because/in ci/nn =/punct 0/cd for/in i/fw ≤/fw m/nn ,/punct we/prp can/md simplify/vb this/dt inequality/nn to/to qm+1ˆvm+1/nn +/punct qm+2ˆvm+2/nn +/punct ./punct
+./punct
+./punct
++/punct qnˆvn/jj ≥/nn 0/cd qm+1/nn =/punct m/nn −/cd (/punct n/nn −/nn m/nn −/nn 1/cd )/punct cm+1/nn qi/nn =/punct −/cd (/punct i−1/nn )/punct ci−1/nn −/cd (/punct n−i/nns )/punct ci/nns ,/punct for/in i/fw =/punct m+2/nn ,/punct ./punct
+./punct
+./punct
+,/punct n−1/nn (/punct when/wrb m/nn +/punct 2/cd >/punct n/nn −/cd 1/cd ,/punct this/dt set/nn of/in equalities/nns is/vbz empty/jj )/punct qn/nn =/punct −/cd (/punct n/nn −/nn 1/cd )/punct cn−1/nn by/in the/dt above/jj lemma/nn ,/punct this/dt is/vbz equivalent/jj to/to pj/nn i=m+1/nn qi/nn ≥/nn 0/cd for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./vb so/rb ,/punct we/prp can/md simplify/vb further/rb as/in follows/vbz :/punct qm+1/nn ≥/nn 0/cd ⇐⇒/cd (/punct n/nn −/nn m/nn −/nn 1/cd )/punct cm+1/nn ≤/nn m/nn qm+1/nn +/punct ./punct
+./punct
+./punct
++/punct qm+i/jj ≥/nn 0/cd ⇐⇒/nn n/nn pj=m+i−1/nn j=m+1/nn cj/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct cm+i/fw ≤/fw m/nn for/in i/fw =/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn m/nn −/cd 1/cd qm+1/nn +/punct ./punct
+./punct
+./punct
++/punct qn/nn ≥/nn 0/cd ⇐⇒/nn n/nn pj=n−1/nn j=m+1/nn cj/nn ≤/nn m/nn so/rb ,/punct the/dt non-deficit/jj constraint/nn can/md be/vb written/vbn as/in a/dt set/nn of/in linear/jj inequalities/nns involving/vbg only/rb the/dt ci/nn ./punct
+the/dt worst-case/jj constraint/nn can/md be/vb also/rb written/vbn as/in a/dt set/nn of/in linear/jj inequalities/nns ,/punct by/in the/dt following/vbg reasoning/nn ./punct
+the/dt worstcase/nn constraint/nn requires/vbz that/in for/in any/dt bid/nn input/nn z1/nn +z2/nn +/punct ./punct
+./punct
+.+/jj zn/nn ≥/nn kmˆvm+1/nn ,/punct where/wrb zi/nn =/punct c0/nn +c1ˆv1/nn +c2ˆv2/nn +/punct ./punct
+./punct
+.+ci−1ˆvi−1/nn +/punct ciˆvi+1/nn +/punct ./punct
+./punct
+./punct
++/punct cn−1ˆvn/nn for/in i/fw =/punct 1/cd ,/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./nnp because/in ci/nn =/punct 0/cd for/in i/fw ≤/fw m/nn ,/punct we/prp can/md simplify/vb this/dt inequality/nn to/to qm+1ˆvm+1/nn +/punct qm+2ˆvm+2/nn +/punct ./punct
+./punct
+./punct
++/punct qnˆvn/nn ≥/nn 0/cd qm+1/nn =/punct (/punct n/nn −/nn m/nn −/nn 1/cd )/punct cm+1/nn −/cd km/nn qi/nn =/punct (/punct i/fw −/fw 1/cd )/punct ci−1/nn +/punct (/punct n/nn −/cd i/fw )/punct ci/fw ,/punct for/in i/fw =/punct m/nn +/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd qn/nn =/punct (/punct n/nn −/nn 1/cd )/punct cn−1/nn by/in the/dt above/jj lemma/nn ,/punct this/dt is/vbz equivalent/jj to/to pj/nnp i=m+1/nnp qi/nnp ≥/vbd 0/cd for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./vb so/rb ,/punct we/prp can/md simplify/vb further/rb as/in follows/vbz :/punct qm+1/nn ≥/nn 0/cd ⇐⇒/cd (/punct n/nn −/nn m/nn −/nn 1/cd )/punct cm+1/nn ≥/cd km/nn qm+1/nn +/punct ./punct
+./punct
+./punct
++/punct qm+i/nnp ≥/cd 0/cd ⇐⇒/nn n/nn pj=m+i−1/nn j=m+1/nn cj/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct cm+i/fw ≥/fw km/nn for/in i/fw =/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn m/nn −/cd 1/cd qm+1/nn +/punct ./punct
+./punct
+./punct
++/punct qn/nn ≥/nn 0/cd ⇐⇒/nn n/nn pj=n−1/nn j=m+1/nn cj/nn ≥/cd km/nn so/rb ,/punct the/dt worst-case/jj constraint/nn can/md also/rb be/vb written/vbn as/in a/dt set/nn of/in linear/jj inequalities/nns involving/vbg only/rb the/dt ci/nn and/cc k./nn combining/vbg all/pdt the/dt claims/nns ,/punct we/prp see/vbp that/in the/dt original/jj optimization/nn problem/nn can/md be/vb transformed/vbn into/in the/dt following/vbg linear/jj program/nn ./punct
+variables/nns :/punct cm+1/nn ,/punct cm+2/nn ,/punct ./punct
+./punct
+./punct
+,/punct cn−1/nn ,/punct k/nn maximize/vb k/nn (/punct the/dt percentage/nn redistributed/vbd in/in the/dt worst/jjs case/nn )/punct subject/nn to/to :/punct pj/nn i=m+1/nn ci/nn ≥/nn 0/cd for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/cd 1/cd km/nn ≤/nn (/punct n/nn −/nn m/nn −/nn 1/cd )/punct cm+1/nn ≤/nn m/nn km/nn ≤/nn n/nn pj=m+i−1/nn j=m+1/nn cj/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct cm+i/fw ≤/fw m/nn for/in i/fw =/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn m/nn −/cd 1/cd km/nn ≤/nn n/nn pj=n−1/nn j=m+1/nn cj/nn ≤/nn m/nn 6/cd ./punct
+numerical/jj results/nns for/in selected/vbn values/nns of/in n/nn and/cc m/nn ,/punct we/prp solved/vbd the/dt linear/jj program/nn using/vbg glpk/nnp (/punct gnu/nnp linear/nnp programming/nnp kit/nn )/punct ./punct
+in/in the/dt table/nn below/in ,/punct we/prp present/vbp the/dt results/nns for/in a/dt single/jj unit/nn (/punct m/nn =/punct 1/cd )/punct ./punct
+we/prp present/vbp 1−k/cd (/punct the/dt percentage/nn of/in the/dt total/jj vcg/nnp payment/nn that/wdt is/vbz not/rb redistributed/vbn by/in the/dt worst-case/jj optimal/jj mechanism/nn in/in the/dt worst/jjs case/nn )/punct instead/rb of/in k/nn in/in the/dt second/jj column/nn because/in writing/vbg k/nn would/md require/vb too/rb many/jj significant/jj digits/nns ./punct
+correspondingly/rb ,/punct the/dt third/jj column/nn displays/vbz the/dt percentage/nn 5/cd 10/cd 15/cd 20/cd 25/cd 30/cd 0.1/cd 0.2/cd 0.3/cd 0.4/cd 0.5/cd 0.6/cd 0.7/cd 0.8/cd 0.9/cd 1/cd number/nn of/in agentsworst−caseredistributionpercentage/nn 1/cd unit/nn wo/nn 1/cd unit/nn bc/nn 2/cd units/nnp wo/nnp 2/cd units/nnp bc/nnp 3/cd units/nnp wo/nnp 3/cd units/nnp bc/nnp 4/cd units/nnp wo/nnp 4/cd units/nnp bc/nnp figure/nnp 1/cd :/punct a/dt comparison/nn of/in the/dt worst-case/jj optimal/jj mechanism/nn (/punct wo/nn )/punct and/cc the/dt bailey-cavallo/nnp mechanism/nn (/punct bc/nn )/punct ./punct
+of/in the/dt total/jj vcg/nnp payment/nn that/wdt is/vbz not/rb redistributed/vbn by/in the/dt bailey-cavallo/nnp mechanism/nn in/in the/dt worst/jjs case/nn (/punct which/wdt is/vbz equal/jj to/to 2/cd n/nn )/punct ./punct
+n/nn 1/cd −/nn k/nn bailey/nnp −/nnp cavallo/nnp mechanism/nn 3/cd 66.7/cd %/punct 66.7/cd %/punct 4/cd 42.9/cd %/punct 50.0/cd %/punct 5/cd 26.7/cd %/punct 40.0/cd %/punct 6/cd 16.1/cd %/punct 33.3/cd %/punct 7/cd 9.52/cd %/punct 28.6/cd %/punct 8/cd 5.51/cd %/punct 25.0/cd %/punct 9/cd 3.14/cd %/punct 22.2/cd %/punct 10/cd 1.76/cd %/punct 20.0/cd %/punct 20/cd 3.62e/cd −/nn 5/cd 10.0/cd %/punct 30/cd 5.40e/nn −/cd 8/cd 6.67e/jj −/nn 2/cd 40/cd 7.09e/cd −/nn 11/cd 5.00e/nn −/nn 2/cd the/dt worst-case/jj optimal/jj mechanism/nn significantly/rb outperforms/vbz the/dt bailey-cavallo/jj mechanism/nn in/in the/dt worst/jjs case/nn ./punct
+perhaps/rb more/rbr surprisingly/rb ,/punct the/dt worst-case/jj optimal/jj mechanism/nn sometimes/rb does/vbz better/jjr in/in the/dt worst/jjs case/nn than/in the/dt baileycavallo/nnp mechanism/nn does/vbz on/in average/nn ,/punct as/in the/dt following/vbg example/nn shows/nns ./punct
+recall/vb that/in the/dt total/jj redistribution/nn payment/nn of/in the/dt baileycavallo/nnp mechanism/nn is/vbz (/punct m/nn +/punct 1/cd )/punct m/nn n/nn ˆvm+2/nn +/punct (/punct n/nn −/nn m/nn −/cd 1/cd )/punct m/nn n/nn ˆvm+1/nn ./punct
+for/in the/dt single-unit/jj case/nn ,/punct this/dt simplifies/vbz to/to 2/cd n/nn ˆv3/nn +/punct n−2/nn n/nn ˆv2/nn ./punct
+hence/rb the/dt percentage/nn of/in the/dt total/jj vcg/nnp payment/nn that/wdt is/vbz not/rb redistributed/vbn is/vbz ˆv2−/nn 2/cd n/nn ˆv3−/nn n−2/nn n/nn ˆv2/nn ˆv2/nn =/punct 2/cd n/nn −/nn 2/cd n/nn ˆv3/nn ˆv2/nn ,/punct which/wdt has/vbz an/dt expected/vbn value/nn of/in e/nn (/punct 2/cd n/nn −/nn 2/cd n/nn ˆv3/nn ˆv2/nn )/punct =/punct 2/cd n/nn −/nn 2/cd n/nn e/nn ˆv3/nn ˆv2/nn ./punct
+suppose/vb the/dt bid/nn values/nns are/vbp drawn/vbn from/in a/dt uniform/jj distribution/nn over/in [/punct 0/cd ,/punct 1/cd ]/punct ./punct
+the/dt theory/nn of/in order/nn statistics/nns tells/vbz us/prp that/in the/dt 34/cd joint/jj probability/nn density/nn function/nn of/in ˆv2/nn and/cc ˆv3/nn is/vbz f/fw (/punct ˆv3/nn ,/punct ˆv2/nn )/punct =/punct n/nn (/punct n/nn −/cd 1/cd )/punct (/punct n/nn −/nn 2/cd )/punct ˆvn−3/nn 3/cd (/punct 1/cd −/cd ˆv2/nn )/punct for/in ˆv2/nn ≥/cd ˆv3/nn ./punct
+now/rb ,/punct e/nn ˆv3/nn ˆv2/nn =/punct r/nn 1/cd 0/cd r/nn ˆv2/nn 0/cd ˆv3/nn ˆv2/nn f/fw (/punct ˆv3/nn ,/punct ˆv2/nn )/punct dˆv3dˆv2/nn =/punct n−2/nn n−1/nn ./punct
+so/rb ,/punct the/dt expected/vbn value/nn of/in the/dt remaining/vbg percentage/nn is/vbz 2/cd n/nn −/nn 2/cd n/nn n−2/nn n−1/nn =/punct 2/cd n/nn (/punct n−1/nn )/punct ./punct
+for/in n/nn =/punct 20/cd ,/punct this/dt is/vbz 5.26e/jj −/nn 3/cd ,/punct whereas/in the/dt remaining/vbg percentage/nn for/in the/dt worst-case/jj optimal/jj mechanism/nn is/vbz 3.62e−5/cd in/in the/dt worst/jjs case/nn ./punct
+let/vb us/prp present/vb the/dt optimal/jj solution/nn for/in the/dt case/nn n/nn =/punct 5/cd in/in detail/nn ./punct
+by/in solving/vbg the/dt above/jj linear/jj program/nn ,/punct we/prp find/vbp that/in the/dt optimal/jj values/nns for/in the/dt ci/nn are/vbp c2/nn =/punct 11/cd 45/cd ,/punct c3/nn =/punct −1/cd 9/cd ,/punct and/cc c4/nn =/punct 1/cd 15/cd ./punct
+that/dt is/vbz ,/punct the/dt redistribution/nn payment/nn received/vbn by/in each/dt agent/nn is/vbz :/punct 11/cd 45/cd times/nns the/dt second/jj highest/jjs bid/nn among/in the/dt other/jj agents/nns ,/punct minus/cc 1/cd 9/cd times/nns the/dt third/jj highest/jjs bid/nn among/in the/dt other/jj agents/nns ,/punct plus/cc 1/cd 15/cd times/nns the/dt fourth/jj highest/jjs bid/nn among/in the/dt other/jj agents/nns ./punct
+the/dt total/jj amount/nn redistributed/vbn is/vbz 11/cd 15/cd ˆv2/nn +/punct 4/cd 15/cd ˆv3/nn −/cd 4/cd 15/cd ˆv4/nn +/punct 4/cd 15/cd ˆv5/nn ;/punct in/in the/dt worst/jjs case/nn ,/punct 11/cd 15/cd ˆv2/nn is/vbz redistributed/vbn ./punct
+hence/rb ,/punct the/dt percentage/nn of/in the/dt total/jj vcg/nnp payment/nn that/wdt is/vbz not/rb redistributed/vbn is/vbz never/rb more/jjr than/in 4/cd 15/cd =/punct 26.7/cd %/punct ./punct
+finally/rb ,/punct we/prp compare/vbp the/dt worst-case/jj optimal/jj mechanism/nn to/to the/dt bailey-cavallo/nnp mechanism/nn for/in m/nn =/punct 1/cd ,/punct 2/cd ,/punct 3/cd ,/punct 4/cd ,/punct n/nn =/punct m/nn +/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct 30/cd ./punct
+these/dt results/nns are/vbp in/in figure/nn 1/cd ./punct
+we/prp see/vbp that/in for/in any/dt m/nn ,/punct when/wrb n/nn =/punct m/nn +/punct 2/cd ,/punct the/dt worst-case/jj optimal/jj mechanism/nn has/vbz the/dt same/jj worst-case/jj performance/nn as/in the/dt bailey-cavallo/nnp mechanism/nn (/punct actually/rb ,/punct in/in this/dt case/nn ,/punct the/dt worst-case/jj optimal/jj mechanism/nn is/vbz identical/jj to/to the/dt baileycavallo/nnp mechanism/nn )/punct ./punct
+when/wrb n/nn >/punct m/nn +/punct 2/cd ,/punct the/dt worst-case/jj optimal/jj mechanism/nn outperforms/vbz the/dt bailey-cavallo/jj mechanism/nn (/punct in/in the/dt worst/jjs case/nn )/punct ./punct
+7/cd ./punct
+analytical/jj characterization/nn of/in the/dt worst-case/jj optimal/jj mechanism/nn we/prp recall/vbp that/in our/prp$ linear/jj program/nn has/vbz the/dt following/jj form/nn :/punct variables/nns :/punct cm+1/nn ,/punct cm+2/nn ,/punct ./punct
+./punct
+./punct
+,/punct cn−1/nn ,/punct k/nn maximize/vb k/nn (/punct the/dt percentage/nn redistributed/vbd in/in the/dt worst/jjs case/nn )/punct subject/nn to/to :/punct pj/nn i=m+1/nn ci/nn ≥/nn 0/cd for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/cd 1/cd km/nn ≤/nn (/punct n/nn −/nn m/nn −/nn 1/cd )/punct cm+1/nn ≤/nn m/nn km/nn ≤/nn n/nn pj=m+i−1/nn j=m+1/nn cj/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct cm+i/fw ≤/fw m/nn for/in i/fw =/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn m/nn −/cd 1/cd km/nn ≤/nn n/nn pj=n−1/nn j=m+1/nn cj/nn ≤/nn m/nn a/nn linear/jj program/nn has/vbz no/dt solution/nn if/in and/cc only/rb if/in either/cc the/dt objective/nn is/vbz unbounded/jj ,/punct or/cc the/dt constraints/nns are/vbp contradictory/jj (/punct there/ex is/vbz no/dt feasible/jj solution/nn )/punct ./punct
+it/prp is/vbz easy/jj to/to see/vb that/dt k/nn is/vbz bounded/vbn above/in by/in 1/cd (/punct redistributing/vbg more/jjr than/in 100/cd %/punct violates/vbz the/dt non-deficit/jj constraint/nn )/punct ./punct
+also/rb ,/punct a/dt feasible/jj solution/nn always/rb exists/vbz ,/punct for/in example/nn ,/punct k/nn =/punct 0/cd and/cc ci/nn =/punct 0/cd for/in all/dt i./fw so/in an/dt optimal/jj solution/nn always/rb exists/vbz ./punct
+observe/vb that/in the/dt linear/jj program/nn model/nn depends/vbz only/rb on/in the/dt number/nn of/in agents/nns n/nn and/cc the/dt number/nn of/in units/nns m./vbp hence/rb the/dt optimal/jj solution/nn is/vbz a/dt function/nn of/in n/nn and/cc m./vb it/prp turns/vbz out/rp that/in this/dt optimal/jj solution/nn can/md be/vb analytically/rb characterized/vbn as/in follows/vbz ./punct
+theorem/nnp 1/cd ./punct
+for/in any/dt m/nn and/cc n/nn with/in n/nn ≥/cd m+2/nn ,/punct the/dt worstcase/nn optimal/jj mechanism/nn (/punct among/in linear/jj vcg/nnp redistribution/nn mechanisms/nns )/punct is/vbz unique/jj ./punct
+for/in this/dt mechanism/nn ,/punct the/dt percentage/nn redistributed/vbd in/in the/dt worst/jjs case/nn is/vbz k∗/nn =/punct 1/cd −/cd `n−1/nn m/nn ´/cd pn−1/nn j=m/nn `n−1/nn j/nn ´/cd the/dt worst-case/jj optimal/jj mechanism/nn is/vbz characterized/vbn by/in the/dt following/vbg values/nns for/in the/dt ci/nn :/punct c∗/nn i/fw =/punct (/punct −1/cd )/punct i+m−1/nn (/punct n/nn −/nn m/nn )/punct `n−1/nn m−1/nn ´/cd i/fw pn−1/fw j=m/fw `n−1/nn j/nn ´/cd 1/cd `n−1/nn i/fw ´/fw n−1x/nn j=i/nn n/nn −/cd 1/cd j/nn !/punct
+for/in i/fw =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd ./punct
+it/prp should/md be/vb noted/vbn that/in we/prp have/vbp proved/vbn ci/nn =/punct 0/cd for/in i/fw ≤/fw m/nn in/in claim/nnp 1/cd ./punct
+proof/nn ./punct
+we/prp first/rb rewrite/vb the/dt linear/jj program/nn as/in follows/vbz ./punct
+we/prp introduce/vbp new/jj variables/nns xm+1/nn ,/punct xm+2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−1/nn ,/punct defined/vbn by/in xj/nn =/punct pj/nn i=m+1/nn ci/nn for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd ./punct
+the/dt linear/jj program/nn then/rb becomes/vbz :/punct variables/nns :/punct xm+1/nn ,/punct xm+2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−1/nn ,/punct k/nn maximize/vb k/nn subject/nn to/to :/punct km/nn ≤/nn (/punct n/nn −/nn m/nn −/nn 1/cd )/punct xm+1/nn ≤/nn m/nn km/nn ≤/cd (/punct m/nn +/punct i/fw )/punct xm+i−1/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct xm+i/fw ≤/fw m/nn for/in i/fw =/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn m/nn −/cd 1/cd km/nn ≤/nn nxn−1/nn ≤/nn m/nn xi/nn ≥/nn 0/cd for/in i/fw =/punct m/nn +/punct 1/cd ,/punct m/nn +/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd we/prp will/md prove/vb that/in for/in any/dt optimal/jj solution/nn to/to this/dt linear/jj program/nn ,/punct k/nn =/punct k∗/nn ./punct
+moreover/rb ,/punct we/prp will/md prove/vb that/in when/wrb k/nn =/punct k∗/nn ,/punct xj/nn =/punct pj/nn i=m+1/nn c∗/nn i/fw for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd ./punct
+this/dt will/md prove/vb the/dt theorem/nn ./punct
+we/prp first/rb make/vb the/dt following/vbg observations/nns :/punct (/punct n/nn −/nn m/nn −/nn 1/cd )/punct c∗/nn m+1/nn =/punct (/punct n/nn −/nn m/nn −/cd 1/cd )/punct (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct (/punct m+1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct 1/cd (/punct n−1/nn m+1/nn )/punct pn−1/nn j=m+1/nn `n−1/nn j/nn ´/nn =/punct (/punct n/nn −/nn m/nn −/cd 1/cd )/punct (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct (/punct m+1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct 1/cd (/punct n−1/nn m+1/nn )/punct (/punct pn−1/nn j=m/nn `n−1/nn j/nn ´/cd −/cd `n−1/nn m/nn ´/cd )/punct =/punct (/punct n/nn −/nn m/nn −/cd 1/cd )/punct m/nn n−m−1/nn −/cd (/punct n/nn −/nn m/nn −/cd 1/cd )/punct m/nn (/punct n−1/nn m/nn )/punct (/punct n−m−1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct =/punct m/nn −/cd (/punct 1/cd −/cd k∗/nn )/punct m/nn =/punct k∗/nn m/nn for/in i/fw =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 2/cd ,/punct ic∗/nn i/fw +/punct (/punct n/nn −/cd i/fw −/fw 1/cd )/punct c∗/nn i+1/nn =/punct i/fw (/punct −1/cd )/punct i+m−1/nn (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct i/fw pn−1/fw j=m/fw (/punct n−1/nn j/nn )/punct 1/cd (/punct n−1/nn i/fw )/punct pn−1/nn j=i/nn `n−1/nn j/nn ´/nn +/punct (/punct n/nn −/cd i/fw −/fw 1/cd )/punct (/punct −1/cd )/punct i+m/nn (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct (/punct i+1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct 1/cd (/punct n−1/nn i+1/nn )/punct pn−1/nn j=i+1/nn `n−1/nn j/nn ´/nn =/punct (/punct −1/cd )/punct i+m−1/nn (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct 1/cd (/punct n−1/nn i/fw )/punct pn−1/nn j=i/nn `n−1/nn j/nn ´/cd −/cd (/punct n/nn −/cd i/fw −/fw 1/cd )/punct (/punct −1/cd )/punct i+m−1/nn (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct (/punct i+1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct i+1/nn (/punct n−1/nn i/fw )/punct (/punct n−i−1/nn )/punct pn−1/nn j=i+1/nn `n−1/nn j/nn ´/nn =/punct (/punct −1/cd )/punct i+m−1/nn (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct =/punct (/punct −1/cd )/punct i+m−1/nn m/nn (/punct 1/cd −/nn k∗/nn )/punct finally/rb ,/punct (/punct n/nn −/cd 1/cd )/punct c∗/nn n−1/nn =/punct (/punct n/nn −/nn 1/cd )/punct (/punct −1/cd )/punct n+m/nn (/punct n−m/nn )/punct (/punct n−1/nn m−1/nn )/punct (/punct n−1/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct 1/cd (/punct n−1/nn n−1/nn )/punct pn−1/nn j=n−1/nn `n−1/nn j/nn ´/nn =/punct (/punct −1/cd )/punct m+n/nn m/nn (/punct 1/cd −/cd k∗/nn )/punct summarizing/vbg the/dt above/jj ,/punct we/prp have/vbp :/punct (/punct n/nn −/nn m/nn −/nn 1/cd )/punct c∗/nn m+1/nn =/punct k∗/nn m/nn (/punct m/nn +/punct 1/cd )/punct c∗/nn m+1/nn +/punct (/punct n/nn −/nn m/nn −/nn 2/cd )/punct c∗/nn m+2/nn =/punct m/nn (/punct 1/cd −/cd k∗/nn )/punct (/punct m/nn +/punct 2/cd )/punct c∗/nn m+2/nn +/punct (/punct n/nn −/nn m/nn −/cd 3/cd )/punct c∗/nn m+3/nn =/punct −m/nn (/punct 1/cd −/cd k∗/nn )/punct (/punct m/nn +/punct 3/cd )/punct c∗/nn m+3/nn +/punct (/punct n/nn −/nn m/nn −/cd 4/cd )/punct c∗/nn m+4/nn =/punct m/nn (/punct 1/cd −/cd k∗/nn )/punct .../: 35/cd (/punct n/nn −/cd 3/cd )/punct c∗/nn n−3/nn +/punct 2c∗/nn n−2/nn =/punct (/punct −1/cd )/punct m+n−2/nn m/nn (/punct 1/cd −/nn k∗/nn )/punct (/punct n/nn −/nn 2/cd )/punct c∗/nn n−2/nn +/punct c∗/nn n−1/nn =/punct (/punct −1/cd )/punct m+n−1/nn m/nn (/punct 1/cd −/nn k∗/nn )/punct (/punct n/nn −/cd 1/cd )/punct c∗/nn n−1/nn =/punct (/punct −1/cd )/punct m+n/nn m/nn (/punct 1/cd −/nn k∗/nn )/punct let/vbd x∗/nn j/nn =/punct pj/nn i=m+1/nn c∗/nn i/fw for/in j/nn =/punct m/nn +/punct 1/cd ,/punct m/nn +/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/cd 1/cd ,/punct the/dt first/jj equation/nn in/in the/dt above/jj tells/vbz us/prp that/in (/punct n/nn −/nn m/nn −/nn 1/cd )/punct x∗/nn m+1/nn =/punct k∗/nn m./nn by/in adding/vbg the/dt first/jj two/cd equations/nns ,/punct we/prp get/vbp (/punct m/nn +/punct 2/cd )/punct x∗/nn m+1/nn +/punct (/punct n/nn −/nn m/nn −/nn 2/cd )/punct x∗/nn m+2/nn =/punct m/nn by/in adding/vbg the/dt first/jj three/cd equations/nns ,/punct we/prp get/vbp (/punct m/nn +/punct 3/cd )/punct x∗/nn m+2/nn +/punct (/punct n/nn −/nn m/nn −/cd 3/cd )/punct x∗/nn m+3/nn =/punct k∗/nn m/nn by/in adding/vbg the/dt first/jj i/fw equations/nns ,/punct where/wrb i/fw =/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n−m−1/nn ,/punct we/prp get/vbp (/punct m/nn +/punct i/fw )/punct x∗/fw m+i−1/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct x∗/fw m+i/nn =/punct m/nn if/in i/fw is/vbz even/rb (/punct m/nn +/punct i/fw )/punct x∗/fw m+i−1/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct x∗/fw m+i/nn =/punct k∗/nn m/nn if/in i/fw is/vbz odd/jj finally/rb by/in adding/vbg all/pdt the/dt equations/nns ,/punct we/prp get/vbp nx∗/jj n−1/nn =/punct m/nn if/in n/nn −/nn m/nn is/vbz even/rb ;/punct nx∗/jj n−1/nn =/punct k∗/nn m/nn if/in n/nn −/nn m/nn is/vbz odd/jj ./punct
+thus/rb ,/punct for/in all/dt of/in the/dt constraints/nns other/jj than/in the/dt nonnegativity/jj constraints/nns ,/punct we/prp have/vbp shown/vbn that/in they/prp are/vbp satisfied/vbn by/in setting/vbg xj/nn =/punct x∗/nn j/nn =/punct pj/nn i=m+1/nn c∗/nn i/fw and/cc k/nn =/punct k∗/nn ./punct
+we/prp next/rb show/vbp that/in the/dt nonnegativity/jj constraints/nns are/vbp satisfied/vbn by/in these/dt settings/nns as/rb well/rb ./punct
+for/in m/nn +/punct 1/cd ≤/nn i/fw ,/punct i/fw +/punct 1/cd ≤/nn n/nn −/cd 1/cd ,/punct we/prp have/vbp 1/cd i/fw pn−1/fw j=i/fw (/punct n−1/nn j/nn )/punct (/punct n−1/nn i/fw )/punct =/punct 1/cd i/fw pn−1/fw j=i/fw i/fw !/punct (/punct n−1−i/fw )/punct !/punct
+j/nn !/punct (/punct n−1−j/nn )/punct !/punct
+≥/nn 1/cd i+1/nn pn−2/nn j=i/nn i/fw !/punct (/punct n−1−i/fw )/punct !/punct
+j/nn !/punct (/punct n−1−j/nn )/punct !/punct
+≥/nn 1/cd i+1/nn pn−2/nn j=i/nn (/punct i+1/nn )/punct !/punct (/punct n−1−i−1/nn )/punct !/punct
+(/punct j+1/nn )/punct !/punct (/punct n−1−j−1/nn )/punct !/punct
+=/punct 1/cd i+1/nn pn−1/nn j=i+1/nn (/punct n−1/nn j/nn )/punct (/punct n−1/nn i+1/nn )/punct this/dt implies/vbz that/in the/dt absolute/jj value/nn of/in c∗/nn i/fw is/vbz decreasing/vbg as/in i/fw increases/vbz (/punct if/in the/dt c∗/nn contains/vbz more/jjr than/in one/cd number/nn )/punct ./punct
+we/prp further/rb observe/vbp that/in the/dt sign/nn of/in c∗/nn i/fw alternates/fw ,/punct with/in the/dt first/jj element/nn c∗/nn m+1/nn positive/jj ./punct
+so/rb x∗/jj j/nn =/punct pj/nn i=m+1/nn c∗/nn i/fw ≥/fw 0/cd for/in all/dt j./nn thus/rb ,/punct we/prp have/vbp shown/vbn that/in these/dt xi/nn =/punct x∗/nn i/fw together/rb with/in k/nn =/punct k∗/jj form/nn a/dt feasible/jj solution/nn of/in the/dt linear/jj program/nn ./punct
+we/prp proceed/vbp to/to show/vb that/in it/prp is/vbz in/in fact/nn the/dt unique/jj optimal/jj solution/nn ./punct
+first/rb we/prp prove/vbp the/dt following/vbg claim/nn :/punct claim/nn 4/cd ./punct
+if/in ˆk/nn ,/punct ˆxi/nn ,/punct i/fw =/punct m/nn +/punct 1/cd ,/punct m/nn +/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd satisfy/vbp the/dt following/vbg inequalities/nns :/punct ˆkm/vb ≤/cd (/punct n/nn −/nn m/nn −/nn 1/cd )/punct ˆxm+1/nn ≤/nn m/nn ˆkm/nn ≤/cd (/punct m/nn +/punct i/fw )/punct ˆxm+i−1/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct ˆxm+i/fw ≤/fw m/nn for/in i/fw =/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn m/nn −/cd 1/cd ˆkm/nn ≤/cd nˆxn−1/nn ≤/nn m/nn ˆk/nn ≥/cd k∗/nn then/rb we/prp must/md have/vb that/dt ˆxi/nn =/punct ˆx∗/nn i/fw and/cc ˆk/nn =/punct k∗/nn ./punct
+proof/nn of/in claim/nn ./punct
+consider/vb the/dt first/jj inequality/nn ./punct
+we/prp know/vbp that/in (/punct n/nn −/nn m/nn −/nn 1/cd )/punct x∗/nn m+1/nn =/punct k∗/nn m/nn ,/punct so/rb (/punct n/nn −/nn m/nn −/nn 1/cd )/punct ˆxm+1/nn ≥/cd ˆkm/nn ≥/cd k∗/nn m/nn =/punct (/punct n/nn −/nn m/nn −/nn 1/cd )/punct x∗/nn m+1/nn ./punct
+it/prp follows/vbz that/in ˆxm+1/nn ≥/cd x∗/nn m+1/nn (/punct n/nn −/nn m/nn −/cd 1/cd =/punct 0/cd )/punct ./punct
+now/rb ,/punct consider/vb the/dt next/jj inequality/nn for/in i/fw =/punct 2/cd ./punct
+we/prp know/vbp that/in (/punct m/nn +/punct 2/cd )/punct x∗/nn m+1/nn +/punct (/punct n/nn −/nn m/nn −/nn 2/cd )/punct x∗/nn m+2/nn =/punct m./fw it/prp follows/vbz that/in (/punct n−m−2/nn )/punct ˆxm+2/nn ≤/cd m−/nn (/punct m+2/nn )/punct ˆxm+1/nn ≤/cd m−/nn (/punct m+2/nn )/punct x∗/nn m+1/nn =/punct (/punct n/nn −/nn m/nn −/nn 2/cd )/punct x∗/nn m+2/nn ,/punct so/rb ˆxm+2/jj ≤/nn x∗/nn m+2/nn (/punct i/fw =/punct 2/cd ≤/cd n/nn −/nn m/nn −/cd 1/cd ⇒/nn n/nn −/nn m/nn −/nn 2/cd =/punct 0/cd )/punct ./punct
+now/rb consider/vb the/dt next/jj inequality/nn for/in i/fw =/punct 3/cd ./punct
+we/prp know/vbp that/in (/punct m/nn +/punct 3/cd )/punct x∗/nn m+2/nn +/punct (/punct n/nn −/nn m/nn −/cd 3/cd )/punct x∗/nn m+3/nn =/punct m./fw it/prp follows/vbz that/in (/punct n−m−3/nn )/punct ˆxm+3/nn ≥/cd ˆkm−/nn (/punct m+3/nn )/punct ˆxm+2/nn ≥/cd k∗/nn m−/nn (/punct m+3/nn )/punct x∗/nn m+2/nn =/punct (/punct n/nn −/nn m/nn −/cd 3/cd )/punct x∗/nn m+3/nn ,/punct so/rb ˆxm+3/jj ≥/nn x∗/nn m+3/nn (/punct i/fw =/punct 3/cd ≤/nn n/nn −/nn m/nn −/cd 1/cd ⇒/nn n/nn −/nn m/nn −/cd 3/cd =/punct 0/cd )/punct ./punct
+proceeding/vbg like/in this/dt all/pdt the/dt way/nn up/in to/to i/fw =/punct n−m−1/nn ,/punct we/prp get/vbp that/in ˆxm+i/nn ≥/cd x∗/nn m+i/nns if/in i/fw is/vbz odd/jj and/cc ˆxm+i/jj ≤/nn x∗/nn m+i/nns if/in i/fw is/vbz even/rb ./punct
+moreover/rb ,/punct if/in one/cd inequality/nn is/vbz strict/jj ,/punct then/rb all/dt subsequent/jj inequalities/nns are/vbp strict/jj ./punct
+now/rb ,/punct if/in we/prp can/md prove/vb ˆxn−1/nn =/punct x∗/nn n−1/nn ,/punct it/prp would/md follow/vb that/in the/dt x∗/nn i/fw are/vbp equal/jj to/to the/dt ˆxi/jj (/punct which/wdt also/rb implies/vbz that/in ˆk/nn =/punct k∗/nn )/punct ./punct
+we/prp consider/vbp two/cd cases/nns :/punct case/nnp 1/cd :/punct n/nn −/nn m/nn is/vbz even/rb ./punct
+we/prp have/vbp :/punct n/nn −/nn m/nn even/rb ⇒/cd n/nn −/nn m/nn −/cd 1/cd odd/jj ⇒/nn ˆxn−1/nn ≥/cd x∗/nn n−1/nn ./punct
+we/prp also/rb have/vbp :/punct n−m/vb even/rb ⇒/jj nx∗/nn n−1/nn =/punct m./nn combining/vbg these/dt two/cd ,/punct we/prp get/vbp m/nn =/punct nx∗/nn n−1/nn ≤/cd nˆxn−1/nn ≤/nn m/nn ⇒/cd ˆxn−1/nn =/punct x∗/nn n−1/nn ./punct
+case/nn 2/cd :/punct n/nn −/nn m/nn is/vbz odd/jj ./punct
+in/in this/dt case/nn ,/punct we/prp have/vbp ˆxn−1/nn ≤/cd x∗/nn n−1/nn ,/punct and/cc nx∗/nn n−1/nn =/punct k∗/nn m./nn then/rb ,/punct we/prp have/vbp :/punct k∗/nn m/nn ≤/cd ˆkm/nn ≤/cd nˆxn−1/nn ≤/cd nx∗/nn n−1/nn =/punct k∗/nn m/nn ⇒/cd ˆxn−1/nn =/punct x∗/nn n−1/nn ./punct
+this/dt completes/vbz the/dt proof/nn of/in the/dt claim/nn ./punct
+it/prp follows/vbz that/in if/in ˆk/nn ,/punct ˆxi/nn ,/punct i/fw =/punct m/nn +/punct 1/cd ,/punct m/nn +/punct 2/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/cd 1/cd is/vbz a/dt feasible/jj solution/nn and/cc ˆk/nn ≥/cd k∗/nn ,/punct then/rb since/in all/pdt the/dt inequalities/nns in/in claim/nnp 4/cd are/vbp satisfied/jj ,/punct we/prp must/md have/vb ˆxi/nn =/punct x∗/nn i/fw and/cc ˆk/nn =/punct k∗/nn ./punct
+hence/rb no/dt other/jj feasible/jj solution/nn is/vbz as/rb good/jj as/in the/dt one/cd described/vbn in/in the/dt theorem/nn ./punct
+knowing/vbg the/dt analytical/jj characterization/nn of/in the/dt worst-case/jj optimal/jj mechanism/nn provides/vbz us/prp with/in at/in least/jjs two/cd major/jj benefits/nns ./punct
+first/rb ,/punct using/vbg these/dt formulas/nns is/vbz computationally/rb more/rbr efficient/jj than/in solving/vbg the/dt linear/jj program/nn using/vbg a/dt generalpurpose/nn solver/nn ./punct
+second/rb ,/punct we/prp can/md derive/vb the/dt following/vbg corollary/nn ./punct
+corollary/nn 1/cd ./punct
+if/in the/dt number/nn of/in units/nns m/nn is/vbz fixed/vbn ,/punct then/rb as/in the/dt number/nn of/in agents/nns n/nn increases/nns ,/punct the/dt worst-case/jj percentage/nn redistributed/vbd linearly/rb converges/vbz to/to 1/cd ,/punct with/in a/dt rate/nn of/in convergence/nn 1/cd 2/cd ./punct
+(/punct that/wdt is/vbz ,/punct limn→∞/jj 1−k∗/nn n+1/nn 1−k∗/cd n/nn =/punct 1/cd 2/cd ./punct
+that/dt is/vbz ,/punct in/in the/dt limit/nn ,/punct the/dt percentage/nn that/wdt is/vbz not/rb redistributed/jj halves/nns for/in every/dt additional/jj agent/nn ./punct
+)/punct we/prp note/vbp that/in this/dt is/vbz consistent/jj with/in the/dt experimental/jj data/nns for/in the/dt single-unit/jj case/nn ,/punct where/wrb the/dt worst-case/jj remaining/vbg percentage/nn roughly/rb halves/vbz each/dt time/nn we/prp add/vbp another/dt agent/nn ./punct
+the/dt worst-case/jj percentage/nn that/wdt is/vbz redistributed/vbn under/in the/dt bailey-cavallo/nnp mechanism/nn also/rb converges/vbz to/to 1/cd as/in the/dt number/nn of/in agents/nns goes/vbz to/to infinity/nn ,/punct but/cc the/dt convergence/nn is/vbz much/jj slower-it/nn does/vbz not/rb converge/vb linearly/rb (/punct that/dt is/vbz ,/punct letting/vbg kc/nn n/nn be/vb the/dt percentage/nn redistributed/vbn by/in the/dt bailey-cavallo/nnp mechanism/nn in/in the/dt worst/jjs case/nn for/in n/nn agents/nns ,/punct limn→∞/nn 1−kc/nn n+1/nn 1−kc/nn n/nn =/punct limn→∞/nn n/nn n+1/nn =/punct 1/cd )/punct ./punct
+we/prp now/rb present/vbp the/dt proof/nn of/in the/dt corollary/nn ./punct
+proof/nn ./punct
+when/wrb the/dt number/nn of/in agents/nns is/vbz n/nn ,/punct the/dt worst-case/jj percentage/nn redistributed/vbd is/vbz k∗/nn n/nn =/punct 1/cd −/cd (/punct n−1/nn m/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct ./punct
+when/wrb the/dt number/nn of/in agents/nns is/vbz n/nn +/punct 1/cd ,/punct the/dt percentage/nn becomes/vbz k∗/jj n+1/nn =/punct 1/cd −/cd (/punct n/nn m/nn )/punct pn/nn j=m/nn (/punct n/nn j/nn )/punct ./punct
+for/in n/nn sufficiently/rb large/jj ,/punct we/prp will/md have/vb 2n/jj −/nn mnm−1/nn >/punct 0/cd ,/punct and/cc hence/rb 1−k∗/jj n+1/nn 1−k∗/nn n/nn =/punct (/punct n/nn m/nn )/punct pn−1/nn j=m/nn (/punct n−1/nn j/nn )/punct (/punct n−1/nn m/nn )/punct pn/nn j=m/nn (/punct n/nn j/nn )/punct =/punct n/nn n−m/nn 2n−1/nn −/cd pm−1/nn j=0/nn (/punct n−1/nn j/nn )/punct 2n−/cd pm−1/nn j=0/nn (/punct n/nn j/nn )/punct ,/punct and/cc n/nn n−m/vbp 2n−1/nn −m/nn (/punct n−1/nn )/punct m−1/nn 2n/nn ≤/cd 1−k∗/cd n+1/nn 1−k∗/nn n/nn ≤/cd n/nn n−m/nn 2n−1/cd 2n−mnm−1/nn (/punct because/in `n/nn j/nn ´/cd ≤/cd ni/nns if/in j/nn ≤/cd i/fw )/punct ./punct
+since/in we/prp have/vbp limn→∞/vbn n/nn n−m/nn 2n−1/nn −m/nn (/punct n−1/nn )/punct m−1/nn 2n/nn =/punct 1/cd 2/cd ,/punct and/cc limn→∞/nn n/nn n−m/nn 2n−1/nn 2n−mnm−1/nn =/punct 1/cd 2/cd ,/punct it/prp follows/vbz that/in limn→∞/nn 1−k∗/cd n+1/nn 1−k∗/nn n/nn =/punct 1/cd 2/cd ./punct
+36/cd 8/cd ./punct
+worst-case/jj optimality/nn outside/in the/dt family/nn in/in this/dt section/nn ,/punct we/prp prove/vbp that/in the/dt worst-case/jj optimal/jj redistribution/nn mechanism/nn among/in linear/jj vcg/nnp redistribution/nn mechanisms/nns is/vbz in/in fact/nn optimal/jj (/punct in/in the/dt worst/jjs case/nn )/punct among/in all/dt redistribution/nn mechanisms/nns that/wdt are/vbp deterministic/jj ,/punct anonymous/jj ,/punct strategy-proof/jj ,/punct efficient/jj and/cc satisfy/vb the/dt non-deficit/jj constraint/nn ./punct
+thus/rb ,/punct restricting/vbg our/prp$ attention/nn to/to linear/jj vcg/nnp redistribution/nn mechanisms/nns did/vbd not/rb come/vb at/in a/dt loss/nn ./punct
+to/to prove/vb this/dt theorem/nn ,/punct we/prp need/vbp the/dt following/vbg lemma/nn ./punct
+this/dt lemma/nn is/vbz not/rb new/jj :/punct it/prp was/vbd informally/rb stated/vbn by/in cavallo/nnp [/punct 3/cd ]/punct ./punct
+for/in completeness/nn ,/punct we/prp present/vbp it/prp here/rb with/in a/dt detailed/jj proof/nn ./punct
+lemma/nn 2/cd ./punct
+a/dt vcg/nnp redistribution/nn mechanism/nn is/vbz deterministic/jj ,/punct anonymous/jj and/cc strategy-proof/jj if/in and/cc only/rb if/in there/ex exists/vbz a/dt function/nn f/fw :/punct rn−1/nn →/cd r/nn ,/punct so/rb that/in the/dt redistribution/nn payment/nn zi/nn received/vbn by/in ai/vbp satisfies/nns zi/nn =/punct f/fw (/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct for/in all/dt i/fw and/cc all/dt bid/nn vectors/nns ./punct
+proof/nn ./punct
+first/rb ,/punct let/vb us/prp prove/vb the/dt only/rb if/in direction/nn ,/punct that/wdt is/vbz ,/punct if/in a/dt vcg/nnp redistribution/nn mechanism/nn is/vbz deterministic/jj ,/punct anonymous/jj and/cc strategy-proof/jj then/rb there/ex exists/vbz a/dt deterministic/jj function/nn f/fw :/punct rn−1/nn →/cd r/nn ,/punct which/wdt makes/vbz zi/nn =/punct f/fw (/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct for/in all/dt i/fw and/cc all/dt bid/nn vectors/nns ./punct
+if/in a/dt vcg/nnp redistribution/nn mechanism/nn is/vbz deterministic/jj and/cc anonymous/jj ,/punct then/rb for/in any/dt bid/nn vector/nn ˆv1/nn ≥/cd ˆv2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn ˆvn/nn ,/punct the/dt mechanism/nn outputs/vbz a/dt unique/jj redistribution/nn payment/nn list/nn :/punct z1/nn ,/punct z2/nn ,/punct ./punct
+./punct
+./punct
+,/punct zn/nn ./punct
+let/vb g/nn :/punct rn/nn →/cd rn/nn be/vb the/dt function/nn that/wdt maps/vbz ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/nn to/to z1/nn ,/punct z2/nn ,/punct ./punct
+./punct
+./punct
+,/punct zn/nn for/in all/dt bid/nn vectors/nns ./punct
+let/vb h/nnp (/punct i/ls ,/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn )/punct be/vb the/dt ith/nn element/nn of/in g/nn (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn )/punct ,/punct so/rb that/in zi/nn =/punct h/nn (/punct i/fw ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct for/in all/dt bid/nn vectors/nns and/cc all/dt 1/cd ≤/nn i/fw ≤/fw n./fw because/in the/dt mechanism/nn is/vbz anonymous/jj ,/punct two/cd agents/nns should/md receive/vb the/dt same/jj redistribution/nn payment/nn if/in their/prp$ bids/nns are/vbp the/dt same/jj ./punct
+so/rb ,/punct if/in ˆvi/nn =/punct ˆvj/nn ,/punct h/nn (/punct i/fw ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct =/punct h/nn (/punct j/nn ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct ./punct
+hence/rb ,/punct if/in we/prp let/vbp j/nn =/punct min/nn {/punct t|ˆvt/nn =/punct ˆvi/fw }/punct ,/punct then/rb h/nn (/punct i/ls ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct =/punct h/nn (/punct j/nn ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct ./punct
+let/vb us/prp define/vb k/nn :/punct rn/nn →/cd n/nn ×/cd rn/nn as/in follows/vbz :/punct k/nnp (/punct y/nn ,/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−1/nn )/punct =/punct [/punct j/nn ,/punct w1/nn ,/punct w2/nn ,/punct ./punct
+./punct
+./punct
+,/punct wn/nn ]/punct ,/punct where/wrb w1/nn ,/punct w2/nn ,/punct ./punct
+./punct
+./punct
+,/punct wn/nn are/vbp y/nn ,/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−1/nn sorted/vbd in/in descending/vbg order/nn ,/punct and/cc j/nn =/punct min/nn {/punct t|wt/nn =/punct y/nn }/punct ./punct
+(/punct {/punct t|wt/nn =/punct y/nn }/punct =/punct ∅/nn because/in y/jj ∈/cd {/punct w1/nn ,/punct w2/nn ,/punct ./punct
+./punct
+./punct
+,/punct wn/nn }/punct )/punct ./punct
+also/rb let/vb us/prp define/vb f/nn :/punct rn/nn →/cd r/nn by/in f/nn (/punct ˆvi/nns ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct =/punct h/nn ◦/cd k/nnp (/punct ˆvi/nns ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct =/punct h/nn (/punct min/nn {/punct t|ˆvt/nn =/punct ˆvi/fw }/punct ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct =/punct h/nn (/punct i/fw ,/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct =/punct zi/nn ./punct
+that/dt is/vbz ,/punct f/nn is/vbz the/dt redistribution/nn payment/nn to/to an/dt agent/nn that/wdt bids/vbz ˆvi/rb when/wrb the/dt other/jj bids/nns are/vbp ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/nn ./punct
+since/in our/prp$ mechanism/nn is/vbz required/vbn to/to be/vb strategy-proof/jj ,/punct and/cc the/dt space/nn of/in valuations/nns is/vbz unrestricted/jj ,/punct zi/nn should/md be/vb independent/jj of/in ˆvi/nn by/in lemma/nnp 1/cd in/in cavallo/nnp [/punct 3/cd ]/punct ./punct
+hence/rb ,/punct we/prp can/md simply/rb ignore/vb the/dt first/jj variable/jj input/nn to/to f/nn ;/punct let/vb f/fw (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−1/nn )/punct =/punct f/nn (/punct 0/cd ,/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−1/nn )/punct ./punct
+so/rb ,/punct we/prp have/vbp for/in all/dt bid/nn vectors/nns and/cc i/fw ,/punct zi/nn =/punct f/fw (/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct ./punct
+this/dt completes/vbz the/dt proof/nn for/in the/dt only/rb if/in direction/nn ./punct
+for/in the/dt if/in direction/nn ,/punct if/in the/dt redistribution/nn payment/nn received/vbn by/in ai/vbp satisfies/nns zi/nn =/punct f/fw (/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct for/in all/dt bid/nn vectors/nns and/cc i/fw ,/punct then/rb this/dt is/vbz clearly/rb a/dt deterministic/jj and/cc anonymous/jj mechanism/nn ./punct
+to/to prove/vb strategy-proofness/nn ,/punct we/prp observe/vbp that/in because/in an/dt agent/nn ''/'' s/nns redistribution/nn payment/nn is/vbz not/rb affected/vbn by/in her/prp$ own/jj bid/nn ,/punct her/prp$ incentives/nns are/vbp the/dt same/jj as/in in/in the/dt vcg/nnp mechanism/nn ,/punct which/wdt is/vbz strategy-proof/jj ./punct
+now/rb we/prp are/vbp ready/jj to/to introduce/vb the/dt next/jj theorem/nn :/punct theorem/nnp 2/cd ./punct
+for/in any/dt m/nn and/cc n/nn with/in n/nn ≥/cd m+2/nn ,/punct the/dt worstcase/nn optimal/jj mechanism/nn among/in the/dt family/nn of/in linear/jj vcg/nnp redistribution/nn mechanisms/nns is/vbz worst-case/jj optimal/jj among/in all/dt mechanisms/nns that/wdt are/vbp deterministic/jj ,/punct anonymous/jj ,/punct strategy-proof/jj ,/punct efficient/jj and/cc satisfy/vb the/dt non-deficit/jj constraint/nn ./punct
+while/in we/prp needed/vbd individual/jj rationality/nn earlier/rbr in/in the/dt paper/nn ,/punct this/dt theorem/nn does/vbz not/rb mention/vb it/prp ,/punct that/dt is/vbz ,/punct we/prp can/md not/rb find/vb a/dt mechanism/nn with/in better/jjr worst-case/jj performance/nn even/rb if/in we/prp sacrifice/vbp individual/jj rationality/nn ./punct
+(/punct the/dt worst-case/jj optimal/jj linear/jj vcg/nnp redistribution/nn mechanism/nn is/vbz of/in course/nn individually/rb rational/jj ./punct
+)/punct proof/nn ./punct
+suppose/vb there/ex is/vbz a/dt redistribution/nn mechanism/nn (/punct when/wrb the/dt number/nn of/in units/nns is/vbz m/nn and/cc the/dt number/nn of/in agents/nns is/vbz n/nn )/punct that/wdt satisfies/vbz all/dt of/in the/dt above/jj properties/nns and/cc has/vbz a/dt better/jjr worstcase/nn performance/nn than/in the/dt worst-case/jj optimal/jj linear/jj vcg/nnp redistribution/nn mechanism/nn ,/punct that/wdt is/vbz ,/punct its/prp$ worst-case/jj redistribution/nn percentage/nn ˆk/nn is/vbz strictly/rb greater/jjr than/in k∗/nn ./punct
+by/in lemma/nn 2/cd ,/punct for/in this/dt mechanism/nn ,/punct there/ex is/vbz a/dt function/nn f/fw :/punct rn−1/nn →/cd r/nn so/in that/in zi/nn =/punct f/fw (/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct for/in all/dt i/fw and/cc all/dt bid/nn vectors/nns ./punct
+we/prp first/rb prove/vbp that/in f/fw has/vbz the/dt following/vbg properties/nns ./punct
+claim/nn 5./ls f/fw (/punct 1/cd ,/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct 1/cd ,/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct =/punct 0/cd if/in the/dt number/nn of/in 1s/nns is/vbz less/jjr than/in or/cc equal/jj to/to m./vb proof/nnp of/in claim/nn ./punct
+we/prp assumed/vbd that/in for/in this/dt mechanism/nn ,/punct the/dt worst-case/jj redistribution/nn percentage/nn satisfies/nns ˆk/vbp >/punct k∗/nn ≥/cd 0/cd ./punct
+if/in the/dt total/jj vcg/nnp payment/nn is/vbz x/cc ,/punct the/dt total/jj redistribution/nn payment/nn should/md be/vb in/in [/punct ˆkx/nn ,/punct x/cc ]/punct (/punct non-deficit/jj criterion/nn )/punct ./punct
+consider/vb the/dt case/nn where/wrb all/dt agents/nns bid/vbd 0/cd ,/punct so/rb that/in the/dt total/jj vcg/nnp payment/nn is/vbz also/rb 0/cd ./punct
+hence/rb ,/punct the/dt total/jj redistribution/nn payment/nn should/md be/vb in/in [/punct ˆk/nn ·/nn 0/cd ,/punct 0/cd ]/punct -that/nn is/vbz ,/punct it/prp should/md be/vb 0/cd ./punct
+hence/rb every/dt agent/nn ''/'' s/nns redistribution/nn payment/nn f/sym (/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct must/md be/vb 0/cd ./punct
+now/rb ,/punct let/vb ti/nn =/punct f/fw (/punct 1/cd ,/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct 1/cd ,/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct where/wrb the/dt number/nn of/in 1s/nns equals/vbz i./rb we/prp proved/vbd t0/nn =/punct 0/cd ./punct
+if/in tn−1/nn =/punct 0/cd ,/punct consider/vbp the/dt bid/nn vector/nn where/wrb everyone/nn bids/nns 1/cd ./punct
+the/dt total/jj vcg/nnp payment/nn is/vbz m/nn and/cc the/dt total/jj redistribution/nn payment/nn is/vbz nf/nn (/punct 1/cd ,/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct 1/cd )/punct =/punct ntn−1/nn =/punct 0/cd ./punct
+this/dt corresponds/vbz to/to 0/cd %/punct redistribution/nn ,/punct which/wdt is/vbz contrary/jj to/to our/prp$ assumption/nn that/in ˆk/nn >/punct k∗/nn ≥/cd 0/cd ./punct
+now/rb ,/punct consider/vb j/nn =/punct min/nn {/punct i|ti/nn =/punct 0/cd }/punct (/punct which/wdt is/vbz well-defined/jj because/in tn−1/nn =/punct 0/cd )/punct ./punct
+if/in j/nn >/punct m/nn ,/punct the/dt property/nn is/vbz satisfied/vbn ./punct
+if/in j/nn ≤/nn m/nn ,/punct consider/vb the/dt bid/nn vector/nn where/wrb ˆvi/nn =/punct 1/cd for/in i/fw ≤/fw j/nn and/cc ˆvi/nn =/punct 0/cd for/in all/dt other/jj i./nnp under/in this/dt bid/nn vector/nn ,/punct the/dt first/jj j/nn agents/nns each/dt get/vbp redistribution/nn payment/nn tj−1/nn =/punct 0/cd ,/punct and/cc the/dt remaining/vbg n/nn −/nn j/nn agents/nns each/dt get/vbp tj/nn ./punct
+thus/rb ,/punct the/dt total/jj redistribution/nn payment/nn is/vbz (/punct n/nn −/nn j/nn )/punct tj/nn ./punct
+because/in the/dt total/jj vcg/nnp payment/nn for/in this/dt bid/nn vector/nn is/vbz 0/cd ,/punct we/prp must/md have/vb (/punct n/nn −/cd j/nn )/punct tj/nn =/punct 0/cd ./punct
+so/rb tj/nn =/punct 0/cd (/punct j/nn ≤/nn m/nn </punct n/nn )/punct ./punct
+but/cc this/dt is/vbz contrary/jj to/to the/dt definition/nn of/in j./nn hence/rb f/fw (/punct 1/cd ,/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct 1/cd ,/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct =/punct 0/cd if/in the/dt number/nn of/in 1s/nns is/vbz less/jjr than/in or/cc equal/jj to/to m./vb claim/nnp 6./ls f/fw satisfies/vbz the/dt following/vbg inequalities/nns :/punct ˆkm/vb ≤/cd (/punct n/nn −/nn m/nn −/nn 1/cd )/punct tm+1/nn ≤/nn m/nn ˆkm/nn ≤/cd (/punct m/nn +/punct i/fw )/punct tm+i−1/nn +/punct (/punct n/nn −/nn m/nn −/cd i/fw )/punct tm+i/fw ≤/fw m/nn for/in i/fw =/punct 2/cd ,/punct 3/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn m/nn −/cd 1/cd ˆkm/nn ≤/cd ntn−1/nn ≤/nn m/nn here/rb ti/nn is/vbz defined/vbn as/in in/in the/dt proof/nn of/in claim/nnp 5/cd ./punct
+37/cd proof/nn of/in claim/nn ./punct
+for/in j/nn =/punct m/nn +/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn ,/punct consider/vb the/dt bid/nn vectors/nns where/wrb ˆvi/nn =/punct 1/cd for/in i/fw ≤/fw j/nn and/cc ˆvi/nn =/punct 0/cd for/in all/dt other/jj i./nnp these/dt bid/nn vectors/nns together/rb with/in the/dt non-deficit/jj constraint/nn and/cc worst-case/jj constraint/nn produce/vbp the/dt above/jj set/nn of/in inequalities/nns :/punct for/in example/nn ,/punct when/wrb j/nn =/punct m/nn +/punct 1/cd ,/punct we/prp consider/vbp the/dt bid/nn vector/nn ˆvi/nn =/punct 1/cd for/in i/fw ≤/fw m/nn +/punct 1/cd and/cc ˆvi/nn =/punct 0/cd for/in all/dt other/jj i./nn the/dt first/jj m+1/nn agents/nns each/dt receive/vbp a/dt redistribution/nn payment/nn of/in tm/nn =/punct 0/cd ,/punct and/cc all/dt other/jj agents/nns each/dt receive/vbp tm+1/nn ./punct
+thus/rb ,/punct the/dt total/jj vcg/nnp redistribution/nn is/vbz (/punct n/nn −/nn m/nn −/nn 1/cd )/punct tm+1/nn ./punct
+the/dt nondeficit/jj constraint/nn gives/vbz (/punct n/nn −/nn m/nn −/nn 1/cd )/punct tm+1/nn ≤/nn m/nn (/punct because/in the/dt total/jj vcg/nnp payment/nn is/vbz m/nn )/punct ./punct
+the/dt worst-case/jj constraint/nn gives/vbz (/punct n/nn −/nn m/nn −/nn 1/cd )/punct tm+1/nn ≥/cd ˆkm/nn ./punct
+combining/vbg these/dt two/cd ,/punct we/prp get/vbp the/dt first/jj inequality/nn ./punct
+the/dt other/jj inequalities/nns can/md be/vb obtained/vbn in/in the/dt same/jj way/nn ./punct
+we/prp now/rb observe/vbp that/in the/dt inequalities/nns in/in claim/nnp 6/cd ,/punct together/rb with/in ˆk/nn ≥/cd k∗/nn ,/punct are/vbp the/dt same/jj as/in those/dt in/in claim/nnp 4/cd (/punct where/wrb the/dt ti/nn are/vbp replaced/vbn by/in the/dt ˆxi/jj )/punct ./punct
+thus/rb ,/punct we/prp can/md conclude/vb that/in ˆk/nn =/punct k∗/nn ,/punct which/wdt is/vbz contrary/jj to/to our/prp$ assumption/nn ˆk/nn >/punct k∗/nn ./punct
+hence/rb no/dt mechanism/nn satisfying/vbg all/pdt the/dt listed/vbn properties/nns has/vbz a/dt redistribution/nn percentage/nn greater/jjr than/in k∗/nn in/in the/dt worst/jjs case/nn ./punct
+so/rb far/rb we/prp have/vbp only/rb talked/vbn about/in the/dt case/nn where/wrb n/nn ≥/cd m+2/nn ./punct
+for/in the/dt purpose/nn of/in completeness/nn ,/punct we/prp provide/vbp the/dt following/vbg claim/nn for/in the/dt n/nn =/punct m/nn +/punct 1/cd case/nn ./punct
+claim/nn 7/cd ./punct
+for/in any/dt m/nn and/cc n/nn with/in n/nn =/punct m/nn +/punct 1/cd ,/punct the/dt original/jj vcg/nnp mechanism/nn (/punct that/wdt is/vbz ,/punct redistributing/vbg nothing/nn )/punct is/vbz (/punct uniquely/rb )/punct worst-case/jj optimal/jj among/in all/dt redistribution/nn mechanisms/nns that/wdt are/vbp deterministic/jj ,/punct anonymous/jj ,/punct strategy-proof/jj ,/punct efficient/jj and/cc satisfy/vb the/dt non-deficit/jj constraint/nn ./punct
+we/prp recall/vbp that/in when/wrb n/nn =/punct m+1/nn ,/punct claim/nn 1/cd tells/vbz us/prp that/in the/dt only/jj mechanism/nn inside/in the/dt family/nn of/in linear/jj redistribution/nn mechanisms/nns is/vbz the/dt original/jj vcg/nnp mechanism/nn ,/punct so/rb that/in this/dt mechanism/nn is/vbz automatically/rb worst-case/jj optimal/jj inside/in this/dt family/nn ./punct
+however/rb ,/punct to/to prove/vb the/dt above/jj claim/nn ,/punct we/prp need/vbp to/to show/vb that/in it/prp is/vbz worst-case/jj optimal/jj among/in all/dt redistribution/nn mechanisms/nns that/wdt have/vbp the/dt desired/vbn properties/nns ./punct
+proof/nn ./punct
+suppose/vb a/dt redistribution/nn mechanism/nn exists/vbz that/in satisfies/vbz all/dt of/in the/dt above/jj properties/nns and/cc has/vbz a/dt worst-case/jj performance/nn as/in good/jj as/in the/dt original/jj vcg/nnp mechanism/nn ,/punct that/wdt is/vbz ,/punct its/prp$ worst-case/jj redistribution/nn percentage/nn is/vbz greater/jjr than/in or/cc equal/jj to/to 0/cd ./punct
+this/dt implies/vbz that/in the/dt total/jj redistribution/nn payment/nn of/in this/dt mechanism/nn is/vbz always/rb nonnegative/jj ./punct
+by/in lemma/nn 2/cd ,/punct for/in this/dt mechanism/nn ,/punct there/ex is/vbz a/dt function/nn f/fw :/punct rn−1/nn →/cd r/nn so/in that/in zi/nn =/punct f/fw (/punct ˆv1/nn ,/punct ˆv2/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvi−1/nn ,/punct ˆvi+1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ˆvn/jj )/punct for/in all/dt i/fw and/cc all/dt bid/nn vectors/nns ./punct
+we/prp will/md prove/vb that/in f/fw (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−1/nn )/punct =/punct 0/cd for/in all/dt x1/nn ≥/cd x2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn xn−1/nn ≥/cd 0/cd ./punct
+first/rb ,/punct consider/vb the/dt bid/nn vector/nn where/wrb ˆvi/nn =/punct 0/cd for/in all/dt i./nnp here/rb ,/punct each/dt agent/nn receives/vbz a/dt redistribution/nn payment/nn f/sym (/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct ./punct
+the/dt total/jj redistribution/nn payment/nn is/vbz then/rb nf/jj (/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct ,/punct which/wdt should/md be/vb both/cc greater/jjr than/in or/cc equal/jj to/to 0/cd (/punct by/in the/dt above/jj observation/nn )/punct as/rb well/rb less/jjr than/in or/cc equal/jj to/to 0/cd (/punct using/vbg the/dt nondeficit/jj criterion/nn and/cc the/dt fact/nn that/in the/dt total/jj vcg/nnp payment/nn is/vbz 0/cd )/punct ./punct
+it/prp follows/vbz that/in f/ls (/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct =/punct 0/cd ./punct
+now/rb ,/punct let/vb us/prp consider/vb the/dt bid/nn vector/nn where/wrb ˆv1/nn =/punct x1/nn ≥/nn 0/cd and/cc ˆvi/nn =/punct 0/cd for/in all/dt other/jj i./nn for/in this/dt bid/nn vector/nn ,/punct the/dt agent/nn with/in the/dt highest/jjs bid/nn receives/vbz a/dt redistribution/nn payment/nn of/in f/fw (/punct 0/cd ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct =/punct 0/cd ,/punct and/cc the/dt other/jj n/nn −/nn 1/cd agents/nns each/dt receive/vbp f/fw (/punct x1/nn ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct ./punct
+by/in the/dt same/jj reasoning/nn as/in above/rb ,/punct the/dt total/jj redistribution/nn payment/nn should/md be/vb both/cc greater/jjr than/in or/cc equal/jj to/to 0/cd and/cc less/jjr than/in or/cc equal/jj to/to 0/cd ,/punct hence/rb f/fw (/punct x1/nn ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct =/punct 0/cd for/in all/dt x1/nn ≥/nn 0/cd ./punct
+proceeding/vbg by/in induction/nn ,/punct let/vb us/prp assume/vb f/fw (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xk/nn ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct =/punct 0/cd for/in all/dt x1/nn ≥/cd x2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn xk/nn ≥/nn 0/cd ,/punct for/in some/dt k/nn </punct n/nn −/cd 1/cd ./punct
+consider/vb the/dt bid/nn vector/nn where/wrb ˆvi/nn =/punct xi/nn for/in i/fw ≤/fw k/nn +/punct 1/cd ,/punct and/cc ˆvi/nn =/punct 0/cd for/in all/dt other/jj i/fw ,/punct where/wrb the/dt xi/nn are/vbp arbitrary/jj numbers/nns satisfying/vbg x1/nn ≥/cd x2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn xk/nn ≥/cd xk+1/nn ≥/nn 0/cd ./punct
+for/in the/dt agents/nns with/in the/dt highest/jjs k/nn +/punct 1/cd bids/nns ,/punct their/prp$ redistribution/nn payment/nn is/vbz specified/vbn by/in f/fw acting/vbg on/in an/dt input/nn with/in only/jj k/nn non-zero/jj variables/nns ./punct
+hence/rb they/prp all/dt receive/vbp 0/cd by/in induction/nn assumption/nn ./punct
+the/dt other/jj n/nn −/nn k/nn −/cd 1/cd agents/nns each/dt receive/vbp f/fw (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xk/nn ,/punct xk+1/nn ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct ./punct
+the/dt total/jj redistribution/nn payment/nn is/vbz then/rb (/punct n−k−1/fw )/punct f/fw (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xk/nn ,/punct xk+1/nn ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct ,/punct which/wdt should/md be/vb both/cc greater/jjr than/in or/cc equal/jj to/to 0/cd ,/punct and/cc less/jjr than/in or/cc equal/jj to/to the/dt total/jj vcg/nnp payment/nn ./punct
+now/rb ,/punct in/in this/dt bid/nn vector/nn ,/punct the/dt lowest/jjs bid/nn is/vbz 0/cd because/in k/nn +/punct 1/cd </punct n./cd but/cc since/in n/nn =/punct m/nn +/punct 1/cd ,/punct the/dt total/jj vcg/nnp payment/nn is/vbz mˆvn/nn =/punct 0/cd ./punct
+so/in we/prp have/vbp f/fw (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xk/nn ,/punct xk+1/nn ,/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct =/punct 0/cd for/in all/dt x1/nn ≥/cd x2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn xk/nn ≥/cd xk+1/nn ≥/nn 0/cd ./punct
+by/in induction/nn ,/punct this/dt statement/nn holds/vbz for/in all/dt k/nn </punct n/nn −/cd 1/cd ;/punct when/wrb k/nn +/punct 1/cd =/punct n/nn −/nn 1/cd ,/punct we/prp have/vbp f/fw (/punct x1/nn ,/punct x2/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn−2/nn ,/punct xn−1/nn )/punct =/punct 0/cd for/in all/dt x1/nn ≥/cd x2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn xn−2/nn ≥/cd xn−1/nn ≥/nn 0/cd ./punct
+hence/rb ,/punct in/in this/dt mechanism/nn ,/punct the/dt redistribution/nn payment/nn is/vbz always/rb 0/cd ;/punct that/dt is/vbz ,/punct the/dt mechanism/nn is/vbz just/rb the/dt original/jj vcg/nnp mechanism/nn ./punct
+incidentally/rb ,/punct we/prp obtain/vbp the/dt following/vbg corollary/nn :/punct corollary/nn 2/cd ./punct
+no/dt vcg/nn redistribution/nn mechanism/nn satisfies/vbz all/dt of/in the/dt following/nn :/punct determinism/nn ,/punct anonymity/nn ,/punct strategyproofness/nn ,/punct efficiency/nn ,/punct and/cc (/punct strong/jj )/punct budget/nn balance/nn ./punct
+this/dt holds/vbz for/in any/dt n/nn ≥/nn m/nn +/punct 1/cd ./punct
+proof/nn ./punct
+for/in the/dt case/nn n/nn ≥/nn m/nn +/punct 2/cd :/punct if/in such/pdt a/dt mechanism/nn exists/vbz ,/punct its/prp$ worst-case/jj performance/nn would/md be/vb better/jjr than/in that/dt of/in the/dt worst-case/jj optimal/jj linear/jj vcg/nnp redistribution/nn mechanism/nn ,/punct which/wdt by/in theorem/nnp 1/cd obtains/vbz a/dt redistribution/nn percentage/nn strictly/rb less/jjr than/in 1/cd ./punct
+but/cc theorem/nnp 2/cd shows/nns that/in it/prp is/vbz impossible/jj to/to outperform/vb this/dt mechanism/nn in/in the/dt worst/jjs case/nn ./punct
+for/in the/dt case/nn n/nn =/punct m/nn +/punct 1/cd :/punct if/in such/pdt a/dt mechanism/nn exists/vbz ,/punct it/prp would/md perform/vb as/rb well/rb as/in the/dt original/jj vcg/nnp mechanism/nn in/in the/dt worst/jjs case/nn ,/punct which/wdt implies/vbz that/in it/prp is/vbz identical/jj to/to the/dt vcg/nnp mechanism/nn by/in claim/nn 7/cd ./punct
+but/cc the/dt vcg/nnp mechanism/nn is/vbz not/rb (/punct strongly/rb )/punct budget/nn balanced/jj ./punct
+9/cd ./punct
+conclusions/nns for/in allocation/nn problems/nns with/in one/cd or/cc more/jjr items/nns ,/punct the/dt wellknown/jj vickrey-clarke-groves/nnp (/punct vcg/nnp )/punct mechanism/nn is/vbz efficient/jj ,/punct strategy-proof/jj ,/punct individually/rb rational/jj ,/punct and/cc does/vbz not/rb incur/vb a/dt deficit/nn ./punct
+however/rb ,/punct the/dt vcg/nnp mechanism/nn is/vbz not/rb (/punct strongly/rb )/punct budget/nn balanced/jj :/punct generally/rb ,/punct the/dt agents/nns ''/'' payments/nns will/md sum/vb to/to more/jjr than/in 0/cd ./punct
+if/in there/ex is/vbz an/dt auctioneer/nn who/wp is/vbz selling/vbg the/dt items/nns ,/punct this/dt may/md be/vb desirable/jj ,/punct because/in the/dt surplus/nn payment/nn corresponds/vbz to/to revenue/nn for/in the/dt auctioneer/nn ./punct
+however/rb ,/punct if/in the/dt items/nns do/vbp not/rb have/vb an/dt owner/nn and/cc the/dt agents/nns are/vbp merely/rb interested/jj in/in allocating/vbg the/dt items/nns efficiently/rb among/in themselves/prp ,/punct any/dt surplus/jj payment/nn is/vbz undesirable/jj ,/punct because/in it/prp will/md have/vb to/to flow/vb out/in of/in the/dt system/nn of/in agents/nns ./punct
+in/in 2006/cd ,/punct cavallo/nnp [/punct 3/cd ]/punct proposed/vbd a/dt mechanism/nn that/wdt redistributes/vbz some/dt of/in the/dt vcg/nnp payment/nn back/rb to/to the/dt agents/nns ,/punct while/in maintaining/vbg efficiency/nn ,/punct strategy-proofness/nn ,/punct individual/jj rationality/nn ,/punct and/cc the/dt non-deficit/jj property/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp extended/vbd this/dt result/nn in/in a/dt restricted/jj setting/nn ./punct
+we/prp studied/vbd allocation/nn settings/nns where/wrb there/ex are/vbp multiple/jj indistinguishable/jj units/nns of/in a/dt single/jj good/jj ,/punct and/cc agents/nns have/vbp unit/nn demand/nn ./punct
+(/punct for/in this/dt specific/jj setting/nn ,/punct cavallo/nnp ''/'' s/vbz mechanism/nn coincides/vbz with/in a/dt mechanism/nn proposed/vbn by/in bailey/nnp in/in 1997/cd [/punct 2/cd ]/punct ./punct
+)/punct here/rb we/prp proposed/vbd a/dt family/nn of/in mechanisms/nns that/wdt redistribute/vbp some/dt of/in the/dt vcg/nnp payment/nn 38/cd back/rb to/to the/dt agents/nns ./punct
+all/dt mechanisms/nns in/in the/dt family/nn are/vbp efficient/jj ,/punct strategy-proof/jj ,/punct individually/rb rational/jj ,/punct and/cc never/rb incur/vbp a/dt deficit/nn ./punct
+the/dt family/nn includes/vbz the/dt bailey-cavallo/jj mechanism/nn as/in a/dt special/jj case/nn ./punct
+we/prp then/rb provided/vbd an/dt optimization/nn model/nn for/in finding/vbg the/dt optimal/jj mechanism-that/nn is/vbz ,/punct the/dt mechanism/nn that/wdt maximizes/vbz redistribution/nn in/in the/dt worst/jjs case-inside/nn the/dt family/nn ,/punct and/cc showed/vbd how/wrb to/to cast/vb this/dt model/nn as/in a/dt linear/jj program/nn ./punct
+we/prp gave/vbd both/cc numerical/jj and/cc analytical/jj solutions/nns of/in this/dt linear/jj program/nn ,/punct and/cc the/dt (/punct unique/jj )/punct resulting/vbg mechanism/nn shows/nns significant/jj improvement/nn over/in the/dt bailey-cavallo/nnp mechanism/nn (/punct in/in the/dt worst/jjs case/nn )/punct ./punct
+finally/rb ,/punct we/prp proved/vbd that/in the/dt obtained/vbn mechanism/nn is/vbz optimal/jj among/in all/dt anonymous/jj deterministic/jj mechanisms/nns that/wdt satisfy/vbp the/dt above/jj properties/nns ./punct
+one/cd important/jj direction/nn for/in future/jj research/nn is/vbz to/to try/vb to/to extend/vb these/dt results/nns beyond/in multi-unit/jj auctions/nns with/in unit/nn demand/nn ./punct
+however/rb ,/punct it/prp turns/vbz out/rp that/in in/in sufficiently/rb general/jj settings/nns ,/punct the/dt worst-case/jj optimal/jj redistribution/nn percentage/nn is/vbz 0/cd ./punct
+in/in such/jj settings/nns ,/punct the/dt worst-case/jj criterion/nn provides/vbz no/dt guidance/nn in/in determining/vbg a/dt good/jj redistribution/nn mechanism/nn (/punct even/rb redistributing/vbg nothing/nn achieves/vbz the/dt optimal/jj worst-case/jj percentage/nn )/punct ,/punct so/in it/prp becomes/vbz necessary/jj to/to pursue/vb other/jj criteria/nns ./punct
+alternatively/rb ,/punct one/prp can/md try/vb to/to identify/vb other/jj special/jj settings/nns in/in which/wdt positive/jj redistribution/nn in/in the/dt worst/jjs case/nn is/vbz possible/jj ./punct
+another/dt direction/nn for/in future/jj research/nn is/vbz to/to consider/vb whether/in this/dt mechanism/nn has/vbz applications/nns to/to collusion/nn ./punct
+for/in example/nn ,/punct in/in a/dt typical/jj collusive/nn scheme/nn ,/punct there/ex is/vbz a/dt bidding/nn ring/nn consisting/vbg of/in a/dt number/nn of/in colluders/nns ,/punct who/wp submit/vbp only/rb a/dt single/jj bid/nn [/punct 10/cd ,/punct 17/cd ]/punct ./punct
+if/in this/dt bid/nn wins/vbz ,/punct the/dt colluders/nns must/md allocate/vb the/dt item/nn amongst/in themselves/prp ,/punct perhaps/rb using/vbg payments-but/nn of/in course/nn they/prp do/vbp not/rb want/vb payments/nns to/to flow/vb out/in of/in the/dt ring/nn ./punct
+this/dt work/nn is/vbz part/nn of/in a/dt growing/vbg literature/nn on/in designing/vbg mechanisms/nns that/wdt obtain/vb good/jj results/nns in/in the/dt worst/jjs case/nn ./punct
+traditionally/rb ,/punct economists/nns have/vbp mostly/rb focused/vbn either/rb on/in designing/vbg mechanisms/nns that/wdt always/rb obtain/vb certain/jj properties/nns (/punct such/jj as/in the/dt vcg/nnp mechanism/nn )/punct ,/punct or/cc on/in designing/vbg mechanisms/nns that/wdt are/vbp optimal/jj with/in respect/nn to/to some/dt prior/jj distribution/nn over/in the/dt agents/nns ''/'' preferences/nns (/punct such/jj as/in the/dt myerson/nnp auction/nn [/punct 20/cd ]/punct and/cc the/dt maskin-riley/jj auction/nn [/punct 18/cd ]/punct for/in maximizing/vbg expected/vbn revenue/nn )/punct ./punct
+some/dt more/rbr recent/jj papers/nns have/vbp focused/vbn on/in designing/vbg mechanisms/nns for/in profit/nn maximization/nn using/vbg worst-case/jj competitive/jj analysis/nn (/punct e.g/nn ./punct
+[/punct 9/cd ,/punct 1/cd ,/punct 15/cd ,/punct 8/cd ]/punct )/punct ./punct
+there/ex has/vbz also/rb been/vbn growing/vbg interest/nn in/in the/dt design/nn of/in online/jj mechanisms/nns [/punct 7/cd ]/punct where/wrb the/dt agents/nns arrive/vbp over/in time/nn and/cc decisions/nns must/md be/vb taken/vbn before/in all/pdt the/dt agents/nns have/vbp arrived/vbn ./punct
+such/jj work/nn often/rb also/rb takes/vbz a/dt worst-case/jj competitive/jj analysis/nn approach/nn [/punct 14/cd ,/punct 13/cd ]/punct ./punct
+it/prp does/vbz not/rb appear/vb that/in there/ex are/vbp direct/jj connections/nns between/in our/prp$ work/nn and/cc these/dt other/jj works/nns that/wdt focus/vbp on/in designing/vbg mechanisms/nns that/wdt perform/vbp well/rb in/in the/dt worst/jjs case/nn ./punct
+nevertheless/rb ,/punct it/prp seems/vbz likely/jj that/in future/jj research/nn will/md continue/vb to/to investigate/vb mechanism/nn design/nn for/in the/dt worst/jjs case/nn ,/punct and/cc hopefully/rb a/dt coherent/jj framework/nn will/md emerge/vb ./punct
+10/cd ./punct
+references/nns [/punct 1/cd ]/punct g./nnp aggarwal/nnp ,/punct a./nnp fiat/nnp ,/punct a./nnp goldberg/nnp ,/punct j./nnp hartline/nnp ,/punct n./nnp immorlica/nnp ,/punct and/cc m./nnp sudan/nnp ./punct
+derandomization/nn of/in auctions/nns ./punct
+stoc/nn ,/punct 619-625/cd ,/punct 2005/cd ./punct
+[/punct 2/cd ]/punct m./nnp j./nnp bailey/nnp ./punct
+the/dt demand/nn revealing/vbg process/nn :/punct to/to distribute/vb the/dt surplus/nn ./punct
+public/nnp choice/nnp ,/punct 91:107-126/cd ,/punct 1997/cd ./punct
+[/punct 3/cd ]/punct r./nnp cavallo/nnp ./punct
+optimal/jj decision-making/nn with/in minimal/jj waste/nn :/punct strategyproof/fw redistribution/nn of/in vcg/nnp payments/nns ./punct
+aamas/nnp ,/punct 882-889/cd ,/punct 2006/cd ./punct
+[/punct 4/cd ]/punct e./nnp h./nnp clarke/nnp ./punct
+multipart/jj pricing/nn of/in public/jj goods/nns ./punct
+public/nnp choice/nnp ,/punct 11:17-33/cd ,/punct 1971/cd ./punct
+[/punct 5/cd ]/punct b./nnp faltings/nnp ./punct
+a/dt budget-balanced/jj ,/punct incentive-compatible/jj scheme/nn for/in social/jj choice/nn ./punct
+amec/nnp ,/punct 30-43/cd ,/punct 2005/cd ./punct
+[/punct 6/cd ]/punct j./nnp feigenbaum/nnp ,/punct c./nnp papadimitriou/nnp ,/punct and/cc s./nnp shenker/nnp ./punct
+sharing/vbg the/dt cost/nn of/in muliticast/jj transmissions/nns ./punct
+jcss/nnp ,/punct 63:21-41/cd ,/punct 2001/cd ./punct
+[/punct 7/cd ]/punct e./nnp friedman/nnp and/cc d./nnp parkes/nnp ./punct
+pricing/nn wifi/nns at/in starbucks/nnp -/punct issues/nns in/in online/jj mechanism/nn design/nn ./punct
+ec/nnp ,/punct 240-241/cd ,/punct 2003/cd ./punct
+[/punct 8/cd ]/punct a./nn goldberg/nnp ,/punct j./nnp hartline/nnp ,/punct a./nnp karlin/nnp ,/punct m./nnp saks/nnp ,/punct and/cc a./nn wright/nnp ./punct
+competitive/jj auctions/nns ./punct
+games/nnps and/cc economic/nnp behavior/nnp ,/punct 2006/cd ./punct
+[/punct 9/cd ]/punct a./nn goldberg/nnp ,/punct j./nnp hartline/nnp ,/punct and/cc a./nn wright/nnp ./punct
+competitive/jj auctions/nns and/cc digital/jj goods/nns ./punct
+soda/nn ,/punct 735-744/cd ,/punct 2001/cd ./punct
+[/punct 10/cd ]/punct d./nnp a./nnp graham/nnp and/cc r./nnp c./nnp marshall/nnp ./punct
+collusive/jj bidder/nn behavior/nn at/in single-object/jj second-price/nn and/cc english/jj auctions/nns ./punct
+journal/nnp of/in political/nnp economy/nnp ,/punct 95/cd (/punct 6/cd )/punct :1217-1239/cd ,/punct 1987/cd ./punct
+[/punct 11/cd ]/punct j./nnp green/nnp and/cc j.-j/nnp ./punct
+laffont/nnp ./punct
+characterization/nn of/in satisfactory/jj mechanisms/nns for/in the/dt revelation/nn of/in preferences/nns for/in public/jj goods/nns ./punct
+econometrica/nnp ,/punct 45:427-438/cd ,/punct 1977/cd ./punct
+[/punct 12/cd ]/punct t./nnp groves/nnp ./punct
+incentives/nns in/in teams/nns ./punct
+econometrica/nnp ,/punct 41:617-631/cd ,/punct 1973/cd ./punct
+[/punct 13/cd ]/punct m./nnp t./nnp hajiaghayi/nnp ,/punct r./nnp kleinberg/nnp ,/punct m./nnp mahdian/nnp ,/punct and/cc d./nnp c./nnp parkes/nnp ./punct
+online/jj auctions/nns with/in re-usable/jj goods/nns ./punct
+ec/nnp ,/punct 165-174/cd ,/punct 2005/cd ./punct
+[/punct 14/cd ]/punct m./nnp t./nnp hajiaghayi/nnp ,/punct r./nnp kleinberg/nnp ,/punct and/cc d./nnp c./nnp parkes/nnp ./punct
+adaptive/jj limited-supply/jj online/nn auctions/nns ./punct
+ec/nnp ,/punct 71-80/cd ,/punct 2004/cd ./punct
+[/punct 15/cd ]/punct j./nnp hartline/nnp and/cc r./nnp mcgrew/nnp ./punct
+from/in optimal/jj limited/jj to/to unlimited/jj supply/nn auctions/nns ./punct
+ec/nnp ,/punct 175-182/cd ,/punct 2005/cd ./punct
+[/punct 16/cd ]/punct l./nnp hurwicz/nnp ./punct
+on/in the/dt existence/nn of/in allocation/nn systems/nns whose/wp$ manipulative/jj nash/nnp equilibria/nns are/vbp pareto/nnp optimal/jj ,/punct 1975/cd ./punct
+presented/vbn at/in the/dt 3rd/jj world/nnp congress/nnp of/in the/dt econometric/nnp society/nnp ./punct
+[/punct 17/cd ]/punct k./nnp leyton-brown/nnp ,/punct y./nnp shoham/nnp ,/punct and/cc m./nnp tennenholtz/nnp ./punct
+bidding/nn clubs/nns in/in first-price/jj auctions/nns ./punct
+aaai/nnp ,/punct 373-378/cd ,/punct 2002/cd ./punct
+[/punct 18/cd ]/punct e./nnp maskin/nnp and/cc j./nnp riley/nnp ./punct
+optimal/jj multi-unit/jj auctions/nns ./punct
+in/in f./nnp hahn/nnp ,/punct editor/nn ,/punct the/dt economics/nnp of/in missing/nnp markets/nnp ,/punct information/nnp ,/punct and/cc games/nnps ,/punct chapter/nn 14/cd ,/punct 312-335/cd ./punct
+clarendon/nnp press/nnp ,/punct oxford/nnp ,/punct 1989/cd ./punct
+[/punct 19/cd ]/punct h./nnp moulin/nnp ./punct
+efficient/jj and/cc strategy-proof/jj assignment/nn with/in a/dt cheap/jj residual/jj claimant/nn ./punct
+working/vbg paper/nn ,/punct march/nnp 2007/cd ./punct
+[/punct 20/cd ]/punct r./nnp myerson/nnp ./punct
+optimal/jj auction/nn design/nn ./punct
+mathematics/nn of/in operations/nnp research/nnp ,/punct 6:58-73/cd ,/punct 1981/cd ./punct
+[/punct 21/cd ]/punct r./nnp myerson/nnp and/cc m./nnp satterthwaite/nnp ./punct
+efficient/jj mechanisms/nns for/in bilateral/jj trading/nn ./punct
+journal/nnp of/in economic/nnp theory/nnp ,/punct 28:265-281/cd ,/punct 1983/cd ./punct
+[/punct 22/cd ]/punct d./nnp parkes/nnp ,/punct j./nnp kalagnanam/nnp ,/punct and/cc m./nnp eso/nnp ./punct
+achieving/vbg budget-balance/nn with/in vickrey-based/jj payment/nn schemes/nns in/in exchanges/nns ./punct
+ijcai/nnp ,/punct 1161-1168/cd ,/punct 2001/cd ./punct
+[/punct 23/cd ]/punct w./nnp vickrey/nnp ./punct
+counterspeculation/nnp ,/punct auctions/nns ,/punct and/cc competitive/jj sealed/jj tenders/nns ./punct
+journal/nnp of/in finance/nnp ,/punct 16:8-37/cd ,/punct 1961/cd ./punct
+39/cd

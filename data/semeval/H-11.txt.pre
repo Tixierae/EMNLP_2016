@@ -1,0 +1,192 @@
+relevance/nn feedback/nn is/vbz a/dt powerful/jj technique/nn to/to enhance/vb contentbased/nnp image/nn retrieval/nn (/punct cbir/nn )/punct performance/nn ./punct
+it/prp solicits/vbz the/dt user/nn ''/'' s/nns relevance/nn judgments/nns on/in the/dt retrieved/vbn images/nns returned/vbn by/in the/dt cbir/nn systems/nns ./punct
+the/dt user/nn ''/'' s/nns labeling/vbg is/vbz then/rb used/vbn to/to learn/vb a/dt classifier/nn to/to distinguish/vb between/in relevant/jj and/cc irrelevant/jj images/nns ./punct
+however/rb ,/punct the/dt top/jj returned/vbd images/nns may/md not/rb be/vb the/dt most/rbs informative/jj ones/nns ./punct
+the/dt challenge/nn is/vbz thus/rb to/to determine/vb which/wdt unlabeled/jj images/nns would/md be/vb the/dt most/rbs informative/jj (/punct i.e./fw ,/punct improve/vb the/dt classifier/nn the/dt most/rbs )/punct if/in they/prp were/vbd labeled/vbn and/cc used/vbn as/in training/nn samples/nns ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp a/dt novel/jj active/jj learning/nn algorithm/nn ,/punct called/vbn laplacian/nnp optimal/jj design/nn (/punct lod/nn )/punct ,/punct for/in relevance/nn feedback/nn image/nn retrieval/nn ./punct
+our/prp$ algorithm/nn is/vbz based/vbn on/in a/dt regression/nn model/nn which/wdt minimizes/vbz the/dt least/jjs square/jj error/nn on/in the/dt measured/vbn (/punct or/cc ,/punct labeled/vbn )/punct images/nns and/cc simultaneously/rb preserves/vbz the/dt local/jj geometrical/jj structure/nn of/in the/dt image/nn space/nn ./punct
+specifically/rb ,/punct we/prp assume/vbp that/in if/in two/cd images/nns are/vbp sufficiently/rb close/jj to/to each/dt other/jj ,/punct then/rb their/prp$ measurements/nns (/punct or/cc ,/punct labels/vbz )/punct are/vbp close/rb as/rb well/rb ./punct
+by/in constructing/vbg a/dt nearest/jjs neighbor/nn graph/nn ,/punct the/dt geometrical/jj structure/nn of/in the/dt image/nn space/nn can/md be/vb described/vbn by/in the/dt graph/nn laplacian/nn ./punct
+we/prp discuss/vbp how/wrb results/vbz from/in the/dt field/nn of/in optimal/jj experimental/jj design/nn may/md be/vb used/vbn to/to guide/vb our/prp$ selection/nn of/in a/dt subset/nn of/in images/nns ,/punct which/wdt gives/vbz us/prp the/dt most/rbs amount/vb of/in information/nn ./punct
+experimental/jj results/nns on/in corel/nnp database/nn suggest/vbp that/in the/dt proposed/vbn approach/nn achieves/vbz higher/jjr precision/nn in/in relevance/nn feedback/nn image/nn retrieval/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp h.3.3/nn [/punct information/nn storage/nn and/cc retrieval/nn ]/punct :/punct information/nnp search/nn and/cc retrieval-relevance/nn feedback/nn ;/punct g.3/nn [/punct mathematics/nns of/in computing/nnp ]/punct :/punct probability/nn and/cc statistics-experimental/jj design/nn general/nnp terms/nns algorithms/nns ,/punct performance/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nn in/in many/jj machine/nn learning/nn and/cc information/nn retrieval/nn tasks/nns ,/punct there/ex is/vbz no/dt shortage/nn of/in unlabeled/jj data/nns but/cc labels/nns are/vbp expensive/jj ./punct
+the/dt challenge/nn is/vbz thus/rb to/to determine/vb which/wdt unlabeled/jj samples/nns would/md be/vb the/dt most/rbs informative/jj (/punct i.e./fw ,/punct improve/vb the/dt classifier/nn the/dt most/rbs )/punct if/in they/prp were/vbd labeled/vbn and/cc used/vbn as/in training/nn samples/nns ./punct
+this/dt problem/nn is/vbz typically/rb called/vbn active/jj learning/nn [/punct 4/cd ]/punct ./punct
+here/rb the/dt task/nn is/vbz to/to minimize/vb an/dt overall/jj cost/nn ,/punct which/wdt depends/vbz both/dt on/in the/dt classifier/nn accuracy/nn and/cc the/dt cost/nn of/in data/nns collection/nn ./punct
+many/jj real/jj world/nn applications/nns can/md be/vb casted/vbn into/in active/jj learning/nn framework/nn ./punct
+particularly/rb ,/punct we/prp consider/vbp the/dt problem/nn of/in relevance/nn feedback/nn driven/vbn content-based/jj image/nn retrieval/nn (/punct cbir/nn )/punct [/punct 13/cd ]/punct ./punct
+content-based/jj image/nn retrieval/nnp has/vbz attracted/vbn substantial/jj interests/nns in/in the/dt last/jj decade/nn [/punct 13/cd ]/punct ./punct
+it/prp is/vbz motivated/vbn by/in the/dt fast/jj growth/nn of/in digital/jj image/nn databases/nns which/wdt ,/punct in/in turn/nn ,/punct require/vbp efficient/jj search/nn schemes/nns ./punct
+rather/rb than/in describe/vbp an/dt image/nn using/vbg text/nn ,/punct in/in these/dt systems/nns an/dt image/nn query/nn is/vbz described/vbn using/vbg one/cd or/cc more/jjr example/nn images/nns ./punct
+the/dt low/jj level/nn visual/jj features/nns (/punct color/nn ,/punct texture/nn ,/punct shape/nn ,/punct etc/fw ./punct
+)/punct are/vbp automatically/rb extracted/vbn to/to represent/vb the/dt images/nns ./punct
+however/rb ,/punct the/dt low/jj level/nn features/nns may/md not/rb accurately/rb characterize/vb the/dt high/jj level/nn semantic/jj concepts/nns ./punct
+to/to narrow/vb down/rp the/dt semantic/jj gap/nn ,/punct relevance/nn feedback/nn is/vbz introduced/vbn into/in cbir/nn [/punct 12/cd ]/punct ./punct
+in/in many/jj of/in the/dt current/jj relevance/nn feedback/nn driven/vbn cbir/nn systems/nns ,/punct the/dt user/nn is/vbz required/vbn to/to provide/vb his/her/nn relevance/nn judgments/nns on/in the/dt top/jj images/nns returned/vbn by/in the/dt system/nn ./punct
+the/dt labeled/vbn images/nns are/vbp then/rb used/vbn to/to train/vb a/dt classifier/nn to/to separate/jj images/nns that/wdt match/vbp the/dt query/nn concept/nn from/in those/dt that/wdt do/vbp not/rb ./punct
+however/rb ,/punct in/in general/jj the/dt top/jj returned/vbd images/nns may/md not/rb be/vb the/dt most/rbs informative/jj ones/nns ./punct
+in/in the/dt worst/jjs case/nn ,/punct all/pdt the/dt top/jj images/nns labeled/vbn by/in the/dt user/nn may/md be/vb positive/jj and/cc thus/rb the/dt standard/jj classification/nn techniques/nns can/md not/rb be/vb applied/vbn due/jj to/to the/dt lack/nn of/in negative/jj examples/nns ./punct
+unlike/in the/dt standard/jj classification/nn problems/nns where/wrb the/dt labeled/vbn samples/nns are/vbp pregiven/jj ,/punct in/in relevance/nn feedback/nn image/nn retrieval/nn the/dt system/nn can/md actively/rb select/vb the/dt images/nns to/to label/nn ./punct
+thus/rb active/jj learning/nn can/md be/vb naturally/rb introduced/vbn into/in image/nn retrieval/nn ./punct
+despite/in many/jj existing/vbg active/jj learning/nn techniques/nns ,/punct support/nn vector/nnp machine/nnp (/punct svm/nnp )/punct active/jj learning/vbg [/punct 14/cd ]/punct and/cc regression/nn based/vbn active/jj learning/nn [/punct 1/cd ]/punct have/vbp received/vbn the/dt most/rbs interests/nns ./punct
+based/vbn on/in the/dt observation/nn that/in the/dt closer/jjr to/to the/dt svm/nn boundary/nn an/dt image/nn is/vbz ,/punct the/dt less/jjr reliable/jj its/prp$ classification/nn is/vbz ,/punct svm/nnp active/jj learning/nn selects/vbz those/dt unlabeled/jj images/nns closest/jjs to/to the/dt boundary/nn to/to solicit/vb user/nn feedback/nn so/rb as/in to/to achieve/vb maximal/jj refinement/nn on/in the/dt hyperplane/nn between/in the/dt two/cd classes/nns ./punct
+the/dt major/jj disadvantage/nn of/in svm/nn active/jj learning/nn is/vbz that/in the/dt estimated/vbn boundary/nn may/md not/rb be/vb accurate/jj enough/rb ./punct
+moreover/rb ,/punct it/prp may/md not/rb be/vb applied/vbn at/in the/dt beginning/nn of/in the/dt retrieval/nn when/wrb there/ex is/vbz no/dt labeled/vbn images/nns ./punct
+some/dt other/jj svm/nn based/vbn active/jj learning/nn algorithms/nns can/md be/vb found/vbn in/in [/punct 7/cd ]/punct ,/punct [/punct 9/cd ]/punct ./punct
+in/in statistics/nns ,/punct the/dt problem/nn of/in selecting/vbg samples/nns to/to label/nn is/vbz typically/rb referred/vbn to/to as/in experimental/jj design/nn ./punct
+the/dt sample/nn x/nn is/vbz referred/vbn to/to as/in experiment/nn ,/punct and/cc its/prp$ label/nn y/nn is/vbz referred/vbn to/to as/in measurement/nn ./punct
+the/dt study/nn of/in optimal/jj experimental/jj design/nn (/punct oed/nn )/punct [/punct 1/cd ]/punct is/vbz concerned/vbn with/in the/dt design/nn of/in experiments/nns that/wdt are/vbp expected/vbn to/to minimize/vb variances/nns of/in a/dt parameterized/jj model/nn ./punct
+the/dt intent/nn of/in optimal/jj experimental/jj design/nn is/vbz usually/rb to/to maximize/vb confidence/nn in/in a/dt given/vbn model/nn ,/punct minimize/vbp parameter/nn variances/nns for/in system/nn identification/nn ,/punct or/cc minimize/vb the/dt model/nn ''/'' s/nns output/nn variance/nn ./punct
+classical/jj experimental/jj design/nn approaches/nns include/vbp a-optimal/nnp design/nnp ,/punct d-optimal/nnp design/nnp ,/punct and/cc e-optimal/nnp design/nnp ./punct
+all/dt of/in these/dt approaches/nns are/vbp based/vbn on/in a/dt least/jjs squares/nns regression/nn model/nn ./punct
+comparing/vbg to/to svm/nnp based/vbn active/jj learning/nn algorithms/nns ,/punct experimental/jj design/nn approaches/nns are/vbp much/rb more/rbr efficient/jj in/in computation/nn ./punct
+however/rb ,/punct this/dt kind/nn of/in approaches/nns takes/vbz only/rb measured/vbn (/punct or/cc ,/punct labeled/vbn )/punct data/nns into/in account/nn in/in their/prp$ objective/jj function/nn ,/punct while/in the/dt unmeasured/jj (/punct or/cc ,/punct unlabeled/jj )/punct data/nns is/vbz ignored/vbn ./punct
+benefit/nnp from/in recent/jj progresses/vbz on/in optimal/jj experimental/jj design/nn and/cc semi-supervised/jj learning/nn ,/punct in/in this/dt paper/nn we/prp propose/vbp a/dt novel/jj active/jj learning/nn algorithm/nn for/in image/nn retrieval/nn ,/punct called/vbn laplacian/nnp optimal/jj design/nn (/punct lod/nn )/punct ./punct
+unlike/in traditional/jj experimental/jj design/nn methods/nns whose/wp$ loss/nn functions/nns are/vbp only/rb defined/vbn on/in the/dt measured/vbn points/nns ,/punct the/dt loss/nn function/nn of/in our/prp$ proposed/vbn lod/nnp algorithm/nn is/vbz defined/vbn on/in both/dt measured/vbn and/cc unmeasured/jj points/nns ./punct
+specifically/rb ,/punct we/prp introduce/vbp a/dt locality/nn preserving/vbg regularizer/nn into/in the/dt standard/jj least-square-error/nn based/vbn loss/nn function/nn ./punct
+the/dt new/jj loss/nn function/nn aims/vbz to/to find/vb a/dt classifier/nn which/wdt is/vbz locally/rb as/in smooth/jj as/in possible/jj ./punct
+in/in other/jj words/nns ,/punct if/in two/cd points/nns are/vbp sufficiently/rb close/jj to/to each/dt other/jj in/in the/dt input/nn space/nn ,/punct then/rb they/prp are/vbp expected/vbn to/to share/vb the/dt same/jj label/nn ./punct
+once/rb the/dt loss/nn function/nn is/vbz defined/vbn ,/punct we/prp can/md select/vb the/dt most/rbs informative/jj data/nns points/nns which/wdt are/vbp presented/vbn to/to the/dt user/nn for/in labeling/nn ./punct
+it/prp would/md be/vb important/jj to/to note/vb that/in the/dt most/rbs informative/jj images/nns may/md not/rb be/vb the/dt top/jj returned/vbd images/nns ./punct
+the/dt rest/nn of/in the/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+in/in section/nn 2/cd ,/punct we/prp provide/vbp a/dt brief/jj description/nn of/in the/dt related/jj work/nn ./punct
+our/prp$ proposed/vbn laplacian/nnp optimal/jj design/nn algorithm/nn is/vbz introduced/vbn in/in section/nn 3/cd ./punct
+in/in section/nn 4/cd ,/punct we/prp compare/vbp our/prp$ algorithm/nn with/in the/dt state-or-the-art/jj algorithms/nns and/cc present/vb the/dt experimental/jj results/nns on/in image/nn retrieval/nn ./punct
+finally/rb ,/punct we/prp provide/vbp some/dt concluding/vbg remarks/nns and/cc suggestions/nns for/in future/jj work/nn in/in section/nn 5/cd ./punct
+2/ls ./punct
+related/jj work/vbp since/in our/prp$ proposed/vbn algorithm/nn is/vbz based/vbn on/in regression/nn framework/nn ./punct
+the/dt most/rbs related/jj work/nn is/vbz optimal/jj experimental/jj design/nn [/punct 1/cd ]/punct ,/punct including/vbg a-optimal/nnp design/nnp ,/punct d-optimal/nnp design/nnp ,/punct and/cc eoptimal/nnp design/nnp ./punct
+in/in this/dt section/nn ,/punct we/prp give/vbp a/dt brief/jj description/nn of/in these/dt approaches/nns ./punct
+the/dt generic/jj problem/nn of/in active/jj learning/nn is/vbz the/dt following/vbg ./punct
+can/md improve/vb the/dt classifier/nn the/dt most/rbs if/in they/prp are/vbp labeled/vbn and/cc used/vbn as/in training/nn points/nns ./punct
+mean/nn ./punct
+different/jj observations/nns have/vbp errors/nns that/wdt are/vbp independent/jj ,/punct but/cc with/in equal/jj variances/nns σ2/vbp to/to be/vb the/dt learner/nn ''/'' s/nns output/nn given/vbn input/nn x/nn and/cc the/dt weight/nn maximum/nn likelihood/nn estimate/nn for/in the/dt weight/nn vector/nn ,/punct ˆw/nn ,/punct is/vbz that/in which/wdt minimizes/vbz the/dt sum/nn squared/vbd error/nn x./nn zero/cd mean/nn and/cc a/dt covariance/nn matrix/nn given/vbn by/in σ2/nn where/wrb z/nn =/punct (/punct z1/nn ,/punct z2/nn ,/punct ·/nn ·/nn ·/nn ,/punct zk/nn )/punct ./punct
+the/dt three/cd most/rbs common/jj scalar/nn measures/nns of/in the/dt size/nn of/in the/dt parameter/nn covariance/nn matrix/nn in/in optimal/jj experimental/jj design/nn •/cd d-optimal/jj design/nn :/punct determinant/nn of/in hsse/nn ./punct
+•/nn a-optimal/jj design/nn :/punct trace/nn of/in hsse/nn ./punct
+•/nn e-optimal/jj design/nn :/punct maximum/nn eigenvalue/nn of/in hsse/nn ./punct
+since/in the/dt computation/nn of/in the/dt determinant/nn and/cc eigenvalues/nns of/in a/dt matrix/nn is/vbz much/rb more/rbr expensive/jj than/in the/dt computation/nn of/in matrix/nn trace/nn ,/punct a-optimal/jj design/nn is/vbz more/rbr efficient/jj than/in the/dt other/jj two/cd ./punct
+some/dt recent/jj work/nn on/in experimental/jj design/nn can/md be/vb found/vbn in/in ,/punct ./punct
+since/in the/dt covariance/nn matrix/nn hsse/nn used/vbn in/in traditional/jj approaches/nns is/vbz only/rb dependent/jj on/in the/dt measured/vbn samples/nns ,/punct i.e/nn ./punct
+zi/nn ''/'' s/nns ,/punct these/dt approaches/nns fail/vbp to/to evaluate/vb the/dt expected/jj errors/nns on/in the/dt unmeasured/jj samples/nns ./punct
+in/in this/dt section/nn ,/punct we/prp introduce/vbp a/dt novel/jj active/jj learning/nn algorithm/nn called/vbn laplacian/nnp optimal/jj design/nn (/punct lod/nnp )/punct which/wdt makes/vbz efficient/jj use/nn of/in both/dt measured/vbn (/punct labeled/vbn )/punct and/cc unmeasured/jj (/punct unlabeled/jj )/punct samples/nns ./punct
+assume/vb that/in if/in two/cd points/nns xi/nn ,/punct xj/nn are/vbp sufficiently/rb close/jj to/to each/dt other/jj ,/punct then/rb their/prp$ measurements/nns (/punct f/fw (/punct xi/fw )/punct ,/punct f/fw (/punct xj/fw )/punct )/punct are/vbp close/rb as/in which/wdt respects/vbz the/dt geometrical/jj structure/nn of/in the/dt data/nns space/nn where/wrb yi/nn is/vbz the/dt measurement/nn (/punct or/cc ,/punct label/nn )/punct of/in zi/nn ./punct
+note/vb that/in ,/punct the/dt loss/nn function/nn (/punct 3/cd )/punct is/vbz essentially/rb the/dt same/jj as/in the/dt one/cd used/vbn in/in laplacian/nnp regularized/nnp regression/nn (/punct lrr/nn ,/punct )/punct ./punct
+however/rb ,/punct lrr/nn is/vbz a/dt passive/jj learning/nn algorithm/nn where/wrb the/dt training/nn data/nns most/rbs informative/jj data/nns for/in training/nn ./punct
+the/dt loss/nn function/nn with/in our/prp$ choice/nn of/in symmetric/jj weights/nns sij/nn (/punct sij/nn =/punct sji/fw )/punct incurs/vbz a/dt heavy/jj penalty/nn if/in neighboring/vbg points/nns xi/nn and/cc xj/nn are/vbp mapped/vbn far/rb apart/rb ./punct
+therefore/rb ,/punct minimizing/vbg j0/nn (/punct w/nn )/punct is/vbz an/dt attempt/nn to/to ensure/vb that/in if/in xi/nn and/cc xj/nn are/vbp close/jj then/rb f/fw (/punct xi/fw )/punct and/cc f/fw (/punct xj/nn )/punct are/vbp close/rb as/rb well/rb ./punct
+there/ex are/vbp many/jj choices/nns of/in the/dt similarity/nn matrix/nn 0/cd ,/punct otherwise/rb ./punct
+let/vb d/nnp be/vb a/dt diagonal/jj matrix/nn ,/punct dii/nn =/punct j/nn sij/nn ,/punct and/cc l/nn =/punct d−s/nn ./punct
+the/dt matrix/nn l/nn is/vbz called/vbn graph/nn laplacian/nn in/in spectral/jj graph/nn and/cc x/nn =/punct (/punct x1/nn ,/punct ·/nn ·/nn ·/nn ,/punct xm/nn )/punct ./punct
+following/vbg some/dt simple/jj algebraic/jj steps/nns ,/punct we/prp see/vbp that/in :/punct the/dt hessian/jj of/in j0/nn (/punct w/nn )/punct can/md be/vb computed/vbn as/in follows/vbz :/punct problem/nn eq/nn ./punct
+(/punct 3/cd )/punct ./punct
+a/dt common/jj way/nn to/to deal/vb with/in this/dt ill-posed/jj problem/nn is/vbz to/to introduce/vb a/dt tikhonov/nnp regularizer/nn into/in our/prp$ loss/nn the/dt hessian/jj of/in the/dt new/jj loss/nn function/nn is/vbz given/vbn by/in :/punct +/punct λ2i/nn ./punct
+j/nn (/punct w/nn )/punct with/in respect/nn to/to w/vb vanish/vbp gives/vbz the/dt optimal/jj estimate/nn the/dt following/vbg proposition/nn states/vbz the/dt bias/nn and/cc variance/nn properties/nns of/in the/dt estimator/nn for/in the/dt coefficient/nn vector/nn w./vbz canonical/jj experimental/jj design/nn approaches/nns (/punct e.g/nn ./punct
+a-optimal/nnp design/nnp ,/punct d-optimal/nnp design/nnp ,/punct and/cc e-optimal/jj )/punct only/rb consider/vbp linear/jj functions/nns ./punct
+they/prp fail/vbp to/to discover/vb the/dt intrinsic/jj geometry/nn in/in the/dt data/nns when/wrb the/dt data/nns space/nn is/vbz highly/rb nonlinear/jj ./punct
+in/in this/dt section/nn ,/punct we/prp describe/vbp how/wrb to/to perform/vb laplacian/nnp experimental/jj design/nn in/in reproducing/vbg kernel/nnp hilbert/nnp space/nnp (/punct rkhs/nns )/punct which/wdt gives/vbz rise/nn to/to kernel/nnp laplacian/nnp experimental/jj design/nn (/punct klod/nn )/punct ./punct
+./punct
+=/punct k/nn (/punct s/nns ,/punct t/nn )/punct ./punct
+hk/jj consists/vbz of/in all/dt finite/jj linear/jj combinations/nns of/in the/dt form/nn ti/nn become/vbp dense/jj in/in x./nnp we/prp have/vbp ks/nns ,/punct kt/nn hk/nn =/punct k/nn (/punct s/nns ,/punct t/nn )/punct ./punct
+consider/vb the/dt optimization/nn problem/nn (/punct 5/cd )/punct in/in rkhs/nn ./punct
+thus/rb ,/punct we/prp have/vbp the/dt following/vbg proposition/nn ./punct
+a/dt subspace/nn of/in hk/nnp ,/punct the/dt solution/nn to/to the/dt problem/nn (/punct 12/cd )/punct is/vbz in/in h./nnp this/dt completes/vbz the/dt proof/nn ./punct
+proposition/nn 4.1/cd tells/vbz us/prp the/dt minimizer/nn of/in problem/nn (/punct 12/cd )/punct admits/vbz details/nns ./punct
+the/dt data/nns matrix/nn in/in rkhs/nns ,/punct x/nn =/punct (/punct φ/nn (/punct x1/nn )/punct ,/punct φ/nn (/punct x2/nn )/punct ,/punct ·/nn ·/nn ·/nn ,/punct φ/nn (/punct xm/nn )/punct )/punct ./punct
+the/dt optimization/nn problem/nn in/in rkhs/nn can/md be/vb written/vbn as/in follows/vbz :/punct since/in the/dt mapping/nn function/nn φ/nn is/vbz generally/rb unknown/jj ,/punct there/ex apply/vb kernel/nn tricks/nns to/to solve/vb this/dt optimization/nn problem/nn ./punct
+let/vb be/vb the/dt moore-penrose/nn inverse/jj (/punct also/rb known/vbn as/in pseudo/nn matrix/nn (/punct kzx/nn ,/punct ij/nn =/punct k/nn (/punct zi/nn ,/punct xj/nn )/punct )/punct ./punct
+thus/rb ,/punct the/dt kernel/nnp laplacian/nnp optimal/jj design/nn can/md be/vb defined/vbn as/in follows/vbz :/punct in/in this/dt subsection/nn ,/punct we/prp discuss/vbp how/wrb to/to solve/vb the/dt optimization/nn problems/nns (/punct 11/cd )/punct and/cc (/punct 14/cd )/punct ./punct
+particularly/rb ,/punct if/in we/prp select/vbp a/dt linear/jj kernel/nn for/in klod/nnp ,/punct then/rb it/prp reduces/vbz to/to lod/nnp ./punct
+therefore/rb ,/punct we/prp will/md focus/vb on/in problem/nn (/punct 14/cd )/punct in/in the/dt following/vbg ./punct
+it/prp can/md be/vb shown/vbn that/in the/dt optimization/nn problem/nn (/punct 14/cd )/punct is/vbz np-hard/jj ./punct
+in/in this/dt subsection/nn ,/punct we/prp develop/vbp a/dt simple/jj sequential/jj greedy/jj approach/nn to/to solve/vb (/punct 14/cd )/punct ./punct
+suppose/vb n/nn points/nns have/vbp been/vbn 1/cd )/punct -th/jj point/nn zn+1/nn can/md be/vb selected/vbn by/in solving/vbg the/dt following/vbg the/dt kernel/nn matrices/nns kxzn+1/nn and/cc kzn+1x/nn can/md be/vb rewritten/vbn kxzn+1/nn kzn+1x/nn =/punct kxzn/nn kznx/nn +/punct kxzn+1/nn kzn+1x/nn algorithm/nn reduces/vbz to/to lod/nnp ./punct
+in/in this/dt section/nn ,/punct we/prp describe/vbp how/wrb to/to apply/vb laplacian/jj image/nn representation/nn using/vbg low/jj level/nn visual/jj features/nns ./punct
+low-level/jj image/nn representation/nn is/vbz a/dt crucial/jj problem/nn in/in cbir/nn ./punct
+general/nnp visual/jj features/nns includes/vbz color/nn ,/punct texture/nn ,/punct shape/nn ,/punct etc/fw ./punct
+color/nnp and/cc texture/nn features/nns are/vbp the/dt most/rbs extensively/rb used/vbn visual/jj features/nns in/in cbir/nn ./punct
+compared/vbn with/in color/nn and/cc texture/nn features/nns ,/punct shape/nn features/nns are/vbp usually/rb described/vbn after/in images/nns have/vbp been/vbn segmented/jj into/in regions/nns or/cc objects/nns ./punct
+since/in robust/jj and/cc accurate/jj image/nn segmentation/nn is/vbz difficult/jj to/to achieve/vb ,/punct the/dt use/nn of/in shape/nn features/nns for/in image/nn retrieval/nn has/vbz been/vbn limited/vbn to/to special/jj applications/nns where/wrb objects/nns or/cc regions/nns are/vbp readily/rb available/jj ./punct
+in/in this/dt work/nn ,/punct we/prp combine/vbp 64-dimensional/jj color/nn histogram/nn and/cc 64-dimensional/jj color/nn texture/nn moment/nn (/punct ctm/nnp ,/punct )/punct to/to represent/vb the/dt images/nns ./punct
+the/dt color/nn histogram/nn is/vbz calculated/vbn color/nn and/cc texture/nn characteristics/nns of/in the/dt image/nn in/in a/dt compact/jj form/nn ./punct
+ctm/nnp adopts/vbz local/jj fourier/nn transform/vb as/in a/dt texture/nn representation/nn scheme/nn and/cc derives/vbz eight/cd characteristic/jj maps/nns to/to describe/vb different/jj aspects/nns of/in co-occurrence/nn relations/nns of/in image/nn pixels/nns in/in each/dt channel/nn of/in the/dt (/punct svcosh/nn ,/punct svsinh/nn ,/punct v/nn )/punct color/nn space/nn ./punct
+then/rb ctm/nnp calculates/vbz the/dt first/jj and/cc second/jj moment/nn pixel/nn distribution/nn ./punct
+please/vb see/vb for/in details/nns ./punct
+relevance/nn feedback/nn is/vbz one/cd of/in the/dt most/rbs important/jj techniques/nns to/to narrow/vb down/rp the/dt gap/nn between/in low/jj level/nn visual/jj features/nns and/cc high/jj level/nn semantic/jj concepts/nns ./punct
+traditionally/rb ,/punct the/dt user/nn ''/'' s/nns relevance/nn feedbacks/nns are/vbp used/vbn to/to update/vb the/dt query/nn vector/nn or/cc adjust/vbp the/dt weighting/nn of/in different/jj dimensions/nns ./punct
+which/wdt the/dt image/nn retrieval/nn system/nn acts/vbz as/in a/dt learner/nn and/cc the/dt user/nn acts/vbz as/in a/dt teacher/nn ./punct
+they/prp typical/jj retrieval/nn process/nn is/vbz 1/cd ./punct
+the/dt user/nn submits/vbz a/dt query/nn image/nn example/nn to/to the/dt system/nn ./punct
+the/dt system/nn ranks/vbz the/dt images/nns in/in database/nn according/vbg to/to some/dt pre-defined/jj distance/nn metric/jj and/cc presents/vbz to/to the/dt user/nn the/dt top/jj ranked/vbd images/nns ./punct
+2/ls ./punct
+the/dt system/nn selects/vbz some/dt images/nns from/in the/dt database/nn and/cc request/nn the/dt user/nn to/to label/vb them/prp as/in relevant/jj or/cc irrelevant/jj ./punct
+3/ls ./punct
+the/dt system/nn uses/vbz the/dt user/nn ''/'' s/vbz provided/vbn information/nn to/to rerank/vb the/dt images/nns in/in database/nn and/cc returns/nns to/to the/dt user/nn the/dt top/jj images/nns ./punct
+go/vb to/to step/vb 2/cd until/in the/dt user/nn is/vbz satisfied/vbn ./punct
+our/prp$ laplacian/nnp optimal/jj design/nn algorithm/nn is/vbz applied/vbn in/in the/dt second/jj step/nn for/in selecting/vbg the/dt most/rbs informative/jj images/nns ./punct
+once/in we/prp get/vbp the/dt labels/nns for/in the/dt images/nns selected/vbn by/in lod/nnp ,/punct we/prp apply/vbp laplacian/nnp regularized/nnp regression/nn (/punct lrr/nn ,/punct )/punct to/to solve/vb the/dt optimization/nn problem/nn (/punct 3/cd )/punct and/cc build/vb the/dt classifier/nn ./punct
+the/dt classifier/nn is/vbz then/rb used/vbn to/to re-rank/vb the/dt images/nns in/in database/nn ./punct
+note/vb that/in ,/punct in/in order/nn to/to reduce/vb the/dt computational/jj complexity/nn ,/punct we/prp do/vbp not/rb use/vb all/pdt the/dt unlabeled/jj images/nns in/in the/dt database/nn but/cc only/rb those/dt within/in top/jj 500/cd returns/nns of/in previous/jj iteration/nn ./punct
+in/in this/dt section/nn ,/punct we/prp evaluate/vbp the/dt performance/nn of/in our/prp$ proposed/vbn algorithm/nn on/in a/dt large/jj image/nn database/nn ./punct
+to/to demonstrate/vb the/dt effectiveness/nn of/in our/prp$ proposed/vbn lod/nnp algorithm/nn ,/punct we/prp compare/vbp it/prp with/in laplacian/nn regularized/vbn regression/nn (/punct lrr/nn ,/punct )/punct ,/punct support/nn vector/nnp machine/nnp (/punct svm/nnp )/punct ,/punct support/nn vector/nnp machine/nnp active/jj learning/nnp (/punct svmactive/jj )/punct ,/punct and/cc a-optimal/nnp design/nnp (/punct aod/nnp )/punct ./punct
+both/dt svmactive/nn ,/punct aod/nnp ,/punct and/cc lod/nnp are/vbp active/jj learning/nn algorithms/nns ,/punct while/in lrr/nn and/cc svm/nn are/vbp standard/jj classification/nn algorithms/nns ./punct
+svm/nnp only/rb makes/vbz use/nn of/in the/dt labeled/vbn images/nns ,/punct while/in lrr/nn is/vbz a/dt semi-supervised/jj learning/nn algorithm/nn which/wdt makes/vbz use/nn of/in both/cc labeled/vbn and/cc unlabeled/jj images/nns ./punct
+for/in svmactive/jj ,/punct aod/nnp ,/punct and/cc lod/nnp ,/punct 10/cd training/nn images/nns are/vbp selected/vbn by/in the/dt algorithms/nns themselves/prp at/in each/dt iteration/nn ./punct
+while/in for/in lrr/nn and/cc svm/nn ,/punct we/prp use/vbp the/dt top/jj 10/cd images/nns as/in training/nn data/nns ./punct
+the/dt ordinary/jj svm/nnp ,/punct lod/nnp is/vbz based/vbn on/in lrr/nn ,/punct and/cc aod/nnp is/vbz based/vbn lod/nnp algorithm/nn are/vbp empirically/rb set/vbn to/to be/vb 0.001/cd and/cc 0.00001/cd ./punct
+for/in both/dt lrr/nn and/cc lod/nn algorithms/nns ,/punct we/prp use/vbp the/dt same/jj graph/nn example/nn to/to give/vb some/dt intuition/nn about/in how/wrb lod/nnp works/vbz ./punct
+set/nn contains/vbz two/cd circles/nns ./punct
+eight/cd points/nns are/vbp selected/vbn by/in aod/nn and/cc lod/nn ./punct
+as/in can/md be/vb seen/vbn ,/punct all/pdt the/dt points/nns selected/vbn by/in aod/nnp are/vbp from/in the/dt big/jj circle/nn ,/punct while/in lod/nn selects/vbz four/cd points/nns from/in the/dt big/jj circle/nn and/cc four/cd from/in the/dt small/jj circle/nn ./punct
+the/dt numbers/nns beside/in the/dt selected/vbn points/nns denote/vbp their/prp$ orders/nns to/to be/vb selected/vbn ./punct
+clearly/rb ,/punct the/dt points/nns selected/vbn by/in our/prp$ lod/nnp algorithm/nn can/md better/rb represent/vb the/dt original/jj data/nn set/nn ./punct
+we/prp did/vbd not/rb compare/vb our/prp$ algorithm/nn with/in svmactive/nn because/in svmactive/nn can/md not/rb be/vb applied/vbn in/in this/dt case/nn due/jj to/to the/dt lack/nn of/in the/dt labeled/vbn points/nns ./punct
+the/dt image/nn database/nn we/prp used/vbd consists/vbz of/in 7,900/cd images/nns of/in and/cc heterogeneous/jj image/nn set/nn ./punct
+each/dt image/nn is/vbz represented/vbn as/in a/dt 128-dimensional/jj vector/nn as/in described/vbn in/in section/nn 5.1/cd ./punct
+figure/nn 2/cd shows/vbz some/dt sample/nn images/nns ./punct
+to/to exhibit/vb the/dt advantages/nns of/in using/vbg our/prp$ algorithm/nn ,/punct we/prp need/vbp a/dt reliable/jj way/nn of/in evaluating/vbg the/dt retrieval/nn performance/nn and/cc the/dt comparisons/nns with/in other/jj algorithms/nns ./punct
+we/prp list/vbp different/jj aspects/nns of/in the/dt experimental/jj design/nn below/in ./punct
+we/prp use/vbp precision-scope/jj curve/nn and/cc precision/nn rate/nn to/to evaluate/vb the/dt effectiveness/nn of/in the/dt image/nn retrieval/nn algorithms/nns ./punct
+the/dt scope/nn is/vbz specified/vbn by/in the/dt number/nn (/punct n/nn )/punct of/in top-ranked/jj images/nns presented/vbn to/to the/dt user/nn ./punct
+the/dt precision/nn is/vbz the/dt ratio/nn of/in the/dt number/nn of/in relevant/jj images/nns presented/vbn to/to the/dt user/nn to/to the/dt scope/nn n./nnp the/dt precision-scope/jj curve/nn describes/vbz the/dt precision/nn with/in various/jj scopes/nns and/cc thus/rb gives/vbz an/dt overall/jj performance/nn evaluation/nn of/in the/dt algorithms/nns ./punct
+on/in the/dt other/jj hand/nn ,/punct the/dt precision/nn rate/nn emphasizes/vbz the/dt precision/nn at/in a/dt particular/jj value/nn of/in a/dt screen/nn ./punct
+putting/vbg more/jjr images/nns on/in a/dt screen/nn may/md affect/vb the/dt quality/nn of/in the/dt presented/vbn images/nns ./punct
+therefore/rb ,/punct the/dt precision/nn at/in top/jj 20/cd (/punct n/nn =/punct 20/cd )/punct is/vbz especially/rb important/jj ./punct
+in/in real/jj world/nn image/nn retrieval/nn systems/nns ,/punct the/dt query/nn image/nn is/vbz usually/rb not/rb in/in the/dt image/nn database/nn ./punct
+to/to simulate/vb such/jj environment/nn ,/punct we/prp use/vbp five-fold/jj cross/nn validation/nn to/to evaluate/vb the/dt algorithms/nns ./punct
+more/rbr precisely/rb ,/punct we/prp divide/vbp the/dt whole/jj image/nn database/nn into/in five/cd subsets/nns with/in equal/jj size/nn ./punct
+thus/rb ,/punct there/ex are/vbp 20/cd images/nns per/in category/nn in/in each/dt subset/nn ./punct
+at/in each/dt run/nn of/in cross/nn validation/nn ,/punct one/cd subset/nn is/vbz selected/vbn as/in the/dt query/nn set/nn ,/punct and/cc the/dt other/jj four/cd subsets/nns are/vbp used/vbn as/in the/dt database/nn for/in retrieval/nn ./punct
+the/dt precisionscope/jj curve/nn and/cc precision/nn rate/nn are/vbp computed/vbn by/in averaging/vbg the/dt results/nns from/in the/dt five-fold/jj cross/nn validation/nn ./punct
+we/prp designed/vbd an/dt automatic/jj feedback/nn scheme/nn to/to model/vb the/dt retrieval/nn process/nn ./punct
+for/in each/dt submitted/vbn query/nn ,/punct our/prp$ system/nn retrieves/vbz and/cc ranks/vbz the/dt images/nns in/in the/dt database/nn ./punct
+10/cd images/nns were/vbd selected/vbn from/in the/dt database/nn for/in user/nn labeling/nn and/cc the/dt label/nn information/nn is/vbz used/vbn by/in the/dt system/nn for/in re-ranking/nn ./punct
+note/vb that/in ,/punct the/dt images/nns which/wdt have/vbp been/vbn selected/vbn at/in previous/jj iterations/nns are/vbp excluded/vbn from/in later/jj selections/nns ./punct
+for/in each/dt query/nn ,/punct the/dt automatic/jj relevance/nn feedback/nn mechanism/nn is/vbz performed/vbn for/in four/cd iterations/nns ./punct
+it/prp is/vbz important/jj to/to note/vb that/in the/dt automatic/jj relevance/nn feedback/nn scheme/nn used/vbn here/rb is/vbz different/jj from/in the/dt ones/nns described/vbn in/in ,/punct ./punct
+in/in ,/punct ,/punct the/dt top/jj four/cd relevant/jj and/cc irrelevant/jj images/nns were/vbd selected/vbn as/in the/dt feedback/nn images/nns ./punct
+however/rb ,/punct this/dt may/md not/rb be/vb practical/jj ./punct
+in/in real/jj world/nn image/nn retrieval/nn systems/nns ,/punct it/prp is/vbz possible/jj that/in most/jjs of/in the/dt top-ranked/jj images/nns are/vbp relevant/jj (/punct or/cc ,/punct irrelevant/jj )/punct ./punct
+thus/rb ,/punct it/prp is/vbz difficult/jj for/in the/dt user/nn to/to find/vb both/cc four/cd relevant/jj and/cc irrelevant/jj images/nns ./punct
+it/prp is/vbz more/rbr reasonable/jj for/in the/dt users/nns to/to provide/vb feedback/nn information/nn only/rb on/in the/dt 10/cd images/nns selected/vbn by/in the/dt system/nn ./punct
+provide/vb many/jj rounds/nns of/in feedbacks/nns ./punct
+the/dt retrieval/nn performance/nn after/in the/dt first/jj two/cd rounds/nns of/in feedbacks/nns (/punct especially/rb the/dt first/jj round/nn )/punct is/vbz more/rbr important/jj ./punct
+figure/nnp 3/cd shows/vbz the/dt average/jj precision-scope/jj curves/nns of/in the/dt different/jj algorithms/nns for/in the/dt first/jj two/cd feedback/nn iterations/nns ./punct
+at/in the/dt beginning/nn of/in retrieval/nn ,/punct the/dt euclidean/jj distances/nns in/in the/dt original/jj 128-dimensional/jj space/nn are/vbp used/vbn to/to rank/vb the/dt images/nns in/in database/nn ./punct
+after/in the/dt user/nn provides/vbz relevance/nn feedbacks/nns ,/punct the/dt lrr/nnp ,/punct svm/nnp ,/punct svmactive/nnp ,/punct aod/nnp ,/punct and/cc lod/nnp algorithms/nns are/vbp then/rb applied/vbn to/to re-rank/vb the/dt images/nns ./punct
+in/in order/nn to/to reduce/vb the/dt time/nn complexity/nn of/in active/jj learning/nn algorithms/nns ,/punct we/prp didn/vbp ''/'' t/nn select/jj the/dt most/rbs informative/jj images/nns from/in the/dt whole/nn database/nn but/cc from/in the/dt top/jj 500/cd images/nns ./punct
+for/in lrr/nn and/cc svm/nn ,/punct the/dt user/nn is/vbz required/vbn to/to label/vb the/dt top/jj 10/cd images/nns ./punct
+for/in svmactive/jj ,/punct aod/nnp ,/punct and/cc lod/nnp ,/punct the/dt user/nn these/dt algorithms/nns ./punct
+note/vb that/in ,/punct svmactive/nn can/md only/rb be/vb ap/jj (/punct a/dt )/punct feedback/nn iteration/nn 1/cd (/punct b/nn )/punct feedback/nnp iteration/nnp 2/cd plied/vbd when/wrb the/dt classifier/nn is/vbz already/rb built/vbn ./punct
+therefore/rb ,/punct it/prp can/md not/rb be/vb applied/vbn at/in the/dt first/jj round/nn and/cc we/prp use/vbp the/dt standard/jj svm/nn to/to build/vb the/dt initial/jj classifier/nn ./punct
+as/in can/md be/vb seen/vbn ,/punct our/prp$ lod/nnp algorithm/nn outperforms/vbz the/dt other/jj four/cd algorithms/nns on/in the/dt entire/jj scope/nn ./punct
+also/rb ,/punct the/dt lrr/nn algorithm/nn performs/vbz better/jjr than/in svm/nn ./punct
+this/dt is/vbz because/in that/in the/dt lrr/nn algorithm/nn makes/vbz efficient/jj use/nn of/in the/dt unlabeled/jj images/nns by/in incorporating/vbg a/dt locality/nn preserving/vbg regularizer/nn into/in the/dt ordinary/jj regression/nn objective/nn function/nn ./punct
+the/dt aod/nnp algorithm/nn performs/vbz the/dt worst/jjs ./punct
+as/in the/dt scope/nn gets/vbz larger/jjr ,/punct the/dt performance/nn difference/nn between/in these/dt algorithms/nns gets/vbz smaller/jjr ./punct
+by/in iteratively/rb adding/vbg the/dt user/nn ''/'' s/nns feedbacks/nns ,/punct the/dt corresponding/jj precision/nn results/vbz (/punct at/in top/jj 10/cd ,/punct top/jj 20/cd ,/punct and/cc top/jj 30/cd )/punct of/in the/dt seen/vbn ,/punct our/prp$ lod/nnp algorithm/nn performs/vbz the/dt best/jjs in/in all/dt the/dt cases/nns and/cc the/dt lrr/nn algorithm/nn performs/vbz the/dt second/jj best/jjs ./punct
+both/dt of/in these/dt two/cd algorithms/nns make/vbp use/nn of/in the/dt unlabeled/jj images/nns ./punct
+this/dt shows/vbz that/in the/dt unlabeled/jj images/nns are/vbp helpful/jj for/in discovering/vbg the/dt intrinsic/jj geometrical/jj structure/nn of/in the/dt image/nn space/nn and/cc therefore/rb enhance/vbp the/dt retrieval/nn performance/nn ./punct
+in/in real/jj world/nn ,/punct the/dt user/nn may/md not/rb be/vb willing/jj to/to provide/vb too/rb many/jj relevance/nn feedbacks/nns ./punct
+therefore/rb ,/punct the/dt retrieval/nn performance/nn at/in the/dt first/jj two/cd rounds/nns are/vbp especially/rb important/jj ./punct
+as/in can/md be/vb seen/vbn ,/punct our/prp$ lod/nnp algorithm/nn achieves/vbz 6.8/cd %/punct performance/nn improvement/nn for/in top/jj 10/cd results/nns ,/punct 5.2/cd %/punct for/in top/jj 20/cd results/nns ,/punct and/cc 4.1/cd %/punct for/in top/jj 30/cd results/nns ,/punct comparing/vbg to/to the/dt second/jj best/jjs algorithm/nn (/punct lrr/nn )/punct after/in the/dt first/jj two/cd rounds/nns of/in relevance/nn feedbacks/nns ./punct

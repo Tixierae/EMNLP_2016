@@ -1,0 +1,216 @@
+new/nnp event/nnp detection/nn (/punct ned/nnp )/punct aims/nns at/in detecting/vbg from/in one/cd or/cc multiple/jj streams/nns of/in news/nn stories/nns that/wdt which/wdt one/cd is/vbz reported/vbn on/in a/dt new/jj event/nn (/punct i.e/nn ./punct
+not/rb reported/vbn previously/rb )/punct ./punct
+with/in the/dt overwhelming/jj volume/nn of/in news/nn available/jj today/nn ,/punct there/ex is/vbz an/dt increasing/vbg need/nn for/in a/dt ned/nn system/nn which/wdt is/vbz able/jj to/to detect/vb new/jj events/nns more/rbr efficiently/rb and/cc accurately/rb ./punct
+in/in this/dt paper/nn we/prp propose/vbp a/dt new/jj ned/nnp model/nn to/to speed/vb up/rp the/dt ned/nnp task/nn by/in using/vbg news/nn indexing-tree/nn dynamically/rb ./punct
+moreover/rb ,/punct based/vbn on/in the/dt observation/nn that/in terms/nns of/in different/jj types/nns have/vbp different/jj effects/nns for/in ned/nnp task/nn ,/punct two/cd term/nn reweighting/vbg approaches/nns are/vbp proposed/vbn to/to improve/vb ned/nnp accuracy/nn ./punct
+in/in the/dt first/jj approach/nn ,/punct we/prp propose/vbp to/to adjust/vb term/nn weights/nns dynamically/rb based/vbn on/in previous/jj story/nn clusters/nns and/cc in/in the/dt second/jj approach/nn ,/punct we/prp propose/vbp to/to employ/vb statistics/nns on/in training/nn data/nns to/to learn/vb the/dt named/vbn entity/nn reweighting/vbg model/nn for/in each/dt class/nn of/in stories/nns ./punct
+experimental/jj results/nns on/in two/cd linguistic/nnp data/nnp consortium/nnp (/punct ldc/nnp )/punct datasets/nns tdt2/nn and/cc tdt3/nn show/vbp that/in the/dt proposed/vbn model/nn can/md improve/vb both/dt efficiency/nn and/cc accuracy/nn of/in ned/nnp task/nn significantly/rb ,/punct compared/vbn to/to the/dt baseline/nn system/nn and/cc other/jj existing/vbg systems/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp h.3.3/nn [/punct information/nnp systems/nnp ]/punct :/punct information/nnp search/vb and/cc retrieval/nnp ;/punct h.4.2/nn [/punct information/nnp systems/nnp applications/nns ]/punct :/punct types/nns of/in systemsdecision/nnp support/nn ./punct
+general/nnp terms/nns algorithms/nns ,/punct performance/nnp ,/punct experimentation/nn 1/cd ./punct
+introduction/nnp topic/nnp detection/nn and/cc tracking/vbg (/punct tdt/nn )/punct program/nn aims/vbz to/to develop/vb techniques/nns which/wdt can/md effectively/rb organize/vb ,/punct search/nn and/cc structure/nn news/nn text/nn materials/nns from/in a/dt variety/nn of/in newswire/nn and/cc broadcast/nn media/nns [/punct 1/cd ]/punct ./punct
+new/nnp event/nnp detection/nn (/punct ned/nnp )/punct is/vbz one/cd of/in the/dt five/cd tasks/nns in/in tdt/nnp ./punct
+it/prp is/vbz the/dt task/nn of/in online/jj identification/nn of/in the/dt earliest/jjs report/nn for/in each/dt topic/nn as/rb soon/rb as/in that/dt report/nn arrives/vbz in/in the/dt sequence/nn of/in documents/nns ./punct
+a/dt topic/nn is/vbz defined/vbn as/in a/dt seminal/jj event/nn or/cc activity/nn ,/punct along/in with/in directly/rb related/jj events/nns and/cc activities/nns [/punct 2/cd ]/punct ./punct
+an/dt event/nn is/vbz defined/vbn as/in something/nn (/punct non-trivial/jj )/punct happening/vbg in/in a/dt certain/jj place/nn at/in a/dt certain/jj time/nn [/punct 3/cd ]/punct ./punct
+for/in instance/nn ,/punct when/wrb a/dt bomb/nn explodes/vbz in/in a/dt building/nn ,/punct the/dt exploding/vbg is/vbz the/dt seminal/jj event/nn that/wdt triggers/vbz the/dt topic/nn ,/punct and/cc other/jj stories/nns on/in the/dt same/jj topic/nn would/md be/vb those/dt discussing/vbg salvaging/vbg efforts/nns ,/punct the/dt search/nn for/in perpetrators/nns ,/punct arrests/nns and/cc trial/nn and/cc so/rb on/in ./punct
+useful/jj news/nn information/nn is/vbz usually/rb buried/vbn in/in a/dt mass/nn of/in data/nns generated/vbn everyday/jj ./punct
+therefore/rb ,/punct ned/nnp systems/nns are/vbp very/rb useful/jj for/in people/nns who/wp need/vbp to/to detect/vb novel/jj information/nn from/in real-time/jj news/nn stream/nn ./punct
+these/dt real-life/jj needs/nns often/rb occur/vbp in/in domains/nns like/in financial/jj markets/nns ,/punct news/nn analysis/nn ,/punct and/cc intelligence/nn gathering/nn ./punct
+in/in most/jjs of/in state-of-the-art/jj (/punct currently/rb )/punct ned/nn systems/nns ,/punct each/dt news/nn story/nn on/in hand/nn is/vbz compared/vbn to/to all/pdt the/dt previous/jj received/vbn stories/nns ./punct
+if/in all/dt the/dt similarities/nns between/in them/prp do/vbp not/rb exceed/vb a/dt threshold/nn ,/punct then/rb the/dt story/nn triggers/vbz a/dt new/jj event/nn ./punct
+they/prp are/vbp usually/rb in/in the/dt form/nn of/in cosine/nn similarity/nn or/cc hellinger/nn similarity/nn metric/jj ./punct
+the/dt core/nn problem/nn of/in ned/nnp is/vbz to/to identify/vb whether/in two/cd stories/nns are/vbp on/in the/dt same/jj topic/nn ./punct
+obviously/rb ,/punct these/dt systems/nns can/md not/rb take/vb advantage/nn of/in topic/nn information/nn ./punct
+further/rb more/rbr ,/punct it/prp is/vbz not/rb acceptable/jj in/in real/jj applications/nns because/in of/in the/dt large/jj amount/nn of/in computation/nn required/vbn in/in the/dt ned/nnp process/nn ./punct
+other/jj systems/nns organize/vbp previous/jj stories/nns into/in clusters/nns (/punct each/dt cluster/nn corresponds/vbz to/to a/dt topic/nn )/punct ,/punct and/cc new/jj story/nn is/vbz compared/vbn to/to the/dt previous/jj clusters/nns instead/rb of/in stories/nns ./punct
+this/dt manner/nn can/md reduce/vb comparing/vbg times/nns significantly/rb ./punct
+nevertheless/rb ,/punct it/prp has/vbz been/vbn proved/vbn that/in this/dt manner/nn is/vbz less/rbr accurate/jj [/punct 4/cd ,/punct 5/cd ]/punct ./punct
+this/dt is/vbz because/in sometimes/rb stories/nns within/in a/dt topic/nn drift/nn far/rb away/rb from/in each/dt other/jj ,/punct which/wdt could/md lead/vb low/jj similarity/nn between/in a/dt story/nn and/cc its/prp$ topic/nn ./punct
+on/in the/dt other/jj hand/nn ,/punct some/dt proposed/vbn ned/nnp systems/nns tried/vbd to/to improve/vb accuracy/nn by/in making/vbg better/jjr use/nn of/in named/vbn entities/nns [/punct 10/cd ,/punct 11/cd ,/punct 12/cd ,/punct 13/cd ]/punct ./punct
+however/rb ,/punct none/nn of/in the/dt systems/nns have/vbp considered/vbn that/in terms/nns of/in different/jj types/nns (/punct e.g/nn ./punct
+noun/nn ,/punct verb/nn or/cc person/nn name/nn )/punct have/vbp different/jj effects/nns for/in different/jj classes/nns of/in stories/nns in/in determining/vbg whether/in two/cd stories/nns are/vbp on/in the/dt same/jj topic/nn ./punct
+for/in example/nn ,/punct the/dt names/nns of/in election/nn candidates/nns (/punct person/nn name/nn )/punct are/vbp very/rb important/jj for/in stories/nns of/in election/nn class/nn ;/punct the/dt locations/nns (/punct location/nnp name/nn )/punct where/wrb accidents/nns happened/vbd are/vbp important/jj for/in stories/nns of/in accidents/nns class/nn ./punct
+so/rb ,/punct in/in ned/nnp ,/punct there/ex still/rb exist/vbp following/vbg three/cd problems/nns to/to be/vb investigated/vbn :/punct (/punct 1/cd )/punct how/wrb to/to speed/vb up/rp the/dt detection/nn procedure/nn while/in do/vbp not/rb decrease/vb the/dt detection/nn accuracy/nn ?/punct
+(/punct 2/cd )/punct how/wrb to/to make/vb good/jj use/nn of/in cluster/nn (/punct topic/nn )/punct information/nn to/to improve/vb accuracy/nn ?/punct
+(/punct 3/cd )/punct how/wrb to/to obtain/vb better/jjr news/nn story/nn representation/nn by/in better/jjr understanding/nn of/in named/vbn entities/nns ./punct
+driven/vbn by/in these/dt problems/nns ,/punct we/prp have/vbp proposed/vbn three/cd approaches/nns in/in this/dt paper/nn ./punct
+(/punct 1/cd )/punct to/to make/vb the/dt detection/nn procedure/nn faster/rbr ,/punct we/prp propose/vbp a/dt new/jj ned/nnp procedure/nn based/vbn on/in news/nn indexing-tree/jj created/vbn dynamically/rb ./punct
+story/nnp indexing-tree/nn is/vbz created/vbn by/in assembling/vbg similar/jj stories/nns together/rb to/to form/vb news/nn clusters/nns in/in different/jj hierarchies/nns according/vbg to/to their/prp$ values/nns of/in similarity/nn ./punct
+comparisons/nns between/in current/jj story/nn and/cc previous/jj clusters/nns could/md help/vb find/vb the/dt most/rbs similar/jj story/nn in/in less/jjr comparing/vbg times/nns ./punct
+the/dt new/jj procedure/nn can/md reduce/vb the/dt amount/nn of/in comparing/vbg times/nns without/in hurting/vbg accuracy/nn ./punct
+(/punct 2/cd )/punct we/prp use/vbp the/dt clusters/nns of/in the/dt first/jj floor/nn in/in the/dt indexing-tree/jj as/in news/nn topics/nns ,/punct in/in which/wdt term/nn weights/nns are/vbp adjusted/vbn dynamically/rb according/vbg to/to term/vb distribution/nn in/in the/dt clusters/nns ./punct
+in/in this/dt approach/nn ,/punct cluster/nn (/punct topic/nn )/punct information/nn is/vbz used/vbn properly/rb ,/punct so/in the/dt problem/nn of/in theme/nn decentralization/nn is/vbz avoided/vbn ./punct
+(/punct 3/cd )/punct based/vbn on/in observations/nns on/in the/dt statistics/nns obtained/vbn from/in training/nn data/nns ,/punct we/prp found/vbd that/in terms/nns of/in different/jj types/nns (/punct e.g/nn ./punct
+noun/nn and/cc verb/nn )/punct have/vbp different/jj effects/nns for/in different/jj classes/nns of/in stories/nns in/in determining/vbg whether/in two/cd stories/nns are/vbp on/in the/dt same/jj topic/nn ./punct
+and/cc we/prp propose/vbp to/to use/vb statistics/nns to/to optimize/vb the/dt weights/nns of/in the/dt terms/nns of/in different/jj types/nns in/in a/dt story/nn according/vbg to/to the/dt news/nn class/nn that/in the/dt story/nn belongs/vbz to/to ./punct
+on/in tdt3/nn dataset/nn ,/punct the/dt new/jj ned/nnp model/nn just/rb uses/vbz 14.9/cd %/punct comparing/vbg times/nns of/in the/dt basic/jj model/nn ,/punct while/in its/prp$ minimum/nn normalized/vbd cost/nn is/vbz 0.5012/cd ,/punct which/wdt is/vbz 0.0797/cd better/jjr than/in the/dt basic/jj model/nn ,/punct and/cc also/rb better/jjr than/in any/dt other/jj results/nns previously/rb reported/vbn for/in this/dt dataset/nn [/punct 8/cd ,/punct 13/cd ]/punct ./punct
+the/dt rest/nn of/in the/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+we/prp start/vbp off/rp this/dt paper/nn by/in summarizing/vbg the/dt previous/jj work/nn in/in ned/nnp in/in section/nn 2/cd ./punct
+section/nn 3/cd presents/vbz the/dt basic/jj model/nn for/in ned/nnp that/in most/jjs current/jj systems/nns use/vbp ./punct
+section/nn 4/cd describes/vbz our/prp$ new/jj detection/nn procedure/nn based/vbn on/in news/nn indexing-tree/nn ./punct
+in/in section/nn 5/cd ,/punct two/cd term/nn reweighting/nn methods/nns are/vbp proposed/vbn to/to improve/vb ned/nnp accuracy/nn ./punct
+section/nn 6/cd gives/vbz our/prp$ experimental/jj data/nns and/cc evaluation/nn metrics/nns ./punct
+we/prp finally/rb wrap/vb up/rp with/in the/dt experimental/jj results/nns in/in section/nn 7/cd ,/punct and/cc the/dt conclusions/nns and/cc future/jj work/nn in/in section/nn 8/cd ./punct
+2/ls ./punct
+related/jj work/vbp papka/fw et/fw al/fw ./punct
+proposed/vbn single-pass/jj clustering/nn on/in ned/nnp [/punct 6/cd ]/punct ./punct
+when/wrb a/dt new/jj story/nn was/vbd encountered/vbn ,/punct it/prp was/vbd processed/vbn immediately/rb to/to extract/vb term/nn features/nns and/cc a/dt query/nn representation/nn of/in the/dt story/nn ''/'' s/nns content/nn is/vbz built/vbn up/rp ./punct
+then/rb it/prp was/vbd compared/vbn with/in all/pdt the/dt previous/jj queries/nns ./punct
+if/in the/dt document/nn did/vbd not/rb trigger/vb any/dt queries/nns by/in exceeding/vbg a/dt threshold/nn ,/punct it/prp was/vbd marked/vbn as/in a/dt new/jj event/nn ./punct
+lam/nnp et/fw al/fw build/vb up/rp previous/jj query/nn representations/nns of/in story/nn clusters/nns ,/punct each/dt of/in which/wdt corresponds/vbz to/to a/dt topic/nn [/punct 7/cd ]/punct ./punct
+in/in this/dt manner/nn comparisons/nns happen/vb between/in stories/nns and/cc clusters/nns ./punct
+recent/jj years/nns ,/punct most/jjs work/nn focus/nn on/in proposing/vbg better/jjr methods/nns on/in comparison/nn of/in stories/nns and/cc document/nn representation/nn ./punct
+brants/nnps et/fw al/fw ./punct
+[/punct 8/cd ]/punct extended/vbd a/dt basic/jj incremental/jj tf-idf/nn model/nn to/to include/vb sourcespecific/jj models/nns ,/punct similarity/nn score/nn normalization/nn based/vbn on/in document-specific/jj averages/nns ,/punct similarity/nn score/nn normalization/nn based/vbn on/in source-pair/jj specific/jj averages/nns ,/punct term/nn reweighting/nn based/vbn on/in inverse/jj event/nn frequencies/nns ,/punct and/cc segmentation/nn of/in documents/nns ./punct
+good/jj improvements/nns on/in tdt/nn bench-marks/nns were/vbd shown/vbn ./punct
+stokes/nnp et/fw al/fw ./punct
+[/punct 9/cd ]/punct utilized/vbd a/dt combination/nn of/in evidence/nn from/in two/cd distinct/jj representations/nns of/in a/dt document/nn ''/'' s/nns content/nn ./punct
+one/cd of/in the/dt representations/nns was/vbd the/dt usual/jj free/jj text/nn vector/nn ,/punct the/dt other/jj made/vbn use/nn of/in lexical/jj chains/nns (/punct created/vbn using/vbg wordnet/nnp )/punct to/to build/vb another/dt term/nn vector/nn ./punct
+then/rb the/dt two/cd representations/nns are/vbp combined/vbn in/in a/dt linear/jj fashion/nn ./punct
+a/dt marginal/jj increase/nn in/in effectiveness/nn was/vbd achieved/vbn when/wrb the/dt combined/jj representation/nn was/vbd used/vbn ./punct
+some/dt efforts/nns have/vbp been/vbn done/vbn on/in how/wrb to/to utilize/vb named/vbn entities/nns to/to improve/vb ned/nnp ./punct
+yang/nnp et/fw al/fw ./punct
+gave/vbd location/nn named/vbn entities/nns four/cd times/nns weight/nn than/in other/jj terms/nns and/cc named/vbn entities/nns [/punct 10/cd ]/punct ./punct
+doremi/nnp research/nn group/nn combined/vbn semantic/jj similarities/nns of/in person/nn names/nns ,/punct location/nn names/nns and/cc time/nn together/rb with/in textual/jj similarity/nn [/punct 11/cd ]/punct [/punct 12/cd ]/punct ./punct
+umass/nnp [/punct 13/cd ]/punct research/nn group/nn split/vbd document/nn representation/nn into/in two/cd parts/nns :/punct named/vbn entities/nns and/cc non-named/jj entities/nns ./punct
+and/cc it/prp was/vbd found/vbn that/in some/dt classes/nns of/in news/nn could/md achieve/vb better/jjr performance/nn using/vbg named/vbn entity/nn representation/nn ,/punct while/in some/dt other/jj classes/nns of/in news/nn could/md achieve/vb better/jjr performance/nn using/vbg non-named/jj entity/nn representation/nn ./punct
+both/dt [/punct 10/cd ]/punct and/cc [/punct 13/cd ]/punct used/vbn text/nn categorization/nn technique/nn to/to classify/vb news/nn stories/nns in/in advance/nn ./punct
+in/in [/punct 13/cd ]/punct news/nn stories/nns are/vbp classified/vbn automatically/rb at/in first/rb ,/punct and/cc then/rb test/nn sensitivities/nns of/in names/nns and/cc non-name/jj terms/nns for/in ned/nnp for/in each/dt class/nn ./punct
+in/in [/punct 10/cd ]/punct frequent/jj terms/nns for/in each/dt class/nn are/vbp removed/vbn from/in document/nn representation/nn ./punct
+for/in example/nn ,/punct word/nn election/nn does/vbz not/rb help/vb identify/vb different/jj elections/nns ./punct
+in/in their/prp$ work/nn ,/punct effectiveness/nn of/in different/jj kinds/nns of/in names/nns (/punct or/cc terms/nns with/in different/jj pos/nn )/punct for/in ned/nnp in/in different/jj news/nn classes/nns are/vbp not/rb investigated/vbn ./punct
+we/prp use/vbp statistical/jj analysis/nn to/to reveal/vb the/dt fact/nn and/cc use/vb it/prp to/to improve/vb ned/nnp performance/nn ./punct
+3/ls ./punct
+basic/jj model/nn in/in this/dt section/nn ,/punct we/prp present/vbp the/dt basic/jj new/nnp event/nnp detection/nn model/nn which/wdt is/vbz similar/jj to/to what/wp most/jjs current/jj systems/nns apply/vbp ./punct
+then/rb ,/punct we/prp propose/vbp our/prp$ new/jj model/nn by/in extending/vbg the/dt basic/jj model/nn ./punct
+new/nnp event/nnp detection/nn systems/nns use/vbp news/nn story/nn stream/nn as/in input/nn ,/punct in/in which/wdt stories/nns are/vbp strictly/rb time-ordered/jj ./punct
+only/rb previously/rb received/vbn stories/nns are/vbp available/jj when/wrb dealing/vbg with/in current/jj story/nn ./punct
+the/dt output/nn is/vbz a/dt decision/nn for/in whether/in the/dt current/jj story/nn is/vbz on/in a/dt new/jj event/nn or/cc not/rb and/cc the/dt confidence/nn of/in the/dt decision/nn ./punct
+usually/rb ,/punct a/dt ned/nnp model/nn consists/vbz of/in three/cd parts/nns :/punct story/nn representation/nn ,/punct similarity/nn calculation/nn and/cc detection/nn procedure/nn ./punct
+preprocessing/vbg is/vbz needed/vbn before/in generating/vbg story/nn representation/nn ./punct
+for/in preprocessing/vbg ,/punct we/prp tokenize/vbp words/nns ,/punct recognize/vbp abbreviations/nns ,/punct normalize/vb abbreviations/nns ,/punct add/vbp part-of-speech/jj tags/nns ,/punct remove/vb stopwords/nns included/vbn in/in the/dt stop/nn list/nn used/vbn in/in inquery/nnp ,/punct replace/vb words/nns with/in their/prp$ stems/vbz using/vbg k-stem/nnp algorithm/nn ,/punct and/cc then/rb generate/vbp word/nn vector/nn for/in each/dt news/nn story/nn ./punct
+we/prp use/vbp incremental/jj tf-idf/nn model/nn for/in term/nn weight/nn calculation/nn weighted/vbn by/in the/dt inverse/jj document/nn frequency/nn ,/punct which/wdt is/vbz generated/vbn from/in training/nn corpus/nn ./punct
+when/wrb a/dt new/jj term/nn occurs/vbz in/in testing/nn process/nn ,/punct there/ex are/vbp two/cd solutions/nns :/punct simply/rb ignore/vb the/dt new/jj term/nn or/cc set/vbn df/nn of/in the/dt weight/nn in/in the/dt first/jj solution/nn (/punct 0/cd )/punct and/cc too/rb high/jj weight/nn in/in the/dt second/jj solution/nn ./punct
+in/in incremental/jj tf-idf/nn model/nn ,/punct document/nn frequencies/nns are/vbp updated/vbn dynamically/rb in/in each/dt time/nn step/nn t/nn :/punct where/wrb dt/nn represents/vbz news/nn story/nn set/vbd received/vbn in/in time/nn t/nn ,/punct and/cc dfdt/nn (/punct w/nn )/punct means/vbz the/dt number/nn of/in documents/nns that/in term/nn w/nn occurs/vbz in/in ,/punct and/cc dft/nn (/punct w/nn )/punct means/vbz the/dt total/jj number/nn of/in documents/nns that/in term/nn w/nn occurs/vbz in/in before/in time/nn t./nn in/in this/dt work/nn ,/punct each/dt time/nn window/nn includes/vbz 50/cd news/nn stories/nns ./punct
+where/wrb nt/nn means/vbz the/dt total/jj number/nn of/in news/nn stories/nns before/in time/nn t/nn ,/punct and/cc tf/nn (/punct d/nn ,/punct w/nn )/punct means/vbz how/wrb many/jj times/nns term/nn w/nn occurs/vbz in/in news/nn story/nn d./nn we/prp use/vbp hellinger/nnp distance/nn for/in the/dt calculation/nn of/in similarity/nn for/in each/dt story/nn d/nn received/vbn in/in time/nn step/nn t/nn ,/punct the/dt value/nn decision/nn ./punct
+time/nn (/punct d/nn )/punct means/vbz the/dt publication/nn time/nn of/in story/nn d./nn if/in the/dt score/nn exceeds/vbz the/dt thresholdθ/jj new/jj ,/punct then/rb there/ex exists/vbz a/dt sufficiently/rb sufficiently/rb similar/jj previous/jj document/nn ,/punct thus/rb d/nn is/vbz an/dt new/jj story/nn ./punct
+traditional/jj ned/nn systems/nns can/md be/vb classified/vbn into/in two/cd main/jj types/nns on/in the/dt aspect/nn of/in detection/nn procedure/nn :/punct (/punct 1/cd )/punct s-s/nn type/nn ,/punct in/in which/wdt the/dt story/nn on/in hand/nn is/vbz compared/vbn to/to each/dt story/nn received/vbd previously/rb ,/punct and/cc use/vb the/dt highest/jjs similarity/nn to/to determine/vb whether/in current/jj story/nn is/vbz about/in a/dt new/jj event/nn ;/punct (/punct 2/cd )/punct s-c/nn type/nn ,/punct in/in which/wdt the/dt story/nn on/in hand/nn is/vbz compared/vbn to/to all/dt previous/jj clusters/nns each/dt of/in which/wdt representing/vbg a/dt topic/nn ,/punct and/cc the/dt highest/jjs similarity/nn is/vbz used/vbn for/in final/jj decision/nn for/in current/jj story/nn ./punct
+if/in the/dt highest/jjs similarity/nn exceeds/vbz thresholdθ/jj new/jj ,/punct then/rb it/prp is/vbz an/dt old/jj story/nn ,/punct and/cc create/vb a/dt new/jj cluster/nn ./punct
+previous/jj work/nn show/vbp that/in the/dt first/jj manner/nn is/vbz more/rbr accurate/jj than/in the/dt second/jj one/cd ./punct
+since/in sometimes/rb stories/nns within/in a/dt topic/nn drift/nn far/rb away/rb from/in each/dt other/jj ,/punct a/dt story/nn may/md have/vb very/rb low/jj similarity/nn with/in its/prp$ topic/nn ./punct
+so/rb using/vbg similarities/nns between/in stories/nns for/in determining/vbg new/jj story/nn is/vbz better/jjr than/in using/vbg similarities/nns between/in story/nn and/cc clusters/nns ./punct
+nevertheless/rb ,/punct the/dt first/jj manner/nn needs/vbz much/rb more/rbr comparing/vbg times/nns which/wdt means/vbz the/dt first/jj manner/nn is/vbz low/jj efficient/jj ./punct
+we/prp propose/vbp a/dt new/jj detection/nn procedure/nn which/wdt uses/vbz comparisons/nns with/in previous/jj clusters/nns to/to help/vb find/vb the/dt most/rbs similar/jj story/nn in/in less/jjr comparing/vbg times/nns ,/punct and/cc the/dt final/jj new/jj event/nn decision/nn is/vbz made/vbn according/vbg to/to the/dt most/rbs similar/jj story/nn ./punct
+therefore/rb ,/punct we/prp can/md get/vb both/cc the/dt accuracy/nn of/in s-s/nn type/nn methods/nns and/cc the/dt efficiency/nn of/in s-c/nn type/nn methods/nns ./punct
+the/dt new/jj procedure/nn creates/vbz a/dt news/nn indexing-tree/nn dynamically/rb ,/punct in/in which/wdt similar/jj stories/nns are/vbp put/vbn together/rb to/to form/vb a/dt hierarchy/nn of/in clusters/nns ./punct
+we/prp index/nn similar/jj stories/nns together/rb by/in their/prp$ common/jj ancestor/nn (/punct a/dt cluster/nn node/nn )/punct ./punct
+dissimilar/jj stories/nns are/vbp indexed/vbn in/in different/jj clusters/nns ./punct
+when/wrb a/dt story/nn is/vbz coming/vbg ,/punct we/prp use/vbp comparisons/nns between/in the/dt current/jj story/nn and/cc previous/jj hierarchical/jj clusters/nns to/to help/vb find/vb the/dt most/rbs similar/jj story/nn which/wdt is/vbz useful/jj for/in new/jj event/nn decision/nn ./punct
+after/in the/dt new/jj event/nn decision/nn is/vbz made/vbn ,/punct the/dt current/jj story/nn is/vbz inserted/vbn to/to the/dt indexing-tree/nn for/in the/dt following/vbg detection/nn ./punct
+the/dt news/nn indexing-tree/nn is/vbz defined/vbn formally/rb as/in follows/vbz :/punct is/vbz the/dt set/nn of/in all/dt story/nn nodes/nns ,/punct and/cc e/nn is/vbz the/dt set/nn of/in all/dt edges/nns in/in s-tree/nn ./punct
+for/in a/dt news/nn story/nn di/fw ,/punct the/dt comparison/nn procedure/nn and/cc inserting/vbg procedure/nn based/vbn on/in indexing-tree/nn are/vbp defined/vbn as/in follows/vbz ./punct
+an/dt example/nn is/vbz shown/vbn by/in figure/nnp 1/cd and/cc figure/nnp 2/cd ./punct
+step/nn 2/cd :/punct for/in each/dt selected/vbn node/nn in/in the/dt last/jj step/nn ,/punct e.g/nn ./punct
+c1/nn to/to all/dt its/prp$ direct/jj child/nn nodes/nns ,/punct and/cc select/jj λ/nn nodes/nns with/in highest/jjs 2/cd and/cc d8/cd ./punct
+repeat/nn step/nn 2/cd for/in all/dt non-terminal/jj nodes/nns ./punct
+step/nn 3/cd :/punct record/vb the/dt terminal/jj node/nn with/in the/dt highest/jjs similarty/nn to/to di/fw ,/punct e.g/nn ./punct
+s5/nn ,/punct and/cc the/dt similarity/nn value/nn (/punct 0.20/cd )/punct ./punct
+terminal/jj node/nn with/in highest/jjs similarity/nn s/nns ,/punct e.g/nn ./punct
+c1/nn than/in θ/jj init+/jj (/punct h-1/nn )/punct δ/nn ,/punct then/rb add/vb di/fw to/to the/dt tree/nn as/in a/dt direct/jj child/nn of/in r./nn non-terminal/jj node/nn ,/punct then/rb repeat/nn this/dt procedure/nn and/cc insert/nn di/fw to/to the/dt and/cc the/dt root/nn of/in s-tree/nn ./punct
+the/dt more/jjr the/dt stories/nns in/in a/dt cluster/nn similar/jj to/to each/dt other/jj ,/punct the/dt better/jjr the/dt cluster/nn represents/vbz the/dt stories/nns in/in it/prp ./punct
+hence/rb we/prp add/vbp no/dt constraints/nns we/prp can/md not/rb give/vb the/dt complexity/nn of/in this/dt indexing-tree/jj based/vbn procedure/nn ./punct
+but/cc we/prp will/md give/vb the/dt number/nn of/in comparing/vbg times/nns needed/vbn by/in the/dt new/jj procedure/nn in/in our/prp$ experiments/nns in/in section7/nn ./punct
+in/in this/dt section/nn ,/punct two/cd term/nn reweighting/nn methods/nns are/vbp proposed/vbn to/to improve/vb ned/nnp accuracy/nn ./punct
+in/in the/dt first/jj method/nn ,/punct a/dt new/jj way/nn is/vbz explored/vbn for/in better/jjr using/vbg of/in cluster/nn (/punct topic/nn )/punct information/nn ./punct
+the/dt second/jj one/cd finds/vbz a/dt better/jjr way/nn to/to make/vb use/nn of/in named/vbn entities/nns based/vbn on/in news/nn classification/nn ./punct
+tf-idf/nn is/vbz the/dt most/rbs prevalent/jj model/nn used/vbn in/in information/nn retrieval/nn systems/nns ./punct
+the/dt basic/jj idea/nn is/vbz that/in the/dt fewer/jjr documents/nns a/dt term/nn appears/vbz in/in ,/punct the/dt more/rbr important/jj the/dt term/nn is/vbz in/in discrimination/nn of/in documents/nns (/punct relevant/jj or/cc not/rb relevant/jj to/to a/dt query/nn containing/vbg the/dt term/nn )/punct ./punct
+nevertheless/rb ,/punct in/in tdt/nn domain/nn ,/punct we/prp need/vbp to/to discriminate/vb documents/nns with/in regard/nn to/to topics/nns rather/rb than/in queries/nns ./punct
+intuitively/rb ,/punct using/vbg cluster/nn (/punct topic/nn )/punct vectors/nns to/to compare/vb with/in subsequent/jj news/nn stories/nns should/md outperform/vb using/vbg story/nn vectors/nns ./punct
+unfortunately/rb ,/punct the/dt experimental/jj results/nns do/vbp not/rb support/vb this/dt intuition/nn ./punct
+based/vbn on/in usually/rb contains/vbz many/jj directly/rb or/cc indirectly/rb related/jj events/nns ,/punct while/in they/prp all/dt have/vbp their/prp$ own/jj sub-subjects/nns which/wdt are/vbp usually/rb different/jj example/nn ,/punct events/nns like/in the/dt explosion/nn and/cc salvage/nn have/vbp very/rb low/jj similarities/nns with/in events/nns about/in criminal/jj trial/nn ,/punct therefore/rb stories/nns about/in trial/nn would/md have/vb low/jj similarity/nn with/in the/dt topic/nn vector/nn built/vbn on/in its/prp$ previous/jj events/nns ./punct
+this/dt section/nn focuses/vbz on/in how/wrb to/to effectively/rb make/vb use/nn of/in topic/nn information/nn and/cc at/in the/dt same/jj time/nn avoid/vb the/dt problem/nn of/in content/nn decentralization/nn ./punct
+term/nn class/nn a/nn :/punct terms/nns that/wdt occur/vbp frequently/rb in/in the/dt whole/jj corpus/nn ,/punct e.g./fw ,/punct year/nn and/cc people/nns ./punct
+terms/nns of/in this/dt class/nn should/md be/vb given/vbn low/jj weights/nns because/in they/prp do/vbp not/rb help/vb much/rb for/in topic/nn discrimination/nn ./punct
+term/nn class/nn b/nn :/punct terms/nns that/wdt occur/vbp frequently/rb within/in a/dt news/nn category/nn ,/punct e.g./fw ,/punct election/nn ,/punct storm/nn ./punct
+they/prp are/vbp useful/jj to/to distinguish/vb two/cd stories/nns in/in different/jj news/nn categories/nns ./punct
+however/rb ,/punct they/prp can/md not/rb provide/vb information/nn to/to determine/vb whether/in two/cd stories/nns are/vbp on/in the/dt same/jj or/cc different/jj topics/nns ./punct
+in/in another/dt words/nns ,/punct term/nn election/nn and/cc term/nn storm/nn are/vbp not/rb helpful/jj in/in differentiate/vbp two/cd election/nn campaigns/nns and/cc two/cd storm/nn disasters/nns ./punct
+therefore/rb ,/punct terms/nns of/in this/dt class/nn should/md be/vb assigned/vbn lower/jjr weights/nns ./punct
+term/nn class/nn c/nn :/punct terms/nns that/wdt occur/vbp frequently/rb in/in a/dt topic/nn ,/punct and/cc infrequently/rb in/in other/jj topics/nns ,/punct e.g./fw ,/punct the/dt name/nn of/in a/dt crash/nn plane/nn ,/punct the/dt name/nn of/in a/dt specific/jj hurricane/nn ./punct
+news/nnp stories/nns that/wdt belong/vbp to/to different/jj topics/nns rarely/rb have/vbp overlap/vbp terms/nns in/in this/dt class/nn ./punct
+the/dt more/rbr frequently/rb story/nn belonging/vbg to/to the/dt topic/nn ,/punct therefore/rb the/dt term/nn should/md be/vb set/vbn higher/jjr weight/nn ./punct
+term/nn class/nn d/nn :/punct terms/nns that/wdt appear/vbp in/in a/dt topic/nn exclusively/rb ,/punct but/cc not/rb frequently/rb ./punct
+for/in example/nn ,/punct the/dt name/nn of/in a/dt fireman/nn who/wp did/vbd very/rb well/rb but/cc never/rb appeared/vbd in/in other/jj topics/nns ./punct
+terms/nns of/in this/dt type/nn should/md receive/vb more/jjr weights/nns than/in in/in tf-idf/nn model/nn ./punct
+however/rb ,/punct since/in they/prp high/jj weights/nns ./punct
+term/nn class/nn e/nn :/punct terms/nns with/in low/jj document/nn frequency/nn ,/punct and/cc appear/vb in/in different/jj topics/nns ./punct
+terms/nns of/in this/dt class/nn should/md receive/vb lower/jjr weights/nns ./punct
+now/rb we/prp analyze/vbp whether/in tf-idf/nn model/nn can/md give/vb proper/jj weights/nns weighted/vbn in/in tf-idf/nn model/nn ,/punct which/wdt is/vbz conformable/jj with/in the/dt requirement/nn described/vbn above/in ./punct
+in/in tf-idf/nn model/nn ,/punct terms/nns of/in class/nn b/nn are/vbp highly/rb dependant/jj with/in the/dt number/nn of/in stories/nns in/in a/dt news/nn class/nn ./punct
+tf-idf/nn model/nn can/md not/rb provide/vb low/jj weights/nns if/in the/dt story/nn containing/vbg tfidf/nn model/nn gives/vbz to/to it/prp ./punct
+this/dt strongly/rb conflicts/nns with/in the/dt requirement/nn them/prp high/jj weights/nns correctly/rb ./punct
+but/cc for/in terms/nns of/in class/nn e/nn ,/punct tf-idf/nn model/nn gives/vbz high/jj weights/nns to/to them/prp which/wdt are/vbp not/rb conformable/jj with/in modified/vbn model/nn to/to resolve/vb this/dt problem/nn ./punct
+when/wrb θ/jj init/nn andθ/in new/jj are/vbp set/vbn closely/rb ,/punct we/prp assume/vbp that/in most/jjs of/in the/dt to/to capture/vb term/nn distribution/nn (/punct df/nn for/in all/pdt the/dt terms/nns within/in the/dt cluster/nn )/punct within/in the/dt topic/nn dynamically/rb ./punct
+kl/nn divergence/nn of/in term/nn distribution/nn where/wrb dfc/nn (/punct w/nn )/punct is/vbz the/dt number/nn of/in documents/nns containing/vbg term/nn w/nn and/cc nt/nn is/vbz the/dt total/jj number/nn of/in documents/nns that/in arrive/vbp before/in time/nn step/nn t./nn γ/nn is/vbz a/dt const/nn parameter/nn ,/punct now/rb is/vbz manually/rb set/vbn 3./ls assigned/vbn higher/jjr weights/nns ./punct
+obviously/rb ,/punct modified/vbn model/nn can/md meet/vb all/pdt the/dt requirements/nns of/in the/dt five/cd term/nn classes/nns listed/vbn above/rb ./punct
+previous/jj work/nn found/vbd that/in some/dt classes/nns of/in news/nn stories/nns could/md achieve/vb good/jj improvements/nns by/in giving/vbg extra/jj weight/nn to/to named/vbn entities/nns ./punct
+but/cc we/prp find/vbp that/in terms/nns of/in different/jj types/nns should/md be/vb given/vbn different/jj amount/nn of/in extra/jj weight/nn for/in different/jj classes/nns of/in news/nn stories/nns ./punct
+part-ofspeech/nn tags/nns for/in terms/nns that/wdt appear/vbp in/in news/nn stories/nns ./punct
+named/vbn entity/nn types/nns include/vbp person/nn name/nn ,/punct organization/nn name/nn ,/punct location/nn name/nn ,/punct date/nn ,/punct time/nn ,/punct money/nn and/cc percentage/nn ,/punct and/cc five/cd poss/nns are/vbp selected/vbn :/punct none/nn (/punct nn/nnp )/punct ,/punct verb/nn (/punct vb/nn )/punct ,/punct adjective/jj (/punct jj/nn )/punct ,/punct adverb/nn (/punct rb/nn )/punct and/cc cardinal/jj number/nn (/punct cd/nnp )/punct ./punct
+statistical/jj analysis/nn shows/vbz topic-level/jj discriminative/jj terms/nns types/nns for/in different/jj classes/nns of/in stories/nns ./punct
+for/in the/dt sake/nn of/in convenience/nn ,/punct named/vbn entity/nn type/nn and/cc part-of-speech/nn tags/nns are/vbp uniformly/rb called/vbn term/nn type/nn in/in subsequent/jj sections/nns ./punct
+determining/vbg whether/in two/cd stories/nns are/vbp about/in the/dt same/jj topic/nn is/vbz a/dt compute/vb correlations/nns between/in terms/nns and/cc topics/nns ./punct
+for/in a/dt term/nn t/nn and/cc a/dt topic/nn t/nn ,/punct a/dt contingence/nn table/nn is/vbz derived/vbn :/punct term/nn types/nns (/punct 9/cd term/nn types/nns )/punct and/cc parts/nns of/in news/nn classes/nns (/punct 8/cd classes/nns )/punct are/vbp listed/vbn in/in table/nn 2/cd with/in the/dt average/jj correlation/nn values/nns between/in them/prp ./punct
+the/dt statistics/nns is/vbz derived/vbn from/in labeled/vbn data/nns in/in tdt2/nn corpus/nn ./punct
+(/punct results/nns in/in table/nn 2/cd are/vbp already/rb normalized/vbn for/in convenience/nn in/in the/dt statistics/nns in/in table/nn 2/cd indicates/vbz the/dt usefulness/nn of/in different/jj term/nn types/nns in/in topic/nn discrimination/nn with/in respect/nn to/to different/jj news/nn classes/nns ./punct
+we/prp can/md see/vb that/in ,/punct location/nn name/nn is/vbz the/dt most/rbs useful/jj term/nn type/nn for/in three/cd news/nn classes/nns :/punct natural/jj disasters/nns ,/punct violence/nn or/cc war/nn ,/punct finances/nnp ./punct
+and/cc for/in three/cd other/jj categories/nns elections/nns ,/punct legal/criminal/nnp cases/nns ,/punct science/nnp and/cc discovery/nnp ,/punct person/nn name/nn is/vbz the/dt most/rbs discriminative/jj term/nn type/nn ./punct
+for/in scandals/hearings/nns ,/punct date/nn is/vbz the/dt most/rbs important/jj information/nn for/in topic/nn discrimination/nn ./punct
+in/in addition/nn ,/punct legal/criminal/nnp cases/nns and/cc finance/nnp topics/nns have/vbp higher/jjr correlation/nn with/in money/nn terms/nns ,/punct while/in science/nnp and/cc discovery/nnp have/vbp higher/jjr correlation/nn with/in percentage/nn terms/nns ./punct
+non-name/jj terms/nns are/vbp more/rbr stable/jj for/in different/jj classes/nns ./punct
+./punct
+http/nn :/punct //projects.ldc.upenn.edu/tdt3/guide/label.html/nn according/vbg to/to their/prp$ term/nn type/nn and/cc the/dt news/nn class/nn the/dt story/nn belongs/vbz to/to ./punct
+new/jj term/nn weights/nns are/vbp reweighted/vbn as/in follows/vbz :/punct where/wrb type/nn (/punct w/nn )/punct represents/vbz the/dt type/nn of/in term/nn w/nn ,/punct and/cc class/nn (/punct d/nn )/punct statistics/nns in/in table/nn 2/cd as/in the/dt reweighting/nn parameters/nns ./punct
+even/rb thought/vbn using/vbg the/dt statistics/nns directly/rb may/md not/rb the/dt best/jjs choice/nn ,/punct we/prp do/vbp not/rb discuss/vb how/wrb to/to automatically/rb obtain/vb the/dt best/jjs parameters/nns ./punct
+we/prp will/md try/vb to/to use/vb machine/nn learning/nn techniques/nns to/to obtain/vb the/dt best/jjs parameters/nns in/in the/dt future/jj work/nn ./punct
+in/in the/dt work/nn ,/punct we/prp use/vbp boostexter/nnp to/to classify/vb all/dt stories/nns into/in one/cd program/nn ,/punct which/wdt creates/vbz a/dt series/nn of/in simple/jj rules/nns for/in building/vbg a/dt classifier/nn for/in text/nn or/cc attribute-value/jj data/nns ./punct
+we/prp use/vbp term/nn weight/nn generated/vbn using/vbg tf-idf/nn model/nn as/in feature/nn for/in story/nn classification/nn ./punct
+we/prp trained/vbd the/dt model/nn on/in the/dt 12000/cd judged/vbn english/nnp stories/nns in/in tdt2/nn ,/punct and/cc classify/vb the/dt rest/nn of/in the/dt stories/nns in/in tdt2/nn and/cc all/dt stories/nns in/in tdt3/nn ./punct
+classification/nn results/nns are/vbp used/vbn for/in term/nn reweighting/nn in/in formula/nn (/punct 11/cd )/punct ./punct
+since/in the/dt class/nn labels/nns of/in topic-off/jj stories/nns are/vbp not/rb given/vbn in/in tdt/nn datasets/nns ,/punct we/prp can/md not/rb give/vb the/dt classification/nn accuracy/nn here/rb ./punct
+thus/rb we/prp do/vbp not/rb discuss/vb the/dt effects/nns of/in classification/nn accuracy/nn to/to ned/nnp performance/nn in/in the/dt paper/nn ./punct
+we/prp used/vbd two/cd ldc/nnp datasets/nns tdt2/nn and/cc tdt3/nn for/in our/prp$ experiments/nns ./punct
+tdt2/nn contains/vbz news/nn stories/nns from/in january/nnp to/to june/nnp 1998/cd ./punct
+it/prp contains/vbz around/in 54,000/cd stories/nns from/in sources/nns like/in abc/nnp ,/punct associated/nnp press/nnp ,/punct cnn/nnp ,/punct new/nnp york/nnp times/nnp ,/punct public/nnp radio/nnp international/nnp ,/punct voice/nnp of/in america/nnp etc/fw ./punct
+only/rb english/jj stories/nns in/in the/dt collection/nn were/vbd considered/vbn ./punct
+tdt3/nn contains/vbz approximately/rb 31,000/cd english/nnp stories/nns collected/vbn from/in october/nnp to/to december/nnp 1998/cd ./punct
+in/in addition/nn to/to the/dt sources/nns used/vbn in/in tdt2/nn ,/punct it/prp also/rb contains/vbz stories/nns from/in nbc/nnp and/cc msnbc/nnp tv/nnp broadcasts/nns ./punct
+we/prp used/vbd transcribed/vbn versions/nns of/in the/dt tv/nn and/cc radio/nn broadcasts/nns besides/in textual/jj news/nn ./punct
+tdt2/nn dataset/nn is/vbz labeled/vbn with/in about/rb 100/cd topics/nns ,/punct and/cc approximately/rb 12,000/cd english/nnp stories/nns belong/vbp to/to at/in least/jjs one/cd of/in these/dt topics/nns ./punct
+tdt3/nn dataset/nn is/vbz labeled/vbn with/in about/rb 120/cd topics/nns ,/punct and/cc approximately/rb 8000/cd english/nnp stories/nns belong/vbp to/to at/in least/jjs one/cd of/in these/dt topics/nns ./punct
+all/pdt the/dt topics/nns are/vbp classified/vbn into/in 11/cd rules/nns of/in interpretation/nnp :/punct (/punct 1/cd )/punct elections/nns ,/punct (/punct 2/cd )/punct scandals/hearings/nns ,/punct (/punct 3/cd )/punct legal/criminal/nnp cases/nns ,/punct (/punct 4/cd )/punct natural/jj disasters/nns ,/punct (/punct 5/cd )/punct accidents/nns ,/punct (/punct 6/cd )/punct ongoing/jj violence/nn or/cc war/nn ,/punct (/punct 7/cd )/punct science/nn and/cc discovery/nnp news/nnp ,/punct (/punct 8/cd )/punct finance/nnp ,/punct (/punct 9/cd )/punct new/nnp law/nnp ,/punct (/punct 10/cd )/punct sports/nnp news/nnp ,/punct (/punct 11/cd )/punct misc/nnp ./punct
+news/nnp ./punct
+tdt/nnp uses/vbz a/dt cost/nn function/nn cdet/nn that/wdt combines/vbz the/dt probabilities/nns of/in minimum/nnp normalized/vbd cost/nn can/md be/vb determined/vbn if/in optimal/jj threshold/nn on/in the/dt score/nn were/vbd chosen/vbn ./punct
+to/to test/vb the/dt approaches/nns proposed/vbn in/in the/dt model/nn ,/punct we/prp implemented/vbd on/in the/dt basic/jj model/nn described/vbn in/in section/nn 3/cd ,/punct i.e./fw ,/punct using/vbg incremental/jj tf-idf/nn model/nn to/to generate/vb term/nn weights/nns ,/punct and/cc using/vbg hellinger/nnp distance/nn to/to compute/vb document/nn similarity/nn ./punct
+similarity/nn score/nn normalization/nn is/vbz also/rb employed/vbn ./punct
+s-s/nn detection/nn procedure/nn is/vbz used/vbn ./punct
+system-2/nn :/punct this/dt system/nn is/vbz the/dt same/jj as/in system-1/nn except/in that/dt s-c/nn detection/nn procedure/nn is/vbz used/vbn ./punct
+system-3/nnp :/punct this/dt system/nn is/vbz the/dt same/jj as/in system-1/nn except/in that/in it/prp uses/vbz the/dt new/jj detection/nn procedure/nn which/wdt is/vbz based/vbn on/in indexing-tree/nn ./punct
+system-4/nnp :/punct implemented/vbd based/vbn on/in the/dt approach/nn presented/vbd in/in section/nn 5.1/cd ,/punct i.e./fw ,/punct terms/nns are/vbp reweighted/vbn according/vbg to/to the/dt distance/nn between/in term/nn distributions/nns in/in a/dt cluster/nn and/cc all/dt stories/nns ./punct
+the/dt new/jj detection/nn procedure/nn is/vbz used/vbn ./punct
+system-5/nnp :/punct implemented/vbd based/vbn on/in the/dt approach/nn presented/vbd in/in section/nn 5.2/cd ,/punct i.e./fw ,/punct terms/nns of/in different/jj types/nns are/vbp reweighted/vbn according/vbg to/to news/nn class/nn using/vbg trained/jj parameters/nns ./punct
+the/dt new/jj detection/nn procedure/nn is/vbz used/vbn ./punct
+the/dt following/vbg are/vbp some/dt other/jj ned/nnp systems/nns :/punct system-6/nn :/punct for/in each/dt pair/nn of/in stories/nns ,/punct it/prp computes/vbz three/cd similarity/nn values/nns for/in named/vbn entity/nn ,/punct non-named/jj entity/nn and/cc all/dt terms/nns respectively/rb ./punct
+and/cc employ/vb support/nn vector/nnp machine/nnp to/to predict/vb new/jj or/cc old/jj using/vbg the/dt similarity/nn values/nns as/in features/nns ./punct
+system-7/nnp :/punct it/prp extended/vbd a/dt basic/jj incremental/jj tf-idf/nn model/nn to/to include/vb source-specific/jj models/nns ,/punct similarity/nn score/nn normalization/nn based/vbn on/in document-specific/jj averages/nns ,/punct similarity/nn score/nn normalization/nn based/vbn on/in source-pair/jj specific/jj averages/nns ,/punct etc/fw ./punct
+system-8/cd :/punct it/prp split/vbd document/nn representation/nn into/in two/cd parts/nns :/punct named/vbn entities/nns and/cc non-named/jj entities/nns ,/punct and/cc choose/vb one/cd effective/jj part/nn for/in each/dt news/nn class/nn ./punct
+system-2/nn reduces/vbz comparing/vbg times/nns to/to 1.29e+9/cd which/wdt is/vbz just/rb minimum/jj normalized/vbd cost/nn which/wdt is/vbz 0.0499/cd higher/jjr than/in system-1/nn ./punct
+system-3/nn uses/vbz the/dt new/jj detection/nn procedure/nn based/vbn on/in news/nn indexing-tree/nn ./punct
+it/prp requires/vbz even/rb less/rbr comparing/vbg times/nns than/in system-2/nn ./punct
+this/dt is/vbz because/in story-story/jj comparisons/nns usually/rb yield/vbp greater/jjr similarities/nns than/in story-cluster/jj ones/nns ,/punct so/rb stories/nns tend/vbp to/to be/vb combined/vbn location/nnp person/nn date/nnp organization/nnp money/nnp percentage/nn nn/nnp jj/nn cd/nn together/rb in/in system-3/nn ./punct
+and/cc system-3/nn is/vbz basically/rb equivalent/jj to/to system-1/nn in/in accuracy/nn results/nns ./punct
+system-4/nn adjusts/vbz term/nn weights/nns based/vbn on/in the/dt distance/nn of/in term/nn distributions/nns between/in the/dt whole/jj corpus/nn and/cc cluster/nn story/nn set/nn ,/punct yielding/vbg a/dt good/jj improvement/nn by/in 0.0468/cd compared/vbn to/to system-1/nn ./punct
+the/dt best/jjs system/nn (/punct system-5/nn )/punct has/vbz a/dt minimum/jj normalized/vbn cost/nn 0.5012/cd ,/punct which/wdt is/vbz 0.0797/cd better/jjr than/in system-1/nn ,/punct and/cc also/rb better/jjr than/in any/dt other/jj results/nns previously/rb reported/vbn for/in this/dt dataset/nn ./punct
+further/rb more/rbr ,/punct system-5/nn only/rb needs/vbz 1.05e+8/cd comparing/vbg times/nns which/wdt is/vbz 14.9/cd %/punct of/in system-1/nn ./punct
+similarity/nn score/nn between/in two/cd stories/nns belonging/vbg to/to different/jj topics/nns are/vbp lower/jjr than/in before/rb ,/punct because/in their/prp$ overlapping/vbg terms/nns are/vbp usually/rb not/rb key/jj terms/nns of/in their/prp$ topics/nns ./punct

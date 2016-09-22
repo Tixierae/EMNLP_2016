@@ -1,0 +1,191 @@
+in/in this/dt paper/nn we/prp compare/vbp two/cd approaches/nns to/to the/dt design/nn of/in protocol/nn frameworks/nns -/punct tools/nns for/in implementing/vbg modular/jj network/nn protocols/nns ./punct
+the/dt most/rbs common/jj approach/nn uses/vbz events/nns as/in the/dt main/jj abstraction/nn for/in a/dt local/jj interaction/nn between/in protocol/nn modules/nns ./punct
+we/prp argue/vbp that/in an/dt alternative/jj approach/nn ,/punct that/wdt is/vbz based/vbn on/in service/nn abstraction/nn ,/punct is/vbz more/rbr suitable/jj for/in expressing/vbg modular/jj protocols/nns ./punct
+it/prp also/rb facilitates/vbz advanced/jj features/nns in/in the/dt design/nn of/in protocols/nns ,/punct such/jj as/in dynamic/jj update/vbp of/in distributed/vbn protocols/nns ./punct
+we/prp then/rb describe/vbp an/dt experimental/jj implementation/nn of/in a/dt service-based/jj protocol/nn framework/nn in/in java/nnp ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct computer-communication/nnp networks/nnp ]/punct :/punct distributed/vbn applications/nns 1/cd ./punct
+introduction/nn protocol/nnp frameworks/nns ,/punct such/jj cactus/nnp [/punct 5/cd ,/punct 2/cd ]/punct ,/punct appia/nn [/punct 1/cd ,/punct 16/cd ]/punct ,/punct ensemble/nn [/punct 12/cd ,/punct 17/cd ]/punct ,/punct eva/nnp [/punct 3/cd ]/punct ,/punct sdl/nn [/punct 8/cd ]/punct and/cc neko/nnp [/punct 6/cd ,/punct 20/cd ]/punct ,/punct are/vbp programming/vbg tools/nns for/in developing/vbg modular/jj network/nn protocols/nns ./punct
+they/prp allow/vbp complex/jj protocols/nns to/to be/vb implemented/vbn by/in decomposing/vbg them/prp into/in several/jj modules/nns cooperating/vbg together/rb ./punct
+this/dt approach/nn facilitates/vbz code/nn reuse/nn and/cc customization/nn of/in distributed/vbn protocols/nns in/in order/nn to/to fit/vb the/dt needs/nns of/in different/jj applications/nns ./punct
+moreover/rb ,/punct protocol/nn modules/nns can/md be/vb plugged/vbn in/in to/to the/dt system/nn dynamically/rb ./punct
+all/pdt these/dt features/nns of/in protocol/nn frameworks/nns make/vbp them/prp an/dt interesting/jj enabling/vbg technology/nn for/in implementing/vbg adaptable/jj systems/nns [/punct 14/cd ]/punct -/punct an/dt important/jj class/nn of/in applications/nns ./punct
+most/jjs protocol/nn frameworks/nns are/vbp based/vbn on/in events/nns (/punct all/dt frameworks/nns cited/vbd above/rb are/vbp based/vbn on/in this/dt abstraction/nn )/punct ./punct
+events/nns are/vbp used/vbn for/in asynchronous/jj communication/nn between/in different/jj modules/nns on/in the/dt same/jj machine/nn ./punct
+however/rb ,/punct the/dt use/nn of/in events/nns raises/vbz some/dt problems/nns [/punct 4/cd ,/punct 13/cd ]/punct ./punct
+for/in instance/nn ,/punct the/dt composition/nn of/in modules/nns may/md require/vb connectors/nns to/to route/nn events/nns ,/punct which/wdt introduces/vbz burden/nn for/in a/dt protocol/nn composer/nn [/punct 4/cd ]/punct ./punct
+protocol/nnp frameworks/nns such/jj as/in appia/nn and/cc eva/nnp extend/vbp the/dt event-based/jj approach/nn with/in channels/nns ./punct
+however/rb ,/punct in/in our/prp$ opinion/nn ,/punct this/dt solution/nn is/vbz not/rb satisfactory/jj since/in composition/nn of/in complex/jj protocol/nn stacks/nns becomes/vbz more/rbr difficult/jj ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp a/dt new/jj approach/nn for/in building/vbg modular/jj protocols/nns ,/punct that/dt is/vbz based/vbn on/in a/dt service/nn abstraction/nn ./punct
+we/prp compare/vbp this/dt new/jj approach/nn with/in the/dt common/jj ,/punct event-based/jj approach/nn ./punct
+we/prp show/vbp that/in protocol/nn frameworks/nns based/vbn on/in services/nns have/vbp several/jj advantages/nns ,/punct e.g/nn ./punct
+allow/vb for/in a/dt fairly/rb straightforward/jj protocol/nn composition/nn ,/punct clear/jj implementation/nn ,/punct and/cc better/jjr support/nn of/in dynamic/jj replacement/nn of/in distributed/vbn protocols/nns ./punct
+to/to validate/vb our/prp$ claims/nns ,/punct we/prp have/vbp implemented/vbn samoa/nnp -/punct an/dt experimental/jj protocol/nn framework/nn that/wdt is/vbz purely/rb based/vbn on/in the/dt service-based/jj approach/nn to/to module/nn composition/nn and/cc implementation/nn ./punct
+the/dt framework/nn allowed/vbd us/prp to/to compare/vb the/dt service-/nn and/cc event-based/jj implementations/nns of/in an/dt adaptive/jj group/nn communication/nn middleware/nn ./punct
+the/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+section/nn 2/cd defines/vbz general/jj notions/nns ./punct
+section/nn 3/cd presents/vbz the/dt main/jj characteristics/nns of/in event-based/jj frameworks/nns ,/punct and/cc features/vbz that/dt are/vbp distinct/jj for/in each/dt framework/nn ./punct
+section/nn 4/cd describes/vbz our/prp$ new/jj approach/nn ,/punct which/wdt is/vbz based/vbn on/in service/nn abstraction/nn ./punct
+section/nn 5/cd discusses/vbz the/dt advantages/nns of/in a/dt service-based/jj protocol/nn framework/nn compared/vbn to/to an/dt event-based/jj protocol/nn framework/nn ./punct
+the/dt description/nn of/in our/prp$ experimental/jj implementation/nn is/vbz presented/vbn in/in section/nn 6/cd ./punct
+finally/rb ,/punct we/prp conclude/vbp in/in section/nn 7/cd ./punct
+2/ls ./punct
+protocol/nn frameworks/nns in/in this/dt section/nn ,/punct we/prp describe/vbp notions/nns that/wdt are/vbp common/jj to/to all/dt protocol/nn frameworks/nns ./punct
+protocols/nns and/cc protocol/nnp modules/nnps ./punct
+a/dt protocol/nn is/vbz a/dt distributed/vbn algorithm/nn that/wdt solves/vbz a/dt specific/jj problem/nn in/in a/dt distributed/vbn system/nn ,/punct e.g/nn ./punct
+a/dt tcp/nn protocol/nn solves/vbz the/dt reliable/jj channel/nn problem/nn ./punct
+a/dt protocol/nn is/vbz implemented/vbn as/in a/dt set/nn of/in identical/jj protocol/nn modules/nns located/vbn on/in different/jj machines/nns ./punct
+protocol/nnp stacks/nnp ./punct
+a/dt stack/vbp is/vbz a/dt set/nn of/in protocol/nn modules/nns (/punct of/in different/jj protocols/nns )/punct that/dt are/vbp located/jj on/in the/dt same/jj machine/nn ./punct
+note/vb that/in ,/punct despite/in its/prp$ name/nn ,/punct a/dt stack/vbp is/vbz not/rb strictly/rb layered/vbn ,/punct 691/cd i.e/nn ./punct
+a/dt protocol/nn module/nn can/md interact/vb with/in all/dt other/jj protocol/nn modules/nns in/in the/dt same/jj stack/vbp ,/punct not/rb only/rb with/in the/dt protocol/nn modules/nns directly/rb above/in and/cc below/in ./punct
+in/in the/dt remainder/nn of/in this/dt paper/nn ,/punct we/prp use/vbp the/dt terms/nns machine/nn and/cc stack/vb interchangeably/rb ./punct
+stack/nn 1/cd s1/nn q1/nn r1/nn p1/nn network/nnp figure/nnp 1/cd :/punct example/nn of/in a/dt protocol/nn stack/vbp in/in figure/nn 1/cd ,/punct we/prp show/vbp an/dt example/nn protocol/nn stack/vbp ./punct
+we/prp represent/vbp protocol/nn modules/nns by/in capital/nn letters/nns indexed/vbn with/in a/dt natural/jj number/nn ,/punct e.g/nn ./punct
+p1/nn ,/punct q1/nn ,/punct r1/nn and/cc s1/nn ./punct
+we/prp write/vbp pi/nn to/to denote/vb the/dt protocol/nn module/nn of/in a/dt protocol/nn p/nn in/in stack/vb i./nnp we/prp use/vbp this/dt notation/nn throughout/in the/dt paper/nn ./punct
+modules/nns are/vbp represented/vbn as/in white/jj boxes/nns ./punct
+arrows/nns show/vbp module/nn interactions/nns ./punct
+for/in instance/nn ,/punct protocol/nn module/nn p1/nn interacts/vbz with/in the/dt protocol/nn module/nn q1/nn and/cc conversely/rb (/punct see/vb fig/nn ./punct
+1/cd )/punct ./punct
+protocol/nnp module/nnp interactions/nns ./punct
+below/in ,/punct we/prp define/vbp the/dt different/jj kinds/nns of/in interaction/nn between/in protocol/nn modules/nns ./punct
+•/nn requests/nns are/vbp issued/vbn by/in protocol/nn modules/nns ./punct
+a/dt request/nn by/in a/dt protocol/nn module/nn pi/nn is/vbz an/dt asynchronous/jj call/nn by/in pi/nn of/in another/dt protocol/nn module/nn ./punct
+•/nn replies/nns are/vbp the/dt results/nns of/in a/dt request/nn ./punct
+a/dt single/jj request/nn can/md generate/vb several/jj replies/nns ./punct
+only/rb protocol/nn modules/nns belonging/vbg to/to the/dt same/jj protocol/nn as/in the/dt module/nn that/wdt has/vbz issued/vbn the/dt request/nn are/vbp concerned/vbn by/in the/dt corresponding/jj replies/nns ./punct
+for/in example/nn ,/punct a/dt request/nn by/in pi/nn generates/vbz replies/vbz that/in concern/nn only/rb protocol/nn modules/nns pj/nnp ./punct
+•/nn notifications/nns can/md be/vb used/vbn by/in a/dt protocol/nn module/nn to/to inform/vb (/punct possibly/rb many/jj )/punct protocol/nn modules/nns in/in the/dt same/jj stack/vbp about/in the/dt occurrence/nn of/in a/dt specific/jj event/nn ./punct
+notifications/nns may/md also/rb be/vb the/dt results/nns of/in a/dt request/nn ./punct
+3/ls ./punct
+event-based/jj protocol/nn framework/nn design/nn most/jjs existing/vbg protocol/nn frameworks/nns are/vbp event-based/jj ./punct
+examples/nns are/vbp cactus/nnp [/punct 5/cd ,/punct 2/cd ]/punct ,/punct appia/nn [/punct 1/cd ,/punct 16/cd ]/punct and/cc ensemble/nn [/punct 12/cd ,/punct 17/cd ]/punct ./punct
+in/in this/dt section/nn ,/punct we/prp define/vbp the/dt notion/nn of/in an/dt event/nn in/in protocol/nn frameworks/nns ./punct
+we/prp also/rb explain/vbp how/wrb protocol/nn modules/nns are/vbp structured/vbn in/in event-based/jj frameworks/nns ./punct
+events/nns ./punct
+an/dt event/nn is/vbz a/dt special/jj object/nn for/in indirect/jj communication/nn between/in protocol/nn modules/nns in/in the/dt same/jj stack/vbp ./punct
+events/nns may/md transport/vb some/dt information/nn ,/punct e.g/nn ./punct
+a/dt network/nn message/nn or/cc some/dt other/jj data/nns ./punct
+with/in events/nns ,/punct the/dt communication/nn is/vbz indirect/jj ,/punct i.e/nn ./punct
+a/dt protocol/nn module/nn that/wdt triggers/vbz an/dt event/nn is/vbz not/rb aware/jj of/in the/dt module/nn (/punct s/nns )/punct that/in handle/vbp the/dt event/nn ./punct
+events/nns enable/vbp one-to-many/jj communication/nn within/in a/dt protocol/nn stack/vbp ./punct
+triggering/vbg an/dt event/nn can/md be/vb done/vbn either/cc synchronously/rb or/cc asynchronously/rb ./punct
+in/in the/dt former/jj case/nn ,/punct the/dt thread/nn that/wdt triggers/vbz an/dt event/nn e/sym is/vbz blocked/vbn until/in all/dt protocol/nn modules/nns that/wdt handle/vbp e/sym have/vbp terminated/vbn handling/nn of/in event/nn e./nn in/in the/dt latter/jj case/nn ,/punct the/dt thread/nn that/wdt triggers/vbz the/dt event/nn is/vbz not/rb blocked/vbn ./punct
+protocol/nnp modules/nnps ./punct
+in/in event-based/jj protocol/nn frameworks/nns ,/punct a/dt protocol/nn module/nn consists/vbz of/in a/dt set/nn of/in handlers/nns ./punct
+each/dt handler/nn is/vbz dedicated/vbn to/to handling/nn of/in a/dt specific/jj event/nn ./punct
+handlers/nns of/in the/dt same/jj protocol/nn module/nn may/md share/vb data/nns ./punct
+handlers/nns can/md be/vb dynamically/rb bound/vbn to/to events/nns ./punct
+handlers/nns can/md also/rb be/vb unbound/jj dynamically/rb ./punct
+upon/in triggering/vbg some/dt event/nn e/sym ,/punct all/dt handlers/nns bound/vbd to/to e/sym are/vbp executed/vbn ./punct
+if/in no/dt handler/nn is/vbz bound/vbn ,/punct the/dt behavior/nn is/vbz usually/rb unspecified/jj ./punct
+stack/nn 1/cd p1/nn q1/nn r1/nn s1/nn network/nnp f/ls e/sym gg/nn deliver/vb send/vb h/nn figure/nn 2/cd :/punct example/nn of/in an/dt event-based/jj protocol/nn stack/vbp in/in figure/nn 2/cd ,/punct we/prp show/vbp an/dt example/nn of/in an/dt event-based/jj stack/vbp ./punct
+events/nns are/vbp represented/vbn by/in small/jj letters/nns ,/punct e.g/nn ./punct
+e/ls ,/punct f/fw ,/punct .../: the/dt fact/nn that/in a/dt protocol/nn module/nn can/md trigger/vb an/dt event/nn is/vbz represented/vbn by/in an/dt arrow/nn starting/vbg from/in the/dt module/nn ./punct
+a/dt white/jj trapezoid/nn inside/in a/dt module/nn box/nn represents/vbz a/dt handler/nn defined/vbn by/in the/dt protocol/nn module/nn ./punct
+to/to mark/vb that/in some/dt handler/nn is/vbz bound/vbn to/to event/nn e/sym ,/punct we/prp use/vbp an/dt arrow/nn pointing/vbg to/to the/dt handler/nn (/punct the/dt label/nn on/in the/dt arrow/nn represents/vbz the/dt event/nn e/sym )/punct ./punct
+for/in example/nn ,/punct the/dt protocol/nn module/nn p1/nn triggers/vbz event/nn e/sym and/cc handles/vbz event/nn f/fw (/punct see/vb fig/nn ./punct
+2/cd )/punct ./punct
+note/vb that/in the/dt network/nn is/vbz represented/vbn as/in a/dt special/jj protocol/nn module/nn that/wdt handles/vbz the/dt send/vb event/nn (/punct to/to send/vb a/dt message/nn to/to another/dt machine/nn )/punct and/cc triggers/vbz the/dt deliver/vb event/nn (/punct upon/in receipt/nn of/in a/dt message/nn from/in another/dt machine/nn )/punct ./punct
+specific/jj features/nns ./punct
+some/dt protocol/nn frameworks/nns have/vbp unique/jj features/nns ./punct
+below/in ,/punct we/prp present/vbp the/dt features/nns that/wdt influence/vbp composition/nn and/cc implementation/nn of/in protocol/nn modules/nns ./punct
+in/in cactus/nnp [/punct 5/cd ,/punct 2/cd ]/punct ,/punct the/dt programmer/nn can/md give/vb a/dt priority/nn number/nn to/to a/dt handler/nn upon/in binding/vbg it/prp to/to an/dt event/nn ./punct
+when/wrb an/dt event/nn is/vbz triggered/vbn ,/punct all/dt handlers/nns are/vbp executed/vbn following/vbg the/dt order/nn of/in priority/nn ./punct
+a/dt handler/nn h/nn is/vbz also/rb able/jj to/to cancel/vb the/dt execution/nn of/in an/dt event/nn trigger/nn :/punct all/dt handlers/nns that/wdt should/md be/vb executed/vbn after/in h/nn according/vbg to/to the/dt priority/nn are/vbp not/rb executed/vbn ./punct
+appia/jj [/punct 1/cd ,/punct 16/cd ]/punct and/cc eva/nnp [/punct 3/cd ]/punct introduce/vb the/dt notion/nn of/in channels/nns ./punct
+channels/nns allow/vbp to/to build/vb routes/nns of/in events/nns in/in protocol/nn stacks/nns ./punct
+each/dt protocol/nn module/nn has/vbz to/to subscribe/vb to/to one/cd or/cc many/jj channels/nns ./punct
+all/dt events/nns are/vbp triggered/vbn by/in specifying/vbg a/dt channel/nn they/prp belong/vbp to/to ./punct
+when/wrb a/dt protocol/nn module/nn triggers/vbz an/dt event/nn e/sym specifying/vbg channel/nn c/nn ,/punct all/dt handlers/nns bound/vbd to/to e/sym that/wdt are/vbp part/nn of/in a/dt protocol/nn that/wdt subscribes/vbz to/to c/nn are/vbp executed/vbn (/punct in/in the/dt order/nn prescribed/vbn by/in the/dt definition/nn of/in channel/nn c/nn )/punct ./punct
+4/ls ./punct
+service-based/jj protocol/nn framework/nn in/in this/dt section/nn ,/punct we/prp describe/vbp our/prp$ new/jj approach/nn for/in implementing/vbg and/cc composing/vbg protocols/nns that/wdt is/vbz based/vbn on/in services/nns ./punct
+692/cd we/prp show/vbp in/in section/nn 5/cd the/dt advantages/nns of/in service-based/jj protocol/nn frameworks/nns over/in event-based/jj protocol/nn frameworks/nns ./punct
+service/nnp interface/nnp ./punct
+in/in our/prp$ service-based/jj framework/nn ,/punct protocol/nn modules/nns in/in the/dt same/jj stack/vbp communicate/vbp through/in objects/nns called/vbn service/nn interfaces/nns ./punct
+requests/nns ,/punct replies/vbz and/cc notifications/nns are/vbp all/dt issued/vbn to/to service/nn interfaces/nns ./punct
+protocol/nnp modules/nnps ./punct
+a/dt protocol/nn module/nn is/vbz a/dt set/nn of/in executers/nns ,/punct listeners/nns and/cc interceptors/nns ./punct
+executers/nns handle/vbp requests/nns ./punct
+an/dt executer/nn can/md be/vb dynamically/rb bound/vbn to/to a/dt service/nn interface/nn ./punct
+it/prp can/md be/vb later/rb unbound/jj ./punct
+a/dt request/nn issued/vbn to/to a/dt service/nn interface/nn si/nn leads/vbz to/to the/dt execution/nn of/in the/dt executer/nn bound/vbd to/to si/vb ./punct
+if/in no/dt executer/nn is/vbz bound/vbn to/to si/vb ,/punct the/dt request/nn is/vbz delayed/vbn until/in some/dt executer/nn is/vbz bound/vbn to/to si/vb ./punct
+contrary/jj to/to events/nns ,/punct at/in most/jjs one/cd executer/nn at/in any/dt time/nn can/md be/vb bound/vbn to/to a/dt service/nn interface/nn on/in every/dt machine/nn ./punct
+listeners/nns handle/vbp replies/nns and/cc notifications/nns ./punct
+a/dt listener/nn can/md be/vb dynamically/rb bound/vbn and/cc unbound/jj to/from/nn a/dt service/nn interface/nn si/nn ./punct
+a/dt notification/nn issued/vbn to/to a/dt service/nn interface/nn si/nn is/vbz handled/vbn by/in all/dt listeners/nns bound/vbd to/to si/vb in/in the/dt local/jj stack/vbp ./punct
+a/dt reply/nn issued/vbn to/to a/dt service/nn interface/nn is/vbz handled/vbn by/in one/cd single/jj listener/nn ./punct
+to/to ensure/vb that/in one/cd single/jj listener/nn handles/vbz a/dt reply/nn ,/punct a/dt module/nn pi/nn has/vbz to/to identify/vb ,/punct each/dt time/nn it/prp issues/vbz a/dt request/nn ,/punct the/dt listener/nn to/to handle/vb the/dt possible/jj reply/nn ./punct
+if/in the/dt request/nn and/cc the/dt reply/nn occur/vbp respectively/rb ,/punct in/in stack/vbp i/fw and/cc in/in stack/vbp j/nn ,/punct the/dt service/nn interface/nn si/nn on/in i/fw communicates/vbz to/to the/dt service/nn interface/nn si/nn on/in j/nn the/dt listener/nn that/wdt must/md handle/vb the/dt reply/nn ./punct
+if/in the/dt listener/nn that/wdt must/md handle/vb the/dt reply/nn does/vbz not/rb exist/vb ,/punct the/dt reply/nn is/vbz delayed/vbn until/in the/dt listener/nn is/vbz created/vbn ./punct
+stack/nn 1/cd p1/nn q1/nn r1/nn s1/nn network/nnp t/nn u/nn nt/nn figure/nn 3/cd :/punct example/nn of/in a/dt service-based/jj protocol/nn stack/vbp in/in figure/nn 3/cd ,/punct we/prp show/vbp an/dt example/nn of/in a/dt service-based/jj stack/vbp ./punct
+we/prp denote/vbp a/dt service/nn interface/nn by/in a/dt small/jj letter/nn (/punct e.g/nn ./punct
+t/nn ,/punct u/nn and/cc nt/nn )/punct in/in a/dt hexagonal/jj box/nn ./punct
+the/dt fact/nn that/in a/dt module/nn pi/nn can/md generate/vb a/dt request/nn to/to a/dt service/nn interface/nn si/nn is/vbz represented/vbn by/in a/dt dashed/vbn black/jj arrow/nn going/vbg from/in pi/nn to/to si/fw ./punct
+similarly/rb ,/punct a/dt dashed/vbn white/jj arrow/nn going/vbg from/in module/nn pi/nn to/to service/nn interface/nn si/nn represents/vbz the/dt fact/nn that/in pi/nn can/md generate/vb a/dt reply/nn or/cc a/dt notification/nn to/to si/fw ./punct
+we/prp represent/vbp executers/nns with/in white/jj boxes/nns inside/in protocol/nn modules/nns and/cc listeners/nns with/in white/jj boxes/nns with/in a/dt gray/jj border/nn ./punct
+a/dt connecting/vbg line/nn between/in a/dt service/nn interface/nn si/nn and/cc an/dt executer/nn e/sym (/punct resp/nn ./punct
+a/dt listener/nn l/nn )/punct shows/vbz that/in e/sym (/punct resp/nn ./punct
+l/nn )/punct is/vbz bound/vbn to/to si/vb ./punct
+in/in figure/nnp 3/cd ,/punct module/nn q1/nn contains/vbz an/dt executer/nn bound/vbd to/to service/nn interface/nn t/nn and/cc a/dt listener/nn bound/vbd to/to service/nn interface/nn u./nn module/nnp q1/nnp can/md generate/vb replies/nns and/cc notifications/nns to/to service/nn interface/nn t/nn and/cc requests/nns to/to service/nn interface/nn u./vbd note/nn that/in the/dt service/nn interface/nn nt/nn allows/vbz to/to access/vb the/dt network/nn ./punct
+p1/nn q1/nn p1/nn q1/nn t1t1/nn t/nn t/nn t/nn figure/nn 4/cd :/punct execution/nn of/in protocol/nn interactions/nns with/in interceptors/nns an/dt interceptor/nn plays/vbz a/dt special/jj rˆole/nn ./punct
+similarly/rb to/to executers/nns ,/punct interceptors/nns can/md be/vb dynamically/rb bound/vbn or/cc unbound/jj to/to a/dt service/nn interface/nn ./punct
+they/prp are/vbp activated/vbn each/dt time/nn a/dt request/nn ,/punct a/dt reply/nn or/cc a/dt notification/nn is/vbz issued/vbn to/to the/dt service/nn interface/nn they/prp are/vbp bound/vbn to/to ./punct
+this/dt is/vbz illustrated/vbn in/in figure/nnp 4/cd ./punct
+in/in the/dt right/jj part/nn of/in the/dt figure/nn ,/punct the/dt interceptor/nn of/in the/dt protocol/nn module/nn t1/nn is/vbz represented/vbn by/in a/dt rounded/vbn box/nn ./punct
+the/dt interceptor/nn is/vbz bound/vbn to/to service/nn interface/nn t./in the/dt left/jj part/nn of/in the/dt figure/nn shows/vbz that/in an/dt interceptor/nn can/md be/vb seen/vbn as/in an/dt executer/nn plus/cc a/dt listener/nn ./punct
+when/wrb p1/nn issues/nns a/dt request/nn req/nn to/to the/dt service/nn interface/nn t/nn ,/punct the/dt executer-interceptor/nn of/in t1/nn is/vbz executed/vbn ./punct
+then/rb ,/punct module/nn t1/nn may/md forward/rb a/dt request/nn req/nn to/to the/dt service/nn interface/nn t/nn ,/punct where/wrb we/prp can/md have/vb req/nn =/punct req/nn 1/cd ./punct
+when/wrb module/nn q1/nn issues/nns a/dt reply/nn or/cc a/dt notification/nn ,/punct a/dt similar/jj mechanism/nn is/vbz used/vbn ,/punct except/in that/in this/dt time/nn the/dt listener-interceptor/nn of/in t1/nn is/vbz executed/vbn ./punct
+note/vb that/in a/dt protocol/nn module/nn ti/nnp ,/punct that/wdt has/vbz an/dt interceptor/nn bound/vbd to/to a/dt service/nn interface/nn ,/punct is/vbz able/jj to/to modify/vb requests/nns ,/punct replies/vbz and/cc notifications/nns ./punct
+upon/in requests/nns ,/punct if/in several/jj interceptors/nns are/vbp bound/vbn to/to the/dt same/jj service/nn interface/nn ,/punct they/prp are/vbp executed/vbn in/in the/dt order/nn of/in binding/nn ./punct
+upon/in replies/nns and/cc notifications/nns ,/punct the/dt order/nn is/vbz reversed/vbn ./punct
+5/cd ./punct
+advantages/nns of/in service-based/nnp protocol/nnp framework/nnp design/nn we/prp show/vbp in/in this/dt section/nn the/dt advantages/nns of/in service-based/jj protocol/nn frameworks/nns over/in event-based/jj protocol/nn frameworks/nns ./punct
+we/prp structure/vbp our/prp$ discussion/nn in/in three/cd parts/nns ./punct
+firstly/rb ,/punct we/prp present/vbp how/wrb protocol/nn interactions/nns are/vbp modeled/vbn in/in each/dt of/in the/dt protocol/nn frameworks/nns ./punct
+then/rb ,/punct we/prp discuss/vbp the/dt composition/nn of/in protocol/nn modules/nns in/in each/dt of/in these/dt frameworks/nns ./punct
+finally/rb ,/punct we/prp present/vbp the/dt problem/nn of/in dynamic/jj protocol/nn replacement/nn and/cc the/dt advantages/nns of/in service/nn interfaces/nns in/in order/nn to/to implement/vb it/prp ./punct
+the/dt discussion/nn is/vbz summarized/vbn in/in table/nnp 1/cd ./punct
+a/dt natural/jj model/nn of/in protocol/nn interactions/nns (/punct as/in presented/vbn in/in section/nn 2/cd )/punct facilitates/vbz the/dt implementation/nn of/in protocol/nn modules/nns ./punct
+for/in each/dt protocol/nn interaction/nn ,/punct we/prp show/vbp how/wrb it/prp is/vbz modeled/vbn in/in both/cc frameworks/nns ./punct
+we/prp also/rb explain/vbp that/in an/dt inadequate/jj model/nn may/md lead/vb to/to problems/nns ./punct
+requests/nns ./punct
+in/in service-based/jj frameworks/nns ,/punct a/dt request/nn is/vbz at/in most/jjs one/cd executer/nn ,/punct since/in we/prp allow/vbp only/rb one/cd executer/nn to/to hand/nn ,/punct in/in event-based/jj frameworks/nns ,/punct a/dt protocol/nn module/nn represent/vbp the/dt same/jj service/nn interface/nn t./in the/dt duplication/nn is/vbz only/rb to/to make/vb the/dt figure/nn readable/jj ./punct
+that/in this/dt event/nn is/vbz bound/vbn to/to only/rb one/cd handler/nn ,/punct which/wdt may/md lead/vb to/to programming/nn errors/nns ./punct
+service-based/jj framework/nn ,/punct only/rb the/dt correct/jj listener/nn (/punct identified/vbn at/in the/dt time/nn the/dt corresponding/jj request/nn was/vbd issued/vbn )/punct is/vbz executed/vbn ./punct
+this/dt ensures/vbz that/in a/dt request/nn issued/vbn by/in some/dt protocol/nn module/nn qi/nnp ,/punct leads/vbz to/to replies/nns handled/vbn by/in protocol/nn modules/nns qj/nn (/punct i.e/nn ./punct
+protocol/nn modules/nns of/in the/dt same/jj protocol/nn )/punct ./punct
+show/nn ./punct
+consider/vb protocol/nn module/nn q1/nn in/in figure/nn 2/cd that/wdt reply/vbp (/punct remember/vbp that/in a/dt reply/nn can/md occur/vb in/in many/jj stacks/nns )/punct ,/punct both/cc modules/nns qi/nnp and/cc ri/nnp will/md handle/vb the/dt reply/nn (/punct they/prp both/dt contain/vbp a/dt handler/nn bound/vbd to/to h/nn )/punct ./punct
+this/dt behavior/nn is/vbz not/rb correct/vb :/punct only/rb protocol/nn modules/nns qi/nnp should/md handle/vb the/dt reply/nn ./punct
+moreover/rb ,/punct as/in modules/nns ri/nnp are/vbp not/rb necessarily/rb implemented/vbn to/to interact/vb with/in modules/nns qi/nnp ,/punct this/dt behavior/nn may/md lead/vb to/to errors/nns ./punct
+solutions/nnps to/to solve/vb this/dt problem/nn exist/vbp ./punct
+however/rb ,/punct they/prp introduce/vbp an/dt unnecessary/jj burden/nn on/in the/dt protocol/nn programmers/nns and/cc the/dt stack/vbp composer/nn ./punct
+for/in instance/nn ,/punct channels/nns allow/vbp to/to route/nn events/nns to/to ensure/vb that/in modules/nns handle/vbp only/rb events/nns concerning/vbg them/prp ./punct
+however/rb ,/punct the/dt protocol/nn programmer/nn must/md take/vb channels/nns into/in account/nn when/wrb implementing/vbg protocols/nns ./punct
+moreover/rb ,/punct the/dt composition/nn of/in complex/jj stacks/nns becomes/vbz more/rbr difficult/jj due/jj to/to the/dt fact/nn that/in the/dt composer/nn has/vbz to/to create/vb many/jj channels/nns to/to ensure/vb that/in modules/nns handle/vbp events/nns correctly/rb ./punct
+an/dt addition/nn of/in special/jj protocol/nn modules/nns (/punct named/vbn connectors/nns )/punct for/in routing/vbg events/nns is/vbz also/rb not/rb satisfactory/jj ,/punct since/in it/prp requires/vbz additional/jj work/nn from/in the/dt composer/nn and/cc introduces/vbz overhead/nn ./punct
+notifications/nns ./punct
+contrary/jj to/to requests/nns and/cc replies/nns ,/punct notifications/nns are/vbp well/rb modeled/vbn in/in event-based/jj frameworks/nns ./punct
+the/dt reason/nn is/vbz that/in notifications/nns correspond/vbp to/to the/dt one-to-many/jj communication/nn scheme/nn provided/vbn by/in events/nns ./punct
+in/in service-based/jj frameworks/nns ,/punct notifications/nns are/vbp also/rb well/rb modeled/vbn ./punct
+when/wrb a/dt module/nn generates/vbz a/dt notification/nn to/to a/dt service/nn interface/nn si/nn ,/punct all/dt listeners/nns bound/vbd to/to s/nns are/vbp executed/vbn ./punct
+note/vb that/in in/in this/dt case/nn ,/punct service/nn interfaces/nns provide/vbp the/dt same/jj pattern/nn of/in communication/nn as/in events/nns ./punct
+replies/vbz (/punct and/cc sometimes/rb notifications/nns )/punct are/vbp the/dt results/nns of/in a/dt request/nn ./punct
+thus/rb ,/punct there/ex is/vbz a/dt semantic/jj link/nn between/in them/prp ./punct
+the/dt composer/nn of/in protocol/nn modules/nns must/md preserve/vb this/dt link/nn in/in order/nn to/to compose/vb correct/jj stacks/nns ./punct
+we/prp explain/vbp now/rb that/in service/nn based/vbn frameworks/nns provide/vbp a/dt mechanism/nn to/to preserve/vb this/dt link/nn ,/punct while/in in/in event-based/jj frameworks/nns ,/punct the/dt lack/nn of/in such/jj mechanism/nn leads/vbz to/to error-prone/jj composition/nn ./punct
+in/in service-based/jj frameworks/nns ,/punct requests/nns ,/punct replies/vbz and/cc notifications/nns are/vbp issued/vbn to/to a/dt service/nn interface/nn ./punct
+thus/rb ,/punct a/dt service/nn interface/nn introduces/vbz a/dt link/nn between/in these/dt interactions/nns ./punct
+to/to compose/vb a/dt correct/jj stack/vbp ,/punct the/dt composer/nn has/vbz to/to bound/vbn a/dt listener/nn to/to service/nn interface/nn si/nn for/in each/dt module/nn that/wdt issues/vbz a/dt request/nn to/to si/fw ./punct
+the/dt same/jj must/md be/vb done/vbn for/in one/cd executer/nn that/wdt is/vbz part/nn of/in a/dt module/nn that/wdt issues/vbz replies/nns or/cc notifications/nns ./punct
+applying/vbg this/dt simple/jj methodology/nn ensures/vbz that/in every/dt request/nn replies/vbz or/cc notifications/nns issued/vbn to/to the/dt same/jj service/nn interface/nn si/nn ./punct
+in/in event-based/jj frameworks/nns ,/punct all/dt protocol/nn interactions/nns are/vbp issued/vbn through/in different/jj events/nns :/punct there/ex is/vbz no/dt explicit/jj link/nn between/in an/dt event/nn triggered/vbn upon/in requests/nns and/cc an/dt event/nn triggered/vbn upon/in the/dt corresponding/jj replies/nns ./punct
+thus/rb ,/punct the/dt composer/nn order/nn to/to preserve/vb the/dt semantic/jj link/nn between/in replies/nns (/punct and/cc notifications/nns )/punct and/cc requests/nns ./punct
+moreover/rb ,/punct nothing/nn prevents/vbz from/in used/vbn to/to issue/vb a/dt reply/nn ./punct
+note/vb that/in these/dt problems/nns can/md be/vb partially/rb solved/vbn by/in typing/nn events/nns and/cc handlers/nns ./punct
+however/rb ,/punct it/prp does/vbz not/rb prevent/vb from/in errors/nns if/in there/ex are/vbp several/jj instances/nns of/in the/dt same/jj event/nn type/nn ./punct
+note/vb that/dt protocol/nn composition/nn is/vbz clearer/jjr in/in the/dt protocol/nn frameworks/nns that/wdt are/vbp based/vbn on/in services/nns ,/punct rather/rb than/in on/in events/nns ./punct
+the/dt reason/nn is/vbz that/in several/jj events/nns that/wdt are/vbp used/vbn to/to model/vb different/jj protocol/nn interactions/nns can/md be/vb modeled/vbn by/in a/dt single/jj service/nn interface/nn ./punct

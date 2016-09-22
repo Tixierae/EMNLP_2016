@@ -1,0 +1,322 @@
+we/prp develop/vbp a/dt framework/nn for/in trading/nn in/in compound/nn securities/nns :/punct financial/jj instruments/nns that/wdt pay/vbp off/rp contingent/nn on/in the/dt outcomes/nns of/in arbitrary/jj statements/nns in/in propositional/jj logic/nn ./punct
+buying/vbg or/cc selling/vbg securities-which/jj can/md be/vb thought/vbn of/in as/in betting/vbg on/in or/cc against/in a/dt particular/jj future/jj outcome-allows/jj agents/nns both/cc to/to hedge/vb risk/nn and/cc to/to profit/vb (/punct in/in expectation/nn )/punct on/in subjective/jj predictions/nns ./punct
+a/dt compound/nn securities/nns market/nn allows/vbz agents/nns to/to place/vb bets/nns on/in arbitrary/jj boolean/jj combinations/nns of/in events/nns ,/punct enabling/vbg them/prp to/to more/rbr closely/rb achieve/vb their/prp$ optimal/jj risk/nn exposure/nn ,/punct and/cc enabling/vbg the/dt market/nn as/in a/dt whole/jj to/to more/rbr closely/rb achieve/vb the/dt social/jj optimum/nn ./punct
+the/dt tradeoff/nn for/in allowing/vbg such/jj expressivity/nn is/vbz in/in the/dt complexity/nn of/in the/dt agents/nns ''/'' and/cc auctioneer/nn ''/'' s/nns optimization/nn problems/nns ./punct
+we/prp develop/vbp and/cc motivate/vbp the/dt concept/nn of/in a/dt compound/nn securities/nns market/nn ,/punct presenting/vbg the/dt framework/nn through/in a/dt series/nn of/in formal/jj definitions/nns and/cc examples/nns ./punct
+we/prp then/rb analyze/vb in/in detail/nn the/dt auctioneer/nn ''/'' s/nns matching/vbg problem/nn ./punct
+we/prp show/vbp that/in ,/punct with/in n/nn events/nns ,/punct the/dt matching/nn problem/nn is/vbz co-np-complete/jj in/in the/dt divisible/jj case/nn and/cc σp/nn 2-complete/nn in/in the/dt indivisible/jj case/nn ./punct
+we/prp show/vbp that/in the/dt latter/jj hardness/nn result/vbp holds/vbz even/rb under/in severe/jj language/nn restrictions/nns on/in bids/nns ./punct
+with/in log/nn n/nn events/nns ,/punct the/dt problem/nn is/vbz polynomial/jj in/in the/dt divisible/jj case/nn and/cc np-complete/jj in/in the/dt indivisible/jj case/nn ./punct
+we/prp briefly/rb discuss/vbp matching/vbg algorithms/nns and/cc tractable/jj special/jj cases/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp f.2.2/nn [/punct theory/nnp of/in computation/nnp ]/punct :/punct analysis/nn of/in algorithms/nns and/cc problem/nnp complexity-nonnumerical/nnp algorithms/nnps and/cc problems/nns ;/punct j.4/nn [/punct computer/nn applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nnp general/nnp terms/nns algorithms/nns ,/punct economics/nnp ,/punct theory/nnp ./punct
+1/ls ./punct
+introduction/nnp securities/nnps markets/nns effectively/rb allow/vbp traders/nns to/to place/vb bets/nns on/in the/dt outcomes/nns of/in uncertain/jj future/jj propositions/nns ./punct
+examples/nns include/vbp stock/nn markets/nns like/in nasdaq/nnp ,/punct options/nns markets/nns like/in cboe/nnp [/punct 17/cd ]/punct ,/punct futures/nns markets/nns like/in cme/nnp [/punct 30/cd ]/punct ,/punct other/jj derivatives/nns markets/nns ,/punct insurance/nn markets/nns ,/punct political/jj stock/nn markets/nns [/punct 11/cd ,/punct 12/cd ]/punct ,/punct sports/nns betting/vbg markets/nns [/punct 7/cd ,/punct 13/cd ,/punct 32/cd ]/punct ,/punct horse/nn racing/nn markets/nns [/punct 33/cd ]/punct ,/punct idea/nn futures/nns markets/nns [/punct 16/cd ]/punct ,/punct decision/nn markets/nns [/punct 14/cd ]/punct and/cc even/rb market/nn games/nns [/punct 4/cd ,/punct 24/cd ,/punct 25/cd ]/punct ./punct
+the/dt economic/jj value/nn of/in securities/nns markets/nns is/vbz two-fold/rb ./punct
+first/rb ,/punct they/prp allow/vbp traders/nns to/to hedge/vb risk/nn ,/punct or/cc to/to insure/vb against/in undesirable/jj outcomes/nns ./punct
+for/in example/nn ,/punct the/dt owner/nn of/in a/dt stock/nn might/md buy/vb a/dt put/nn option/nn (/punct the/dt right/nn to/to sell/vb the/dt stock/nn at/in a/dt particular/jj price/nn )/punct in/in order/nn to/to insure/vb against/in a/dt stock/nn downturn/nn ./punct
+or/cc the/dt owner/nn of/in a/dt house/nn may/md purchase/vb an/dt insurance/nn contract/nn to/to hedge/vb against/in unforeseen/jj damage/nn to/to the/dt house/nn ./punct
+second/rb ,/punct securities/nns markets/nns allow/vbp traders/nns to/to speculate/vb ,/punct or/cc to/to obtain/vb a/dt subjective/jj expected/jj profit/nn when/wrb market/nn prices/nns do/vbp not/rb reflect/vb their/prp$ assessment/nn of/in the/dt likelihood/nn of/in future/jj outcomes/nns ./punct
+for/in example/nn ,/punct a/dt trader/nn might/md buy/vb a/dt call/nn option/nn if/in he/prp believes/vbz that/in the/dt likelihood/nn is/vbz high/jj that/in the/dt price/nn of/in the/dt underlying/vbg stock/nn will/md go/vb up/rb ,/punct regardless/rb of/in risk/nn exposure/nn to/to changes/nns in/in the/dt stock/nn price/nn ./punct
+because/in traders/nns stand/vbp to/to earn/vb a/dt profit/nn if/in they/prp can/md make/vb effective/jj probability/nn assessments/nns ,/punct often/rb prices/nns in/in financial/jj markets/nns yield/vbp very/rb accurate/jj aggregate/nn forecasts/nns of/in future/jj events/nns [/punct 10/cd ,/punct 29/cd ,/punct 27/cd ,/punct 28/cd ]/punct ./punct
+real/jj securities/nns markets/nns have/vbp complex/jj payoff/nn structures/nns with/in various/jj triggers/nns ./punct
+however/rb ,/punct these/dt can/md all/dt be/vb modeled/vbn as/in collections/nns of/in more/jjr basic/jj or/cc atomic/jj arrow-debreu/nnp securities/nns [/punct 1/cd ,/punct 8/cd ,/punct 20/cd ]/punct ./punct
+one/cd unit/nn of/in one/cd arrow-debreu/nn security/nn pays/vbz off/rp one/cd dollar/nn if/in and/cc only/rb if/in (/punct iff/nn )/punct a/dt corresponding/jj binary/jj event/nn occurs/vbz ;/punct it/prp pays/vbz nothing/nn if/in the/dt event/nn does/vbz not/rb occur/vb ./punct
+so/rb ,/punct for/in example/nn ,/punct one/cd unit/nn of/in a/dt security/nn denoted/vbn acme100/nn might/md pay/vb $/punct 1/cd iff/nn acme/nnp ''/'' s/vbz stock/nn is/vbz above/in $/punct 100/cd on/in january/nnp 4/cd ,/punct 2004/cd ./punct
+an/dt acme/nnp stock/nn option/nn as/in it/prp would/md be/vb defined/vbn on/in a/dt finan144/nn cial/jj exchange/nn can/md be/vb though/in of/in as/in a/dt portfolio/nn of/in such/jj atomic/jj securities.1/nn in/in this/dt paper/nn ,/punct we/prp develop/vbp and/cc analyze/vbp a/dt framework/nn for/in trading/nn in/in compound/nn securities/nns markets/nns with/in payoffs/nns contingent/jj on/in arbitrary/jj logical/jj combinations/nns of/in events/nns ,/punct including/vbg conditionals/nns ./punct
+for/in example/nn ,/punct given/vbn binary/jj events/nns a/dt ,/punct b/nn ,/punct and/cc c/nn ,/punct one/cd trader/nn might/md bid/vb to/to buy/vb three/cd units/nns of/in a/dt security/nn denoted/vbn a/dt ∧/jj ¯b/nn ∨/nn c/nn that/wdt pays/vbz off/rp $/punct 1/cd iff/nn the/dt compound/nn event/nn a/nn ∧/cd ¯b/nn ∨/nn c/nn occurs/vbz for/in thirty/cd cents/nns each/dt ./punct
+another/dt trader/nn may/md bid/vb to/to sell/vb six/cd units/nns of/in a/dt security/nn a|c/nn that/wdt pays/vbz off/rp $/punct 1/cd iff/nn a/nn occurs/vbz for/in fifty-five/cd cents/nns each/dt ,/punct conditional/jj on/in event/nn c/nn occurring/vbg ,/punct meaning/vbg that/in the/dt transaction/nn is/vbz revoked/vbn if/in c/nn does/vbz not/rb occur/vb (/punct i.e./fw ,/punct no/dt payoff/nn is/vbz given/vbn and/cc the/dt price/nn of/in the/dt security/nn is/vbz refunded/vbn )/punct [/punct 5/cd ]/punct ./punct
+bids/nns may/md also/rb be/vb divisible/jj ,/punct meaning/vbg that/in bidders/nns are/vbp willing/jj to/to accept/vb less/jjr than/in the/dt requested/vbn quantity/nn ,/punct or/cc indivisible/jj ,/punct meaning/vbg that/in bids/nns must/md be/vb fulfilled/vbn either/cc completely/rb or/cc not/rb at/in all/dt ./punct
+given/vbn a/dt set/nn of/in such/jj bids/nns ,/punct the/dt auctioneer/nn faces/vbz a/dt complex/jj matching/nn problem/nn to/to decide/vb which/wdt bids/nns are/vbp accepted/vbn for/in how/wrb many/jj units/nns at/in what/wp price/nn ./punct
+typically/rb ,/punct the/dt auctioneer/nn seeks/vbz to/to take/vb on/in no/dt risk/nn of/in its/prp$ own/jj ,/punct only/rb matching/vbg up/rp agreeable/jj trades/nns among/in the/dt bidders/nns ,/punct but/cc we/prp also/rb consider/vbp alternative/jj formulations/nns where/wrb the/dt auctioneer/nn acts/vbz as/in a/dt market/nn maker/nn willing/jj to/to accept/vb some/dt risk/nn ./punct
+we/prp examine/vbp the/dt computational/jj complexity/nn of/in the/dt auctioneer/nn ''/'' s/nns matching/vbg problem/nn ./punct
+let/vb the/dt length/nn of/in the/dt description/nn of/in all/pdt the/dt available/jj securities/nns be/vb o/nn (/punct n/nn )/punct ./punct
+with/in n/nn events/nns ,/punct the/dt matching/nn problem/nn is/vbz co-np-complete/jj in/in the/dt divisible/jj case/nn and/cc σp/nn 2-complete/nn in/in the/dt indivisible/jj case/nn ./punct
+this/dt σp/nn 2-complete/jj hardness/nn holds/vbz even/rb when/wrb the/dt bidding/nn language/nn is/vbz significantly/rb restricted/jj ./punct
+with/in log/nn n/nn events/nns ,/punct the/dt problem/nn is/vbz polynomial/jj in/in the/dt divisible/jj case/nn and/cc np-complete/jj in/in the/dt indivisible/jj case/nn ./punct
+section/nn 2/cd presents/vbz some/dt necessary/jj background/nn information/nn ,/punct motivation/nn ,/punct and/cc related/jj work/nn ./punct
+section/nn 3/cd formally/rb describes/vbz our/prp$ framework/nn for/in compound/nn securities/nns ,/punct and/cc defines/vbz the/dt auctioneer/nn ''/'' s/nns matching/vbg problem/nn ./punct
+section/nn 4/cd briefly/nn discusses/vbz natural/jj algorithms/nns for/in solving/vbg the/dt matching/nn problem/nn ./punct
+section/nn 5/cd proves/vbz our/prp$ central/jj computational/jj complexity/nn results/nns ./punct
+section/nn 6/cd discusses/vbz the/dt possibility/nn of/in tractable/jj special/jj cases/nns ./punct
+section/nn 7/cd concludes/vbz with/in a/dt summary/nn and/cc some/dt ideas/nns of/in future/jj directions/nns ./punct
+2/ls ./punct
+preliminaries/nns
+imagine/vb a/dt world/nn where/wrb there/ex are/vbp only/rb two/cd future/jj uncertain/jj events/nns of/in any/dt consequence/nn :/punct (/punct 1/cd )/punct the/dt event/nn that/in one/cd ''/'' s/vbz house/nn is/vbz struck/vbn by/in lightning/nn by/in december/nnp 31/cd ,/punct 2003/cd ,/punct denoted/vbn struck/vbd ,/punct and/cc (/punct 2/cd )/punct the/dt event/nn that/wdt acme/nnp ''/'' s/vbz stock/nn price/nn goes/vbz above/in $/punct 100/cd by/in january/nnp 4/cd ,/punct 2004/cd ,/punct denoted/vbn acme100/nn ./punct
+in/in this/dt simple/jj world/nn there/ex are/vbp four/cd possible/jj future/jj states-all/nn possible/jj combinations/nns of/in the/dt binary/jj events/nns ''/'' outcomes/nns :/punct struck/vbd ∧/cd acme100/nn ./punct
+between/in various/jj possible/jj future/jj states/nns ./punct
+for/in example/nn ,/punct atomic/jj securities/nns ,/punct though/in it/prp can/md be/vb approximately/rb modeled/vbn with/in a/dt finite/jj number/nn ./punct
+ing/vbg one/cd ''/'' s/vbz house/nn transfers/nns money/nn from/in future/jj states/nns where/wrb denoted/vbn acme100/nn -that/nn pays/vbz off/rp $/punct 1/cd iff/nn the/dt event/nn acme100/nn occurs-transfers/nns money/nn from/in future/jj states/nns where/wrb acme/nnp ''/'' s/vbz price/nn is/vbz above/in $/punct 100/cd on/in january/nnp 4/cd to/to states/nns where/wrb it/prp ''/'' s/vbz not/rb ./punct
+speculating/vbg is/vbz also/rb an/dt act/nn of/in transferring/vbg money/nn between/in future/jj states/nns ,/punct though/in usually/rb associated/vbn with/in maximizing/vbg expected/vbn return/nn rather/rb than/in reducing/vbg risk/nn ./punct
+for/in example/nn ,/punct betting/vbg on/in a/dt football/nn team/nn moves/vbz money/nn from/in the/dt team/nn loses/vbz state/nn to/to the/dt team/nn wins/vbz state/nn ./punct
+in/in practice/nn ,/punct agents/nns engage/vbp in/in a/dt mixture/nn of/in hedging/nn and/cc speculating/vbg ,/punct and/cc there/ex is/vbz no/dt clear/jj dividing/vbg line/nn between/in the/dt two/cd ./punct
+all/dt possible/jj future/jj outcomes/nns form/vbp a/dt state/nn space/nn ω/nn ,/punct consisting/vbg of/in mutually/rb exclusive/jj and/cc exhaustive/jj states/nns ω/vbp ∈/cd ω./nnp often/rb a/dt more/rbr natural/jj way/nn to/to think/vb of/in possible/jj future/jj struck/vbd ∧/cd acme100/nn is/vbz one/cd of/in the/dt four/cd disjoint/nn states/nns ,/punct while/in consisting/vbg of/in all/dt possible/jj combinations/nns of/in event/nn outcomes/nns ./punct
+conversely/rb ,/punct any/dt state/nn space/nn ω/nn can/md be/vb factored/jj into/in log/nn |ω|/nn events/nns ./punct
+suppose/vb that/in a/dt exhaustively/rb covers/vbz all/rb meaningful/jj future/jj outcomes/nns (/punct i.e./fw ,/punct covers/vbz all/dt eventualities/nns that/wdt agents/nns may/md wish/vb to/to hedge/vb against/in and/or/jj speculate/vbp upon/in )/punct ./punct
+then/rb the/dt linearly/rb independent/jj securities-called/jj a/dt complete/jj market-allows/nns agents/nns to/to distribute/vb their/prp$ wealth/nn or/cc speculation/nn it/prp desires/nns ./punct
+under/in classical/jj conditions/nns ,/punct agents/nns trading/nn in/in a/dt complete/jj market/nn form/vbp an/dt equilibrium/nn where/wrb risk/nn is/vbz allocated/vbn pareto/nnp optimally/rb ./punct
+if/in the/dt market/nn is/vbz incomplete/jj ,/punct securities/nns ,/punct then/rb in/in general/jj agents/nns can/md not/rb construct/vb arbitrary/jj hedges/nns and/cc equilibrium/nn allocations/nns may/md be/vb nonoptimal/jj [/punct 1/cd ,/punct 8/cd ,/punct 19/cd ,/punct 20/cd ]/punct ./punct
+in/in real-world/jj settings/nns ,/punct the/dt number/nn of/in meaningful/jj events/nns n/nn is/vbz large/jj and/cc thus/rb the/dt number/nn of/in securities/nns required/vbn for/in completeness/nn is/vbz intractable/jj ./punct
+no/dt truly/rb complete/jj market/nn exists/vbz or/cc will/md ever/rb exist/vb ./punct
+one/cd motivation/nn behind/in compound/jj securities/nns markets/nns is/vbz to/to provide/vb a/dt mechanism/nn that/wdt supports/vbz the/dt most/jjs transfer/nn of/in risk/nn using/vbg the/dt least/jjs number/nn of/in transactions/nns possible/jj ./punct
+compound/nn securities/nns allow/vbp a/dt high/jj degree/nn of/in expressivity/nn in/in constructing/vbg bids/nns ./punct
+the/dt tradeoff/nn for/in increased/vbn expressivity/nn is/vbz increased/vbn computational/jj complexity/nn ,/punct from/in both/cc the/dt bidder/nn ''/'' s/nns and/cc auctioneer/nn ''/'' s/nns point/nn of/in view/nn ./punct
+the/dt quest/nn to/to reduce/vb the/dt number/nn of/in financial/jj instruments/nns arrow/nnp ''/'' s/vbz original/jj work/nn ./punct
+the/dt requirement/nn stated/vbn above/in of/in linearly-independent/jj securities/nns is/vbz itself/prp a/dt reduction/nn from/in the/dt most/rbs straightforward/jj formulation/nn ./punct
+in/in an/dt economy/nn with/in k/nn standard/jj goods/nns ,/punct the/dt most/rbs straightforward/jj complete/jj under/in one/cd state/nn realization/nn ./punct
+arrow/nnp showed/vbd that/in a/dt market/nn where/wrb securities/nns and/cc goods/nns are/vbp essentially/rb separated/vbn ,/punct with/in securities/nns paying/vbg off/rp in/in a/dt single/jj numeraire/nn good/jj plus/cc k/nn spot/nn markets/nns in/in the/dt standard/jj goods/nns ,/punct is/vbz also/rb complete/jj ./punct
+for/in our/prp$ purposes/nns ,/punct we/prp need/vbp consider/vb only/rb the/dt securities/nns market/nn ./punct
+by/in linearly/rb independent/jj securities/nns ,/punct we/prp mean/vbp that/in the/dt vectors/nns of/in payoffs/nns in/in all/dt future/jj states/nns of/in these/dt securities/nns are/vbp linearly/rb independent/jj ./punct
+varian/nnp shows/vbz that/in a/dt complete/jj market/nn can/md be/vb missing/vbg securities/nns with/in options/nns ./punct
+still/rb ,/punct the/dt number/nn of/in linearly/rb independent/jj financial/jj instruments-securities/nns plus/cc to/to guarantee/vb completeness/nn ./punct
+all/dt circumstances/nns ,/punct pennock/nnp and/cc wellman/nnp explore/vb conditions/nns under/in which/wdt a/dt smaller/jjr securities/nns market/nn may/md be/vb operationally/rb complete/jj ,/punct meaning/vbg that/in its/prp$ equilibrium/nn is/vbz pareto/nnp optimal/jj with/in respect/nn to/to the/dt agents/nns involved/vbn ,/punct even/rb if/in the/dt market/nn some/dt cases/nns the/dt market/nn can/md be/vb structured/vbn and/cc compacted/jj in/in analogy/nn to/to bayesian/jj network/nn representations/nns of/in joint/jj probability/nn distributions/nns ./punct
+they/prp show/vbp that/in ,/punct if/in all/dt agents/nns ''/'' risk-neutral/jj independencies/nns agree/vbp with/in the/dt independencies/nns encoded/vbn in/in the/dt market/nn structure/nn ,/punct then/rb the/dt market/nn is/vbz operationally/rb complete/jj ./punct
+for/in collections/nns of/in agents/nns all/dt with/in constant/jj absolute/jj risk/nn aversion/nn ,/punct agreement/nn on/in markov/nnp independencies/nns is/vbz sufficient/jj ./punct
+bossaerts/nnp ,/punct fine/nnp ,/punct and/cc ledyard/nnp develop/vbp a/dt mechanism/nn they/prp call/vbp combined-value/jj trading/nn (/punct cvt/nnp )/punct that/wdt allows/vbz traders/nns individual/jj securities/nns ./punct
+if/in the/dt portfolio/nn order/nn is/vbz accepted/vbn ,/punct all/dt of/in the/dt implied/vbn trades/nns on/in individual/jj securities/nns are/vbp executed/vbn simultaneously/rb ,/punct thus/rb eliminating/vbg so-called/jj execution/nn risk/nn that/in orders/nns ./punct
+the/dt authors/nns conduct/vbp laboratory/nn experiments/nns showing/vbg that/in ,/punct even/rb in/in thin/jj markets/nns where/wrb ordinary/jj sequential/jj trading/nn breaks/nns down/rb ,/punct cvt/nn supports/vbz efficient/jj pricing/nn and/cc allocation/nn ./punct
+note/vb that/in cvt/nnp differs/vbz significantly/rb from/in compound/jj securities/nns trading/nn ./punct
+cvt/nnp allows/vbz instantaneous/jj trading/nn of/in any/dt linear/jj combination/nn of/in securities/nns ,/punct while/in compound/nn securities/nns allow/vbp more/jjr expressive/jj securities/nns that/wdt can/md encode/vb nonlinear/jj boolean/jj combinations/nns of/in events/nns ./punct
+for/in example/nn ,/punct cvt/nnp may/md a|b/nnp ./punct
+related/vbn to/to cvt/nnp are/vbp combinatorial/jj auctions/nns and/cc exchanges/nns ,/punct mechanisms/nns that/wdt have/vbp recently/rb received/vbn quite/rb a/dt bit/nn of/in attention/nn in/in the/dt economics/nns and/cc computer/nn science/nn literatures/nns ./punct
+combinatorial/jj auctions/nns allow/vbp bidders/nns to/to place/vb distinct/jj values/nns on/in all/dt possible/jj bundles/nns of/in goods/nns rather/rb than/in just/rb on/in individual/jj goods/nns ./punct
+in/in this/dt way/nn bidders/nns can/md express/vb substitutability/nn and/cc complementarity/nn relationships/nns among/in goods/nns that/wdt can/md not/rb be/vb expressed/vbn in/in standard/jj parallel/nn or/cc sequential/jj auctions/nns ./punct
+compound/nn securities/nns differ/vbp from/in combinatorial/jj auctions/nns in/in concept/nn and/cc complexity/nn ./punct
+compound/nn securities/nns possible/jj compound/nn events/nns expressible/jj as/in logical/jj functions/nns of/in the/dt n/nn base/nn events/nns ,/punct conditional/jj on/in any/dt other/jj of/in the/dt 22n/jj compound/nn events/nns ./punct
+agents/nns optimize/vbp based/vbn on/in their/prp$ own/jj subjective/jj probabilities/nns and/cc risk/vb attitude/nn (/punct and/cc in/in general/jj ,/punct their/prp$ beliefs/nns about/in other/jj agents/nns ''/'' beliefs/nns and/cc utilities/nns ,/punct ad/nn infinitum/nn )/punct ./punct
+the/dt central/jj auctioneer/nn problem/nn is/vbz identifying/vbg arbitrage/nn opportunities/nns :/punct that/dt is/vbz ,/punct to/to match/vb bets/nns together/rb without/in taking/vbg on/rp any/dt risk/nn ./punct
+combinatorial/jj auctions/nns ,/punct on/in the/dt other/jj hand/nn ,/punct occur/vbp ,/punct $/punct 1/cd iff/nn a/nn or/cc b/nn occurs/vbz (/punct but/cc not/rb both/dt )/punct ,/punct and/cc $/punct 0/cd otherwise/rb ./punct
+uncertainty-and/jj thus/rb risk-is/jj not/rb considered/vbn ./punct
+the/dt central/jj auctioneer/nn problem/nn is/vbz to/to maximize/vb social/jj welfare/nn ./punct
+also/rb note/nn that/in the/dt problems/nns lie/vbp in/in different/jj complexity/nn classes/nns ./punct
+while/in clearing/vbg a/dt combinatorial/jj auction/nn is/vbz polynomial/jj in/in the/dt divisible/jj case/nn and/cc np-complete/jj in/in the/dt indivisible/jj case/nn ,/punct matching/vbg 2-complete/jj in/in the/dt indivisible/jj case/nn ./punct
+in/in fact/nn ,/punct even/rb the/dt problem/nn of/in deciding/vbg whether/in two/cd bids/nns on/in compound/nn securities/nns match/nn ,/punct even/rb in/in the/dt divisible/jj case/nn ,/punct is/vbz np-complete/jj (/punct see/vbp section/nn 5.2/cd )/punct ./punct
+matching/vbg problem/nn for/in compound/nn securities/nns into/in an/dt analogous/jj problem/nn for/in clearing/vbg two-sided/jj combinatorial/jj exchanges/nns particular/jj state/nn as/in a/dt good/jj ,/punct then/rb compound/jj securities/nns can/md be/vb viewed/vbn as/in bundles/nns of/in (/punct fractional/jj quantities/nns of/in )/punct such/jj goods/nns ./punct
+the/dt material/nn balance/nn constraint/nn facing/vbg the/dt combinatorial/jj auctioneer/nn corresponds/vbz to/to a/dt restriction/nn that/in the/dt compoundsecurity/nn auctioneer/nn be/vb disallowed/vbn from/in assuming/vbg any/dt risk/nn ./punct
+note/vb that/in this/dt translation/nn is/vbz not/rb at/in all/dt useful/jj for/in addressing/vbg the/dt compound-security/jj matching/nn problem/nn ,/punct as/in the/dt resulting/vbg combinatorial/jj exchange/nn has/vbz an/dt exponential/jj number/nn of/in goods/nns ./punct
+hanson/nnp develops/vbz a/dt market/nn mechanism/nn called/vbd a/dt market/nn scoring/vbg rule/nn that/wdt is/vbz especially/rb well/rb suited/vbn for/in allowing/vbg bets/nns on/in a/dt combinatorial/jj number/nn of/in outcomes/nns ./punct
+the/dt mechanism/nn maintains/vbz a/dt joint/jj probability/nn distribution/nn over/in all/dt 2n/jj either/cc explicitly/rb or/cc implicitly/rb using/vbg a/dt bayesian/jj network/nn or/cc other/jj compact/jj representation/nn ./punct
+at/in any/dt time/nn any/dt trader/nn who/wp believes/vbz the/dt probabilities/nns are/vbp wrong/jj can/md change/vb any/dt part/nn of/in the/dt distribution/nn by/in accepting/vbg a/dt lottery/nn ticket/nn that/wdt pays/vbz off/rp according/vbg to/to a/dt scoring/vbg rule/nn (/punct e.g./fw ,/punct the/dt logarithmic/jj scoring/vbg rule/nn )/punct ,/punct as/rb long/rb as/in that/dt trader/nn also/rb agrees/vbz to/to pay/vb off/rp the/dt most/rbs recent/jj person/nn to/to change/vb the/dt distribution/nn ./punct
+in/in the/dt limit/nn of/in a/dt single/jj trader/nn ,/punct the/dt mechanism/nn behaves/vbz like/in a/dt scoring/vbg rule/nn ,/punct suitable/jj for/in polling/nn a/dt single/jj agent/nn for/in its/prp$ combined/jj estimate/nn ./punct
+since/in the/dt market/nn essentially/rb always/rb has/vbz a/dt complete/jj set/nn of/in posted/vbn prices/nns for/in all/dt possible/jj outcomes/nns ,/punct the/dt mechanism/nn avoids/vbz the/dt problem/nn of/in thin/jj markets/nns ,/punct or/cc illiquidity/nn ,/punct that/wdt necessarily/rb plagues/vbz any/dt market/nn containing/vbg an/dt exponential/jj number/nn of/in alternative/jj investments/nns ./punct
+the/dt mechanism/nn requires/vbz a/dt patron/nn to/to pay/vb off/rp the/dt final/jj person/nn to/to change/vb the/dt distribution/nn ,/punct though/in the/dt patron/nn ''/'' s/nns payment/nn is/vbz bounded/vbn ./punct
+though/in hanson/nnp offers/vbz some/dt initial/jj suggestions/nns ,/punct several/jj open/jj problems/nns remain/vbp ,/punct including/vbg efficient/jj methods/nns for/in representing/vbg and/cc updating/vbg the/dt joint/jj distribution/nn and/cc recording/nn traders/nns positions/nns and/cc portfolios/nns ,/punct without/in resorting/vbg to/to exponential/jj time/nn and/cc space/nn algorithms/nns ./punct
+fagin/nnp ,/punct halpern/nnp ,/punct and/cc megiddo/nnp give/vbp a/dt sound/nn and/cc complete/jj axiomatization/nn for/in deciding/vbg whether/in sets/nns of/in probabilistic/jj inequalities/nns are/vbp consistent/jj ./punct
+bids/nns for/in compound/nn securities/nns statement/nn that/in the/dt probability/nn of/in a/dt ∧/nn b/nn is/vbz greater/jjr than/in 0.3./cd probabilistic/jj inequalities/nns ,/punct then/rb there/ex is/vbz a/dt match/nn ./punct
+however/rb ,/punct because/in they/prp are/vbp interested/jj in/in a/dt much/rb different/jj framework/nn ,/punct fagin/nnp et/fw al/fw ./punct
+do/vb not/rb consider/vb several/jj complicating/vbg factors/nns specific/jj to/to the/dt securities/nns market/nn framework/nn :/punct namely/rb ,/punct handling/vbg multi-unit/jj or/cc fractional/jj bid/nn quantities/nns ,/punct identifying/vbg matches/nns ,/punct choosing/vbg among/in multiple/jj matches/nns ,/punct and/cc optimizing/vbg based/vbn on/in probabilities/nns and/cc risk/vb attitudes/nns ./punct
+we/prp address/vbp these/dt issues/nns below/in ./punct
+common/jj knowledge/nn among/in agents/nns is/vbz the/dt set/nn of/in events/nns a./nn there/ex are/vbp no/dt predefined/jj securities/nns ./punct
+instead/rb ,/punct agents/nns offer/vbp to/to buy/vb or/cc sell/vb securities/nns of/in their/prp$ own/jj design/nn that/wdt pay/vbp off/rp contingent/nn on/in logical/jj combinations/nns of/in events/nns and/cc event/nn negations/nns ./punct
+combination/nn operators/nns may/md include/vb conjunctions/nns ,/punct disjunctions/nns ,/punct and/cc conditionals/nns ./punct
+for/in all/dt practical/jj purposes/nns ,/punct it/prp is/vbz impossible/jj for/in agents/nns to/to so/rb agents/nns must/md devise/vb their/prp$ best/jjs tradeoff/nn between/in the/dt number/nn and/cc complexity/nn of/in their/prp$ bids/nns ,/punct and/cc the/dt extent/nn to/to which/wdt their/prp$ risks/nns are/vbp hedged/vbn and/cc desirable/jj bets/nns are/vbp placed/vbn ./punct
+in/in its/prp$ most/rbs general/jj form/nn ,/punct the/dt problem/nn is/vbz game-theoretic/jj in/in nature/nn ,/punct since/in what/wp an/dt agent/nn should/md offer/vb depends/vbz on/in what/wp it/prp believes/vbz other/jj agents/nns will/md accept/vb ./punct
+at/in the/dt other/jj end/nn of/in the/dt spectrum/nn ,/punct a/dt currently/rb available/jj securities/nns at/in current/jj prices/nns ./punct
+in/in between/in these/dt two/cd formulations/nns are/vbp other/jj possible/jj interesting/jj optimization/nn problems/nns ./punct
+approximation/nn algorithms/nns might/md also/rb be/vb pursued/vbn ./punct
+the/dt auctioneer/nn faces/vbz a/dt nontrivial/jj problem/nn of/in matching/vbg buy/nn and/cc sell/vb orders/nns to/to maximize/vb surplus/nn (/punct the/dt cash/nn and/cc securities/nns left/vbd over/rp after/in accepted/vbn bids/nns are/vbp fulfilled/vbn )/punct ./punct
+for/in example/nn ,/punct offers/vbz general/jj ,/punct a/dt single/jj security/nn might/md qualify/vb for/in multiple/jj matches/nns ,/punct but/cc only/rb one/prp can/md be/vb transacted/vbn ./punct
+so/in the/dt auctioneer/nn must/md find/vb the/dt optimal/jj set/nn of/in matches/nns that/wdt maximizes/vbz surplus/nn ,/punct which/wdt approximation/nn algorithms/nns might/md be/vb considered/vbn ./punct
+in/in another/dt formulation/nn ,/punct the/dt auctioneer/nn functions/vbz as/in a/dt market/nn maker/nn willing/jj to/to take/vb on/rp a/dt certain/jj amount/nn of/in risk/nn ./punct
+informally/rb ,/punct our/prp$ motivation/nn is/vbz to/to provide/vb a/dt mechanism/nn that/wdt allows/vbz a/dt very/rb high/jj degree/nn of/in expressivity/nn in/in placing/vbg hedges/nns and/cc bets/nns ,/punct and/cc is/vbz also/rb capable/jj of/in approximating/vbg the/dt optimal/jj (/punct complete-market/nn )/punct allocation/nn of/in risk/nn ,/punct trading/vbg off/rp the/dt number/nn and/cc complexity/nn of/in securities/nns and/cc transactions/nns needed/vbn ./punct
+false/jj ./punct
+we/prp abbreviate/vbp φ|t/nn as/in φ/nn ./punct
+submitting/vbg buy/nn (/punct sell/nn )/punct orders/nns will/md accept/vb any/dt price/nn p∗/nn ≥/cd p/nn )/punct ./punct
+we/prp distinguish/vbp between/in divisible/jj and/cc indivisible/jj orders/nns ./punct
+agents/nns submitting/vbg divisible/jj orders/nns will/md accept/vb any/dt indivisible/jj orders/nns will/md accept/vb only/rb exactly/rb q/jj units/nns ,/punct or/cc none/nn at/in all/dt ./punct
+we/prp believe/vbp that/in ,/punct given/vbn the/dt nature/nn of/in what/wp is/vbz being/vbg traded/vbn (/punct state-contingent/jj dollars/nns )/punct ,/punct most/jjs agents/nns will/md be/vb content/jj to/to trade/vb using/vbg divisible/jj orders/nns ./punct
+possible/jj combinations/nns of/in event/nn outcomes/nns ./punct
+we/prp index/nn multiple/jj orders/nns with/in subscripts/nns (/punct e.g./fw ,/punct oi/nn and/cc υi/nn )/punct ./punct
+let/vb the/dt set/nn of/in all/dt orders/nns be/vb o/nn and/cc the/dt set/nn of/in all/dt corresponding/jj payoff/nn vectors/nns be/vb p./fw example/fw 1/ls ./punct
+(/punct translating/vbg orders/nns into/in payoff/nn vectors/nns )/punct a2/nn ∨/cd a3|a1/nn at/in price/nn $/punct 0.8/cd ./punct
+the/dt corresponding/jj payoff/nn vector/nn the/dt auctioneer/nn ''/'' s/nns task/nn ,/punct called/vbd the/dt matching/nn problem/nn ,/punct is/vbz to/to determine/vb which/wdt orders/nns to/to accept/vb among/in all/dt orders/nns o/nn ∈/cd o./nnp order/nn oi/nn is/vbz considered/vbn rejected/vbn and/cc no/dt transactions/nns take/vbp place/nn concerning/vbg this/dt order/nn ./punct
+for/in accepted/vbn orders/nns (/punct αi/nn >/punct 0/cd )/punct ,/punct the/dt auctioneer/nn receives/vbz the/dt money/nn lost/vbn by/in bidders/nns and/cc pays/vbz out/rp the/dt money/nn won/vbn by/in bidders/nns ,/punct so/in the/dt auctioneer/nn ''/'' s/nns payoff/nn vector/nn −αiυi/nn ./punct
+we/prp also/rb call/vbp the/dt auctioneer/nn ''/'' s/nns payoff/nn vector/nn the/dt surplus/nn vector/nn ,/punct since/in it/prp is/vbz the/dt (/punct possibly/rb state-contingent/jj )/punct money/nn left/vbd over/rp after/in all/dt accepted/vbn orders/nns are/vbp filled/vbn ./punct
+assume/vb that/in the/dt auctioneer/nn wants/vbz to/to choose/vb a/dt set/nn of/in orders/nns state/nn ,/punct but/cc that/in the/dt auctioneer/nn does/vbz not/rb necessarily/rb insist/vb on/in obtaining/vbg a/dt positive/jj benefit/nn from/in the/dt transaction/nn (/punct i.e./fw ,/punct the/dt auctioneer/nn is/vbz content/jj to/to break/vb even/rb )/punct ./punct
+in/in other/jj words/nns ,/punct does/vbz there/ex exist/vbp a/dt nonempty/jj subset/nn of/in orders/nns that/in the/dt auctioneer/nn can/md accept/vb without/in risk/nn ?/punct
+2/cd auc/nn ]/punct ./punct
+in/in general/jj ,/punct processing/vbg a/dt match/nn leaves/vbz m/nn dollars/nns auc/vbp −/nn m/nn in/in state-contingent/jj dollars/nns ,/punct which/wdt can/md then/rb be/vb translated/vbn into/in securities/nns ./punct
+example/nn 2/cd ./punct
+(/punct indivisible/jj order/nn matching/vbg )/punct suppose/vb |a|/nn =/punct the/dt auctioneer/nn ''/'' s/nns payoff/nn vector/nn (/punct the/dt negative/jj of/in the/dt componentwise/jj sum/nn of/in the/dt above/jj two/cd vectors/nns )/punct is/vbz :/punct υauc/nn =/punct −υ1/nn −/cd υ2/nn =/punct 0.1/cd ,/punct 1.1/cd ,/punct 0.1/cd ,/punct 0.1/cd ./punct
+since/in all/dt components/nns are/vbp nonnegative/jj ,/punct the/dt two/cd orders/nns match/nn ./punct
+the/dt auctioneer/nn can/md process/vb both/dt orders/nns ,/punct leaving/vbg a/dt surplus/nn of/in now/rb consider/vb the/dt divisible/jj case/nn ,/punct where/wrb order/nn can/md be/vb partially/rb filled/vbn ./punct
+amount/nn (/punct negative/jj for/in the/dt auctioneer/nn )/punct ./punct
+however/rb ,/punct if/in α1/nn =/punct constituting/vbg a/dt match/nn ./punct
+the/dt auctioneer/nn can/md process/vb 3/5/cd of/in the/dt first/jj and/cc second/jj orders/nns ,/punct and/cc all/dt of/in the/dt third/jj order/nn ,/punct leaving/vbg a/dt match/nn exists/vbz even/rb though/in an/dt indivisible/jj match/nn is/vbz not/rb possible/jj ;/punct separate/vb the/dt two/cd matching/vbg problems/nns into/in distinct/jj complexity/nn the/dt matching/nn problems/nns defined/vbn above/rb are/vbp decision/nn problems/nns :/punct the/dt task/nn is/vbz only/rb to/to show/vb the/dt existence/nn or/cc nonexistence/nn of/in a/dt match/nn ./punct
+however/rb ,/punct there/ex may/md be/vb multiple/jj matches/nns from/in which/wdt the/dt auctioneer/nn can/md choose/vb ./punct
+sometimes/rb the/dt choices/nns are/vbp equivalent/jj from/in the/dt auctioneer/nn ''/'' s/nns perspective/nn ;/punct alternatively/rb ,/punct according/vbg to/to that/dt objective/nn ./punct
+example/nn 4/cd ./punct
+(/punct auctioneer/nn alternatives/nns i/prp )/punct suppose/vb |a|/nn =/punct ¯a2/nn at/in price/nn $/punct 0.4/cd ,/punct and/cc an/dt order/nn to/to buy/vb one/cd unit/nn of/in ¯a1a2/nn at/in price/nn $/punct 0.4/cd ./punct
+the/dt corresponding/jj payoff/nn vectors/nns consider/vb the/dt indivisible/jj case/nn ./punct
+the/dt auctioneer/nn could/md choose/vb matches/nns ,/punct and/cc in/in fact/nn both/cc yield/nn identical/jj payoffs/nns (/punct υauc/nn =/punct example/nn 5/cd ./punct
+(/punct auctioneer/nn alternatives/nns ii/cd )/punct suppose/vb |a|/nn =/punct consider/vb the/dt divisible/jj case/nn ./punct
+the/dt auctioneer/nn could/md choose/vb to/to accept/vb one/cd unit/nn each/dt of/in all/dt three/cd bids/nns ,/punct yielding/vbg a/dt payoff/nn to/to the/dt auctioneer/nn of/in $/punct 0.2/cd in/in cash/nn (/punct υauc/nn =/punct 0.2/cd ,/punct 0.2/cd ,/punct 0.2/cd ,/punct 0.2/cd )/punct ./punct
+alternatively/rb ,/punct the/dt auctioneer/nn could/md choose/vb to/to accept/vb 4/3/cd units/nns constitute/vbp matches/nns (/punct in/in fact/nn ,/punct accepting/vbg any/dt number/nn of/in units/nns depending/vbg on/in the/dt auctioneer/nn ''/'' s/nns objective/jj ,/punct one/cd choice/nn might/md be/vb preferred/vbn over/in another/dt ./punct
+for/in example/nn ,/punct if/in the/dt auctioneer/nn there/ex are/vbp many/jj possible/jj criteria/nns for/in the/dt auctioneer/nn to/to decide/vb among/in matches/nns ,/punct all/dt of/in which/wdt seem/vbp reasonable/jj in/in some/dt circumstances/nns ./punct
+one/cd natural/jj quantity/nn to/to maximize/vb is/vbz the/dt volume/nn of/in trade/nn among/in bidders/nns ;/punct another/dt is/vbz the/dt auctioneer/nn ''/'' s/nns utility/nn ,/punct either/cc with/in or/cc without/in the/dt arbitrage/nn constraint/nn ./punct
+another/dt reasonable/jj variation/nn is/vbz to/to maximize/vb the/dt total/jj auc/nn ≥/nn 0/cd ./punct
+this/dt last/jj objective/jj function/nn drops/vbz the/dt risk-free/jj (/punct arbitrage/nn )/punct constraint/nn ./punct
+in/in this/dt case/nn ,/punct the/dt auctioneer/nn is/vbz a/dt market/nn maker/nn with/in beliefs/nns about/in the/dt likelihood/nn of/in outcomes/nns ,/punct and/cc the/dt auctioneer/nn may/md actually/rb lose/vb money/nn is/vbz some/dt outcomes/nns ./punct
+still/rb other/jj variations/nns and/cc other/jj optimization/nn criteria/nns seem/vbp reasonable/jj ,/punct including/vbg social/jj welfare/nn ,/punct etc/fw ./punct
+it/prp also/rb seems/vbz reasonable/jj to/to suppose/vb that/in the/dt surplus/nn be/vb shared/vbn among/in bidders/nns and/cc the/dt auctioneer/nn ,/punct rather/rb than/in retained/vbn solely/rb by/in the/dt auctioneer/nn ./punct
+this/dt is/vbz analogous/jj to/to choosing/vbg a/dt common/jj transaction/nn price/nn in/in a/dt double/jj auction/nn (/punct e.g./fw ,/punct the/dt midpoint/nn between/in the/dt bid/nn and/cc ask/vb prices/nns )/punct ,/punct rather/rb than/in the/dt buyer/nn paying/vbg the/dt bid/nn price/nn and/cc the/dt seller/nn receiving/vbg the/dt ask/vb price/nn ,/punct with/in the/dt difference/nn going/vbg to/to the/dt auctioneer/nn ./punct
+the/dt problem/nn becomes/vbz more/rbr complicated/vbn when/wrb dividing/vbg surplus/nn securities/nns ,/punct in/in part/nn because/in they/prp are/vbp valued/vbn differently/rb by/in different/jj agents/nns ./punct
+formulating/vbg reasonable/jj sharing/nn rules/nns and/cc examining/vbg the/dt resulting/vbg incentive/nn properties/nns seems/vbz a/dt rich/jj and/cc promising/jj avenue/nn for/in further/jj investigation/nn ./punct
+the/dt straightforward/jj algorithm/nn for/in solving/vbg the/dt divisible/jj appropriate/jj linear/jj program/nn in/in section/nn 5.1/cd ./punct
+the/dt straightforward/jj algorithm/nn for/in solving/vbg the/dt indivisible/jj matching/nn problem/nn is/vbz integer/nn programming/nn ./punct
+with/in n/nn events/nns ,/punct to/to set/vb up/rp the/dt appropriate/jj linear/jj or/cc integer/nn programs/nns ,/punct simply/rb writing/vbg out/rp the/dt payoff/nn vectors/nns in/in the/dt straightforward/jj way/nn requires/vbz o/nn (/punct 2n/jj )/punct space/nn ./punct
+there/ex is/vbz some/dt hope/vbp that/in specialized/vbn algorithms/nns that/wdt exploit/vbp structure/nn among/in bids/nns can/md perform/vb better/jjr in/in terms/nns of/in average-case/jj time/nn and/cc space/nn complexity/nn ./punct
+for/in example/nn ,/punct in/in some/dt cases/nns matches/nns can/md be/vb identified/vbn using/vbg logical/jj reduction/nn techniques/nns ,/punct without/in writing/vbg down/rp the/dt full/jj payoff/nn vectors/nns ./punct
+so/rb equivalent/jj offer/nn to/to sell/vb a1/nn at/in $/punct 0.3/cd that/wdt clearly/rb matches/vbz with/in the/dt third/jj bid/nn ./punct
+formalizing/vbg a/dt logical-reduction/jj algorithm/nn for/in matching/nn ,/punct or/cc other/jj algorithms/nns that/wdt can/md exploit/vb special/jj structure/nn among/in the/dt bids/nns ,/punct is/vbz a/dt promising/jj avenue/nn for/in future/jj work/nn ./punct
+in/in this/dt section/nn we/prp examine/vbp the/dt computational/jj complexity/nn of/in the/dt auctioneer/nn ''/'' s/nns matching/vbg problem/nn ./punct
+here/rb n/nn refers/vbz to/to the/dt problem/nn ''/'' s/nns input/nn size/nn that/wdt includes/vbz descriptions/nns of/in all/dt of/in the/dt buy/nn and/cc sell/vb orders/nns ./punct
+we/prp also/rb assume/vbp that/in n/nn bounds/vbz the/dt number/nn of/in base/nn securities/nns ./punct
+we/prp consider/vbp four/cd cases/nns based/vbn on/in two/cd parameters/nns :/punct 1/cd ./punct
+whether/in to/to allow/vb divisible/jj or/cc indivisible/jj orders/nns ./punct
+2/ls ./punct
+the/dt number/nn of/in securities/nns ./punct
+we/prp consider/vbp two/cd (/punct a/dt )/punct o/nn (/punct log/nn n/nn )/punct base/nn securities/nns yielding/vbg a/dt polynomial/jj number/nn of/in states/nns ./punct
+(/punct b/nn )/punct an/dt unlimited/jj number/nn of/in base/nn securities/nns yielding/vbg an/dt exponential/jj number/nn of/in states/nns ./punct
+we/prp show/vbp the/dt following/jj results/nns ./punct
+2./ls co-np-complete/nn for/in unlimited/jj securities/nns with/in divisible/jj orders/nns ./punct
+3/ls ./punct
+np-complete/jj for/in o/nn (/punct log/nn n/nn )/punct base/nn securities/nns with/in indivisible/jj orders/nns ./punct
+2-complete/jj for/in unlimited/jj securities/nns with/in indivisible/jj orders/nns ./punct
+i/fw ≥/fw 0./fw αi/fw ./punct
+a/dt set/nn of/in orders/nns has/vbz a/dt matching/jj exactly/rb when/wrb i/fw αi/fw >/punct 0./cd polynomial/nn so/in we/prp can/md solve/vb this/dt linear/jj program/nn in/in polynomial/jj time/nn ./punct
+note/vb that/dt one/nn might/md argue/vb that/in one/cd should/md maximize/vb some/dt i/fw s/vbz to/to maximize/vb the/dt surplus/nn ./punct
+however/rb this/dt approach/nn will/md not/rb find/vb matchings/nns that/wdt have/vbp zero/cd surplus/nn ./punct
+with/in unlimited/jj base/nn securities/nns ,/punct the/dt linear/jj program/nn given/vbn in/in section/nn 5.1/cd has/vbz an/dt exponential/jj number/nn of/in constraint/nn equations/nns ./punct
+each/dt constraint/nn is/vbz short/jj to/to describe/vb and/cc easily/rb computable/jj given/vbn ω./nn let/vb m/nn ≤/nn n/nn be/vb the/dt total/jj number/nn of/in buy/nn and/cc sell/vb orders/nns ./punct
+constraints/nns that/wdt force/vbp all/pdt the/dt αi/nn to/to zero/cd ./punct
+in/in nondeterministic/jj polynomial-time/nn we/prp can/md guess/vb these/dt constraints/nns and/cc solve/vb the/dt reduced/vbn linear/jj program/nn ./punct
+this/dt shows/vbz that/in matching/nn is/vbz in/in co-np/nn ./punct
+to/to show/vb co-np-completeness/nn we/prp reduce/vbp the/dt np-complete/jj problem/nn of/in boolean/jj formula/nn satisfiability/nn to/to the/dt nonexistence/nn the/dt variables/nns of/in φ/nn and/cc consider/vb the/dt single/jj security/nn φ/nn with/in is/vbz some/dt state/nn with/in payoff/nn 0.5/cd and/cc no/dt fractional/jj unit/nn of/in the/dt then/rb every/dt state/nn has/vbz an/dt auctioneer/nn ''/'' s/nns payoff/nn of/in 0.5/cd and/cc a/dt single/jj unit/nn of/in the/dt security/nn φ/nn is/vbz a/dt matching/nn ./punct
+one/cd could/md argue/vb that/in if/in the/dt formula/nn φ/nn is/vbz not/rb satisfiable/jj of/in 0.5/cd ./punct
+we/prp can/md get/vb around/in this/dt problem/nn by/in adding/vbg auxiliary/jj base/nn securities/nns ,/punct a/dt and/cc b/nn ,/punct and/cc defining/vbg two/cd securities/nns with/in separate/jj buy/nn orders/nns of/in 0.5/cd on/in each/dt ./punct
+divisible/jj matching/nn can/md exist/vb ./punct
+false/jj ./punct
+nondeterministically/rb guess/vb a/dt nonempty/jj subset/nn s/nn of/in orders/nns and/cc check/vb for/in i/fw ≥/fw 0./fw verification/nn can/md be/vb done/vbn in/in polynomial/jj time/nn ./punct
+to/to show/vb that/in matching/nn is/vbz np-complete/jj we/prp reduce/vbp the/dt npcomplete/nn problem/nn exact/nnp cover/nnp by/in 3-sets/nnp (/punct x3c/nn )/punct to/to a/dt matching/nn of/in securities/nns ./punct
+member/nn of/in c/nn ./punct
+karp/nn showed/vbd that/in x3c/nn is/vbz np-complete/jj ./punct
+{/punct x1/nn ,/punct ./punct
+./punct
+./punct
+,/punct x3q/nn }/punct and/cc c/nn =/punct {/punct c1/nn ,/punct ./punct
+./punct
+./punct
+,/punct cm/nn }/punct ./punct
+if/in k/nn is/vbz not/rb in/in ci/nn ./punct
+•/nnp security/nnp ψj/nn is/vbz true/jj only/rb in/in state/nn s/nns ./punct
+•/nnp security/nnp τ/nn is/vbz true/jj in/in each/dt state/nn ek/nn but/cc not/rb r/nn or/cc s./nn and/cc a/dt buy/nn order/nn on/in τ/nn for/in 0.5./cd in/in x3c/nn ./punct
+each/dt element/nn of/in x/nn exactly/rb once/rb ./punct
+note/vb that/dt |c/nn |/punct =/punct q./nn c/nn ,/punct every/dt ψj/nn and/cc τ/nn has/vbz a/dt matching/nn ./punct
+=/punct .25/cd ≥/nn 0/cd ./punct
+in/in states/nns r/nn and/cc s/vbz the/dt auctioneer/nn ''/'' s/nns payoffs/nns are/vbp =/punct .25/cd ≥/cd 0./cd matching/nn requires/vbz a/dt nonempty/jj subset/nn of/in the/dt orders/nns and/cc τ/nn by/in itself/prp is/vbz not/rb a/dt matching/nn we/prp have/vbp q/nn +/punct q/nn >/punct 0/cd ./punct
+we/prp have/vbp three/cd cases/nns ./punct
+</punct 0/cd ./punct
+</punct 0/cd ./punct
+</punct 0/cd ./punct
+2/cd is/vbz the/dt second/jj level/nn of/in the/dt polynomial-time/jj conp/nn ./punct
+unless/in the/dt polynomial-time/jj hierarchy/nn collapses/vbz (/punct which/wdt not/rb contained/vbd in/in np/nn or/cc co-np/nn ./punct
+and/cc remains/vbz so/rb even/rb for/in quite/rb restricted/jj types/nns of/in securities/nns ,/punct seem/vbp that/in being/vbg np-complete/jj or/cc co-np-complete/jj is/vbz hard/rb enough/rb ,/punct there/ex are/vbp further/rb practical/jj consequences/nns of/in being/vbg np/nnp ,/punct one/cd could/md use/vb heuristics/nns to/to search/vb for/in and/cc verify/vb a/dt match/nn may/md succeed/vb for/in most/jjs examples/nns in/in practice/nn ./punct
+similarly/rb ,/punct if/in the/dt matching/nn problem/nn were/vbd in/in co-np/nn ,/punct one/nn might/md hope/vb to/to at/in least/jjs heuristically/rb rule/vb out/rp the/dt possibility/nn of/in matching/nn ./punct
+but/cc for/in verifying/vbg that/in a/dt heuristically/rb derived/vbn answer/nn is/vbz correct/jj ./punct
+less/rbr formally/rb ,/punct for/in np/nn (/punct or/cc co-np/nn )/punct -complete/jj problems/nns ,/punct you/prp tell/vbp if/in you/prp ''/'' ve/fw been/vbn lucky/jj ./punct
+nonpositive/jj auctioneer/nn ''/'' s/nns payoff/nn in/in state/nn ω./nn we/prp prove/vbp a/dt stronger/jjr theorem/nn which/wdt implies/vbz that/in matching/vbg is/vbz satisfied/vbn ./punct
+the/dt 0/cd −/cd 1-matching/jj problem/nn asks/vbz whether/in one/cd worst-case/jj payoff/nn strictly/rb larger/jjr than/in the/dt total/jj cost/nn ./punct
+negations/nns )/punct ,/punct pi/nn =/punct 1/cd ,/punct and/cc ci/nn =/punct cj/nn for/in all/dt i/fw and/cc j./fw securities/nns (/punct or/cc their/prp$ negations/nns )/punct ./punct
+these/dt hardness/nn results/vbz hold/vb even/rb if/in there/ex is/vbz a/dt promise/nn that/in no/dt subset/nn of/in the/dt securities/nns guarantees/vbz a/dt worst-case/jj payoff/nn identical/jj to/to their/prp$ cost/nn ./punct
+problem/nn that/in we/prp call/vbp t∃∀bf/nn ./punct
+given/vbn a/dt boolean/jj formula/nn φ/nn ∃x1/nn ./punct
+./punct
+./punct
+∃xn∀y1/nn ./punct
+./punct
+./punct
+∀yn/nn φ/nn (/punct x1/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn ,/punct y1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yn/nn )/punct ?/punct
+(/punct x1/nn ∧/cd ¯x3/nn ∧/cd y2/nn )/punct ∨/cd (/punct x2/nn ∧/cd y3/nn ∧/cd y7/nn )/punct ∨/cd ·/nn ·/nn ·/nn ./punct
+this/dt form/nn ,/punct without/in the/dt bound/vbn on/in the/dt conjunction/nn size/nn ,/punct is/vbz known/vbn as/in disjunctive/jj normal/jj form/nn (/punct dnf/nn )/punct ;/punct the/dt restriction/nn to/to conjunctions/nns of/in 3/cd variables/nns is/vbz 3-dnf/nn ./punct
+we/prp reduce/vbp t∃∀bf/nn to/to finding/vbg a/dt matching/nn ./punct
+for/in the/dt simplest/jjs reduction/nn ,/punct we/prp consider/vbp the/dt matching/nn problem/nn where/wrb one/prp has/vbz a/dt set/nn of/in arrow-debreu/nnp securities/nns whose/wp$ payoff/nn events/nns are/vbp conjunctions/nns of/in the/dt base/nn securities/nns ,/punct or/cc their/prp$ negations/nns ./punct
+the/dt of/in the/dt given/vbn securities/nns ./punct
+we/prp first/rb reduce/vb to/to the/dt case/nn where/wrb the/dt payoff/nn events/nns are/vbp conjunctions/nns of/in arbitrarily/rb many/jj base/nn events/nns (/punct or/cc their/prp$ we/prp can/md even/rb ensure/vb that/in all/dt securities/nns have/vbp the/dt same/jj price/nn as/rb well/rb as/in the/dt same/jj payoff/nn ./punct
+finally/rb ,/punct we/prp show/vbp that/in the/dt problem/nn remains/vbz hard/jj even/rb if/in only/rb conjunctions/nns of/in 2/cd variables/nns are/vbp allowed/vbn ,/punct though/in with/in securities/nns that/wdt deviate/vbp slightly/rb from/in arrow-debreu/nnp securities/nns in/in that/in they/prp may/md have/vb varying/vbg ,/punct non/jj unit/nn payoffs/nns ./punct
+before/in describing/vbg the/dt securities/nns ,/punct we/prp give/vbp some/dt intuition/nn ./punct
+selector/nn and/cc an/dt adversary/nn ./punct
+the/dt selector/nn sets/vbz the/dt xi/nn variables/nns ,/punct one/cd in/in which/wdt the/dt auctioneer/nn is/vbz a/dt buyer/nn who/wp buys/vbz securities/nns corresponding/vbg to/to disjunctions/nns of/in the/dt base/nn events/nns ,/punct and/cc then/rb the/dt adversary/nn sets/vbz the/dt values/nns of/in the/dt base/nn events/nns to/to minimize/vb the/dt payoff/nn from/in the/dt securities/nns ./punct
+we/prp construct/vbp our/prp$ securities/nns so/in that/in the/dt optimal/jj buying/nn of/in cheap/jj securities/nns ,/punct of/in negligible/jj cost/nn (/punct for/in some/dt cases/nns we/prp can/md modify/vb the/dt construction/nn so/in that/in all/dt securities/nns have/vbp the/dt same/jj cost/nn )/punct ./punct
+the/dt total/jj cost/nn of/in the/dt securities/nns will/md be/vb just/rb under/in 1/cd ,/punct and/cc each/dt security/nn pays/vbz off/rp 1/cd ,/punct so/rb the/dt adversary/nn must/md ensure/vb that/in none/nn of/in the/dt securities/nns pays/vbz off/rp ./punct
+each/dt expensive/jj particular/jj value/nn to/to prevent/vb the/dt security/nn from/in paying/vbg off/rp ;/punct this/dt corresponds/vbz to/to setting/vbg the/dt xi/nn variables/nns in/in the/dt original/jj game/nn ./punct
+the/dt cheap/jj securities/nns are/vbp such/jj that/in preventing/vbg every/dt one/cd of/in of/in these/dt securities/nns from/in paying/vbg off/rp is/vbz equivalent/jj to/to falsifying/vbg φ/nn in/in the/dt original/jj game/nn ./punct
+among/in the/dt technical/jj difficulties/nns we/prp face/vbp is/vbz how/wrb to/to prevent/vb the/dt buyer/nn from/in buying/vbg conflicting/jj securities/nns ,/punct e.g./fw ,/punct one/cd that/in a/dt trivial/jj arbitrage/nn ./punct
+secondly/rb ,/punct for/in our/prp$ analysis/nn we/prp need/vbp to/to ensure/vb that/in a/dt trader/nn can/md not/rb spend/vb more/jjr to/to get/vb more/jjr ,/punct say/vbp by/in spending/vbg 1.5/cd for/in a/dt set/nn of/in securities/nns with/in the/dt property/nn that/wdt at/in least/jjs 2/cd securities/nns pay/vbp off/rp under/in all/dt possible/jj events/nns ./punct
+corresponding/jj base/nn security/nn (/punct with/in the/dt same/jj labels/nns )/punct ./punct
+for/in each/dt existential/jj variable/jj xi/nn we/prp add/vbp additional/jj base/nn securities/nns ,/punct ni/nns and/cc zi/nn ./punct
+we/prp also/rb include/vbp a/dt base/nn security/nn q./nnp in/in our/prp$ basic/jj construction/nn ,/punct each/dt expensive/jj security/nn costs/nns c/nn and/cc each/dt cheap/jj security/nn costs/nns ;/punct all/dt securities/nns pay/vbp off/rp 1/cd ./punct
+we/prp require/vbp that/in cn+/jj (/punct |cheap/nn securities|/nn )/punct </punct 1/cd and/cc c/nn (/punct n+1/nn )/punct >/punct 1/cd ./punct
+that/dt is/vbz ,/punct one/prp can/md buy/vb n/nn expensive/jj securities/nns and/cc all/dt of/in the/dt security/nn by/in its/prp$ payoff/nn clause/nn ./punct
+would/md allow/vb one/cd to/to buy/vb a/dt security/nn for/in nothing/nn that/wdt pays/vbz (/punct in/in it/prp hard/rb to/to distinguish/vb portfolios/nns that/wdt guarantee/vbp a/dt positive/jj profit/nn from/in those/dt that/wdt risk/vbp a/dt positive/jj loss/nn ./punct
+setting/vbg >/punct 0/cd will/md also/rb allow/vb us/prp to/to show/vb hardness/nn results/nns for/in the/dt case/nn where/wrb all/dt securities/nns have/vbp the/dt same/jj cost/nn ./punct
+with/in payoff/nn clauses/nns (/punct xi/nn ∧/cd ¯zi/nns )/punct and/cc (/punct ni/nns ∧/vbp ¯zi/jj )/punct ./punct
+(/punct z1/nn ∧/cd ·/nn ·/nn ·/nn ∧/cd zn/nn ∧/nn x2/nn ∧/cd n7/nn ∧/cd ¯y5/nn )/punct ./punct
+finally/rb ,/punct we/prp have/vbp a/dt cheap/jj security/nn with/in payoff/nn clause/nn (/punct ¯q/nn )/punct ./punct
+∃x1/nn ./punct
+./punct
+./punct
+∃xn∀y1/nn ./punct
+./punct
+./punct
+∀yn/nn φ/nn (/punct x1/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn ,/punct y1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yn/nn )/punct ./punct
+we/prp do/vbp this/dt by/in successively/rb constraining/vbg the/dt buyer/nn and/cc the/dt adversary/nn ,/punct eliminating/vbg behaviors/nns that/wdt would/md cause/vb the/dt other/jj player/nn to/to win/vb ./punct
+the/dt resulting/vbg reasonable/jj strategies/nns correspond/vbp exactly/rb to/to the/dt game/nn version/nn of/in t∃∀bf/nn ./punct
+first/rb ,/punct observe/vbp that/in if/in the/dt adversary/nn sets/vbz all/dt of/in the/dt base/nn securities/nns to/to false/jj (/punct 0/cd )/punct ,/punct then/rb only/rb the/dt (/punct ¯q/nn )/punct security/nn will/md pay/vb off/rp ./punct
+thus/rb ,/punct no/dt buyer/nn can/md buy/vb more/jjr than/in n/nn expensive/jj securities/nns and/cc guarantee/vb a/dt profit/nn ./punct
+the/dt problem/nn is/vbz thus/rb whether/in one/prp can/md buy/vb n/nn expensive/jj securities/nns and/cc all/pdt the/dt cheap/jj securities/nns ,/punct security/nn will/md pay/vb off/rp ./punct
+clearly/rb ,/punct the/dt adversary/nn must/md make/vb q/nnp hold/vb ,/punct or/cc the/dt (/punct ¯q/nn )/punct (/punct ¯ni/nns ∧/cd q/nnp )/punct securities/nns ./punct
+this/dt follow/vbp from/in the/dt fact/nn that/in if/in the/dt securities/nns will/md pay/vb off/rp ./punct
+as/in no/dt auctioneer/nn can/md buy/vb more/jjr than/in n/nn expensive/jj securities/nns ,/punct it/prp must/md therefore/rb buy/vb exactly/rb one/cd of/in of/in the/dt analysis/nn ,/punct we/prp assume/vbp that/in the/dt auctioneer/nn follows/vbz this/dt constraint/nn ./punct
+suppose/vb that/in the/dt buyer/nn buys/vbz (/punct ¯xi/jj ∧q/nn )/punct ./punct
+then/rb the/dt adversary/nn will/md pay/vb off/rp ./punct
+since/in the/dt buyer/nn doesn/nn ''/'' t/nn buy/vb (/punct ¯ni/nns ∧/cd q/nnp )/punct (/punct by/in the/dt above/jj constraint/nn )/punct ,/punct and/cc all/pdt the/dt other/jj securities/nns pay/vbp the/dt same/jj generality/nn that/in the/dt adversary/nn sets/vbz ni/nns to/to be/vb false/jj ./punct
+similarly/rb ,/punct if/in the/dt buyer/nn buys/vbz (/punct ¯ni/nns ∧/cd q/nnp )/punct ,/punct then/rb the/dt adversary/nn must/md set/vb generality/nn that/in the/dt adversary/nn sets/vbz xi/nn to/to be/vb false/jj ./punct
+note/vb that/in the/dt adversary/nn must/md in/in all/dt cases/nns set/vbp each/dt zi/nn event/nn to/to be/vb true/jj ./punct
+summarizing/vbg the/dt preceding/vbg argument/nn ,/punct there/ex is/vbz an/dt exact/jj correspondence/nn between/in the/dt rational/jj strategies/nns of/in the/dt buyer/nn and/cc settings/nns for/in the/dt xi/nn variables/nns forced/vbn on/in the/dt adversary/nn ./punct
+furthermore/rb ,/punct the/dt adversary/nn is/vbz also/rb constrained/vbn to/to set/vb the/dt constraints/nns ,/punct those/dt securities/nns not/rb corresponding/vbg to/to clauses/nns in/in φ/nn are/vbp guaranteed/vbn to/to not/rb pay/vb off/rp ./punct
+(/punct without/in loss/nn of/in generality/nn )/punct ,/punct it/prp follows/vbz from/in the/dt construction/nn satisfies/vbz c./nnp this/dt establishes/vbz the/dt reduction/nn from/in t∃∀bf/nn to/to the/dt matching/nn problem/nn ,/punct when/wrb the/dt securities/nns are/vbp constrained/vbn their/prp$ negations/nns ./punct
+there/ex are/vbp standard/jj methods/nns for/in reducing/vbg dnf/nn formulae/nns to/to 3-dnf/jj formulae/nns ,/punct which/wdt are/vbp trivially/rb modifiable/jj to/to our/prp$ securities/nns framework/nn ;/punct we/prp include/vbp the/dt reduction/nn for/in completeness/nn ./punct
+given/vbn a/dt security/nn s/nn whose/wp$ payoff/nn clause/nn is/vbz (/punct variable/jj negations/nns are/vbp irrelevant/jj to/to this/dt discussion/nn )/punct ,/punct cost/nn replace/vb the/dt security/nn with/in two/cd securities/nns ,/punct s1/nn and/cc s2/nn ,/punct with/in c2/nn =/punct (/punct ¯w/nn ∧/cd v3/nn ∧/cd ·/nn ·/nn ·/nn ∧/cd vk/nn )/punct ./punct
+the/dt securities/nns both/cc have/vbp payoff/nn p/nn ,/punct and/cc their/prp$ costs/nns can/md be/vb bought/vbn ,/punct then/rb the/dt adversary/nn can/md always/rb set/vb w/nn so/in that/in it/prp won/vbd ''/'' t/nn pay/nn off/in ;/punct hence/rb the/dt auctioneer/nn will/md buy/vb either/cc both/dt or/cc neither/cc ,/punct each/dt of/in s1/nn and/cc s2/nn is/vbz equivalent/jj to/to owning/vbg one/cd share/nn of/in s./nnp note/vbp that/in c1/nn has/vbz three/cd variables/nns and/cc c2/nn has/vbz k−1/nn variables/nns ./punct
+by/in applying/vbg the/dt transformation/nn successively/rb ,/punct one/cd obtains/vbz an/dt equivalent/jj set/nn of/in securities/nns ,/punct of/in polynomial/jj size/nn ,/punct whose/wp$ payoff/nn clauses/nns have/vbp at/in most/jjs 3/cd variables/nns ./punct
+we/prp note/vbp that/in in/in the/dt basic/jj construction/nn ,/punct all/dt of/in the/dt clauses/nns with/in more/jjr than/in 3/cd variables/nns are/vbp associated/vbn with/in cheap/jj securities/nns (/punct cost/nn )/punct ./punct
+instead/rb of/in subdividing/vbg costs/nns ,/punct we/prp can/md simply/rb make/vb all/dt of/in the/dt resulting/vbg securities/nns have/vbp cost/vbn ;/punct the/dt constraints/nns on/in c/nn and/cc must/md reflect/vb the/dt new/jj ,/punct larger/jjr number/nn of/in cheap/jj securities/nns ./punct
+one/prp can/md ensure/vb that/in all/dt of/in the/dt payoff/nn clauses/nns have/vbp exactly/rb variable/jj ./punct
+essentially/rb the/dt same/jj analysis/nn as/in given/vbn above/in applies/vbz to/to this/dt case/nn ./punct
+the/dt case/nn of/in single-variable/jj payoff/nn clauses/nns is/vbz handled/vbn by/in two/cd applications/nns of/in this/dt technique/nn ./punct
+by/in setting/vbg c/nn and/cc appropriately/rb ,/punct one/prp can/md ensure/vb that/in in/in the/dt basic/jj reduction/nn every/dt security/nn costs/vbz a/dt polynomially/rb show/vbp how/wrb to/to reduce/vb this/dt case/nn to/to the/dt case/nn where/wrb every/dt security/nn costs/nns ./punct
+recall/vb that/in the/dt expensive/jj securities/nns have/vbp identically/rb )/punct ./punct
+replace/vb s/nn with/in security/nn s/nn ,/punct with/in payoff/nn clause/nn (/punct ¯w1/nn ∧/cd w2/nn )/punct ,/punct (/punct ¯w2/nn ∧/cd w3/nn )/punct ,/punct ./punct
+./punct
+./punct
+,/punct (/punct ¯wr−2/nn ∧/cd wr−1/nn )/punct ,/punct and/cc (/punct ¯wr−1/nn ∧/cd ¯w1/nn )/punct ./punct
+clearly/rb ,/punct buying/vbg none/nn of/in the/dt new/jj securities/nns is/vbz equivalent/jj to/to not/rb buying/vbg the/dt original/jj security/nn ./punct
+we/prp show/vbp that/in buying/vbg all/dt of/in the/dt new/jj securities/nns is/vbz equivalent/jj to/to buying/vbg the/dt original/jj security/nn ,/punct and/cc that/in buying/vbg a/dt proper/jj ,/punct nonempty/jj subset/nn of/in the/dt securities/nns is/vbz irrational/jj ./punct
+false/jj ,/punct causing/vbg the/dt final/jj clause/nn to/to be/vb true/jj ./punct
+having/vbg set/vbn w1/nn all/dt of/in the/dt replacement/nn securities/nns for/in each/dt is/vbz equivalent/jj to/to buying/vbg the/dt original/jj security/nn for/in r./nnp it/prp remains/vbz to/to show/vb that/in buying/vbg a/dt proper/jj ,/punct nonempty/jj then/rb the/dt adversary/nn can/md set/vb the/dt w/nn variables/nns so/in that/in none/nn of/in securities/nns is/vbz wasted/vbn ./punct
+if/in one/cd doesn/nn ''/'' t/nn buy/vb sr−1/nn ,/punct the/dt adversary/nn can/md buying/vbg a/dt proper/jj subset/nn of/in these/dt securities/nns will/md not/rb increase/vb ones/nns payoff/nn ./punct
+we/prp note/vbp that/in this/dt reduction/nn can/md be/vb combined/vbn trivially/rb with/in the/dt reduction/nn that/wdt ensures/vbz that/in all/dt of/in the/dt defining/vbg clauses/nns have/vbp 3/cd or/cc fewer/jjr variables/nns ./punct
+with/in a/dt slightly/rb messier/jjr argument/nn ,/punct variables/nns ./punct

@@ -1,0 +1,259 @@
+this/dt paper/nn addresses/vbz the/dt problem/nn of/in fair/jj equilibrium/nn selection/nn in/in graphical/jj games/nns ./punct
+our/prp$ approach/nn is/vbz based/vbn on/in the/dt data/nns structure/nn called/vbd the/dt best/jjs response/nn policy/nn ,/punct which/wdt was/vbd proposed/vbn by/in kearns/nnp et/fw al/fw ./punct
+[/punct 13/cd ]/punct as/in a/dt way/nn to/to represent/vb all/dt nash/nnp equilibria/nn of/in a/dt graphical/jj game/nn ./punct
+in/in [/punct 9/cd ]/punct ,/punct it/prp was/vbd shown/vbn that/in the/dt best/jjs response/nn policy/nn has/vbz polynomial/jj size/nn as/rb long/rb as/in the/dt underlying/vbg graph/nn is/vbz a/dt path/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp show/vbp that/in if/in the/dt underlying/vbg graph/nn is/vbz a/dt bounded-degree/jj tree/nn and/cc the/dt best/jjs response/nn policy/nn has/vbz polynomial/jj size/nn then/rb there/ex is/vbz an/dt efficient/jj algorithm/nn which/wdt constructs/nns a/dt nash/nnp equilibrium/nn that/wdt guarantees/vbz certain/jj payoffs/nns to/to all/dt participants/nns ./punct
+another/dt attractive/jj solution/nn concept/nn is/vbz a/dt nash/nnp equilibrium/nn that/wdt maximizes/vbz the/dt social/jj welfare/nn ./punct
+we/prp show/vbp that/in ,/punct while/in exactly/rb computing/vbg the/dt latter/jj is/vbz infeasible/jj (/punct we/prp prove/vbp that/in solving/vbg this/dt problem/nn may/md involve/vb algebraic/jj numbers/nns of/in an/dt arbitrarily/rb high/jj degree/nn )/punct ,/punct there/ex exists/vbz an/dt fptas/nn for/in finding/vbg such/pdt an/dt equilibrium/nn as/rb long/rb as/in the/dt best/jjs response/nn policy/nn has/vbz polynomial/jj size/nn ./punct
+these/dt two/cd algorithms/nns can/md be/vb combined/vbn to/to produce/vb nash/nnp equilibria/nns that/wdt satisfy/vbp various/jj fairness/nn criteria/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp f.2/nn [/punct theory/nnp of/in computation/nnp ]/punct :/punct analysis/nn of/in algorithms/nns and/cc problem/nnp complexity/nnp ;/punct j.4/nn [/punct computer/nn applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nns general/nnp terms/nns algorithms/nns ,/punct economics/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nn in/in a/dt large/jj community/nn of/in agents/nns ,/punct an/dt agent/nn ''/'' s/nns behavior/nn is/vbz not/rb likely/jj to/to have/vb a/dt direct/jj effect/nn on/in most/jjs other/jj agents/nns :/punct rather/rb ,/punct it/prp is/vbz just/rb the/dt agents/nns who/wp are/vbp close/rb enough/jj to/to him/prp that/wdt will/md be/vb affected/vbn ./punct
+however/rb ,/punct as/in these/dt agents/nns respond/vbp by/in adapting/vbg their/prp$ behavior/nn ,/punct more/jjr agents/nns will/md feel/vb the/dt consequences/nns and/cc eventually/rb the/dt choices/nns made/vbn by/in a/dt single/jj agent/nn will/md propagate/vb throughout/in the/dt entire/jj community/nn ./punct
+this/dt is/vbz the/dt intuition/nn behind/in graphical/jj games/nns ,/punct which/wdt were/vbd introduced/vbn by/in kearns/nnp ,/punct littman/nnp and/cc singh/nnp in/in [/punct 13/cd ]/punct as/in a/dt compact/jj representation/nn scheme/nn for/in games/nns with/in many/jj players/nns ./punct
+in/in an/dt n-player/jj graphical/jj game/nn ,/punct each/dt player/nn is/vbz associated/vbn with/in a/dt vertex/nn of/in an/dt underlying/vbg graph/nn g/nn ,/punct and/cc the/dt payoffs/nns of/in each/dt player/nn depend/vb on/in his/prp$ action/nn as/rb well/rb as/in on/in the/dt actions/nns of/in his/prp$ neighbors/nns in/in the/dt graph/nn ./punct
+if/in the/dt maximum/nn degree/nn of/in g/nn is/vbz δ/nnp ,/punct and/cc each/dt player/nn has/vbz two/cd actions/nns available/jj to/to him/prp ,/punct then/rb the/dt game/nn can/md be/vb represented/vbn using/vbg n2δ+1/nn numbers/nns ./punct
+in/in contrast/nn ,/punct we/prp need/vbp n2n/jj numbers/nns to/to represent/vb a/dt general/jj n-player/nn 2-action/nn game/nn ,/punct which/wdt is/vbz only/rb practical/jj for/in small/jj values/nns of/in n./nn for/in graphical/jj games/nns with/in constant/jj δ/nn ,/punct the/dt size/nn of/in the/dt game/nn is/vbz linear/jj in/in n./nnp one/cd of/in the/dt most/rbs natural/jj problems/nns for/in a/dt graphical/jj game/nn is/vbz that/in of/in finding/vbg a/dt nash/nnp equilibrium/nn ,/punct the/dt existence/nn of/in which/wdt follows/vbz from/in nash/nnp ''/'' s/nns celebrated/vbd theorem/nn (/punct as/in graphical/jj games/nns are/vbp just/rb a/dt special/jj case/nn of/in n-player/nn games/nns )/punct ./punct
+the/dt first/jj attempt/nn to/to tackle/vb this/dt problem/nn was/vbd made/vbn in/in [/punct 13/cd ]/punct ,/punct where/wrb the/dt authors/nns consider/vbp graphical/jj games/nns with/in two/cd actions/nns per/in player/nn in/in which/wdt the/dt underlying/vbg graph/nn is/vbz a/dt boundeddegree/jj tree/nn ./punct
+they/prp propose/vbp a/dt generic/jj algorithm/nn for/in finding/vbg nash/nnp equilibria/nns that/wdt can/md be/vb specialized/vbn in/in two/cd ways/nns :/punct an/dt exponential-time/jj algorithm/nn for/in finding/vbg an/dt (/punct exact/jj )/punct nash/nnp equilibrium/nn ,/punct and/cc a/dt fully/rb polynomial/jj time/nn approximation/nn scheme/nn (/punct fptas/nn )/punct for/in finding/vbg an/dt approximation/nn to/to a/dt nash/nnp equilibrium/nn ./punct
+for/in any/dt >/punct 0/cd this/dt algorithm/nn outputs/vbz an/dt -nash/jj equilibrium/nn ,/punct which/wdt is/vbz a/dt strategy/nn profile/nn in/in which/wdt no/dt player/nn can/md improve/vb his/prp$ payoff/nn by/in more/jjr than/in by/in unilaterally/rb changing/vbg his/prp$ strategy/nn ./punct
+while/in -nash/jj equilibria/nns are/vbp often/rb easier/jjr to/to compute/vb than/in exact/jj nash/nnp equilibria/nns ,/punct this/dt solution/nn concept/nn has/vbz several/jj drawbacks/nns ./punct
+first/rb ,/punct the/dt players/nns may/md be/vb sensitive/jj to/to a/dt small/jj loss/nn in/in payoffs/nns ,/punct so/in the/dt strategy/nn profile/nn that/wdt is/vbz an/dt -nash/jj equilibrium/nn will/md not/rb be/vb stable/jj ./punct
+this/dt will/md be/vb the/dt case/nn even/rb if/in there/ex is/vbz only/rb a/dt small/jj subset/nn of/in players/nns who/wp are/vbp extremely/rb price-sensitive/jj ,/punct and/cc for/in a/dt large/jj population/nn of/in players/nns it/prp may/md be/vb difficult/jj to/to choose/vb a/dt value/nn of/in that/dt will/md satisfy/vb everyone/nn ./punct
+second/rb ,/punct the/dt strategy/nn profiles/nns that/wdt are/vbp close/jj to/to being/vbg nash/nnp equilibria/nns may/md be/vb much/rb better/rbr with/in respect/nn to/to the/dt properties/nns under/in consideration/nn than/in exact/jj nash/nnp equilibria/nns ./punct
+therefore/rb ,/punct the/dt (/punct approximation/nn to/to the/dt )/punct value/nn of/in the/dt best/jjs solution/nn that/wdt corresponds/vbz to/to an/dt -nash/jj equilibrium/nn may/md not/rb be/vb indicative/jj of/in what/wp can/md be/vb achieved/vbn under/in an/dt exact/jj nash/nnp equilibrium/nn ./punct
+this/dt is/vbz especially/rb important/jj if/in the/dt purpose/nn of/in the/dt approximate/jj solution/nn is/vbz to/to provide/vb a/dt good/jj benchmark/nn for/in a/dt system/nn of/in selfish/jj agents/nns ,/punct as/in the/dt benchmark/jj implied/vbn by/in an/dt -nash/jj equilibrium/nn may/md be/vb unrealistic/jj ./punct
+for/in these/dt reasons/nns ,/punct in/in this/dt paper/nn we/prp focus/vbp on/in the/dt problem/nn of/in computing/vbg exact/jj nash/nnp equilibria/nns ./punct
+building/nn on/in ideas/nns of/in [/punct 14/cd ]/punct ,/punct elkind/nnp et/fw al/fw ./punct
+[/punct 9/cd ]/punct showed/vbd how/wrb to/to find/vb an/dt (/punct exact/jj )/punct nash/nnp equilibrium/nn in/in polynomial/jj time/nn when/wrb the/dt underlying/vbg 162/cd graph/nn has/vbz degree/nn 2/cd (/punct that/wdt is/vbz ,/punct when/wrb the/dt graph/nn is/vbz a/dt collection/nn of/in paths/nns and/cc cycles/nns )/punct ./punct
+by/in contrast/nn ,/punct finding/vbg a/dt nash/nnp equilibrium/nn in/in a/dt general/jj degree-bounded/jj graph/nn appears/vbz to/to be/vb computationally/rb intractable/jj :/punct it/prp has/vbz been/vbn shown/vbn (/punct see/vbp [/punct 5/cd ,/punct 12/cd ,/punct 7/cd ]/punct )/punct to/to be/vb complete/jj for/in the/dt complexity/nn class/nn ppad/nn ./punct
+[/punct 9/cd ]/punct extends/vbz this/dt hardness/nn result/vbp to/to the/dt case/nn in/in which/wdt the/dt underlying/vbg graph/nn has/vbz bounded/vbn pathwidth/nn ./punct
+a/dt graphical/jj game/nn may/md not/rb have/vb a/dt unique/jj nash/nnp equilibrium/nn ,/punct indeed/rb it/prp may/md have/vb exponentially/rb many/jj ./punct
+moreover/rb ,/punct some/dt nash/nnp equilibria/nns are/vbp more/rbr desirable/jj than/in others/nns ./punct
+rather/rb than/in having/vbg an/dt algorithm/nn which/wdt merely/rb finds/vbz some/dt nash/nnp equilibrium/nn ,/punct we/prp would/md like/vb to/to have/vb algorithms/nns for/in finding/vbg nash/nnp equilibria/nns with/in various/jj sociallydesirable/jj properties/nns ,/punct such/jj as/in maximizing/vbg overall/jj payoff/nn or/cc distributing/vbg profit/nn fairly/rb ./punct
+a/dt useful/jj property/nn of/in the/dt data/nns structure/nn of/in [/punct 13/cd ]/punct is/vbz that/in it/prp simultaneously/rb represents/vbz the/dt set/nn of/in all/dt nash/nnp equilibria/nn of/in the/dt underlying/jj game/nn ./punct
+if/in this/dt representation/nn has/vbz polynomial/jj size/nn (/punct as/rb is/vbz the/dt case/nn for/in paths/nns ,/punct as/in shown/vbn in/in [/punct 9/cd ]/punct )/punct ,/punct one/cd may/md hope/vb to/to extract/vb from/in it/prp a/dt nash/nnp equilibrium/nn with/in the/dt desired/vbn properties/nns ./punct
+in/in fact/nn ,/punct in/in [/punct 13/cd ]/punct the/dt authors/nns mention/vbp that/in this/dt is/vbz indeed/rb possible/jj if/in one/cd is/vbz interested/jj in/in finding/vbg an/dt (/punct approximate/jj )/punct -nash/jj equilibrium/nn ./punct
+the/dt goal/nn of/in this/dt paper/nn is/vbz to/to extend/vb this/dt to/to exact/jj nash/nnp equilibria/nns ./punct
+in/in this/dt paper/nn ,/punct we/prp study/vbp n-player/jj 2-action/jj graphical/jj games/nns on/in bounded-degree/jj trees/nns for/in which/wdt the/dt data/nns structure/nn of/in has/vbz size/nn poly/nn (/punct n/nn )/punct ./punct
+we/prp focus/vbp on/in the/dt problem/nn of/in finding/vbg exact/jj nash/nnp equilibria/nns with/in certain/jj socially-desirable/jj properties/nns ./punct
+in/in particular/jj ,/punct we/prp show/vbp how/wrb to/to find/vb a/dt nash/nnp equilibrium/nn that/wdt (/punct nearly/rb )/punct maximizes/vbz the/dt social/jj welfare/nn ,/punct i.e./fw ,/punct the/dt sum/nn of/in the/dt players/nns ''/'' payoffs/nns ,/punct and/cc we/prp show/vbp how/wrb to/to find/vb a/dt nash/nnp equilibrium/nn that/wdt (/punct nearly/rb )/punct satisfies/nns prescribed/vbn payoff/nn bounds/nns for/in all/dt players/nns ./punct
+graphical/jj games/nns on/in bounded-degree/jj trees/nns have/vbp a/dt simple/jj algebraic/jj structure/nn ./punct
+one/cd attractive/jj feature/nn ,/punct which/wdt follows/vbz from/in ,/punct is/vbz that/in every/dt such/jj game/nn has/vbz a/dt nash/nnp equilibrium/nn in/in which/wdt the/dt strategy/nn structure/nn of/in those/dt nash/nnp equilibria/nns that/wdt maximize/vbp social/jj welfare/nn ./punct
+we/prp show/vbp (/punct theorems/nns 1/cd and/cc 2/cd )/punct that/in ,/punct surprisingly/rb ,/punct the/dt set/nn of/in nash/nnp equilibria/nns that/wdt maximize/vbp social/jj welfare/nn is/vbz more/rbr complex/jj ./punct
+in/in fact/nn ,/punct for/in social/jj welfare-maximizing/jj nash/nnp equilibrium/nn of/in this/dt game/nn ,/punct one/cd of/in the/dt players/nns plays/vbz the/dt mixed/jj strategy/nn α.1/nn to/to find/vb and/cc represent/vb a/dt nash/nnp equilibrium/nn ./punct
+as/in the/dt social/jj welfare-maximizing/jj nash/nnp equilibrium/nn may/md be/vb hard/jj to/to represent/vb efficiently/rb ,/punct we/prp have/vbp to/to settle/vb for/in an/dt approximation/nn ./punct
+however/rb ,/punct the/dt crucial/jj difference/nn between/in our/prp$ approach/nn and/cc that/in of/in previous/jj papers/nns is/vbz that/in we/prp require/vbp our/prp$ algorithm/nn to/to output/nn an/dt exact/jj nash/nnp equilibrium/nn ,/punct though/in not/rb necessarily/rb the/dt optimal/jj algorithm/nn that/wdt satisfies/vbz this/dt requirement/nn ./punct
+namely/rb ,/punct we/prp propose/vbp an/dt algorithm/nn that/wdt for/in any/dt >/punct 0/cd finds/vbz a/dt nash/nnp equilibrium/nn whose/wp$ total/nn for/in any/dt graphical/jj game/nn on/in a/dt bounded-degree/jj tree/nn for/in which/wdt the/dt data/nns structure/nn proposed/vbn by/in (/punct the/dt so-called/jj best/jjs response/nn policy/nn ,/punct always/rb the/dt case/nn when/wrb the/dt underlying/vbg graph/nn is/vbz a/dt path/nn )/punct ./punct
+more/rbr who/wp shows/vbz that/in n-player/nn 2-action/nn games/nns are/vbp universal/jj in/in the/dt sense/nn that/in any/dt real/jj algebraic/jj variety/nn can/md be/vb represented/vbn as/in the/dt set/nn of/in totally/rb mixed/jj nash/nnp equilibria/nns of/in such/jj games/nns ./punct
+under/in some/dt restrictions/nns on/in the/dt payoff/nn matrices/nns ,/punct the/dt algorithm/nn can/md be/vb transformed/vbn into/in a/dt (/punct truly/rb )/punct polynomial-time/jj algorithm/nn that/wdt from/in the/dt optimal/jj ./punct
+equilibrium/nn in/in which/wdt the/dt expected/vbn payoff/nn of/in each/dt player/nn vi/nnp exceeds/vbz a/dt prescribed/jj threshold/nn ti/nnp ./punct
+using/vbg the/dt idea/nn from/in section/nn 4/cd we/prp give/vbp (/punct theorem/nnp 5/cd )/punct a/dt fully/rb polynomial/jj time/nn approximation/nn scheme/nn for/in this/dt satisfying/vbg the/dt prescribed/vbn thresholds/nns then/rb the/dt algorithm/nn constructs/nns a/dt at/in least/jjs ti/fw −/fw ./punct
+in/in section/nn 6/cd ,/punct we/prp introduce/vbp other/jj natural/jj criteria/nns for/in selecting/vbg a/dt good/jj nash/nnp equilibrium/nn and/cc we/prp show/vbp that/in the/dt algorithms/nns described/vbn in/in the/dt two/cd previous/jj sections/nns can/md be/vb used/vbn as/in building/nn blocks/nns in/in finding/vbg nash/nnp equilibria/nns that/wdt satisfy/vbp these/dt criteria/nns ./punct
+in/in particular/jj ,/punct in/in section/nn 6.1/cd we/prp show/vbp how/wrb to/to find/vb a/dt nash/nnp equilibrium/nn that/wdt approximates/vbz the/dt maximum/nn social/jj welfare/nn ,/punct while/in guaranteeing/vbg that/in each/dt we/prp show/vbp how/wrb to/to find/vb a/dt nash/nnp equilibrium/nn that/wdt (/punct nearly/rb )/punct maximizes/vbz the/dt minimum/jj individual/jj payoff/nn ./punct
+finally/rb ,/punct in/in section/nn 6.3/cd we/prp show/vbp the/dt players/nns are/vbp close/jj to/to each/dt other/jj ./punct
+our/prp$ approximation/nn scheme/nn (/punct theorem/nnp 3/cd and/cc theorem/nnp 4/cd )/punct shows/vbz a/dt contrast/nn between/in the/dt games/nns that/in we/prp study/nn and/cc two-player/jj n-action/nn games/nns ,/punct for/in which/wdt the/dt corresponding/jj problems/nns are/vbp usually/rb intractable/jj ./punct
+for/in two-player/jj n-action/nn games/nns ,/punct the/dt problem/nn of/in finding/vbg nash/nnp equilibria/nns with/in special/jj properties/nns is/vbz typically/rb np-hard/jj ./punct
+in/in particular/jj ,/punct this/dt is/vbz the/dt case/nn for/in nash/nnp equilibria/nns that/wdt maximize/vbp the/dt social/jj welfare/nn [/punct 11/cd ,/punct equilibria/nns ./punct
+in/in particular/jj ,/punct chen/nnp ,/punct deng/nnp and/cc teng/nnp show/vbp that/in there/ex -nash/jj equilibrium/nn in/in 2-player/jj games/nns with/in n/nn actions/nns per/in player/nn is/vbz ppad-complete/jj ./punct
+lipton/nnp and/cc markakis/nnp study/vb the/dt algebraic/jj properties/nns of/in nash/nnp equilibria/nnp ,/punct and/cc point/nn out/rp that/in standard/jj quantifier/nn elimination/nn algorithms/nns can/md be/vb used/vbn to/to solve/vb them/prp ./punct
+note/vb that/in these/dt algorithms/nns are/vbp not/rb polynomial-time/jj in/in general/jj ./punct
+the/dt games/nns we/prp study/vbp in/in this/dt paper/nn have/vbp polynomial-time/jj computable/jj nash/nnp equilibria/nns in/in which/wdt all/dt mixed/jj strategies/nns are/vbp rational/jj numbers/nns ,/punct but/cc an/dt optimal/jj nash/nnp equilibrium/nn may/md necessarily/rb include/vb mixed/jj strategies/nns with/in high/jj algebraic/jj degree/nn ./punct
+distribution/nn over/in vectors/nns of/in players/nns ''/'' actions/nns with/in the/dt property/nn that/in if/in any/dt player/nn is/vbz told/vbn his/prp$ own/jj action/nn (/punct the/dt value/nn of/in his/prp$ own/jj component/nn )/punct from/in a/dt vector/nn generated/vbn by/in that/dt distribution/nn ,/punct then/rb he/prp can/md not/rb increase/vb his/prp$ expected/jj payoff/nn by/in changing/vbg his/prp$ action/nn ./punct
+any/dt nash/nnp contrast/nn with/in nash/nnp equilibria/nnp ,/punct correlated/vbd equilibria/nns can/md be/vb found/vbn for/in low-degree/jj graphical/jj games/nns (/punct as/rb well/rb as/in other/jj classes/nns of/in conciselyrepresented/jj multiplayer/nn games/nns )/punct in/in polynomial/jj time/nn ./punct
+but/cc ,/punct for/in maximizes/vbz total/jj payoff/nn ./punct
+however/rb ,/punct the/dt np-hardness/nn results/vbz apply/vb to/to more/jjr general/jj games/nns than/in the/dt one/cd we/prp consider/vbp here/rb ,/punct in/in particular/jj the/dt graphs/nns are/vbp not/rb trees/nns ./punct
+from/in it/prp is/vbz also/rb known/vbn that/in there/ex exist/vbp 2-player/nn ,/punct 2-action/jj games/nns for/in which/wdt the/dt expected/vbn total/jj payoff/nn of/in the/dt best/jjs correlated/vbn equilibrium/nn is/vbz higher/jjr than/in the/dt best/jjs nash/nnp equilibrium/nn ,/punct and/cc we/prp discuss/vbp this/dt issue/nn further/rb in/in section/nn 7./ls which/wdt denotes/vbz the/dt probability/nn that/wdt v/nnp selects/vbz action/nn 1/cd ./punct
+for/in the/dt purposes/nns of/in the/dt algorithm/nn ,/punct the/dt tree/nn is/vbz rooted/vbn arbitrarily/rb ./punct
+for/in convenience/nn ,/punct we/prp assume/vbp without/in loss/nn of/in generality/nn that/in the/dt root/nn has/vbz a/dt single/jj child/nn ,/punct and/cc that/in its/prp$ payoff/nn is/vbz independent/jj of/in the/dt action/nn arbitrary/jj root/nn of/in the/dt tree/nn ,/punct and/cc then/rb adding/vbg a/dt dummy/nn parent/nn of/in this/dt root/nn ,/punct giving/vbg the/dt new/jj parent/nn a/dt constant/jj payoff/nn function/nn ,/punct e.g./fw ,/punct 0./cd strategy/nn w./vbd v/ls is/vbz a/dt mixed/jj strategy/nn for/in v/nn and/cc that/in w/nn is/vbz a/dt mixed/jj strategy/nn for/in w/nn ./punct
+which/wdt v/nn has/vbz mixed/vbn strategy/nn v./cc we/prp define/vbp the/dt best/jjs response/nn policy/nn }/punct ./punct
+the/dt upstream/jj pass/nn of/in the/dt generic/jj algorithm/nn of/in considers/vbz every/dt node/nn v/nn (/punct other/jj than/in the/dt root/nn )/punct and/cc computes/vbz the/dt best/jjs response/nn policy/nn for/in v/nn given/vbn its/prp$ parent/nn ./punct
+with/in the/dt above/jj assumptions/nns about/in the/dt root/nn ,/punct the/dt downstream/jj pass/nn is/vbz straightforward/jj ./punct
+the/dt root/nn selects/vbz a/dt play/nn u./nn on/in b/nn (/punct v/nn ,/punct u/nnp )/punct ,/punct and/cc to/to bound/vbn the/dt number/nn of/in rectangles/nns ,/punct used/vbd the/dt iu/nn ;/punct v/nn -event/jj points/nns are/vbp defined/vbn similarly/rb ./punct
+for/in many/jj games/nns considered/vbn in/in this/dt paper/nn ,/punct the/dt underlying/vbg graph/nn is/vbz such/jj games/nns ,/punct the/dt best/jjs response/nn policy/nn has/vbz only/rb polynomially-many/jj rectangles/nns ./punct
+the/dt proof/nn that/in the/dt number/nn of/in rectangles/nns in/in b/nn (/punct vj+1/nn ,/punct vj/nn )/punct is/vbz polynomial/jj proceeds/nns by/in first/jj showing/vbg that/in the/dt number/nn of/in event/nn number/nn of/in rectangles/nns in/in b/nn (/punct vj+1/nn ,/punct vj/nn )/punct ./punct
+will/md frequently/rb use/vb the/dt following/jj simple/jj observation/nn ./punct
+c/nn ,/punct d/nn are/vbp integer/nn ,/punct the/dt payoffs/nns to/to v/nn are/vbp integer/nn as/rb well/rb ./punct
+p10/nn =/punct b/nn +/punct d/nn ,/punct p11/nn =/punct a/nn +/punct b/nn +/punct c/nn +/punct d./nnp the/nnp input/nn to/to all/dt algorithms/nns considered/vbn in/in this/dt paper/nn includes/vbz the/dt payoff/nn matrices/nns for/in each/dt player/nn ./punct
+we/prp assume/vbp that/in all/dt elements/nns of/in these/dt matrices/nns are/vbp integer/nn ./punct
+let/vb pmax/nnp be/vb the/dt greatest/jjs absolute/jj value/nn of/in any/dt element/nn of/in any/dt payoff/nn matrix/nn ./punct
+then/rb the/dt input/nn consists/vbz of/in numbers/nns ,/punct each/dt of/in which/wdt can/md be/vb represented/vbn using/vbg log/nn pmax/nn bits/nns ./punct
+from/in the/dt point/nn of/in view/nn of/in social/jj welfare/nn ,/punct the/dt best/jjs nash/nnp equilibrium/nn is/vbz the/dt one/cd that/wdt maximizes/vbz the/dt sum/nn of/in the/dt players/nns ''/'' expected/vbn payoffs/nns ./punct
+unfortunately/rb ,/punct it/prp turns/vbz out/rp that/in computing/vbg such/pdt a/dt strategy/nn all/dt players/nns ''/'' payoffs/nns are/vbp integers/nns ,/punct the/dt strategy/nn profile/nn that/wdt maximizes/vbz the/dt total/jj payoff/nn may/md have/vb irrational/jj coordinates/vbz ;/punct moreover/rb ,/punct it/prp may/md involve/vb algebraic/jj numbers/nns of/in an/dt arbitrary/jj degree/nn ./punct
+of/in length/nn 3/cd with/in integer/nn payoffs/nns such/jj that/in in/in the/dt nash/nnp equilibrium/nn that/wdt maximizes/vbz the/dt total/jj payoff/nn ,/punct one/cd of/in the/dt players/nns has/vbz a/dt strategy/nn in/in paths/nns of/in length/nn o/nn (/punct n/nn )/punct ./punct
+theorem/nn 1/cd ./punct
+there/ex exists/vbz an/dt integer-payoff/jj graphical/jj game/nn g/nn that/wdt maximizes/vbz social/jj welfare/nn ,/punct the/dt strategy/nn ,/punct u/nn ,/punct of/in the/dt player/nn u/nn and/cc the/dt total/jj payoff/nn ,/punct p/nn ,/punct satisfy/vb u/nn ,/punct p/nn ∈/cd r/nn \/punct q./nnp proof/nnp ./punct
+the/dt payoffs/nns to/to the/dt players/nns in/in g/nn are/vbp specified/vbn as/in follows/vbz ./punct
+payoff/nn to/to w/nn is/vbz 0/cd if/in it/prp selects/vbz the/dt same/jj action/nn as/in v/nn and/cc 1/cd otherwise/rb ./punct
+of/in strategies/nns (/punct u/nn ,/punct 1/2/cd ,/punct f/fw (/punct u/fw )/punct )/punct constitutes/vbz a/dt nash/nnp equilibrium/nn ./punct
+indifferent/jj between/in 0/cd and/cc 1/cd ,/punct so/in it/prp can/md play/vb f/fw (/punct u/fw )/punct ./punct
+(/punct v/nn )/punct ,/punct which/wdt implies/vbz v/ls =/punct 0/cd ,/punct a/dt contradiction/nn ./punct
+and/cc 1/cd ,/punct so/rb he/prp would/md deviate/vb from/in playing/vbg 1/2/cd ./punct
+this/dt completes/vbz the/dt proof/nn of/in claim/nnp 2./fw the/dt nash/nnp equilibrium/nn with/in the/dt maximum/nn total/jj payoff/nn corresponds/vbz ./punct
+./punct
+5/cd ∈/nn ./punct
+the/dt function/nn g/nn (/punct u/nn )/punct changes/nns sign/nn at/in −2/cd ,/punct −1/cd ,/punct and/cc 3/cd ./punct
+we/prp have/vbp maximum/nn ./punct
+we/prp conclude/vbp that/in the/dt social/jj welfare-maximizing/jj nash/nnp equilibrium/nn for/in this/dt game/nn is/vbz given/vbn by/in the/dt vector/nn of/in strategies/nns (/punct −2+√/cd 5/cd ./punct
+this/dt concludes/vbz the/dt proof/nn of/in theorem/nnp 1/cd ./punct
+we/prp have/vbp shown/vbn that/in in/in the/dt social/jj welfare-maximizing/jj nash/nnp equilibrium/nn ,/punct some/dt players/nns ''/'' strategies/nns can/md be/vb quadratic/jj irrationalities/nns ,/punct and/cc so/rb can/md the/dt total/jj payoff/nn ./punct
+in/in this/dt subsection/nn ,/punct we/prp will/md extend/vb this/dt result/nn to/to show/vb that/in we/prp can/md construct/vb an/dt integer-payoff/jj graphical/jj game/nn on/in a/dt path/nn whose/wp$ social/jj welfare-maximizing/jj nash/nnp equilibrium/nn involves/vbz arbitrary/jj algebraic/jj numbers/nns in/in ./punct
+theorem/nn 2/cd ./punct
+for/in any/dt degree-n/jj algebraic/jj number/nn α/nn ∈/nn ,/punct o/nn (/punct n/nn )/punct such/jj that/in ,/punct in/in all/dt social/jj welfare-maximizing/jj nash/nnp equilibria/nns of/in this/dt game/nn ,/punct one/cd of/in the/dt players/nns plays/vbz α./nnp proof/nnp ./punct
+our/prp$ proof/nn consists/vbz of/in two/cd steps/nns ./punct
+first/rb ,/punct we/prp construct/vbp a/dt construct/nn a/dt graphical/jj game/nn whose/wp$ nash/nnp equilibria/nns can/md be/vb to/to u/vb the/dt total/jj payoff/nn is/vbz r/nn (/punct u/nn )/punct and/cc ,/punct moreover/rb ,/punct some/dt player/nn ''/'' s/nns equilibrium/nn ,/punct this/dt player/nn has/vbz to/to play/vb α./rb the/dt details/nns follow/vbp ./punct
+on/in [/punct x/nn ,/punct x/cc ]/punct ./punct
+polynomial/nn of/in degree/nn n/nn with/in rational/jj coefficients/nns whose/wp$ leading/vbg all/dt roots/nns of/in p/nn (/punct x/cc )/punct ./punct
+consider/vb the/dt polynomial/jj q1/nn (/punct x/cc )/punct =/punct −p2/nn a/nn is/vbz also/rb the/dt set/nn of/in all/dt maxima/nns of/in r/nn (/punct x/cc )/punct on/in ./punct
+only/rb zero/cd (/punct and/cc hence/rb ,/punct the/dt only/jj maximum/nn )/punct of/in r/nn (/punct x/cc )/punct on/in [/punct α/nn ,/punct α/nn ]/punct ./punct
+respectively/rb ;/punct note/nn that/in by/in excluding/vbg the/dt endpoints/nns of/in the/dt intervals/nns α/nn is/vbz the/dt only/jj maximum/nn of/in r/nn (/punct x/cc )/punct on/in [/punct x/nn ,/punct x/cc ]/punct ./punct
+denominator/nn are/vbp simple/jj ,/punct by/in partial/jj fraction/nn decomposition/nn theorem/nn ,/punct where/wrb k2/nn ,/punct ./punct
+./punct
+./punct
+,/punct k2n+2/nn are/vbp rational/jj numbers/nns ./punct
+described/vbn in/in the/dt previous/jj subsection/nn ./punct
+more/rbr precisely/rb ,/punct we/prp define/vbp the/dt payoffs/nns to/to the/dt players/nns in/in the/dt following/jj way/nn ./punct
+•/nn the/dt payoff/nn to/to u−1/nn is/vbz 0/cd no/dt matter/nn what/wdt everyone/nn else/rb does/vbz ./punct
+of/in u0/nn and/cc u−1/nn ,/punct respectively/rb ./punct
+u1/nn ,/punct respectively/rb ./punct
+the/dt strategies/nns of/in ui+1/nn and/cc ui/nn ,/punct respectively/rb ./punct
+otherwise/rb ./punct
+we/prp will/md now/rb characterize/vb the/dt nash/nnp equilibria/nn of/in this/dt game/nn using/vbg a/dt sequence/nn of/in claims/nns ./punct
+claim/nn 3/cd ./punct
+in/in all/dt nash/nnp equilibria/nn of/in this/dt game/nn v−1/nn plays/vbz 1/2/cd ,/punct and/cc the/dt strategies/nns of/in u−1/nn and/cc u0/nn satisfy/vbp u0/nn =/punct (/punct x/cc −/cd x/cc )/punct u−1/nn +/punct x/nn ./punct
+consequently/rb ,/punct in/in all/dt nash/nnp equilibria/nn we/prp have/vbp u0/jj ∈/nn [/punct x/nn ,/punct x/cc ]/punct ./punct
+(/punct v−1/nn )/punct +/punct 1/cd −/cd (/punct x/nn −/cd x/cc )/punct u−1/nn −/cd x/nn ./punct
+(/punct v−1/nn )/punct −/nn (/punct x/cc −/cd x/cc )/punct u−1/nn −/cd x/nn ./punct
+would/md deviate/vb from/in playing/vbg 1/2/cd ./punct
+this/dt game/nn we/prp have/vbp u0/jj ∈/nn [/punct x/nn ,/punct x/cc ]/punct ./punct
+and/cc fi/nn (/punct u/nn )/punct =/punct 1//cd (/punct 2/cd −/cd u/nn )/punct for/in i/fw >/punct 0/cd ./punct
+proof/nn ./punct
+the/dt proof/nn of/in this/dt claim/nn is/vbz also/rb similar/jj to/to that/dt of/in claim/nnp 2./fw and/cc ,/punct additionally/rb ,/punct ui/nn =/punct 1/cd for/in i/fw >/punct 0./cd the/dt triple/jj (/punct u0/nn ,/punct v0/nn ,/punct u1/nn )/punct ./punct
+let/vb v0/nn be/vb the/dt strategy/nn of/in v0/nn ./punct
+first/rb ,/punct suppose/vbp that/in v0/nn >/punct 1/2/cd ./punct
+then/rb u1/nn strictly/rb prefers/vbz to/to play/vb 0/cd ,/punct i.e./fw ,/punct u1/nn =/punct 0/cd ./punct
+(/punct v0/nn )/punct ,/punct which/wdt implies/vbz v1/nn =/punct 0/cd ,/punct a/dt contradiction/nn ./punct
+u0//nn (/punct u0/nn +/punct 1/cd )/punct and/cc u0/nn ∈/nn ,/punct we/prp have/vbp u1/nn =/punct 1/cd ./punct
+the/dt argument/nn for/in the/dt inductive/jj step/nn is/vbz similar/jj ./punct
+namely/rb ,/punct suppose/vbp (/punct ui/nnp ,/punct vi/nnp ,/punct ui+1/nn )/punct ./punct
+as/in ui+1/nn =/punct 1//cd (/punct 2/cd −/cd ui/nn )/punct and/cc ui/nn </punct 1/cd ,/punct we/prp have/vbp ui+1/nn </punct 1/cd ./punct
+claim/nn 5/cd ./punct
+any/dt strategy/nn profile/nn of/in the/dt form/nn and/cc ui+1/nn =/punct 1//cd (/punct 2/cd −/cd ui/nn )/punct for/in i/fw ≥/fw 1/cd constitutes/vbz a/dt nash/nnp equilibrium/nn ./punct
+proof/nn ./punct
+first/rb ,/punct the/dt player/nn u−1/nn ''/'' s/nns payoffs/nns do/vbp not/rb depend/vb on/in other/jj for/in all/dt ui/fw ∈/fw ,/punct so/in we/prp have/vbp ui/nn ∈/nn for/in all/dt i/fw =/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct k./nnp now/rb ,/punct let/vb us/prp compute/vb the/dt total/jj payoff/nn under/in a/dt strategy/nn profile/nn of/in follows/vbz that/in to/to find/vb a/dt nash/nnp equilibrium/nn with/in the/dt highest/jjs total/jj payoff/nn ,/punct for/in i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct k/nn −/cd 1./cd simplify/vbp notation/nn ,/punct set/vbn u/nn =/punct u0/nn ./punct
+./punct
+2i/jj −/nn 2/cd −/nn u/nn −/cd i/fw +/punct 2/cd )/punct =/punct (/punct u/nn +/punct i/fw −/fw 1/cd )/punct //punct (/punct u/nn +/punct i/fw )/punct ./punct
+./punct
+observe/vb that/dt as/in u−1/nn varies/vbz from/in 0/cd to/to 1/cd ,/punct u/nn varies/vbz from/in x/nn to/to x/nn ./punct
+=/punct r/nn (/punct u/nn )/punct ./punct
+follows/vbz that/in in/in the/dt payoff-maximizing/jj nash/nnp equilibrium/nn of/in our/prp$ game/nn u0/nn plays/vbz α./nnp finally/rb ,/punct note/nn that/in the/dt payoffs/nns in/in our/prp$ game/nn are/vbp rational/jj rather/rb than/in to/to a/dt player/nn by/in their/prp$ greatest/jjs common/jj denominator/nn without/in affecting/vbg his/prp$ strategy/nn ./punct
+in/in the/dt resulting/vbg game/nn ,/punct all/dt payoffs/nns are/vbp integer/nn ./punct
+this/dt concludes/vbz the/dt proof/nn of/in theorem/nnp 2/cd ./punct
+we/prp have/vbp seen/vbn that/in the/dt nash/nnp equilibrium/nn that/wdt maximizes/vbz the/dt social/jj welfare/nn may/md involve/vb strategies/nns that/wdt are/vbp not/rb in/in q./nnp hence/rb ,/punct in/in this/dt optimal/jj from/in the/dt social/jj welfare/nn perspective/nn ./punct
+we/prp propose/vbp an/dt algorithm/nn that/wdt for/in any/dt >/punct 0/cd finds/vbz a/dt nash/nnp equilibrium/nn whose/wp$ total/jj payoff/nn is/vbz within/in from/in optimal/jj ./punct
+the/dt running/vbg time/nn of/in this/dt algorithm/nn is/vbz absolute/jj value/nn of/in an/dt entry/nn of/in a/dt payoff/nn matrix/nn )/punct ./punct
+while/in the/dt negative/jj result/nn of/in the/dt previous/jj section/nn is/vbz for/in graphical/jj scenarios/nns ./punct
+namely/rb ,/punct it/prp runs/vbz in/in polynomial/jj time/nn on/in bounded-degree/jj trees/nns as/rb long/rb as/in the/dt best/jjs response/nn policy/nn of/in each/dt vertex/nn ,/punct given/vbn its/prp$ parent/nn ,/punct rectangles/nns ./punct
+note/vb that/dt path/nn graphs/nns always/rb satisfy/vbp this/dt condition/nn :/punct in/in we/prp showed/vbd how/wrb to/to compute/vb such/pdt a/dt representation/nn ,/punct given/vbn a/dt graph/nn with/in maximum/nn degree/nn 2/cd ./punct
+consequently/rb ,/punct for/in path/nn graphs/nns the/dt running/nn time/nn exhibits/vbz a/dt family/nn of/in graphical/jj games/nns on/in bounded-degree/jj trees/nns for/in which/wdt the/dt best/jjs response/nn policies/nns of/in some/dt of/in the/dt vertices/nns ,/punct given/vbn their/prp$ parents/nns ,/punct have/vbp exponential/jj size/nn ,/punct when/wrb represented/vbn as/in unions/nns of/in the/dt algorithm/nn for/in the/dt case/nn where/wrb the/dt graph/nn underlying/vbg the/dt graphical/jj game/nn is/vbz a/dt path/nn ./punct
+we/prp then/rb state/vbp our/prp$ result/nn for/in the/dt general/jj case/nn ;/punct the/dt proof/nn can/md be/vb found/vbn in/in the/dt full/jj version/nn of/in this/dt paper/nn ./punct
+m/nn (/punct g/nn )/punct =/punct max/nn {/punct ep/nn (/punct s/vbz )/punct |/punct s/nns is/vbz a/dt nash/nnp equilibrium/nn for/in g/nn }/punct ./punct
+./punct
+the/dt running/vbg time/nn of/in the/dt algorithm/nn is/vbz o/nn (/punct n4/nn constructing/vbg the/dt best/jjs response/nn policies/nns for/in all/dt vi/nnp ,/punct i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn −/nn 1/cd ./punct
+)/punct ./punct
+b/nn (/punct vi+1/nn ,/punct vi/nnp )/punct ./punct
+for/in each/dt player/nn vi/nnp ,/punct consider/vbp a/dt finite/jj set/nn of/in strategies/nns xi/nn =/punct x/nn ∪/cd {/punct vj/nn |vj/nn is/vbz an/dt event/nn point/nn for/in vi/nnp }/punct ./punct
+strategy/nn profile/nn ./punct
+strategies/nns from/in xi/nn ,/punct the/dt players/nns can/md still/rb achieve/vb a/dt nash/nnp equilibrium/nn ,/punct and/cc moreover/rb ,/punct the/dt best/jjs such/jj nash/nnp equilibrium/nn (/punct with/in respect/nn to/to the/dt large/jj enough/nn ./punct
+let/vb s/prp be/vb a/dt strategy/nn profile/nn that/wdt maximizes/vbz social/jj welfare/nn ./punct
+that/dt is/vbz ,/punct i/fw ≤/fw si/fw }/punct ./punct
+nash/nnp equilibrium/nn for/in g./nnp so/in we/prp have/vbp u1/nn ≤/cd ti−1/nn ,/punct and/cc therefore/rb the/dt point/nn (/punct ti/nns ,/punct ti−1/nn )/punct is/vbz inside/in r./nnp which/wdt implies/vbz that/in t/nn =/punct (/punct t1/nn ,/punct ./punct
+./punct
+./punct
+,/punct tn/nn )/punct is/vbz a/dt nash/nnp equilibrium/nn for/in g./nnp now/rb ,/punct let/vb us/prp estimate/vb the/dt expected/jj loss/nn in/in social/jj welfare/nn caused/vbn by/in playing/vbg t/nn instead/rb of/in s/nns ./punct
+1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./nn klm/nn be/vb the/dt payoff/nn of/in the/dt player/nn vi/nnp ,/punct when/wrb he/prp plays/vbz ./punct
+|/punct ≤/cd 3δ/nn ;/punct clearly/rb ,/punct this/dt implies/vbz the/dt lemma/nn ./punct
+./punct
+|y/nn −/cd y/nn |x/nn z/sym +/punct |z/jj −/nn z/sym |x/fw y/fw ≤/cd 3δ/nn ./punct
+we/prp will/md now/rb show/vb that/in we/prp can/md find/vb the/dt best/jjs discrete/jj nash/nnp equilibrium/nn (/punct with/in respect/nn to/to the/dt social/jj welfare/nn )/punct using/vbg dynamic/jj profile/nn found/vbn by/in our/prp$ algorithm/nn will/md be/vb at/in least/jjs as/rb good/jj as/in t./nn k/nn ,/punct l/nn =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn ,/punct can/md be/vb computed/vbn inductively/rb ,/punct as/in follows/vbz ./punct
+i−1/nn )/punct ,/punct i.e./fw ,/punct the/dt set/nn of/in all/dt discrete/jj strategies/nns of/in vi−2/nn that/wdt are/vbp potential/jj best/jjs responses/nns to/to xl/nn i−2/nn ∈/cd y/nn }/punct ./punct
+finally/rb ,/punct suppose/vbp that/in we/prp have/vbp computed/vbn ml/nn ,/punct k/nn n/nn for/in l/nn ,/punct k/nn =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./nnp we/prp still/rb need/vbp to/to take/vb into/in account/nn the/dt payoff/nn of/in player/nn vn/nn ./punct
+hence/rb ,/punct and/cc pick/vb the/dt one/cd that/wdt maximizes/vbz the/dt sum/nn of/in mk/nn ,/punct l/nn maximum/nn total/jj payoff/nn the/dt players/nns can/md achieve/vb in/in a/dt nash/nnp equilibrium/nn using/vbg discrete/jj strategies/nns ;/punct the/dt actual/jj strategy/nn profile/nn that/wdt produces/vbz this/dt payoff/nn can/md be/vb reconstructed/vbn using/vbg standard/jj dynamic/jj programming/nn techniques/nns ./punct
+i.e./fw ,/punct all/dt of/in them/prp can/md be/vb computed/vbn in/in time/nn o/nn (/punct nn3/nn profile/nn we/prp output/nn has/vbz total/jj payoff/nn that/wdt is/vbz within/in from/in optimal/jj ./punct
+we/prp conclude/vbp that/in we/prp can/md compute/vb an/dt -approximation/nn to/to the/dt best/jjs nash/nnp to/to state/vb our/prp$ result/nn for/in the/dt general/jj case/nn (/punct i.e./fw ,/punct when/wrb the/dt underlying/jj response/nn policy/nn ./punct
+that/dt is/vbz ,/punct we/prp assume/vbp that/in for/in any/dt vertex/nn u/nn with/in interested/jj in/in the/dt situation/nn in/in which/wdt q/jj (/punct n/nn )/punct is/vbz polynomial/jj in/in n./jj set/nn of/in best-response/jj policies/nns for/in g/nn in/in which/wdt each/dt best-response/jj provided/vbn that/in the/dt tree/nn has/vbz bounded/vbn degree/nn (/punct that/wdt is/vbz ,/punct δ/nn =/punct o/nn (/punct 1/cd )/punct )/punct and/cc ./punct
+for/in the/dt proof/nn of/in this/dt theorem/nn ,/punct see/vb ./punct
+the/dt running/vbg time/nn of/in our/prp$ algorithm/nn is/vbz pseudopolynomial/jj rather/rb than/in polynomial/jj ,/punct because/in it/prp includes/vbz a/dt factor/nn which/wdt is/vbz polynomial/jj in/in pmax/nnp ,/punct the/dt maximum/nn (/punct in/in absolute/jj value/nn )/punct entry/nn in/in any/dt payoff/nn matrix/nn ./punct
+if/in we/prp are/vbp interested/jj in/in multiplicative/jj approximation/nn rather/rb than/in additive/jj one/cd ,/punct this/dt can/md be/vb improved/vbn to/to polynomial/jj ./punct
+first/rb ,/punct note/nn that/in we/prp can/md not/rb expect/vb a/dt multiplicative/jj approximation/nn for/in all/dt inputs/nns ./punct
+that/dt is/vbz ,/punct we/prp can/md not/rb hope/vb to/to have/vb an/dt algorithm/nn )/punct m/nn (/punct g/nn )/punct ./punct
+if/in we/prp had/vbd such/jj an/dt algorithm/nn ,/punct then/rb for/in graphical/jj games/nns the/dt optimal/jj solution/nn ./punct
+to/to show/vb that/in this/dt is/vbz infeasible/jj ,/punct observe/vbp that/in we/prp can/md use/vb the/dt techniques/nns of/in section/nn 3.2/cd to/to construct/vb two/cd integercoefficient/jj graphical/jj games/nns on/in paths/nns of/in length/nn o/nn (/punct n/nn )/punct such/jj that/in for/in the/dt maximal/jj total/jj payoff/nn in/in the/dt second/jj game/nn is/vbz −x/nnp ,/punct and/cc for/in both/dt games/nns ,/punct the/dt strategy/nn profiles/nns that/wdt achieve/vbp the/dt maximal/jj total/jj payoffs/nns involve/vbp algebraic/jj numbers/nns of/in degree/nn n./nn by/in combining/vbg the/dt two/cd games/nns so/in that/in the/dt first/jj vertex/nn of/in the/dt second/jj game/nn becomes/vbz connected/jj to/to the/dt last/jj vertex/nn of/in the/dt first/jj game/nn ,/punct but/cc the/dt payoffs/nns of/in all/dt best/jjs nash/nnp equilibrium/nn has/vbz total/jj payoff/nn 0/cd ,/punct yet/rb the/dt strategies/nns that/wdt lead/vbp to/to this/dt payoff/nn have/vbp high/jj algebraic/jj complexity/nn ./punct
+however/rb ,/punct we/prp can/md achieve/vb a/dt multiplicative/jj approximation/nn when/wrb all/dt entries/nns of/in the/dt payoff/nn matrices/nns are/vbp positive/jj and/cc the/dt ratio/nn between/in any/dt two/cd entries/nns is/vbz polynomially/rb bounded/vbn ./punct
+recall/vb that/in we/prp assume/vbp that/in all/dt payoffs/nns are/vbp integer/nn ,/punct and/cc let/vb pmin/nn >/punct 0/cd be/vb the/dt smallest/jjs entry/nn of/in any/dt payoff/nn matrix/nn ./punct
+in/in this/dt case/nn ,/punct for/in any/dt strategy/nn profile/nn the/dt payoff/nn maximizing/vbg nash/nnp equilibrium/nn s/vbz satisfies/nns m/nn (/punct g/nn )/punct ≥/cd npmin/nn ./punct
+we/prp can/md ensure/vb that/in the/dt nash/nnp equilibrium/nn t/nn produced/vbn by/in our/prp$ i=1/nn epvi/nn (/punct t/nn )/punct ≥/cd (/punct 1/cd −/cd )/punct m/nn (/punct g/nn )/punct ./punct
+recall/vb that/in the/dt running/vbg time/nn of/in our/prp$ algorithm/nn is/vbz o/nn (/punct nn3/nn algorithm/nn provides/vbz a/dt multiplicative/jj approximation/nn guarantee/nn and/cc runs/vbz in/in time/nn polynomial/jj in/in n/nn and/cc 1//cd ./punct
+another/dt natural/jj way/nn to/to define/vb what/wp is/vbz a/dt good/jj nash/nnp equilibrium/nn is/vbz to/to require/vb that/in each/dt player/nn ''/'' s/nns expected/vbn payoff/nn exceeds/vbz a/dt certain/jj threshold/nn ./punct
+these/dt thresholds/nns do/vbp not/rb have/vb to/to be/vb the/dt same/jj for/in all/dt that/in no/dt such/jj nash/nnp equilibrium/nn exists/vbz ./punct
+it/prp turns/vbz out/rp that/in we/prp can/md design/vb an/dt fptas/nn for/in this/dt problem/nn using/vbg the/dt same/jj techniques/nns as/in in/in the/dt previous/jj section/nn ./punct
+i/ls =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./jj construct/nn the/dt best/jjs response/nn policies/nns for/in all/dt players/nns ,/punct choose/vb n/nn >/punct 5n/nn ,/punct of/in theorem/nnp 3/cd ./punct
+1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./nnp now/rb ,/punct we/prp will/md use/vb dynamic/jj programming/nn to/to find/vb a/dt discrete/jj nash/nnp is/vbz a/dt discrete/jj strategy/nn profile/nn ,/punct our/prp$ algorithm/nn will/md succeed/vb whenever/wrb there/ex is/vbz a/dt strategy/nn profile/nn s/nns with/in epvi/nn (/punct s/nns )/punct ≥/cd ti−/nn for/in i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./fw i/fw =/punct 0./cd as/in follows/vbz ./punct
+i−1/nn )/punct ,/punct i.e./fw ,/punct the/dt set/nn of/in all/dt discrete/jj strategies/nns of/in vi−2/nn payoff/nn that/wdt vi−1/nn receives/vbz when/wrb vi−2/nn plays/vbz xj/nn i/fw =/punct 0./cd n/nn and/cc use/vb dynamic/jj programming/nn techniques/nns (/punct or/cc ,/punct equivalently/rb ,/punct the/dt downstream/jj pass/nn of/in the/dt algorithm/nn of/in )/punct equilibrium/nn s/vbz (/punct not/rb necessarily/rb discrete/jj )/punct such/jj that/in epvi/nn (/punct s/nns )/punct ≥/cd ti/nnp for/in i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./nn conclude/vbp that/in the/dt running/vbg time/nn of/in our/prp$ algorithm/nn is/vbz o/nn (/punct nn3/nn }/punct )/punct ./punct
+degree/nn in/in the/dt same/jj way/nn as/in theorem/nnp 4/cd ./punct
+another/dt approach/nn to/to finding/vbg nash/nnp equilibria/nns with/in bounded/jj payoffs/nns is/vbz based/vbn on/in inductively/rb computing/vbg the/dt subsets/nns of/in the/dt best/jjs not/rb provide/vb sufficient/jj payoffs/nns to/to some/dt of/in the/dt players/nns ./punct
+formally/rb ,/punct we/prp pbrv/vbp (/punct w/nn ,/punct t/nn )/punct ,/punct w/nn ∈/cd }/punct ./punct
+players/nns with/in expected/vbn payoffs/nns prescribed/vbn by/in t./nnp otherwise/rb ,/punct one/prp can/md apply/vb the/dt downstream/jj pass/nn of/in the/dt original/jj algorithm/nn of/in to/to vertex/vb whose/wp$ payoff/nn is/vbz identically/rb 0/cd ,/punct the/dt nash/nnp equilibrium/nn with/in these/dt payoffs/nns exists/vbz as/rb long/jj as/in tn/nn ≤/cd 0/cd and/cc b/nn (/punct vn/nn ,/punct vn−1/nn ,/punct t/nn )/punct is/vbz not/rb empty/jj ./punct
+us/prp to/to represent/vb all/dt nash/nnp equilibria/nns that/wdt provide/vbp required/vbn payoffs/nns turns/vbz out/rp that/in the/dt rectangles/nns that/wdt appear/vbp in/in the/dt representation/nn of/in b/nn (/punct vj/nn ,/punct vj−1/nn ,/punct t/nn )/punct may/md have/vb irrational/jj coordinates/vbz ./punct
+rational/jj coordinates/vbz ./punct
+proof/nn ./punct
+we/prp define/vbp the/dt payoffs/nns to/to the/dt players/nns in/in g/nn as/in follows/vbz ./punct
+(/punct u/nn )/punct =/punct 0/cd ./punct
+b/nn (/punct w/nn ,/punct v/nn )/punct =/punct [/punct 0/cd ,/punct .1/cd ]/punct ×/nn {/punct 0/cd }/punct ∪/cd [/punct .1/nn ,/punct .9/cd ]/punct ×/nn ∪/cd [/punct .9/nn ,/punct 1/cd ]/punct ×/cd {/punct 1/cd }/punct ./punct
+the/dt payoffs/nns to/to w/nnp are/vbp not/rb important/jj for/in our/prp$ construction/nn ;/punct for/in example/nn ,/punct set/vbn p0/nn (/punct w/nn )/punct =/punct p0/nn (/punct w/nn )/punct =/punct 0/cd ./punct
+41/cd )/punct /20/cd </punct .9/cd ./punct
+for/in any/dt other/jj value/nn of/in w/nn ,/punct any/dt does/vbz not/rb provide/vb it/prp with/in a/dt sufficient/jj expected/vbn payoff/nn ./punct
+there/ex are/vbp also/rb must/md contain/vb a/dt rectangle/nn of/in the/dt form/nn [/punct (/punct 1/cd +/punct for/in some/dt w/nn ,/punct v/ls ,/punct v/ls ∈/cd ./punct
+on/in the/dt other/jj hand/nn ,/punct it/prp can/md be/vb shown/vbn that/in for/in any/dt integer/nn payoff/nn is/vbz non-empty/jj ,/punct i.e./fw ,/punct there/ex is/vbz a/dt nash/nnp equilibrium/nn with/in payoffs/nns can/md always/rb pick/vb a/dt strategy/nn profile/nn that/wdt forms/vbz a/dt nash/nnp equilibrium/nn ,/punct irrational/jj coordinates/vbz ./punct
+hence/rb ,/punct unlike/in in/in the/dt case/nn of/in the/dt nash/nnp equilibrium/nn that/wdt maximizes/vbz the/dt social/jj welfare/nn ,/punct working/vbg with/in irrational/jj numbers/nns is/vbz not/rb necessary/jj ,/punct and/cc the/dt fact/nn that/in the/dt algorithm/nn discussed/vbn this/dt approach/nn ./punct
+in/in this/dt section/nn ,/punct we/prp consider/vbp several/jj other/jj criteria/nns that/wdt can/md be/vb useful/jj in/in selecting/vbg a/dt nash/nnp equilibrium/nn ./punct
+in/in many/jj real/jj life/nn scenarios/nns ,/punct we/prp want/vbp to/to maximize/vb the/dt social/jj welfare/nn subject/nn to/to certain/jj restrictions/nns on/in the/dt payoffs/nns to/to individual/jj ˆs/nn =/punct argmaxs∈s/nn ep/nn (/punct s/nns )/punct ./punct
+and/cc section/nnp 5./ls formal/jj definition/nn ,/punct see/vb the/dt proof/nn of/in theorem/nnp 3/cd )/punct ./punct
+combining/vbg the/dt ti/nnp −/nn ,/punct |ep/nn (/punct ˆs/nns )/punct −/cd ep/nn (/punct ˆt/nn )/punct |/punct ≤/nn ./punct
+the/dt best/jjs discrete/jj nash/nnp equilibrium/nn subject/nn to/to the/dt payoff/nn constraints/nns ./punct
+even/rb more/rbr generally/rb ,/punct we/prp may/md want/vb to/to maximize/vb the/dt total/jj payoff/nn the/dt profits/nns fairly/rb among/in themselves/prp )/punct while/in guaranteeing/vbg certain/jj expected/vbn payoffs/nns to/to (/punct a/dt subset/nn of/in )/punct the/dt other/jj players/nns ./punct
+this/dt problem/nn can/md be/vb handled/vbn similarly/rb ./punct
+is/vbz the/dt minimal/jj expected/vbn payoff/nn to/to a/dt player/nn ./punct
+the/dt optimal/jj solution/nn approximation/nn to/to such/pdt a/dt nash/nnp equilibrium/nn ,/punct we/prp can/md combine/vb the/dt lower/jjr bounds/nns ./punct
+note/vb that/in the/dt expected/vbn payoff/nn to/to any/dt player/nn vi/nnp given/vbn a/dt strategy/nn s/vbz always/rb satisfies/vbz −pmax/nn ≤/cd epvi/nns (/punct s/nns )/punct ≤/cd pmax/nn ./punct
+p/nn ,/punct then/rb our/prp$ algorithm/nn outputs/vbz a/dt nash/nnp equilibrium/nn s/vbz that/in satisfies/vbz mini=1/nn ,/punct .../: ,/punct n/nn epvi/nns (/punct s/nns )/punct ≥/cd p−2/nn ./punct
+the/dt running/vbg time/nn of/in our/prp$ algorithm/nn }/punct )/punct ./punct

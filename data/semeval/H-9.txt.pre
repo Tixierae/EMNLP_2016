@@ -1,0 +1,269 @@
+effective/jj organization/nn of/in search/nn results/nns is/vbz critical/jj for/in improving/vbg the/dt utility/nn of/in any/dt search/nn engine/nn ./punct
+clustering/nn search/nn results/vbz is/vbz an/dt effective/jj way/nn to/to organize/vb search/nn results/nns ,/punct which/wdt allows/vbz a/dt user/nn to/to navigate/vb into/in relevant/jj documents/nns quickly/rb ./punct
+however/rb ,/punct two/cd deficiencies/nns of/in this/dt approach/nn make/vb it/prp not/rb always/rb work/vb well/rb :/punct (/punct 1/cd )/punct the/dt clusters/nns discovered/vbn do/vbp not/rb necessarily/rb correspond/vbp to/to the/dt interesting/jj aspects/nns of/in a/dt topic/nn from/in the/dt user/nn ''/'' s/nns perspective/nn ;/punct and/cc (/punct 2/cd )/punct the/dt cluster/nn labels/vbz generated/vbn are/vbp not/rb informative/jj enough/jj to/to allow/vb a/dt user/nn to/to identify/vb the/dt right/jj cluster/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp to/to address/vb these/dt two/cd deficiencies/nns by/in (/punct 1/cd )/punct learning/vbg interesting/jj aspects/nns of/in a/dt topic/nn from/in web/nn search/nn logs/nns and/cc organizing/vbg search/nn results/vbz accordingly/rb ;/punct and/cc (/punct 2/cd )/punct generating/vbg more/rbr meaningful/jj cluster/nn labels/nns using/vbg past/jj query/jj words/nns entered/vbn by/in users/nns ./punct
+we/prp evaluate/vbp our/prp$ proposed/jj method/nn on/in a/dt commercial/jj search/nn engine/nn log/nn data/nns ./punct
+compared/vbn with/in the/dt traditional/jj methods/nns of/in clustering/nn search/nn results/vbz ,/punct our/prp$ method/nn can/md give/vb better/jjr result/nn organization/nn and/cc more/jjr meaningful/jj labels/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnps :/punct h.3.3/nn [/punct information/nn search/vb and/cc retrieval/nnp ]/punct :/punct clustering/nn ,/punct search/vb process/nn general/nnp terms/nns :/punct algorithm/nn ,/punct experimentation/nn 1/cd ./punct
+introduction/nn the/dt utility/nn of/in a/dt search/nn engine/nn is/vbz affected/vbn by/in multiple/jj factors/nns ./punct
+while/in the/dt primary/jj factor/nn is/vbz the/dt soundness/nn of/in the/dt underlying/vbg retrieval/nn model/nn and/cc ranking/jj function/nn ,/punct how/wrb to/to organize/vb and/cc present/jj search/nn results/nns is/vbz also/rb a/dt very/rb important/jj factor/nn that/wdt can/md affect/vb the/dt utility/nn of/in a/dt search/nn engine/nn significantly/rb ./punct
+compared/vbn with/in the/dt vast/jj amount/nn of/in literature/nn on/in retrieval/nn models/nns ,/punct however/rb ,/punct there/ex is/vbz relatively/rb little/jj research/nn on/in how/wrb to/to improve/vb the/dt effectiveness/nn of/in search/nn result/vbp organization/nn ./punct
+the/dt most/rbs common/jj strategy/nn of/in presenting/vbg search/nn results/nns is/vbz a/dt simple/jj ranked/vbd list/nn ./punct
+intuitively/rb ,/punct such/pdt a/dt presentation/nn strategy/nn is/vbz reasonable/jj for/in non-ambiguous/jj ,/punct homogeneous/jj search/nn results/nns ;/punct in/in general/jj ,/punct it/prp would/md work/vb well/rb when/wrb the/dt search/nn results/nns are/vbp good/jj and/cc a/dt user/nn can/md easily/rb find/vb many/jj relevant/jj documents/nns in/in the/dt top/jj ranked/vbd results/nns ./punct
+however/rb ,/punct when/wrb the/dt search/nn results/nns are/vbp diverse/jj (/punct e.g./fw ,/punct due/jj to/to ambiguity/nn or/cc multiple/jj aspects/nns of/in a/dt topic/nn )/punct as/rb is/vbz often/rb the/dt case/nn in/in web/nn search/nn ,/punct the/dt ranked/vbd list/nn presentation/nn would/md not/rb be/vb effective/jj ;/punct in/in such/pdt a/dt case/nn ,/punct it/prp would/md be/vb better/jjr to/to group/vb the/dt search/nn results/vbz into/in clusters/nns so/in that/in a/dt user/nn can/md easily/rb navigate/vb into/in a/dt particular/jj interesting/jj group/nn ./punct
+for/in example/nn ,/punct the/dt results/nns in/in the/dt first/jj page/nn returned/vbd from/in google/nnp for/in the/dt ambiguous/jj query/nn jaguar/nn (/punct as/in of/in dec/nnp ./punct
+2nd/jj ,/punct 2006/cd )/punct contain/vbp at/in least/jjs four/cd different/jj senses/nns of/in jaguar/nn (/punct i.e./fw ,/punct car/nn ,/punct animal/nn ,/punct software/nn ,/punct and/cc a/dt sports/nns team/nn )/punct ;/punct even/rb for/in a/dt more/rbr refined/jj query/nn such/jj as/in jaguar/nn team/nn picture/nn ,/punct the/dt results/nns are/vbp still/rb quite/rb ambiguous/jj ,/punct including/vbg at/in least/jjs four/cd different/jj jaguar/nn teams/nns -/punct a/dt wrestling/nn team/nn ,/punct a/dt jaguar/nn car/nn team/nn ,/punct southwestern/nnp college/nnp jaguar/nnp softball/nnp team/nn ,/punct and/cc jacksonville/nnp jaguar/nnp football/nn team/nn ./punct
+moreover/rb ,/punct if/in a/dt user/nn wants/vbz to/to find/vb a/dt place/nn to/to download/vb a/dt jaguar/nn software/nn ,/punct a/dt query/nn such/jj as/in download/nn jaguar/nn is/vbz also/rb not/rb very/rb effective/jj as/in the/dt dominating/vbg results/nns are/vbp about/in downloading/vbg jaguar/nn brochure/nn ,/punct jaguar/nn wallpaper/nn ,/punct and/cc jaguar/nn dvd/nn ./punct
+in/in these/dt examples/nns ,/punct a/dt clustering/nn view/nn of/in the/dt search/nn results/vbz would/md be/vb much/rb more/rbr useful/jj to/to a/dt user/nn than/in a/dt simple/jj ranked/vbd list/nn ./punct
+clustering/nn is/vbz also/rb useful/jj when/wrb the/dt search/nn results/nns are/vbp poor/jj ,/punct in/in which/wdt case/nn ,/punct a/dt user/nn would/md otherwise/rb have/vb to/to go/vb through/in a/dt long/jj list/nn sequentially/rb to/to reach/vb the/dt very/rb first/jj relevant/jj document/nn ./punct
+as/in a/dt primary/jj alternative/jj strategy/nn for/in presenting/vbg search/nn results/nns ,/punct clustering/nn search/nn results/vbz has/vbz been/vbn studied/vbn relatively/rb extensively/rb [/punct 9/cd ,/punct 15/cd ,/punct 26/cd ,/punct 27/cd ,/punct 28/cd ]/punct ./punct
+the/dt general/jj idea/nn in/in virtually/rb all/pdt the/dt existing/vbg work/nn is/vbz to/to perform/vb clustering/nn on/in a/dt set/nn of/in topranked/jj search/nn results/vbz to/to partition/nn the/dt results/nns into/in natural/jj clusters/nns ,/punct which/wdt often/rb correspond/vbp to/to different/jj subtopics/nns of/in the/dt general/jj query/nn topic/nn ./punct
+a/dt label/nn will/md be/vb generated/vbn to/to indicate/vb what/wp each/dt cluster/nn is/vbz about/rb ./punct
+a/dt user/nn can/md then/rb view/vb the/dt labels/nns to/to decide/vb which/wdt cluster/nn to/to look/vb into/in ./punct
+such/pdt a/dt strategy/nn has/vbz been/vbn shown/vbn to/to be/vb more/rbr useful/jj than/in the/dt simple/jj ranked/vbd list/nn presentation/nn in/in several/jj studies/nns [/punct 8/cd ,/punct 9/cd ,/punct 26/cd ]/punct ./punct
+however/rb ,/punct this/dt clustering/nn strategy/nn has/vbz two/cd deficiencies/nns which/wdt make/vbp it/prp not/rb always/rb work/vb well/rb :/punct first/nnp ,/punct the/dt clusters/nns discovered/vbn in/in this/dt way/nn do/vbp not/rb necessarily/rb correspond/vbp to/to the/dt interesting/jj aspects/nns of/in a/dt topic/nn from/in the/dt user/nn ''/'' s/nns perspective/nn ./punct
+for/in example/nn ,/punct users/nns are/vbp often/rb interested/jj in/in finding/vbg either/cc phone/nn codes/nns or/cc zip/nn codes/nns when/wrb entering/vbg the/dt query/nn area/nn codes/nns ./punct
+but/cc the/dt clusters/nns discovered/vbn by/in the/dt current/jj methods/nns may/md partition/nn the/dt results/nns into/in local/jj codes/nns and/cc international/jj codes/nns ./punct
+such/jj clusters/nns would/md not/rb be/vb very/rb useful/jj for/in users/nns ;/punct even/rb the/dt best/jjs cluster/nn would/md still/rb have/vb a/dt low/jj precision/nn ./punct
+second/rb ,/punct the/dt cluster/nn labels/vbz generated/vbn are/vbp not/rb informative/jj enough/jj to/to allow/vb a/dt user/nn to/to identify/vb the/dt right/jj cluster/nn ./punct
+there/ex are/vbp two/cd reasons/nns for/in this/dt problem/nn :/punct (/punct 1/cd )/punct the/dt clusters/nns are/vbp not/rb corresponding/vbg to/to a/dt user/nn ''/'' s/nns interests/nns ,/punct so/in their/prp$ labels/nns would/md not/rb be/vb very/rb meaningful/jj or/cc useful/jj ./punct
+(/punct 2/cd )/punct even/rb if/in a/dt cluster/nn really/rb corresponds/vbz to/to an/dt interesting/jj aspect/nn of/in the/dt topic/nn ,/punct the/dt label/nn may/md not/rb be/vb informative/jj because/in it/prp is/vbz usually/rb generated/vbn based/vbn on/in the/dt contents/nns in/in a/dt cluster/nn ,/punct and/cc it/prp is/vbz possible/jj that/in the/dt user/nn is/vbz not/rb very/rb familiar/jj with/in some/dt of/in the/dt terms/nns ./punct
+for/in example/nn ,/punct the/dt ambiguous/jj query/nn jaguar/nn may/md mean/vb an/dt animal/nn or/cc a/dt car/nn ./punct
+a/dt cluster/nn may/md be/vb labeled/vbn as/in panthera/nn onca/jj ./punct
+although/in this/dt is/vbz an/dt accurate/jj label/nn for/in a/dt cluster/nn with/in the/dt animal/nn sense/nn of/in jaguar/nn ,/punct if/in a/dt user/nn is/vbz not/rb familiar/jj with/in the/dt phrase/nn ,/punct the/dt label/nn would/md not/rb be/vb helpful/jj ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp a/dt different/jj strategy/nn for/in partitioning/vbg search/nn results/nns ,/punct which/wdt addresses/vbz these/dt two/cd deficiencies/nns through/in imposing/vbg a/dt user-oriented/jj partitioning/nn of/in the/dt search/nn results/vbz ./punct
+that/dt is/vbz ,/punct we/prp try/vbp to/to figure/vb out/rp what/wp aspects/nns of/in a/dt search/nn topic/nn are/vbp likely/jj interesting/jj to/to a/dt user/nn and/cc organize/vb the/dt results/nns accordingly/rb ./punct
+specifically/rb ,/punct we/prp propose/vbp to/to do/vb the/dt following/nn :/punct first/nnp ,/punct we/prp will/md learn/vb interesting/jj aspects/nns of/in similar/jj topics/nns from/in search/nn logs/nns and/cc organize/vb search/nn results/nns based/vbn on/in these/dt interesting/jj aspects/nns ./punct
+for/in example/nn ,/punct if/in the/dt current/jj query/nn has/vbz occurred/vbn many/jj times/nns in/in the/dt search/nn logs/nns ,/punct we/prp can/md look/vb at/in what/wp kinds/nns of/in pages/nns viewed/vbn by/in the/dt users/nns in/in the/dt results/nns and/cc what/wp kind/nn of/in words/nns are/vbp used/vbn together/rp with/in such/pdt a/dt query/nn ./punct
+in/in case/nn when/wrb the/dt query/nn is/vbz ambiguous/jj such/jj as/in jaguar/nn we/prp can/md expect/vb to/to see/vb some/dt clear/jj clusters/nns corresponding/vbg different/jj senses/nns of/in jaguar/nn ./punct
+more/rbr importantly/rb ,/punct even/rb if/in a/dt word/nn is/vbz not/rb ambiguous/jj (/punct e.g./fw ,/punct car/nn )/punct ,/punct we/prp may/md still/rb discover/vb interesting/jj aspects/nns such/jj as/in car/nn rental/nn and/cc car/nn pricing/nn (/punct which/wdt happened/vbd to/to be/vb the/dt two/cd primary/jj aspects/nns discovered/vbn in/in our/prp$ search/nn log/nn data/nns )/punct ./punct
+such/jj aspects/nns can/md be/vb very/rb useful/jj for/in organizing/vbg future/jj search/nn results/vbz about/in car/nn ./punct
+note/vb that/in in/in the/dt case/nn of/in car/nn ,/punct clusters/nns generated/vbn using/vbg regular/jj clustering/nn may/md not/rb necessarily/rb reflect/vb such/jj interesting/jj aspects/nns about/in car/nn from/in a/dt user/nn ''/'' s/nns perspective/nn ,/punct even/rb though/in the/dt generated/vbn clusters/nns are/vbp coherent/jj and/cc meaningful/jj in/in other/jj ways/nns ./punct
+second/rb ,/punct we/prp will/md generate/vb more/jjr meaningful/jj cluster/nn labels/nns using/vbg past/jj query/jj words/nns entered/vbn by/in users/nns ./punct
+assuming/vbg that/in the/dt past/jj search/nn logs/nns can/md help/vb us/prp learn/vb what/wp specific/jj aspects/nns are/vbp interesting/jj to/to users/nns given/vbn the/dt current/jj query/nn topic/nn ,/punct we/prp could/md also/rb expect/vb that/in those/dt query/jj words/nns entered/vbn by/in users/nns in/in the/dt past/nn that/wdt are/vbp associated/vbn with/in the/dt current/jj query/nn can/md provide/vb meaningful/jj descriptions/nns of/in the/dt distinct/jj aspects/nns ./punct
+thus/rb they/prp can/md be/vb better/jjr labels/nns than/in those/dt extracted/vbn from/in the/dt ordinary/jj contents/nns of/in search/nn results/nns ./punct
+to/to implement/vb the/dt ideas/nns presented/vbn above/in ,/punct we/prp rely/vbp on/in search/nn engine/nn logs/nns and/cc build/vb a/dt history/nn collection/nn containing/vbg the/dt past/jj queries/nns and/cc the/dt associated/vbn clickthroughs/nns ./punct
+given/vbn a/dt new/jj query/nn ,/punct we/prp find/vbp its/prp$ related/jj past/jj queries/nns from/in the/dt history/nn collection/nn and/cc learn/vb aspects/nns through/in applying/vbg the/dt star/nn clustering/nn algorithm/nn [/punct 2/cd ]/punct to/to these/dt past/jj queries/nns and/cc clickthroughs/nns ./punct
+we/prp can/md then/rb organize/vb the/dt search/nn results/vbz into/in these/dt aspects/nns using/vbg categorization/nn techniques/nns and/cc label/nn each/dt aspect/nn by/in the/dt most/rbs representative/jj past/jj query/nn in/in the/dt query/nn cluster/nn ./punct
+we/prp evaluate/vbp our/prp$ method/nn for/in result/nn organization/nn using/vbg logs/nns of/in a/dt commercial/jj search/nn engine/nn ./punct
+we/prp compare/vbp our/prp$ method/nn with/in the/dt default/nn search/nn engine/nn ranking/nn and/cc the/dt traditional/jj clustering/nn of/in search/nn results/nns ./punct
+the/dt results/nns show/vbp that/in our/prp$ method/nn is/vbz effective/jj for/in improving/vbg search/nn utility/nn and/cc the/dt labels/nns generated/vbn using/vbg past/jj query/jj words/nns are/vbp more/rbr readable/jj than/in those/dt generated/vbn using/vbg traditional/jj clustering/nn approaches/nns ./punct
+the/dt rest/nn of/in the/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+we/prp first/rb review/vb the/dt related/jj work/nn in/in section/nn 2/cd ./punct
+in/in section/nn 3/cd ,/punct we/prp describe/vbp search/nn engine/nn log/nn data/nns and/cc our/prp$ procedure/nn of/in building/vbg a/dt history/nn collection/nn ./punct
+in/in section/nn 4/cd ,/punct we/prp present/vbp our/prp$ approach/nn in/in details/nns ./punct
+we/prp describe/vbp the/dt data/nns set/vbn in/in section/nn 5/cd and/cc the/dt experimental/jj results/nns are/vbp discussed/vbn in/in section/nn 6/cd ./punct
+finally/rb ,/punct we/prp conclude/vbp our/prp$ paper/nn and/cc discuss/vb future/jj work/nn in/in section/nn 7/cd ./punct
+2/ls ./punct
+related/jj work/vbp our/prp$ work/nn is/vbz closely/rb related/jj to/to the/dt study/nn of/in clustering/nn search/nn results/nns ./punct
+in/in [/punct 9/cd ,/punct 15/cd ]/punct ,/punct the/dt authors/nns used/vbd scatter/gather/jj algorithm/nn to/to cluster/vb the/dt top/jj documents/nns returned/vbd from/in a/dt traditional/jj information/nn retrieval/nn system/nn ./punct
+their/prp$ results/nns validate/vbp the/dt cluster/nn hypothesis/nn [/punct 20/cd ]/punct that/wdt relevant/jj documents/nns tend/vbp to/to form/vb clusters/nns ./punct
+the/dt system/nn grouper/nnp was/vbd described/vbn in/in [/punct 26/cd ,/punct 27/cd ]/punct ./punct
+in/in these/dt papers/nns ,/punct the/dt authors/nns proposed/vbn to/to cluster/vb the/dt results/nns of/in a/dt real/jj search/nn engine/nn based/vbn on/in the/dt snippets/nns or/cc the/dt contents/nns of/in returned/vbn documents/nns ./punct
+several/jj clustering/nn algorithms/nns are/vbp compared/vbn and/cc the/dt suffix/nnp tree/nnp clustering/nnp algorithm/nn (/punct stc/nn )/punct was/vbd shown/vbn to/to be/vb the/dt most/rbs effective/jj one/cd ./punct
+they/prp also/rb showed/vbd that/in using/vbg snippets/nns is/vbz as/in effective/jj as/in using/vbg whole/jj documents/nns ./punct
+however/rb ,/punct an/dt important/jj challenge/nn of/in document/nn clustering/nn is/vbz to/to generate/vb meaningful/jj labels/nns for/in clusters/nns ./punct
+to/to overcome/vb this/dt difficulty/nn ,/punct in/in [/punct 28/cd ]/punct ,/punct supervised/jj learning/nn algorithms/nns were/vbd studied/vbn to/to extract/vb meaningful/jj phrases/nns from/in the/dt search/nn result/vbp snippets/nns and/cc these/dt phrases/nns were/vbd then/rb used/vbn to/to group/nn search/nn results/nns ./punct
+in/in [/punct 13/cd ]/punct ,/punct the/dt authors/nns proposed/vbn to/to use/vb a/dt monothetic/jj clustering/nn algorithm/nn ,/punct in/in which/wdt a/dt document/nn is/vbz assigned/vbn to/to a/dt cluster/nn based/vbn on/in a/dt single/jj feature/nn ,/punct to/to organize/vb search/nn results/nns ,/punct and/cc the/dt single/jj feature/nn is/vbz used/vbn to/to label/vb the/dt corresponding/jj cluster/nn ./punct
+clustering/nn search/nn results/vbz has/vbz also/rb attracted/vbn a/dt lot/nn of/in attention/nn in/in industry/nn and/cc commercial/jj web/nn services/nns such/jj as/in vivisimo/nnp [/punct 22/cd ]/punct ./punct
+however/rb ,/punct in/in all/dt these/dt works/nns ,/punct the/dt clusters/nns are/vbp generated/vbn solely/rb based/vbn on/in the/dt search/nn results/vbz ./punct
+thus/rb the/dt obtained/vbn clusters/nns do/vbp not/rb necessarily/rb reflect/vb users/nns ''/'' preferences/nns and/cc the/dt generated/vbn labels/nns may/md not/rb be/vb informative/jj from/in a/dt user/nn ''/'' s/nns viewpoint/nn ./punct
+methods/nns of/in organizing/vbg search/nn results/vbz based/vbn on/in text/nn categorization/nn are/vbp studied/vbn in/in [/punct 6/cd ,/punct 8/cd ]/punct ./punct
+in/in this/dt work/nn ,/punct a/dt text/nn classifier/nn is/vbz trained/vbn using/vbg a/dt web/nn directory/nn and/cc search/nn results/nns are/vbp then/rb classified/vbn into/in the/dt predefined/jj categories/nns ./punct
+the/dt authors/nns designed/vbn and/cc studied/vbn different/jj category/nn interfaces/nns and/cc they/prp found/vbd that/in category/nn interfaces/nns are/vbp more/rbr effective/jj than/in list/nn interfaces/nns ./punct
+however/rb predefined/vbn categories/nns are/vbp often/rb too/rb general/jj to/to reflect/vb the/dt finer/nn granularity/nn aspects/nns of/in a/dt query/nn ./punct
+search/vb logs/nns have/vbp been/vbn exploited/vbn for/in several/jj different/jj purposes/nns in/in the/dt past/nn ./punct
+for/in example/nn ,/punct clustering/nn search/nn queries/nns to/to find/vb those/dt frequent/jj asked/vbn questions/nns (/punct faq/nn )/punct is/vbz studied/vbn in/in [/punct 24/cd ,/punct 4/cd ]/punct ./punct
+recently/rb ,/punct search/nn logs/nns have/vbp been/vbn used/vbn for/in suggesting/vbg query/nn substitutes/vbz [/punct 12/cd ]/punct ,/punct personalized/vbn search/nn [/punct 19/cd ]/punct ,/punct web/nn site/nn design/nn [/punct 3/cd ]/punct ,/punct latent/jj semantic/nnp analysis/nn [/punct 23/cd ]/punct ,/punct and/cc learning/vbg retrieval/nn ranking/jj functions/nns [/punct 16/cd ,/punct 10/cd ,/punct 1/cd ]/punct ./punct
+in/in our/prp$ work/nn ,/punct we/prp explore/vbp past/jj query/jj history/nn in/in order/nn to/to better/jjr organize/vb the/dt search/nn results/vbz for/in future/jj queries/nns ./punct
+we/prp use/vbp the/dt star/nn clustering/nn algorithm/nn [/punct 2/cd ]/punct ,/punct which/wdt is/vbz a/dt graph/nn partition/nn based/vbn approach/nn ,/punct to/to learn/vb interesting/jj aspects/nns from/in search/nn logs/nns given/vbn a/dt new/jj query/nn ./punct
+thus/rb past/jj queries/nns are/vbp clustered/vbn in/in a/dt query/nn specific/jj manner/nn and/cc this/dt is/vbz another/dt difference/nn from/in previous/jj works/nns such/jj as/in [/punct 24/cd ,/punct 4/cd ]/punct in/in which/wdt all/dt queries/nns in/in logs/nns are/vbp clustered/vbn in/in an/dt oﬄine/nn batch/nn manner/nn ./punct
+3/ls ./punct
+search/nn engine/nn logs/vbz search/vb engine/nn logs/nns record/vbp the/dt activities/nns of/in web/nn users/nns ,/punct which/wdt reflect/vbp the/dt actual/jj users/nns ''/'' needs/vbz or/cc interests/nns when/wrb conducting/vbg id/nnp query/nnp url/nn time/nnp 1/cd win/vb zip/nn http/nn :/punct //www.winzip.com/nnp xxxx/nn 1/cd win/vbp zip/nn http/nn :/punct //www.swinzip.com/winzip/nn xxxx/nn 2/cd time/nn zones/nns http/vbp :/punct //www.timeanddate.com/nnp xxxx/nn .../: .../: .../: .../: table/nnp 1/cd :/punct sample/vb entries/nns of/in search/nn engine/nn logs/nns ./punct
+different/jj id/nn ''/'' s/nns mean/vbp different/jj sessions/nns ./punct
+web/nn search/nn ./punct
+they/prp generally/rb have/vbp the/dt following/vbg information/nn :/punct text/nn queries/nns that/wdt users/nns submitted/vbn ,/punct the/dt urls/nns that/in they/prp clicked/vbd after/in submitting/vbg the/dt queries/nns ,/punct and/cc the/dt time/nn when/wrb they/prp clicked/vbd ./punct
+search/vb engine/nn logs/nns are/vbp separated/vbn by/in sessions/nns ./punct
+a/dt session/nn includes/vbz a/dt single/jj query/nn and/cc all/pdt the/dt urls/nns that/in a/dt user/nn clicked/vbd after/in issuing/vbg the/dt query/nn [/punct 24/cd ]/punct ./punct
+a/dt small/jj sample/nn of/in search/nn log/nn data/nns is/vbz shown/vbn in/in table/nnp 1/cd ./punct
+our/prp$ idea/nn of/in using/vbg search/nn engine/nn logs/nns is/vbz to/to treat/vb these/dt logs/nns as/in past/jj history/nn ,/punct learn/vbp users/nns ''/'' interests/nns using/vbg this/dt history/nn data/nns automatically/rb ,/punct and/cc represent/vbp their/prp$ interests/nns by/in representative/jj queries/nns ./punct
+for/in example/nn ,/punct in/in the/dt search/nn logs/nns ,/punct a/dt lot/nn of/in queries/nns are/vbp related/jj to/to car/nn and/cc this/dt reflects/vbz that/in a/dt large/jj number/nn of/in users/nns are/vbp interested/jj in/in information/nn about/in car/nn ./punct
+different/jj users/nns are/vbp probably/rb interested/jj in/in different/jj aspects/nns of/in car/nn ./punct
+some/dt are/vbp looking/vbg for/in renting/vbg a/dt car/nn ,/punct thus/rb may/md submit/vb a/dt query/nn like/in car/nn rental/nn ;/punct some/dt are/vbp more/rbr interested/jj in/in buying/vbg a/dt used/vbn car/nn ,/punct and/cc may/md submit/vb a/dt query/nn like/in used/vbn car/nn ;/punct and/cc others/nns may/md care/vb more/rbr about/in buying/vbg a/dt car/nn accessory/nn ,/punct so/in they/prp may/md use/vb a/dt query/nn like/in car/nn audio/nn ./punct
+by/in mining/vbg all/pdt the/dt queries/nns which/wdt are/vbp related/jj to/to the/dt concept/nn of/in car/nn ,/punct we/prp can/md learn/vb the/dt aspects/nns that/wdt are/vbp likely/jj interesting/jj from/in a/dt user/nn ''/'' s/nns perspective/nn ./punct
+as/in an/dt example/nn ,/punct the/dt following/vbg is/vbz some/dt aspects/nns about/in car/nn learned/vbd from/in our/prp$ search/nn log/nn data/nns (/punct see/vb section/nn 5/cd )/punct ./punct
+1./ls car/nn rental/nn ,/punct hertz/nn car/nn rental/nn ,/punct enterprise/nn car/nn rental/nn ,/punct .../: 2./ls car/nn pricing/nn ,/punct used/vbn car/nn ,/punct car/nn values/nns ,/punct .../: 3./ls car/nn accidents/nns ,/punct car/nn crash/nn ,/punct car/nn wrecks/nns ,/punct .../: 4./ls car/nn audio/nn ,/punct car/nn stereo/nn ,/punct car/nn speaker/nn ,/punct .../: in/in order/nn to/to learn/vb aspects/nns from/in search/nn engine/nn logs/nns ,/punct we/prp preprocess/vbp the/dt raw/jj logs/nns to/to build/vb a/dt history/nn data/nns collection/nn ./punct
+as/in shown/vbn above/in ,/punct search/vb engine/nn logs/nns consist/vbp of/in sessions/nns ./punct
+each/dt session/nn contains/vbz the/dt information/nn of/in the/dt text/nn query/nn and/cc the/dt clicked/vbn web/nn page/nn urls/nns ,/punct together/rb with/in the/dt time/nn that/in the/dt user/nn did/vbd the/dt clicks/nns ./punct
+however/rb ,/punct this/dt information/nn is/vbz limited/vbn since/in urls/nns alone/rb are/vbp not/rb informative/jj enough/jj to/to tell/vb the/dt intended/jj meaning/nn of/in a/dt submitted/vbn query/nn accurately/rb ./punct
+to/to gather/vb rich/jj information/nn ,/punct we/prp enrich/vbp each/dt url/nn with/in additional/jj text/nn content/nn ./punct
+specifically/rb ,/punct given/vbn the/dt query/nn in/in a/dt session/nn ,/punct we/prp obtain/vb its/prp$ top-ranked/jj results/nns using/vbg the/dt search/nn engine/nn from/in which/wdt we/prp obtained/vbd our/prp$ log/nn data/nns ,/punct and/cc extract/nn the/dt snippets/nns of/in the/dt urls/nns that/wdt are/vbp clicked/vbn on/in according/vbg to/to the/dt log/nn information/nn in/in the/dt corresponding/jj session/nn ./punct
+all/pdt the/dt titles/nns ,/punct snippets/nns ,/punct and/cc urls/nns of/in the/dt clicked/vbn web/nn pages/nns of/in that/dt query/nn are/vbp used/vbn to/to represent/vb the/dt session/nn ./punct
+different/jj sessions/nns may/md contain/vb the/dt same/jj queries/nns ./punct
+thus/rb the/dt number/nn of/in sessions/nns could/md be/vb quite/rb huge/jj and/cc the/dt information/nn in/in the/dt sessions/nns with/in the/dt same/jj queries/nns could/md be/vb redundant/jj ./punct
+in/in order/nn to/to improve/vb the/dt scalability/nn and/cc reduce/vb data/nns sparseness/nn ,/punct we/prp aggregate/nn all/pdt the/dt sessions/nns which/wdt contain/vbp exactly/rb the/dt same/jj queries/nns together/rb ./punct
+that/dt is/vbz ,/punct for/in each/dt unique/jj query/nn ,/punct we/prp build/vbp a/dt pseudo-document/nn which/wdt consists/vbz of/in all/pdt the/dt descriptions/nns of/in its/prp$ clicks/nns in/in all/pdt the/dt sessions/nns aggregated/vbn ./punct
+the/dt keywords/nns contained/vbd in/in the/dt queries/nns themselves/prp can/md be/vb regarded/vbn as/in brief/jj summaries/nns of/in the/dt pseudo-documents/nns ./punct
+all/pdt these/dt pseudo-documents/nns form/vbp our/prp$ history/nn data/nns collection/nn ,/punct which/wdt is/vbz used/vbn to/to learn/vb interesting/jj aspects/nns in/in the/dt following/vbg section/nn ./punct
+4/ls ./punct
+our/nnp approach/nnp our/prp$ approach/nn is/vbz to/to organize/vb search/nn results/nns by/in aspects/nns learned/vbn from/in search/nn engine/nn logs/nns ./punct
+given/vbn an/dt input/nn query/nn ,/punct the/dt general/jj procedure/nn of/in our/prp$ approach/nn is/vbz :/punct 1/cd ./punct
+get/vb its/prp$ related/jj information/nn from/in search/nn engine/nn logs/nns ./punct
+all/pdt the/dt information/nn forms/vbz a/dt working/vbg set/nn ./punct
+2/ls ./punct
+learn/vb aspects/nns from/in the/dt information/nn in/in the/dt working/vbg set/nn ./punct
+these/dt aspects/nns correspond/vbp to/to users/nns ''/'' interests/nns given/vbn the/dt input/nn query/nn ./punct
+each/dt aspect/nn is/vbz labeled/vbn with/in a/dt representative/jj query/nn ./punct
+3/ls ./punct
+categorize/vb and/cc organize/vb the/dt search/nn results/nns of/in the/dt input/nn query/nn according/vbg to/to the/dt aspects/nns learned/vbd above/rb ./punct
+we/prp now/rb give/vbp a/dt detailed/jj presentation/nn of/in each/dt step/nn ./punct
+of/in web/nn pages/nns ./punct
+to/to know/vb what/wp the/dt users/nns are/vbp really/rb interested/jj in/in given/vbn this/dt query/nn ,/punct we/prp first/rb retrieve/vb its/prp$ past/jj similar/jj queries/nns in/in our/prp$ preprocessed/jj history/nn data/nns collection/nn ./punct
+formally/rb ,/punct assume/vb we/prp have/vbp n/nn pseudo-documents/nns in/in our/prp$ corresponds/vbz to/to a/dt unique/jj query/nn and/cc is/vbz enriched/vbn with/in clickthrough/jj algorithm/nn ./punct
+here/rb we/prp use/vbp the/dt okapi/nn method/nn ,/punct one/cd of/in the/dt state-of-the-art/jj retrieval/nn methods/nns ./punct
+specifically/rb ,/punct we/prp use/vbp the/dt following/vbg formula/nn to/to calculate/vb the/dt similarity/nn between/in query/nn where/wrb k1/nn and/cc b/nn are/vbp okapi/nnp parameters/nns set/vbd empirically/rb ,/punct c/nn (/punct w/nn ,/punct qi/nnp )/punct idf/nnp (/punct w/nn )/punct is/vbz the/dt inverse/jj document/nn frequency/nn of/in word/nn w/nn ,/punct and/cc avdl/nn is/vbz the/dt average/jj document/nn length/nn in/in our/prp$ history/nn collection/nn ./punct
+based/vbn on/in the/dt similarity/nn scores/nns ,/punct we/prp rank/vbp all/pdt the/dt documents/nns learn/vbp the/dt aspects/nns that/wdt users/nns are/vbp usually/rb interested/jj in/in ./punct
+each/dt top/jj ranked/vbd documents/nns correspond/vbp to/to q/vb ''/'' s/nns related/jj past/in queries/nns ./punct
+top/jj ranked/vbd pseudo-documents/nns from/in the/dt history/nn collection/nn h./nn these/dt pseudo-documents/nns contain/vbp the/dt aspects/nns that/wdt users/nns clustering/nn method/nn to/to discover/vb these/dt aspects/nns ./punct
+any/dt clustering/nn algorithm/nn could/md be/vb applied/vbn here/rb ./punct
+in/in this/dt paper/nn ,/punct we/prp use/vbp an/dt algorithm/nn based/vbn on/in graph/nn partition/nn :/punct the/dt star/nn clustering/nn algorithm/nn ./punct
+a/dt good/jj property/nn of/in the/dt star/nn for/in each/dt cluster/nn naturally/rb ./punct
+we/prp describe/vbp the/dt star/nn clustering/nn algorithm/nn below/in ./punct
+given/vbn hq/nn ,/punct star/nn clustering/nn starts/vbz with/in constructing/vbg a/dt pairwise/jj similarity/nn graph/nn on/in this/dt collection/nn based/vbn on/in the/dt vector/nn space/nn model/nn in/in information/nn retrieval/nn ./punct
+then/rb the/dt clusters/nns are/vbp formed/vbn by/in dense/jj subgraphs/nns that/wdt are/vbp star-shaped/jj ./punct
+these/dt clusters/nns form/vbp a/dt cover/nn of/in the/dt similarity/nn graph/nn ./punct
+formally/rb ,/punct for/in each/dt of/in the/dt n/nn pseudo-documents/nns {/punct d1/nn ,/punct .../: ,/punct dn/nn }/punct in/in the/dt collection/nn hq/nn ,/punct we/prp compute/vbp a/dt tf-idf/nn vector/nn ./punct
+then/rb ,/punct for/in each/dt pair/nn of/in ./punct
+using/vbg a/dt similarity/nn threshold/nn parameter/nn σ./vbd each/dt document/nn edge/nn connecting/vbg the/dt corresponding/jj two/cd vertices/nns ./punct
+after/in the/dt similarity/nn graph/nn gσ/nn is/vbz built/vbn ,/punct the/dt star/nn clustering/nn algorithm/nn clusters/nns the/dt documents/nns using/vbg a/dt greedy/jj algorithm/nn as/in follows/vbz :/punct unmarked/jj ./punct
+2/ls ./punct
+from/in those/dt unmarked/jj vertices/nns ,/punct find/vb the/dt one/cd which/wdt has/vbz the/dt highest/jjs degree/nn and/cc let/vb it/prp be/vb u/nn ./punct
+3/ls ./punct
+mark/nnp the/dt flag/nn of/in u/nn as/in center/nn ./punct
+that/dt are/vbp not/rb marked/vbn as/in center/nn ./punct
+mark/nnp all/pdt the/dt selected/vbn neighbors/nns as/in satellites/nns ./punct
+marked/jj ./punct
+each/dt cluster/nn is/vbz star-shaped/jj ,/punct which/wdt consists/vbz a/dt single/jj center/nn and/cc several/jj satellites/nns ./punct
+there/ex is/vbz only/rb one/cd parameter/nn σ/nn in/in the/dt star/nn clustering/nn algorithm/nn ./punct
+a/dt big/jj σ/nn enforces/vbz that/in the/dt connected/jj documents/nns have/vbp high/jj similarities/nns ,/punct and/cc thus/rb the/dt make/vb the/dt clusters/nns big/jj and/cc less/rbr coherent/jj ./punct
+we/prp will/md study/vb the/dt impact/nn of/in this/dt parameter/nn in/in our/prp$ experiments/nns ./punct
+outputs/nns a/dt center/nn for/in each/dt cluster/nn ./punct
+in/in the/dt past/jj query/nn collection/nn hq/nn ,/punct each/dt document/nn corresponds/vbz to/to a/dt query/nn ./punct
+this/dt center/nn query/nn can/md be/vb regarded/vbn as/in the/dt most/rbs representative/jj one/cd for/in the/dt whole/jj cluster/nn ,/punct and/cc thus/rb provides/vbz a/dt label/nn for/in the/dt cluster/nn naturally/rb ./punct
+all/pdt the/dt clusters/nns obtained/vbn are/vbp related/jj to/to the/dt input/nn query/nn q/nn from/in different/jj perspectives/nns ,/punct and/cc they/prp represent/vbp the/dt possible/jj aspects/nns of/in interests/nns about/in query/nn q/nn of/in users/nns ./punct
+in/in order/nn to/to organize/vb the/dt search/nn results/vbz according/vbg to/to users/nns ''/'' interests/nns ,/punct we/prp use/vbp the/dt learned/vbn aspects/nns from/in the/dt related/jj past/jj queries/nns to/to categorize/vb the/dt search/nn results/vbz ./punct
+given/vbn the/dt top/jj m/nn web/nn pages/nns returned/vbn by/in a/dt search/nn engine/nn for/in q/nn :/punct {/punct s1/nn ,/punct .../: ,/punct sm/nn }/punct ,/punct we/prp group/vbp them/prp into/in different/jj aspects/nns using/vbg a/dt categorization/nn algorithm/nn ./punct
+in/in principle/nn ,/punct any/dt categorization/nn algorithm/nn can/md be/vb used/vbn here/rb ./punct
+here/rb we/prp use/vbp a/dt simple/jj centroid-based/jj method/nn for/in categorization/nn ./punct
+naturally/rb ,/punct more/rbr sophisticated/jj methods/nns such/jj as/in svm/nn may/md be/vb expected/vbn to/to achieve/vb even/rb better/jjr performance/nn ./punct
+based/vbn on/in the/dt pseudo-documents/nns in/in each/dt discovered/vbn aspect/nn of/in all/pdt the/dt vectors/nns of/in the/dt documents/nns in/in ci/nnp :/punct vl/nn ./punct
+all/pdt these/dt pi/nn ''/'' s/nns are/vbp used/vbn to/to categorize/vb the/dt search/nn results/vbz ./punct
+specifically/rb ,/punct for/in any/dt search/nn result/vbp sj/nn ,/punct we/prp build/vbp a/dt tf-idf/nn vector/nn ./punct
+the/dt centroid-based/jj method/nn computes/vbz the/dt cosine/nn similarity/nn between/in the/dt vector/nn representation/nn of/in sj/nn and/cc each/dt centroid/nn has/vbz the/dt highest/jjs cosine/nn similarity/nn score/nn ./punct
+all/pdt the/dt aspects/nns are/vbp finally/rb ranked/vbn according/vbg to/to the/dt number/nn of/in search/nn results/vbz they/prp have/vbp ./punct
+within/in each/dt aspect/nn ,/punct the/dt search/nn results/nns are/vbp ranked/vbn according/vbg to/to their/prp$ original/jj search/nn engine/nn ranking/nn ./punct
+we/prp construct/vbp our/prp$ data/nns set/vbp based/vbn on/in the/dt msn/nnp search/nn log/nn data/nns set/vbp released/vbn by/in the/dt microsoft/nnp live/nnp labs/nnps in/in 2006/cd ./punct
+in/in total/nn ,/punct this/dt log/nn data/nns spans/vbz 31/cd days/nns from/in 05/01/2006/cd to/to queries/nns ,/punct and/cc 4,649,000/cd distinct/jj urls/nns in/in the/dt raw/jj data/nns ./punct
+to/to test/vb our/prp$ algorithm/nn ,/punct we/prp separate/vbp the/dt whole/jj data/nns set/vbn into/in two/cd parts/nns according/vbg to/to the/dt time/nn :/punct the/dt first/jj 2/3/cd data/nns is/vbz used/vbn to/to simulate/vb the/dt historical/jj data/nns that/in a/dt search/nn engine/nn accumulated/vbn ,/punct and/cc we/prp use/vbp the/dt last/jj 1/3/cd to/to simulate/vb future/jj queries/nns ./punct
+in/in the/dt history/nn collection/nn ,/punct we/prp clean/vbp the/dt data/nns by/in only/rb keeping/vbg those/dt frequent/jj ,/punct well-formatted/jj ,/punct english/jj queries/nns (/punct queries/nns which/wdt only/rb contain/vbp characters/nns ‘a/vb ''/'' ,/punct ‘b/nn ''/'' ,/punct .../: ,/punct ‘z/nn ''/'' ,/punct and/cc space/nn ,/punct and/cc appear/vb more/jjr than/in 5/cd times/nns )/punct ./punct
+after/in cleaning/nn ,/punct we/prp get/vbp 169,057/cd unique/jj queries/nns in/in our/prp$ history/nn data/nns collection/nn totally/rb ./punct
+on/in average/nn ,/punct each/dt query/nn has/vbz 3.5/cd distinct/jj clicks/nns ./punct
+we/prp build/vbp the/dt pseudo-documents/nns for/in all/pdt these/dt queries/nns as/in described/vbn in/in section/nn 3/cd ./punct
+the/dt average/jj length/nn of/in these/dt pseudo-documents/nns is/vbz 68/cd words/nns and/cc the/dt total/jj data/nns size/nn of/in our/prp$ history/nn collection/nn is/vbz 129mb/nn ./punct
+we/prp construct/vbp our/prp$ test/nn data/nns from/in the/dt last/jj 1/3/cd data/nns ./punct
+according/vbg to/to the/dt time/nn ,/punct we/prp separate/vbp this/dt data/nns into/in two/cd test/nn sets/nns equally/rb for/in cross-validation/nn to/to set/vb parameters/nns ./punct
+for/in each/dt test/nn set/nn ,/punct we/prp use/vbp every/dt session/nn as/in a/dt test/nn case/nn ./punct
+each/dt session/nn contains/vbz a/dt single/jj query/nn and/cc several/jj clicks/nns ./punct
+(/punct note/vb that/in we/prp do/vbp not/rb aggregate/jj sessions/nns for/in test/nn cases/nns ./punct
+different/jj test/nn cases/nns may/md have/vb the/dt same/jj queries/nns but/cc possibly/rb different/jj clicks/nns ./punct
+)/punct since/in it/prp is/vbz infeasible/jj to/to ask/vb the/dt original/jj user/nn who/wp submitted/vbd a/dt query/nn to/to judge/vb the/dt results/nns for/in the/dt query/nn ,/punct we/prp follow/vbp the/dt work/nn and/cc opt/vb to/to use/vb the/dt clicks/nns associated/vbn with/in the/dt query/nn in/in a/dt session/nn to/to approximate/jj relevant/jj documents/nns ./punct
+using/vbg clicks/nns as/in judgments/nns ,/punct we/prp can/md then/rb compare/vb different/jj algorithms/nns for/in organizing/vbg search/nn results/vbz to/to see/vb how/wrb well/rb these/dt algorithms/nns can/md help/vb users/nns reach/vb the/dt clicked/vbn urls/nns ./punct
+organizing/nnp search/nn results/vbz into/in different/jj aspects/nns is/vbz expected/vbn to/to help/vb informational/jj queries/nns ./punct
+it/prp thus/rb makes/vbz sense/nn to/to focus/vb on/in the/dt informational/jj queries/nns in/in our/prp$ evaluation/nn ./punct
+for/in each/dt test/nn case/nn ,/punct i.e./fw ,/punct each/dt session/nn ,/punct we/prp count/vbp the/dt number/nn of/in different/jj clicks/nns and/cc filter/nn out/in those/dt test/nn cases/nns with/in fewer/jjr than/in 4/cd clicks/nns under/in the/dt assumption/nn that/in a/dt query/nn with/in more/jjr clicks/nns is/vbz more/rbr whether/in our/prp$ algorithm/nn can/md learn/vb from/in the/dt past/jj queries/nns ,/punct we/prp also/rb filter/nn out/rp those/dt test/nn cases/nns whose/wp$ queries/nns can/md not/rb retrieve/vb at/in least/jjs 100/cd pseudo-documents/nns from/in our/prp$ history/nn collection/nn ./punct
+finally/rb ,/punct we/prp obtain/vbp 172/cd and/cc 177/cd test/nn cases/nns in/in the/dt first/jj and/cc second/jj test/nn sets/nns respectively/rb ./punct
+on/in average/nn ,/punct we/prp have/vbp 6.23/cd and/cc 5.89/cd clicks/nns for/in each/dt test/nn case/nn in/in the/dt two/cd test/nn sets/nns respectively/rb ./punct
+in/in the/dt section/nn ,/punct we/prp describe/vbp our/prp$ experiments/nns on/in the/dt search/nn result/vbp organization/nn based/vbn past/in search/nn engine/nn logs/nns ./punct
+we/prp use/vbp two/cd baseline/nn methods/nns to/to evaluate/vb the/dt proposed/vbn method/nn for/in organizing/vbg search/nn results/nns ./punct
+for/in each/dt test/nn case/nn ,/punct the/dt first/jj method/nn is/vbz the/dt default/nn ranked/vbd list/nn from/in a/dt search/nn engine/nn (/punct baseline/nn )/punct ./punct
+the/dt second/jj method/nn is/vbz to/to organize/vb the/dt search/nn results/vbz by/in clustering/vbg them/prp (/punct cluster-based/jj )/punct ./punct
+for/in fair/jj comparison/nn ,/punct we/prp use/vbp the/dt same/jj clustering/nn algorithm/nn as/in our/prp$ logbased/jj method/nn (/punct i.e./fw ,/punct star/vb clustering/nn )/punct ./punct
+that/dt is/vbz ,/punct we/prp treat/vbp each/dt search/nn result/vbp as/in a/dt document/nn ,/punct construct/nn the/dt similarity/nn graph/nn ,/punct and/cc find/vb the/dt star-shaped/jj clusters/nns ./punct
+we/prp compare/vbp our/prp$ method/nn (/punct log-based/jj )/punct with/in the/dt two/cd baseline/nn methods/nns in/in the/dt following/vbg experiments/nns ./punct
+for/in both/dt cluster-based/jj and/cc log-based/jj methods/nns ,/punct the/dt search/nn results/vbz within/in each/dt cluster/nn is/vbz ranked/vbn based/vbn on/in their/prp$ original/jj ranking/jj given/vbn by/in the/dt search/nn engine/nn ./punct
+to/to compare/vb different/jj result/nn organization/nn methods/nns ,/punct we/prp adopt/vbp quality/nn (/punct e.g./fw ,/punct precision/nn )/punct of/in the/dt best/jjs cluster/nn ,/punct which/wdt is/vbz defined/vbn as/in the/dt one/cd with/in the/dt largest/jjs number/nn of/in relevant/jj documents/nns ./punct
+organizing/nnp search/nn results/vbz into/in clusters/nns is/vbz to/to help/vb users/nns navigate/vb into/in relevant/jj documents/nns quickly/rb ./punct
+the/dt above/jj metric/nn is/vbz to/to simulate/vb a/dt scenario/nn when/wrb users/nns always/rb choose/vbp the/dt right/jj cluster/nn and/cc look/vb into/in it/prp ./punct
+specifically/rb ,/punct we/prp download/vbp and/cc organize/vbp the/dt top/jj 100/cd search/nn results/vbz into/in aspects/nns for/in each/dt test/nn case/nn ./punct
+we/prp the/dt primary/jj measure/nn to/to compare/vb different/jj methods/nns ./punct
+p/nn @/punct 5/cd is/vbz precision/nn when/wrb the/dt user/nn opens/vbz a/dt cluster/nn and/cc looks/vbz at/in the/dt first/jj 5/cd documents/nns ./punct
+we/prp also/rb use/vbp mean/nn reciprocal/jj rank/nnp (/punct mrr/nnp )/punct as/in relevant/jj document/nn for/in q./nnp to/to give/vb a/dt fair/jj comparison/nn across/in different/jj organization/nn algorithms/nns ,/punct we/prp force/vbp both/dt cluster-based/jj and/cc log-based/jj methods/nns to/to output/nn the/dt same/jj number/nn of/in aspects/nns and/cc force/vb each/dt search/nn result/vbp to/to be/vb in/in one/cd and/cc only/rb one/cd aspect/nn ./punct
+the/dt number/nn of/in aspects/nns is/vbz fixed/vbn at/in 10/cd in/in all/pdt the/dt following/vbg experiments/nns ./punct
+the/dt star/nn clustering/nn algorithm/nn can/md output/nn different/jj number/nn of/in clusters/nns for/in different/jj input/nn ./punct
+to/to constrain/vb the/dt number/nn of/in clusters/nns to/to 10/cd ,/punct we/prp order/vbp all/pdt the/dt clusters/nns by/in their/prp$ sizes/nns ,/punct select/vbp the/dt top/jj 10/cd as/in aspect/nn candidates/nns ./punct
+we/prp then/rb re-assign/vb each/dt search/nn result/vbp to/to one/cd of/in these/dt selected/vbn 10/cd aspects/nns that/wdt has/vbz the/dt highest/jjs similarity/nn score/nn with/in the/dt corresponding/jj aspect/nn centroid/nn ./punct
+in/in our/prp$ experiments/nns ,/punct we/prp observe/vbp that/in the/dt sizes/nns of/in the/dt best/jjs clusters/nns are/vbp all/dt larger/jjr than/in 5/cd ,/punct and/cc this/dt ensures/vbz that/in p/nn @/punct 5/cd is/vbz a/dt meaningful/jj metric/jj ./punct
+our/prp$ main/jj hypothesis/nn is/vbz that/in organizing/vbg search/nn results/vbz based/vbn on/in the/dt users/nns ''/'' interests/nns learned/vbd from/in a/dt search/nn log/nn data/nn set/nn is/vbz more/rbr beneficial/jj than/in to/to organize/vb results/nns using/vbg a/dt simple/jj list/nn or/cc cluster/nn search/nn results/nns ./punct
+in/in the/dt following/vbg ,/punct we/prp test/vbp our/prp$ hypothesis/nn from/in two/cd perspectives/nns -/punct organization/nn and/cc labeling/nn ./punct
+cluster/baseline/nn 5.28/cd %/punct -4.87/cd %/punct 3.69/cd %/punct -8.93/cd %/punct impr./decr/nn ./punct
+impr./decr/nn ./punct
+we/prp compare/vbp three/cd methods/nns ,/punct basic/jj search/nn engine/nn ranking/jj (/punct baseline/nn )/punct ,/punct traditional/jj clustering/nn based/vbn method/nn (/punct clusterbased/jj )/punct ,/punct and/cc our/prp$ log/nn based/vbn method/nn (/punct log-based/jj )/punct ,/punct in/in table/nnp 2/cd using/vbg mrr/nnp and/cc p/nn @/punct 5/cd ./punct
+we/prp optimize/vbp the/dt parameter/nn σ/nn ''/'' s/nns for/in each/dt collection/nn individually/rb based/vbn on/in p/nn @/punct 5/cd values/nns ./punct
+this/dt shows/vbz the/dt best/jjs performance/nn that/in each/dt method/nn can/md achieve/vb ./punct
+in/in this/dt table/nn ,/punct we/prp can/md see/vb that/in in/in both/dt test/nn collections/nns ,/punct our/prp$ method/nn is/vbz better/jjr than/in both/dt the/dt baseline/nn and/cc the/dt cluster-based/jj methods/nns ./punct
+for/in example/nn ,/punct in/in the/dt first/jj test/nn collection/nn ,/punct the/dt baseline/nn method/nn of/in mmr/nnp is/vbz 0.734/cd ,/punct the/dt cluster-based/jj method/nn is/vbz 0.773/cd and/cc our/prp$ method/nn is/vbz 0.783/cd ./punct
+we/prp achieve/vbp higher/jjr accuracy/nn than/in both/dt cluster-based/jj method/nn (/punct 1.27/cd %/punct improvement/nn )/punct and/cc the/dt baseline/nn method/nn (/punct 6.62/cd %/punct improvement/nn )/punct ./punct
+the/dt p/nn @/punct 5/cd values/nns are/vbp 0.332/cd for/in the/dt baseline/nn ,/punct 0.316/cd for/in cluster-based/jj method/nn ,/punct but/cc 0.353/cd for/in our/prp$ method/nn ./punct
+our/prp$ method/nn improves/vbz over/in the/dt baseline/nn by/in 6.31/cd %/punct ,/punct while/in the/dt cluster-based/jj method/nn even/rb decreases/vbz the/dt accuracy/nn ./punct
+this/dt is/vbz because/in cluster-based/jj method/nn organizes/vbz the/dt search/nn results/vbz only/rb based/vbn on/in the/dt contents/nns ./punct
+thus/rb it/prp could/md organize/vb the/dt results/nns differently/rb from/in users/nns ''/'' preferences/nns ./punct
+this/dt confirms/vbz our/prp$ hypothesis/nn of/in the/dt bias/nn of/in the/dt cluster-based/jj method/nn ./punct
+comparing/vbg our/prp$ method/nn with/in the/dt cluster-based/jj method/nn ,/punct we/prp achieve/vbp significant/jj improvement/nn on/in both/dt test/nn collections/nns ./punct
+the/dt p-values/nns of/in the/dt significance/nn tests/nns based/vbn on/in p/nn @/punct 5/cd on/in both/cc collections/nns are/vbp 0.01/cd and/cc 0.02/cd respectively/rb ./punct
+this/dt shows/vbz that/in our/prp$ log-based/jj method/nn is/vbz effective/jj to/to learn/vb users/nns ''/'' preferences/nns from/in the/dt past/jj query/jj history/nn ,/punct and/cc thus/rb it/prp can/md organize/vb the/dt search/nn results/vbz in/in a/dt more/rbr useful/jj way/nn to/to users/nns ./punct
+we/prp showed/vbd the/dt optimal/jj results/nns above/in ./punct
+to/to test/vb the/dt and/cc then/rb use/vb the/dt tuned/vbn parameter/nn on/in the/dt other/jj set/nn ./punct
+we/prp compare/vbp this/dt result/nn (/punct log/nn tuned/vbd outside/jj )/punct with/in the/dt optimal/jj results/nns of/in both/dt cluster-based/jj (/punct cluster/nn optimized/vbd )/punct and/cc log-based/jj expected/vbn ,/punct the/dt performance/nn using/vbg the/dt parameter/nn tuned/vbn on/in a/dt separate/jj set/nn is/vbz worse/jjr than/in the/dt optimal/jj performance/nn ./punct
+however/rb ,/punct our/prp$ method/nn still/rb performs/vbz much/rb better/jjr than/in the/dt optimal/jj results/nns of/in cluster-based/jj method/nn on/in both/dt test/nn collections/nns ./punct
+cluster/nn optimized/vbd log/nn optimized/vbn log/nn tuned/vbd outside/jj methods/nns in/in terms/nns of/in the/dt numbers/nns of/in test/nn cases/nns for/in which/wdt p/nn @/punct 5/cd is/vbz increased/vbn versus/cc decreased/vbn ./punct
+we/prp can/md see/vb that/in our/prp$ method/nn improves/vbz more/jjr test/nn cases/nns compared/vbn with/in the/dt other/jj two/cd methods/nns ./punct
+in/in the/dt next/jj section/nn ,/punct we/prp show/vbp more/rbr detailed/jj our/prp$ method/nn ./punct
+to/to better/rbr understand/vb the/dt cases/nns where/wrb our/prp$ log-based/jj method/nn can/md improve/vb the/dt accuracy/nn ,/punct we/prp test/vbp two/cd properties/nns :/punct result/vb diversity/nn and/cc query/nn difficulty/nn ./punct
+all/pdt the/dt analysis/nn below/in is/vbz based/vbn on/in test/nn set/nn 1/cd ./punct
+diversity/nn analysis/nn :/punct intuitively/rb ,/punct organizing/vbg search/nn results/vbz into/in different/jj aspects/nns is/vbz more/rbr beneficial/jj to/to those/dt queries/nns whose/wp$ results/nns are/vbp more/rbr diverse/jj ,/punct as/in for/in such/jj queries/nns ,/punct the/dt test/nn the/dt hypothesis/nn that/in log-based/jj method/nn help/nn more/rbr those/dt queries/nns with/in diverse/jj results/nns ,/punct we/prp compute/vbp the/dt size/nn ratios/nns of/in the/dt biggest/jjs and/cc second/jj biggest/jjs clusters/nns in/in our/prp$ log-based/jj ratio/nn is/vbz small/jj ,/punct it/prp means/vbz that/in the/dt first/jj two/cd clusters/nns have/vbp a/dt small/jj difference/nn thus/rb the/dt results/nns are/vbp more/rbr diverse/jj ./punct
+in/in this/dt case/nn ,/punct we/prp would/md expect/vb our/prp$ method/nn to/to help/vb more/jjr ./punct
+the/dt ratios/nns into/in 4/cd bins/nns ./punct
+the/dt 4/cd bins/nns correspond/vbp to/to the/dt ratio/nn ranges/vbz [/punct 1/cd ,/punct 2/cd )/punct ,/punct [/punct 2/cd ,/punct 3/cd )/punct ,/punct [/punct 3/cd ,/punct 4/cd )/punct ,/punct and/cc [/punct 4/cd ,/punct +∞/cd )/punct respectively/rb ./punct
+(/punct [/punct i/ls ,/punct j/nn )/punct means/vbz test/nn cases/nns whose/wp$ p/nn @/punct 5/cd ''/'' s/nns are/vbp improved/vbn versus/cc decreased/vbn with/in respect/nn to/to the/dt ranking/jj baseline/nn ,/punct and/cc plot/nn the/dt numbers/nns in/in this/dt figure/nn ./punct
+we/prp can/md observe/vb that/in when/wrb the/dt ratio/nn is/vbz smaller/jjr ,/punct the/dt log-based/jj method/nn can/md improve/vb more/jjr test/nn cases/nns ./punct
+but/cc when/wrb the/dt ratio/nn is/vbz large/jj ,/punct the/dt log-based/jj method/nn can/md not/rb improve/vb over/in the/dt baseline/nn ./punct
+for/in example/nn ,/punct in/in bin/nn 1/cd ,/punct 48/cd test/nn cases/nns are/vbp cases/nns are/vbp decreased/vbn ./punct
+this/dt confirms/vbz our/prp$ hypothesis/nn that/in our/prp$ method/nn can/md help/vb more/jjr if/in the/dt query/nn has/vbz more/jjr diverse/jj results/nns ./punct
+this/dt also/rb suggests/vbz that/in we/prp should/md turn/vb off/rp the/dt option/nn of/in re-organizing/jj search/nn results/vbz if/in the/dt results/nns are/vbp not/rb very/rb diverse/jj (/punct e.g./fw ,/punct as/in indicated/vbn by/in the/dt cluster/nn size/nn ratio/nn )/punct ./punct
+difficulty/nn analysis/nn :/punct difficult/jj queries/nns have/vbp been/vbn studied/vbn in/in recent/jj years/nns ./punct
+here/rb we/prp analyze/vbp the/dt effectiveness/nn of/in our/prp$ method/nn in/in helping/vbg difficult/jj queries/nns ./punct
+we/prp quantify/vbp the/dt query/nn difficulty/nn by/in the/dt mean/nn average/jj precision/nn (/punct map/nn )/punct of/in the/dt original/jj search/nn engine/nn ranking/nn for/in each/dt test/nn case/nn ./punct
+we/prp order/nn of/in map/nn values/nns ./punct
+we/prp partition/nn the/dt test/nn cases/nns into/in 4/cd bins/nns with/in each/dt having/vbg a/dt roughly/rb equal/jj number/nn of/in test/nn cases/nns ./punct
+a/dt small/jj map/nn means/vbz that/in the/dt utility/nn of/in the/dt original/jj ranking/nn is/vbz low/jj ./punct
+bin/nnp 1/cd contains/vbz those/dt test/nn cases/nns with/in the/dt lowest/jjs map/nn ''/'' s/nns and/cc bin/nn 4/cd contains/vbz those/dt test/nn cases/nns with/in the/dt highest/jjs map/nn ''/'' s./nn for/in each/dt bin/nn ,/punct we/prp compute/vbp the/dt numbers/nns of/in test/nn cases/nns whose/wp$ p/nn @/punct 5/cd ''/'' s/nns are/vbp improved/vbn versus/cc decreased/vbn ./punct
+figure/nnp 3/cd shows/vbz the/dt results/nns ./punct
+clearly/rb ,/punct in/in bin/nn 1/cd ,/punct most/jjs of/in the/dt test/nn cases/nns are/vbp improved/vbn (/punct 24/cd vs/cc 3/cd )/punct ,/punct while/in in/in bin/nn 4/cd ,/punct log-based/jj method/nn may/md decrease/vb the/dt performance/nn (/punct 3/cd vs/cc 20/cd )/punct ./punct
+this/dt shows/vbz that/in our/prp$ method/nn since/in clustering/nn search/nn results/vbz is/vbz intended/vbn to/to help/vb difficult/jj queries/nns ./punct
+this/dt also/rb shows/vbz that/in our/prp$ method/nn does/vbz not/rb really/rb help/vb easy/jj queries/nns ,/punct thus/rb we/prp should/md turn/vb off/rp our/prp$ organization/nn option/nn for/in easy/jj queries/nns ./punct
+we/prp examine/vbp parameter/nn sensitivity/nn in/in this/dt section/nn ./punct
+for/in the/dt star/nn clustering/nn algorithm/nn ,/punct we/prp study/vbp the/dt similarity/nn threshold/nn parameter/nn σ./nn for/in the/dt okapi/nnp retrieval/nn function/nn ,/punct we/prp study/vbp number/nn of/in past/jj queries/nns retrieved/vbn in/in our/prp$ log-based/jj method/nn ./punct
+in/in table/nnp 4/cd ,/punct we/prp show/vbp the/dt impact/nn of/in okapi/nn parameters/nns ./punct
+also/rb not/rb very/rb sensitive/jj to/to the/dt parameter/nn setting/nn ./punct
+most/jjs of/in the/dt values/nns are/vbp larger/jjr than/in 0.35/cd ./punct
+the/dt default/nn values/nns k1/nn =/punct 1.2/cd and/cc b/nn =/punct 0.8/cd give/vbp approximately/rb optimal/jj results/nns ./punct
+we/prp further/rb study/vb the/dt impact/nn of/in the/dt amount/nn of/in history/nn both/cc cluster-based/jj and/cc log-based/jj methods/nns ./punct
+we/prp show/vbp the/dt result/nn on/in both/dt test/nn collections/nns ./punct
+information/nn to/to learn/vb from/in by/in varying/vbg the/dt number/nn of/in past/jj queries/nns to/to be/vb retrieved/vbn for/in learning/vbg aspects/nns ./punct
+the/dt results/nns on/in both/dt test/nn collections/nns are/vbp shown/vbn in/in figure/nnp 5/cd ./punct
+we/prp can/md see/vb that/in the/dt performance/nn gradually/rb increases/vbz as/in we/prp enlarge/vbp the/dt number/nn of/in past/jj queries/nns retrieved/vbn ./punct
+thus/rb our/prp$ method/nn could/md potentially/rb learn/vb more/rbr as/in we/prp accumulate/vbp more/rbr history/nn ./punct
+more/rbr importantly/rb ,/punct as/in time/nn goes/vbz ,/punct more/rbr and/cc more/rbr queries/nns will/md have/vb sufficient/jj history/nn ,/punct so/in we/prp can/md improve/vb more/jjr and/cc more/jjr queries/nns ./punct
+we/prp use/vbp the/dt query/nn area/nn codes/vbz to/to show/vb the/dt difference/nn in/in the/dt results/nns of/in the/dt log-based/jj method/nn and/cc the/dt cluster-based/jj method/nn ./punct
+this/dt query/nn may/md mean/vb phone/nn codes/nns or/cc zip/nn codes/nns ./punct
+city/nn ,/punct state/nn telephone/nn ,/punct city/nn ,/punct international/jj

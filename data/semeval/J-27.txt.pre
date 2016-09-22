@@ -1,0 +1,421 @@
+a/dt sequence/nn of/in prices/nns and/cc demands/nns are/vbp rationalizable/jj if/in there/ex exists/vbz a/dt concave/nn ,/punct continuous/jj and/cc monotone/nn utility/nn function/nn such/jj that/in the/dt demands/nns are/vbp the/dt maximizers/nns of/in the/dt utility/nn function/nn over/in the/dt budget/nn set/vbn corresponding/vbg to/to the/dt price/nn ./punct
+afriat/nnp [/punct 1/cd ]/punct presented/vbd necessary/jj and/cc sufficient/jj conditions/nns for/in a/dt finite/jj sequence/nn to/to be/vb rationalizable/jj ./punct
+varian/nnp [/punct 20/cd ]/punct and/cc later/rb blundell/nnp et/fw al/fw ./punct
+[/punct 3/cd ,/punct 4/cd ]/punct continued/vbd this/dt line/nn of/in work/nn studying/vbg nonparametric/jj methods/nns to/to forecasts/nns demand/nn ./punct
+their/prp$ results/nns essentially/rb characterize/vbp learnability/nn of/in degenerate/jj classes/nns of/in demand/nn functions/nns and/cc therefore/rb fall/vb short/jj of/in giving/vbg a/dt general/jj degree/nn of/in confidence/nn in/in the/dt forecast/nn ./punct
+the/dt present/jj paper/nn complements/vbz this/dt line/nn of/in research/nn by/in introducing/vbg a/dt statistical/jj model/nn and/cc a/dt measure/nn of/in complexity/nn through/in which/wdt we/prp are/vbp able/jj to/to study/vb the/dt learnability/nn of/in classes/nns of/in demand/nn functions/nns and/cc derive/vb a/dt degree/nn of/in confidence/nn in/in the/dt forecasts/nns ./punct
+our/prp$ results/nns show/vbp that/in the/dt class/nn of/in all/dt demand/nn functions/nns has/vbz unbounded/jj complexity/nn and/cc therefore/rb is/vbz not/rb learnable/jj ,/punct but/cc that/in there/ex exist/vbp interesting/jj and/cc potentially/rb useful/jj classes/nns that/wdt are/vbp learnable/jj from/in finite/jj samples/nns ./punct
+we/prp also/rb present/vbp a/dt learning/nn algorithm/nn that/wdt is/vbz an/dt adaptation/nn of/in a/dt new/jj proof/nn of/in afriat/nnp ''/'' s/vbz theorem/nn due/jj to/to teo/nnp and/cc vohra/nnp [/punct 17/cd ]/punct ./punct
+categories/nns and/cc subject/nnp descriptors/nnp f.2/nn [/punct theory/nnp of/in computation/nnp ]/punct :/punct analysis/nn of/in algorithms/nns and/cc problem/nnp complexity/nnp ;/punct j.4/nn [/punct computer/nn applications/nns ]/punct :/punct social/nnp and/cc behavioral/nnp sciences-economics/nnp ;/punct i.2.6/nn [/punct learning/nnp ]/punct :/punct parameter/nnp learning/nnp general/nnp terms/nns economics/nnp ,/punct algorithms/nnp ,/punct theory/nnp 1/cd ./punct
+introduction/nn a/dt market/nn is/vbz an/dt institution/nn by/in which/wdt economic/jj agents/nns meet/vbp and/cc make/vbp transactions/nns ./punct
+classical/jj economic/jj theory/nn explains/vbz the/dt incentives/nns of/in the/dt agents/nns to/to engage/vb in/in this/dt behavior/nn through/in the/dt agents/nns ''/'' preference/nn over/in the/dt set/nn of/in available/jj bundles/nns indicating/vbg that/in agents/nns attempt/vbp to/to replace/vb their/prp$ current/jj bundle/nn with/in bundles/nns that/wdt are/vbp both/dt more/jjr preferred/jj and/cc attainable/jj if/in such/jj bundles/nns exist/vbp ./punct
+the/dt preference/nn relation/nn is/vbz therefore/rb the/dt key/jj factor/nn in/in understanding/vbg consumer/nn behavior/nn ./punct
+one/cd of/in the/dt common/jj assumptions/nns in/in this/dt theory/nn is/vbz that/in the/dt preference/nn relation/nn is/vbz represented/vbn by/in a/dt utility/nn function/nn and/cc that/in agents/nns strive/vbp to/to maximize/vb their/prp$ utility/nn given/vbn a/dt budget/nn constraint/nn ./punct
+this/dt pattern/nn of/in behavior/nn is/vbz the/dt essence/nn of/in supply/nn and/cc demand/nn ,/punct general/jj equilibria/nns and/cc other/jj aspects/nns of/in consumer/nn theory/nn ./punct
+furthermore/rb ,/punct as/in we/prp elaborate/vbp in/in section/nn 2/cd ,/punct basic/jj observations/nns on/in market/nn demand/nn behavior/nn suggest/vbp that/in utility/nn functions/nns are/vbp monotone/nn and/cc concave/nn ./punct
+this/dt brings/vbz us/prp to/to the/dt question/nn ,/punct first/jj raised/vbn by/in samuelson/nnp [/punct 18/cd ]/punct ,/punct to/to what/wp degree/nn is/vbz this/dt theory/nn refutable/nn ?/punct
+given/vbn observations/nns of/in price/nn and/cc demand/nn ,/punct under/in what/wp circumstances/nns can/md we/prp conclude/vbp that/in the/dt data/nns is/vbz consistent/jj with/in the/dt behavior/nn of/in a/dt utility/nn maximizing/vbg agent/nn equipped/vbn with/in a/dt monotone/nn concave/nn utility/nn function/nn and/cc subject/nn to/to a/dt budget/nn constraint/nn ?/punct
+samuelson/nnp gave/vbd a/dt necessary/jj but/cc insufficient/jj condition/nn on/in the/dt underlying/jj preference/nn known/vbn as/in the/dt weak/jj axiom/nn of/in revealed/vbn preference/nn ./punct
+uzawa/nnp [/punct 16/cd ]/punct and/cc mas-colell/jj [/punct 10/cd ,/punct 11/cd ]/punct introduced/vbd a/dt notion/nn of/in income-lipschitz/nn and/cc showed/vbd that/in demand/nn functions/nns with/in this/dt property/nn are/vbp rationalizable/jj ./punct
+these/dt properties/nns do/vbp not/rb require/vb any/dt parametric/jj assumptions/nns and/cc are/vbp technically/rb refutable/jj ,/punct but/cc they/prp do/vbp assume/vb knowledge/nn of/in the/dt entire/jj demand/nn function/nn and/cc rely/vbp heavily/rb on/in the/dt differential/jj properties/nns of/in demand/nn functions/nns ./punct
+hence/rb ,/punct an/dt infinite/jj amount/nn of/in information/nn is/vbz needed/vbn to/to refute/vb the/dt theory/nn ./punct
+it/prp is/vbz often/rb the/dt case/nn that/wdt apart/rb form/vbp the/dt demand/nn observations/nns there/ex is/vbz additional/jj information/nn on/in the/dt system/nn and/cc it/prp is/vbz sensible/jj to/to make/vb parametric/jj assumptions/nns ,/punct namely/rb ,/punct to/to stipulate/vb some/dt functional/jj form/nn of/in utility/nn ./punct
+consistency/nn with/in utility/nn maximization/nn would/md then/rb depend/vb on/in fixing/vbg the/dt parameters/nns of/in the/dt utility/nn function/nn to/to be/vb consistent/jj with/in the/dt observations/nns and/cc with/in a/dt set/nn of/in equations/nns called/vbd the/dt slutski/nnp equations/nns ./punct
+if/in such/jj parameters/nns exist/vbp ,/punct we/prp conclude/vbp that/in the/dt stipulated/vbn utility/nn form/nn is/vbz consistent/jj with/in the/dt observations/nns ./punct
+this/dt approach/nn is/vbz useful/jj when/wrb there/ex is/vbz reason/nn to/to make/vb these/dt stipulations/nns ,/punct it/prp gives/vbz an/dt explicit/jj utility/nn function/nn which/wdt can/md be/vb used/vbn to/to make/vb precise/jj forecasts/nns on/in demand/nn for/in unob36/jj served/vbd prices/nns ./punct
+the/dt downside/nn of/in this/dt approach/nn is/vbz that/in real/jj life/nn data/nns is/vbz often/rb inconsistent/jj with/in convenient/jj functional/jj forms/nns ./punct
+moreover/rb ,/punct if/in the/dt observations/nns are/vbp inconsistent/jj it/prp is/vbz unclear/jj whether/in this/dt is/vbz a/dt refutation/nn of/in the/dt stipulated/vbn functional/jj form/nn or/cc of/in utility/nn maximization/nn ./punct
+addressing/vbg these/dt issues/nns houthakker/nnp [/punct 7/cd ]/punct noted/vbd that/in an/dt observer/nn can/md see/vb only/rb finite/jj quantities/nns of/in data/nns ./punct
+he/prp askes/vbz when/wrb can/md it/prp be/vb determined/vbn that/in a/dt finite/jj set/nn of/in observations/nns is/vbz consistent/jj with/in utility/nn maximization/nn without/in making/vbg parametric/jj assumptions/nns ?/punct
+he/prp showes/vbz that/in rationalizability/nn of/in a/dt finite/jj set/nn of/in observations/nns is/vbz equivalent/jj to/to the/dt strong/jj axiom/nn of/in revealed/vbn preference/nn ./punct
+richter/nnp [/punct 15/cd ]/punct showes/nns that/wdt strong/jj axiom/nn of/in revealed/vbn preference/nn is/vbz equivalent/jj to/to rationalizability/nn by/in a/dt strictly/rb concave/jj monotone/nn utility/nn function/nn ./punct
+afriat/nnp [/punct 1/cd ]/punct gives/vbz another/dt set/nn of/in rationalizability/nn conditions/nns the/dt observations/nns must/md satisfy/vb ./punct
+varian/nnp [/punct 20/cd ]/punct introduces/vbz the/dt generalized/vbn axiom/nn of/in revealed/vbn preference/nn (/punct garp/nn )/punct ,/punct an/dt equivalent/jj form/nn of/in afriat/nnp ''/'' s/vbz consistency/nn condition/nn that/wdt is/vbz easier/jjr to/to verify/vb computationally/rb ./punct
+it/prp is/vbz interesting/jj to/to note/vb that/in these/dt necessary/jj and/cc sufficient/jj conditions/nns for/in rationalizability/nn are/vbp essentially/rb versions/nns of/in the/dt well/rb known/vbn farkas/nnp lemma/nn [/punct 6/cd ]/punct (/punct see/vbp also/rb [/punct 22/cd ]/punct )/punct ./punct
+afriat/nnp [/punct 1/cd ]/punct proved/vbd his/prp$ theorem/nn by/in an/dt explicit/jj construction/nn of/in a/dt utility/nn function/nn witnessing/vbg consistency/nn ./punct
+varian/nnp [/punct 20/cd ]/punct took/vbd this/dt one/cd step/nn further/rbr progressing/vbg from/in consistency/nn to/to forecasting/nn ./punct
+varian/nnp ''/'' s/vbz forecasting/nn algorithm/nn basically/rb rules/vbz out/rp bundles/nns that/wdt are/vbp revealed/vbn inferior/jj to/to observed/vbn bundles/nns and/cc finds/vbz a/dt bundle/nn from/in the/dt remaining/vbg set/nn that/in together/rb with/in the/dt observations/nns is/vbz consistent/jj with/in garp/nn ./punct
+furthermore/rb ,/punct he/prp introduces/vbz samuelson/nnp ''/'' s/vbz money/nn metric/jj as/in a/dt canonical/jj utility/nn function/nn and/cc gives/vbz upper/jj and/cc lower/jjr envelope/nn utility/nn functions/nns for/in the/dt money/nn metric/jj ./punct
+knoblauch/nnp [/punct 9/cd ]/punct shows/vbz these/dt envelopes/nns can/md be/vb computed/vbn efficiently/rb ./punct
+varian/nnp [/punct 21/cd ]/punct provides/vbz an/dt up/rb to/to date/nn survey/nn on/in this/dt line/nn of/in research/nn ./punct
+a/dt different/jj approach/nn is/vbz presented/vbn by/in blundell/nnp et/fw al/fw ./punct
+[/punct 3/cd ,/punct 4/cd ]/punct ./punct
+these/dt papers/nns introduce/vb a/dt model/nn where/wrb an/dt agent/nn observes/vbz prices/nns and/cc engel/nnp curves/nns for/in these/dt prices/nns ./punct
+this/dt gives/vbz an/dt improvement/nn on/in varian/nnp ''/'' s/vbz original/jj bounds/nns ,/punct though/in the/dt basic/jj idea/nn is/vbz still/rb to/to rule/vb out/rp demands/nns that/wdt are/vbp revealed/vbn inferior/jj ./punct
+this/dt model/nn is/vbz in/in a/dt sense/nn a/dt hybrid/nn between/in mas-colell/nnp and/cc afriat/nnp ''/'' s/vbz aproaches/nns ./punct
+the/dt former/jj requires/vbz full/jj information/nn for/in all/dt prices/nns ,/punct the/dt latter/jj for/in a/dt finite/jj number/nn of/in prices/nns ./punct
+on/in the/dt other/jj hand/nn the/dt approach/nn taken/vbn by/in blundell/nnp et/fw al/fw ./punct
+requires/vbz full/jj information/nn only/rb on/in a/dt finite/jj number/nn of/in price/nn trajectories/nns ./punct
+the/dt motivation/nn for/in this/dt crossover/nn is/vbz to/to utilize/vb income/nn segmentation/nn in/in the/dt population/nn to/to restructure/vb econometric/jj information/nn ./punct
+different/jj segments/nns of/in the/dt population/nn face/vbp the/dt same/jj prices/nns with/in different/jj budgets/nns ,/punct and/cc as/rb much/jj as/in aggregate/jj data/nns can/md testify/vb on/in individual/jj preferences/nns ,/punct show/vbp how/wrb demand/nn varies/vbz with/in the/dt budget/nn ./punct
+applying/vbg non/jj parametric/jj statistical/jj methods/nns ,/punct they/prp reconstruct/vbp a/dt trajectory/nn from/in the/dt observed/vbn demands/nns of/in different/jj segments/nns and/cc use/vb it/prp to/to obtain/vb tighter/jjr bounds/nns ./punct
+both/dt these/dt methods/nns would/md most/rbs likely/jj give/vb a/dt good/jj forecast/nn for/in a/dt fixed/jj demand/nn function/nn after/in sufficiently/rb many/jj observations/nns assuming/vbg they/prp were/vbd spread/vbn out/rp in/in a/dt reasonable/jj manner/nn ./punct
+however/rb ,/punct these/dt methods/nns do/vbp not/rb consider/vb the/dt complexity/nn of/in the/dt demand/nn functions/nns and/cc do/vbp not/rb use/vb any/dt probabilistic/jj model/nn of/in the/dt observations/nns ./punct
+therefore/rb ,/punct they/prp are/vbp unable/jj to/to provide/vb any/dt estimate/nn of/in the/dt number/nn of/in observations/nns that/wdt would/md be/vb sufficient/jj for/in a/dt good/jj forecast/nn or/cc the/dt degree/nn of/in confidence/nn in/in such/jj a/dt forecast/nn ./punct
+in/in this/dt paper/nn we/prp examine/vbp the/dt feasibility/nn of/in demand/nn forecasting/nn with/in a/dt high/jj degree/nn of/in confidence/nn using/vbg afriat/nnp ''/'' s/vbz conditions/nns ./punct
+we/prp formulate/vbp the/dt question/nn in/in terms/nns of/in whether/in the/dt class/nn of/in demand/nn functions/nns derived/vbn from/in monotone/nn concave/nn utilities/nns is/vbz efficiently/rb pac-learnable/jj ./punct
+our/prp$ first/jj result/nn is/vbz negative/jj ./punct
+we/prp show/vbp ,/punct by/in computing/vbg the/dt fat/jj shattering/vbg dimension/nn ,/punct that/wdt without/in any/dt prior/jj assumptions/nns ,/punct the/dt set/nn of/in all/dt demand/nn functions/vbz induced/vbn by/in monotone/nn concave/nn utility/nn functions/nns is/vbz too/rb rich/jj to/to be/vb efficiently/rb pac-learnable/jj ./punct
+however/rb ,/punct under/in some/dt prior/jj assumptions/nns on/in the/dt set/nn of/in demand/nn functions/nns we/prp show/vbp that/in the/dt fat/jj shattering/vbg dimension/nn is/vbz finite/jj and/cc therefore/rb the/dt corresponding/jj sets/nns are/vbp pac-learnable/jj ./punct
+in/in these/dt cases/nns ,/punct assuming/vbg the/dt probability/nn distribution/nn by/in which/wdt the/dt observed/vbn price-demand/nn pairs/nns are/vbp generated/vbn is/vbz fixed/vbn ,/punct we/prp are/vbp in/in a/dt position/nn to/to offer/vb a/dt forecast/nn and/cc a/dt probabilistic/jj estimate/nn on/in its/prp$ accuracy/nn ./punct
+in/in section/nn 2/cd we/prp briefly/rb discuss/vbp the/dt basic/jj assumptions/nns of/in demand/nn theory/nn and/cc their/prp$ implications/nns ./punct
+in/in section/nn 3/cd we/prp present/vbp a/dt new/jj proof/nn to/to afriat/nnp ''/'' s/vbz theorem/nn incorporating/vbg an/dt algorithm/nn for/in efficiently/rb generating/vbg a/dt forecasting/nn function/nn due/jj to/to teo/nnp and/cc vohra/nnp [/punct 17/cd ]/punct ./punct
+we/prp show/vbp that/in this/dt algorithm/nn is/vbz computationally/rb efficient/jj and/cc can/md be/vb used/vbn as/in a/dt learning/nn algorithm/nn ./punct
+in/in section/nn 4/cd we/prp give/vbp a/dt brief/jj introduction/nn to/to pac/nn learning/nn including/vbg several/jj modifications/nns to/to learning/vbg real/jj vector/nn valued/vbn functions/nns ./punct
+we/prp introduce/vbp the/dt notion/nn of/in fat/jj shattering/vbg dimension/nn and/cc use/vb it/prp to/to devise/vb a/dt lower/jjr bound/vbn on/in the/dt sample/nn complexity/nn ./punct
+we/prp also/rb sketch/nn results/vbz on/in upper/jj bounds/nns ./punct
+in/in section/nn 5/cd we/prp study/vbp the/dt learnability/nn of/in demand/nn functions/nns and/cc directly/rb compute/vb the/dt fat/jj shattering/vbg dimension/nn of/in the/dt class/nn of/in all/dt demand/nn functions/nns and/cc a/dt class/nn of/in income-lipschitzian/jj demand/nn functions/nns with/in a/dt bounded/vbn global/jj income-lipschitz/jj constant/nn ./punct
+2/ls ./punct
+utility/nn and/cc demand/nn a/dt utility/nn function/nn u/nn :/punct rn/nn +/punct →/cd r/nn is/vbz a/dt function/nn relating/vbg bundles/nns of/in goods/nns to/to a/dt cardinal/nn in/in a/dt manner/nn reflecting/vbg the/dt preferences/nns over/in the/dt bundles/nns ./punct
+a/dt rational/jj agent/nn with/in a/dt budget/nn that/wdt w.l.g/vbd equals/vbz 1/cd facing/vbg a/dt price/nn vector/nn p/nn ∈/cd rn/nn +/punct will/md choose/vb from/in her/prp$ budget/nn set/nn b/nn (/punct p/nn )/punct =/punct {/punct x/cc ∈/cd rn/nn +/punct :/punct p/nn ·/cd x/cc ≤/cd 1/cd }/punct a/dt bundle/nn x/nn ∈/cd rn/nn +/punct that/in maximizes/vbz her/prp$ private/jj utility/nn ./punct
+the/dt first/jj assumption/nn we/prp make/vbp is/vbz that/in the/dt function/nn is/vbz monotone/nn increasing/vbg ,/punct namely/rb ,/punct if/in x/cc ≥/cd y/nn ,/punct in/in the/dt sense/nn that/in the/dt inequality/nn holds/vbz coordinatewise/nn ,/punct then/rb u/fw (/punct x/cc )/punct ≥/fw u/fw (/punct y/nn )/punct ./punct
+this/dt reflects/vbz the/dt assumption/nn that/in agents/nns will/md always/rb prefer/vb more/jjr of/in any/dt one/cd good/nn ./punct
+this/dt ,/punct of/in course/nn ,/punct does/vbz not/rb necessarily/rb hold/vb in/in practice/nn ,/punct as/in in/in many/jj cases/nns excess/jj supply/nn may/md lead/vb to/to storage/nn expenses/nns or/cc other/jj externalities/nns ./punct
+however/rb ,/punct in/in such/jj cases/nns the/dt demand/nn will/md be/vb an/dt interior/jj point/nn of/in the/dt budget/nn set/nn and/cc the/dt less/jjr preferred/jj bundles/nns won/vbd ''/'' t/nn be/vb observed/vbn ./punct
+the/dt second/jj assumption/nn we/prp make/vbp on/in the/dt utility/nn is/vbz that/in all/pdt the/dt marginals/nns (/punct partial/jj derivatives/nns )/punct are/vbp monotone/nn decreasing/vbg ./punct
+this/dt is/vbz the/dt law/nn of/in diminishing/vbg marginal/jj utility/nn which/wdt assumes/vbz that/in the/dt larger/jjr the/dt excess/nn of/in one/cd good/jj over/in the/dt other/jj the/dt less/jjr we/prp value/vbp each/dt additional/jj good/nn of/in one/cd kind/nn over/in the/dt other/jj ./punct
+these/dt assumptions/nns imply/vbp that/in the/dt utility/nn function/nn is/vbz concave/jj and/cc monotone/nn on/in the/dt observations/nns ./punct
+the/dt demand/nn function/nn of/in the/dt agent/nn is/vbz the/dt correspondence/nn fu/nn :/punct rn/nn +/punct →/cd rn/nn +/punct satisfying/jj f/fw (/punct p/nn )/punct =/punct argmax/nn {/punct u/nn (/punct x/cc )/punct :/punct p/nn ·/cd x/cc ≤/cd i/prp }/punct in/in general/jj this/dt correspondence/nn is/vbz not/rb necessarily/rb single/jj valued/vbn ,/punct but/cc it/prp is/vbz implicit/jj in/in the/dt proof/nn of/in afriat/nnp ''/'' s/nns theorem/vbp that/in any/dt set/nn of/in observations/nns can/md be/vb rationalized/vbn by/in a/dt demand/nn function/nn that/wdt is/vbz single/jj valued/vbn for/in unobserved/jj prices/nns ./punct
+37/cd since/in large/jj quantities/nns of/in any/dt good/jj are/vbp likely/jj to/to create/vb utility/nn decreasing/vbg externalities/nns ,/punct we/prp assume/vbp the/dt prices/nns are/vbp limited/vbn to/to a/dt compact/jj set/nn ./punct
+w.l.g/nn ./punct
+we/prp assume/vbp u/nn has/vbz marginal/jj utility/nn zero/cd outside/jj [/punct 0/cd ,/punct 1/cd ]/punct d/nn ./punct
+any/dt budget/nn set/vbd that/dt is/vbz not/rb a/dt subset/nn of/in the/dt support/nn is/vbz maximized/vbn on/in any/dt point/nn outside/in the/dt support/nn and/cc it/prp is/vbz therefore/rb difficult/jj to/to forecast/vb for/in these/dt prices/nns ./punct
+we/prp are/vbp thus/rb interested/jj in/in forecasts/nns for/in prices/nns below/in the/dt simplex/nn ∆d/nn =/punct conv/nn {/punct (/punct 0/cd ,/punct ./punct
+./punct
+./punct
+,/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct 0/cd )/punct }/punct ./punct
+for/in these/dt prices/nns we/prp take/vbp the/dt metric/jj dp/nn (/punct p/nn ,/punct p/nn )/punct =/punct max/nn {/punct |/punct 1/cd pi/nn −/nn 1/cd pi/nn |/punct :/punct i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct d/nn }/punct for/in p/nn ,/punct p/nn ∈/cd ∆d/nn ./punct
+note/vb that/in with/in this/dt metric/jj ∆d/nn is/vbz compact/jj ./punct
+a/dt demand/nn function/nn is/vbz l-income-lipschitz/nnp ,/punct for/in l/nn ∈/cd r+/nn ,/punct if/in ||f/jj (/punct p/nn )/punct −/nn f/fw (/punct p/nn )/punct ||∞/cd dp/nn (/punct p/nn ,/punct p/nn )/punct ≤/cd l/nn for/in any/dt p/nn ,/punct p/nn ∈/cd ∆d/nn ./punct
+this/dt property/nn reflects/vbz an/dt assumption/nn that/in preferences/nns and/cc demands/nns have/vbp some/dt sort/nn of/in stability/nn ./punct
+it/prp rules/vbz out/rp different/jj demands/nns for/in the/dt similar/jj prices/nns ./punct
+we/prp may/md therefore/rb assume/vb from/in here/rb on/in that/dt demand/nn functions/nns are/vbp single/jj valued/vbn ./punct
+3/ls ./punct
+revealed/vbn preference/nn a/nn sequence/nn of/in prices/nns and/cc demands/nns (/punct p1/nn ,/punct x1/nn )/punct ,/punct ./punct
+./punct
+./punct
+,/punct (/punct pn/nn ,/punct xn/nn )/punct is/vbz rationalizable/jj if/in there/ex exists/vbz a/dt utility/nn function/nn u/nn such/jj that/in xi/nn =/punct fu/nn (/punct pi/nn )/punct for/in i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n./vb we/prp begin/vb with/in a/dt trivial/jj observation/nn ,/punct if/in pi/nn ·/nn xj/nn ≤/cd pi/nn ·/nn xi/nn and/cc xi/nn =/punct f/fw (/punct pi/nn )/punct then/rb xi/nn is/vbz preferred/vbn over/in xj/nn since/in the/dt latter/jj is/vbz in/in the/dt budget/nn set/vbn when/wrb the/dt former/jj was/vbd chosen/vbn ./punct
+it/prp is/vbz therefore/rb revealed/vbn that/in u/fw (/punct xj/fw )/punct ≤/fw u/fw (/punct xi/fw )/punct implying/vbg pj/nn ·/nn xj/nn ≤/cd pj/nn ·/nn xi/nn ./punct
+suppose/vb there/ex is/vbz a/dt sequence/nn (/punct pi1/nn ,/punct xi1/nn )/punct ,/punct ./punct
+./punct
+./punct
+,/punct (/punct pik/nn ,/punct xik/nn )/punct such/jj that/in pij/nn ·/nn (/punct xij/nn −/cd xij+1/nn )/punct ≤/nn 0/cd for/in j/nn =/punct 1/cd ./punct
+./punct
+./punct
+k/nn −/cd 1/cd and/cc pik/nn ·/nn (/punct xik/nn −/cd xi1/nn )/punct ≤/nn 0/cd ./punct
+then/rb the/dt same/jj reasoning/nn shows/vbz that/in u/fw (/punct xi1/nn )/punct =/punct u/fw (/punct xi2/fw )/punct =/punct ./punct
+./punct
+./punct
+=/punct u/fw (/punct xik/fw )/punct implying/vbg pi1/nn ·/nn (/punct xi1/nn −/cd xi2/nn )/punct =/punct pi2/nn ·/nn (/punct xi2/nn −/cd xi3/nn )/punct =/punct ./punct
+./punct
+./punct
+=/punct pik−1/nn ·/nn (/punct xik−1/nn −xik/nn )/punct =/punct 0/cd ./punct
+we/prp call/vbp the/dt latter/jj condition/nn the/dt afriat/nnp condition/nn (/punct ac/nn )/punct ./punct
+this/dt argument/nn shows/vbz that/in ac/nn is/vbz necessary/jj for/in rationalizability/nn ;/punct the/dt surprising/jj result/nn in/in afriat/nnp ''/'' s/vbz theorem/nn is/vbz that/in this/dt condition/nn is/vbz also/rb sufficient/jj ./punct
+let/vb a/dt be/vb an/dt n/nn ×/nn n/nn matrix/nn with/in entries/nns aij/nn =/punct pi/nn ·/nn (/punct xj/nn −/cd xi/nn )/punct (/punct aij/nn and/cc aji/nn are/vbp independent/jj )/punct ,/punct aii/nn =/punct 0/cd and/cc let/vb d/nn (/punct a/nn )/punct be/vb the/dt weighted/jj digraph/nn associated/vbn with/in a./nn the/nnp matrix/nn satisfies/vbz ac/nn if/in every/dt cycle/nn with/in negative/jj total/jj weight/nn includes/vbz at/in least/jjs one/cd edge/nn with/in positive/jj weight/nn ./punct
+theorem/nnp 1/cd ./punct
+there/ex exists/vbz y/nn =/punct (/punct y1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yn/nn )/punct ∈/cd rn/nn and/cc s/nn =/punct (/punct s1/nn ,/punct ./punct
+./punct
+./punct
+,/punct sn/nn )/punct ∈/cd rn/nn +/punct satisfying/vbg the/dt set/nn of/in inequalities/nns l/nn (/punct a/dt )/punct ,/punct yj/nn ≤/cd yi/nn +/punct siaij/nn i/fw =/punct j/nn 1/cd ≤/nn i/fw ,/punct j/nn ≤/nn n/nn iff/nn d/nn (/punct a/dt )/punct satisfies/vbz ac/nn ./punct
+proof/nnp :/punct if/in l/nn (/punct a/dt )/punct is/vbz feasible/jj then/rb it/prp is/vbz easy/jj to/to see/vb that/dt u/fw (/punct x/cc )/punct =/punct min/nn i/fw {/punct yi/fw +/punct sipi/fw (/punct x/cc −/fw xi/fw )/punct }/punct is/vbz a/dt concave/jj utility/nn function/nn that/wdt is/vbz consistent/jj with/in the/dt observations/nns ,/punct and/cc from/in our/prp$ previous/jj remark/nn it/prp follows/vbz that/in d/nn (/punct a/dt )/punct satisfies/vbz ac/nn ./punct
+in/in the/dt other/jj direction/nn it/prp is/vbz shown/vbn by/in explicit/jj construction/nn that/wdt afriat/nnp ''/'' s/vbz condition/nn for/in d/nn (/punct a/dt )/punct implies/vbz l/nn (/punct a/dt )/punct is/vbz feasible/jj ./punct
+the/dt construction/nn provides/vbz a/dt utility/nn function/nn that/wdt is/vbz consistent/jj with/in the/dt observations/nns ./punct
+teo/nnp and/cc vohra/nnp [/punct 17/cd ]/punct give/vb a/dt strongly/rb polynomial/jj time/nn algorithm/nn for/in this/dt construction/nn which/wdt will/md be/vb the/dt heart/nn of/in our/prp$ learning/vbg algorithm/nn ./punct
+the/dt construction/nn is/vbz executed/vbn in/in two/cd steps/nns ./punct
+first/rb ,/punct the/dt algorithm/nn finds/vbz s/nns ∈/cd rn/nn +/punct such/jj that/in the/dt weighted/jj digraph/nn d/nn (/punct a/nn ,/punct s/vbz )/punct defined/vbn by/in the/dt matrix/nn ˜aij/nn =/punct siaij/nn has/vbz no/dt cycle/nn with/in negative/jj total/jj weight/nn if/in d/nn (/punct a/dt )/punct satisfies/vbz ac/nn and/cc returns/vbz a/dt negative/jj cycle/nn otherwise/rb ./punct
+the/dt dual/jj of/in a/dt shortest/jjs path/nn problem/nn is/vbz given/vbn by/in the/dt constraints/nns :/punct yj/nn −/cd yi/nn ≤/nn siaij/nn i/fw =/punct j/nn it/prp is/vbz a/dt standard/jj result/nn (/punct see/vbp [/punct 14/cd ]/punct p/nn 109/cd )/punct that/in the/dt system/nn is/vbz feasible/jj iff/nn d/nn (/punct a/nn ,/punct s/vbz )/punct has/vbz no/dt negative/jj cycles/nns ./punct
+thus/rb ,/punct in/in the/dt second/jj step/nn ,/punct if/in d/nn (/punct a/dt )/punct satisfies/vbz ac/nn ,/punct the/dt algorithm/nn calls/vbz a/dt shortest/nnp path/nn algorithm/nn to/to find/vb y/jj ∈/cd rn/nn satisfying/vbg the/dt constraints/nns ./punct
+now/rb we/prp describe/vbp how/wrb to/to choose/vb the/dt si/nn ''/'' s./nn define/vb s/nn =/punct {/punct (/punct i/ls ,/punct j/nn )/punct :/punct aij/nn </punct 0/cd }/punct ,/punct e/nn =/punct {/punct (/punct i/ls ,/punct j/nn )/punct :/punct aij/nn =/punct 0/cd }/punct and/cc t/nn =/punct {/punct (/punct i/ls ,/punct j/nn )/punct :/punct aij/nn >/punct 0/cd }/punct and/cc let/vb g/nn =/punct (/punct [/punct n/nn ]/punct ,/punct s/nn ∪/cd e/nn )/punct be/vb a/dt digraph/nn with/in weights/nns wij/nn =/punct −1/cd if/in (/punct i/fw ,/punct j/nn )/punct ∈/cd s/nn and/cc wij/nn =/punct 0/cd otherwise/rb ./punct
+d/nn (/punct a/dt )/punct has/vbz no/dt negative/jj cycles/nns ,/punct hence/rb g/nn is/vbz acyclic/jj and/cc breadth/nn first/jj search/nn can/md assign/vb potentials/nns φi/nns such/jj that/in φj/nn ≤/cd φi/nn +/punct wij/nn for/in (/punct i/ls ,/punct j/nn )/punct ∈/cd s/nn ∪/cd e./nnp we/prp relabel/vbp the/dt vertices/nns so/in that/in φ1/nn ≥/cd φ2/nn ≥/nn ./punct
+./punct
+./punct
+≥/nn φn/nn ./punct
+let/vb δi/nn =/punct (/punct n/nn −/cd 1/cd )/punct max/nn (/punct i/ls ,/punct j/nn )/punct ∈s/nn (/punct −aij/nn )/punct min/nn (/punct i/fw ,/punct j/nn )/punct ∈t/nn aij/nn if/in φi/nn </punct φi−1/cd and/cc δi/nn =/punct 1/cd otherwise/rb ,/punct and/cc define/vb si/nn =/punct iy/nn j=2/nn δj/nn =/punct δi/nn ·/nn si−1/nn ./punct
+we/prp show/vbp that/in for/in this/dt choice/nn of/in s/nns ,/punct d/nn (/punct a/nn ,/punct s/vbz )/punct contains/vbz no/dt negative/jj weight/nn cycle/nn ./punct
+suppose/vb c/nn =/punct (/punct i1/nn ,/punct ./punct
+./punct
+./punct
+,/punct ik/nn )/punct is/vbz a/dt cycle/nn in/in d/nn (/punct a/nn ,/punct s/vbz )/punct ./punct
+if/in φ/nn is/vbz constant/jj on/in c/nn then/rb aij/rb ij+1/nn =/punct 0/cd for/in j/nn =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct k/nn and/cc we/prp are/vbp done/vbn ./punct
+otherwise/rb let/vb iv/nn ∈/nn c/nn be/vb the/dt vertex/nn with/in smallest/jjs potential/jj satisfying/jj w.l.o.g/nn ./punct
+φ/nn (/punct iv/nn )/punct </punct φ/cd (/punct iv+1/nn )/punct ./punct
+for/in any/dt cycle/nn c/nn in/in the/dt digraph/nn d/nn (/punct a/nn ,/punct s/vbz )/punct ,/punct let/vb (/punct v/ls ,/punct u/fw )/punct be/vb an/dt edge/nn in/in c/nn such/jj that/in (/punct i/fw )/punct v/ls has/vbz the/dt smallest/jjs potential/nn among/in all/dt vertices/nns in/in c/nn ,/punct and/cc (/punct ii/ls )/punct φu/nn >/punct φv/nn ./punct
+such/pdt an/dt edge/nn exists/vbz ,/punct otherwise/rb φi/nn is/vbz identical/jj for/in all/dt vertices/nns i/fw in/in c./nnp in/in this/dt case/nn ,/punct all/dt edges/nns in/in c/nn have/vbp non-negative/jj edge/nn weight/nn in/in d/nn (/punct a/nn ,/punct s/vbz )/punct ./punct
+if/in (/punct iv/nn ,/punct iv+1/nn )/punct ∈/cd s/nn ∪/cd e/nn ,/punct then/rb we/prp have/vbp φ/jj (/punct iv+1/nn )/punct ≤/nn φ/nn (/punct iv/nn )/punct +/punct wiv/nn ,/punct iv+1/nn ≤/nn φ/nn (/punct iv/nn )/punct a/dt contradiction/nn ./punct
+hence/rb (/punct iv/nn ,/punct iv+1/nn )/punct ∈/cd t./nnp now/rb ,/punct note/nn that/in all/dt vertices/nns q/vbp in/in c/nn with/in the/dt same/jj potential/nn as/in iv/nn must/md be/vb incident/nn to/to an/dt edge/nn (/punct q/nn ,/punct t/nn )/punct in/in c/nn such/jj that/in φ/nn (/punct t/nn )/punct ≥/nn φ/nn (/punct q/nn )/punct ./punct
+hence/rb the/dt edge/nn (/punct q/nn ,/punct t/nn )/punct must/md have/vb non-negative/jj weight/nn ./punct
+i.e./fw ,/punct aq/nn ,/punct t/nn ≥/cd 0/cd ./punct
+let/vb p/nn denote/vbp a/dt vertex/nn in/in c/nn with/in the/dt second/jj smallest/jjs potential/nn ./punct
+now/rb ,/punct c/nn has/vbz weight/nn svavu+/jj x/nn (/punct k/nn ,/punct l/nn )/punct ∈c\/nn (/punct v/ls ,/punct u/fw )/punct skak/nn ,/punct l/nn ≥/cd svav/nn ,/punct u+sp/jj (/punct n−1/nn )/punct max/nn (/punct i/fw ,/punct j/nn )/punct ∈s/nn {/punct aij/nn }/punct ≥/nn 0/cd ,/punct i.e./fw ,/punct c/nn has/vbz non-negative/jj weight/nn ✷/cd algorithm/nn 1/cd returns/nns in/in polynomial/jj time/nn a/dt hypothesis/nn that/in is/vbz a/dt piecewise/jj linear/jj function/nn and/cc agrees/vbz with/in the/dt labeling/nn of/in the/dt observation/nn namely/rb sample/nn error/nn zero/cd ./punct
+to/to use/vb this/dt function/nn to/to forecast/vb demand/nn for/in unobserved/jj prices/nns we/prp need/vbp algorithm/nn 2/cd which/wdt maximizes/vbz the/dt function/nn on/in a/dt given/vbn budget/nn set/nn ./punct
+since/in u/fw (/punct x/cc )/punct =/punct mini/nns {/punct yi/nn +/punct sipi/fw (/punct x/cc −/fw xi/fw )/punct }/punct this/dt is/vbz a/dt linear/jj program/nn and/cc can/md be/vb solved/vbn in/in time/nn polynomial/jj in/in d/nn ,/punct n/nn as/rb well/rb as/in the/dt size/nn of/in the/dt largest/jjs number/nn in/in the/dt input/nn ./punct
+38/cd algorithm/nn 1/cd utility/nn algorithm/nnp input/nnp (/punct x1/nn ,/punct p1/nn )/punct ,/punct ./punct
+./punct
+./punct
+,/punct (/punct xn/nn ,/punct pn/nn )/punct s/nn ←/cd {/punct (/punct i/fw ,/punct j/nn )/punct :/punct aij/nn </punct 0/cd }/punct e/nn ←/cd {/punct (/punct i/fw ,/punct j/nn )/punct :/punct aij/nn =/punct 0/cd }/punct for/in all/dt (/punct i/ls ,/punct j/nn )/punct ∈/cd s/nn do/vbp wij/nn ←/cd −1/cd end/nn for/in for/in all/dt (/punct i/ls ,/punct j/nn )/punct ∈/cd e/nn do/vbp wij/nn ←/nn 0/cd end/nn for/in while/in there/ex exist/vbp unvisited/jj vertices/nns do/vbp visit/vb new/jj vertex/nn j/nn assign/vbp potential/jj to/to φj/vb end/nn while/in reorder/nn indices/nns so/in φ1/nn ≤/cd φ2/nn ./punct
+./punct
+./punct
+≤/nn φn/nn for/in all/dt 1/cd ≤/nn i/fw ≤/fw n/nn do/vbp δi/nn ←/cd (/punct n/nn −/cd 1/cd )/punct max/nn (/punct i/ls ,/punct j/nn )/punct ∈s/nn (/punct −aij/nn )/punct min/nn (/punct i/fw ,/punct j/nn )/punct ∈t/nn aij/nn si/fw ←/fw qi/fw j=2/nn δj/nn end/nn for/in shortest/nnp path/nn (/punct yj/nn −/cd yi/nn ≤/nn siaij/nn )/punct return/nn y1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yn/nn ∈/cd rd/nn and/cc s1/nn ,/punct ./punct
+./punct
+./punct
+,/punct sn/nn ∈/cd r+/jj algorithm/nn 2/cd evaluation/nn input/nn y1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yn/nn ∈/cd rd/nn and/cc s1/nn ,/punct ./punct
+./punct
+./punct
+,/punct sn/nn ∈/cd r+/jj max/nn z/sym z/sym ≤/cd yi/nn +/punct sipi/fw (/punct x/cc −/fw xi/fw )/punct for/in i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn px/nn ≤/nn 1/cd return/nn x/nn for/in which/wdt z/sym is/vbz maximized/vbn 4/cd ./punct
+supervised/vbn learning/vbg in/in a/dt supervised/jj learning/nn problem/nn ,/punct a/dt learning/nn algorithm/nn is/vbz given/vbn a/dt finite/jj sample/nn of/in labeled/vbn observations/nns as/in input/nn and/cc is/vbz required/vbn to/to return/vb a/dt model/nn of/in the/dt functional/jj relationship/nn underlying/vbg the/dt labeling/nn ./punct
+this/dt model/nn ,/punct referred/vbn to/to as/in a/dt hypothesis/nn ,/punct is/vbz usually/rb a/dt computable/jj function/nn that/wdt is/vbz used/vbn to/to forecast/vb the/dt labels/nns of/in future/jj observations/nns ./punct
+the/dt labels/nns are/vbp usually/rb binary/jj values/nns indicating/vbg the/dt membership/nn of/in the/dt observed/vbn points/nns in/in the/dt set/nn that/wdt is/vbz being/vbg learned/vbn ./punct
+however/rb ,/punct we/prp are/vbp not/rb limited/vbn to/to binary/jj values/nns and/cc ,/punct indeed/rb ,/punct in/in the/dt demand/nn functions/vbz we/prp are/vbp studying/vbg the/dt labels/nns are/vbp real/jj vectors/nns ./punct
+the/dt learning/nn problem/nn has/vbz three/cd major/jj components/nns :/punct estimation/nn ,/punct approximation/nn and/cc complexity/nn ./punct
+the/dt estimation/nn problem/nn is/vbz concerned/vbn with/in the/dt tradeoff/nn between/in the/dt size/nn of/in the/dt sample/nn given/vbn to/to the/dt algorithm/nn and/cc the/dt degree/nn of/in confidence/nn we/prp have/vbp in/in the/dt forecast/nn it/prp produces/vbz ./punct
+the/dt approximation/nn problem/nn is/vbz concerned/vbn with/in the/dt ability/nn of/in hypotheses/nns from/in a/dt certain/jj class/nn to/to approximate/jj target/nn functions/nns from/in a/dt possibly/rb different/jj class/nn ./punct
+the/dt complexity/nn problem/nn is/vbz concerned/vbn with/in the/dt computational/jj complexity/nn of/in finding/vbg a/dt hypothesis/nn that/in approximates/vbz the/dt target/nn function/nn ./punct
+a/dt parametric/jj paradigm/nn assumes/vbz that/in the/dt underlying/vbg functional/jj relationship/nn comes/vbz from/in a/dt well/rb defined/vbn family/nn ,/punct such/jj as/in the/dt cobb-douglas/jj production/nn functions/nns ;/punct the/dt system/nn must/md learn/vb the/dt parameters/nns characterizing/vbg this/dt family/nn ./punct
+suppose/vb that/in a/dt learning/nn algorithm/nn observes/vbz a/dt finite/jj set/nn of/in production/nn data/nns which/wdt it/prp assumes/vbz comes/vbz from/in a/dt cobb-douglas/jj production/nn function/nn and/cc returns/vbz a/dt hypothesis/nn that/in is/vbz a/dt polynomial/nn of/in bounded/jj degree/nn ./punct
+the/dt estimation/nn problem/nn in/in this/dt case/nn would/md be/vb to/to assess/vb the/dt sample/nn size/nn needed/vbn to/to obtain/vb a/dt good/jj estimate/nn of/in the/dt coefficients/nns ./punct
+the/dt approximation/nn problem/nn would/md be/vb to/to assess/vb the/dt error/nn sustained/vbd from/in approximating/vbg a/dt rational/jj function/nn by/in a/dt polynomial/jj ./punct
+the/dt complexity/nn problem/nn would/md be/vb the/dt assessment/nn of/in the/dt time/nn required/vbn to/to compute/vb the/dt polynomial/jj coefficients/nns ./punct
+in/in the/dt probably/rb approximately/rb correct/jj (/punct pac/nn )/punct paradigm/nn ,/punct the/dt learning/nn of/in a/dt target/nn function/nn is/vbz done/vbn by/in a/dt class/nn of/in hypothesis/nn functions/nns ,/punct that/in does/vbz or/cc does/vbz not/rb include/vb the/dt target/nn function/nn itself/prp ;/punct it/prp does/vbz not/rb necessitate/vb any/dt parametric/jj assumptions/nns on/in this/dt class/nn ./punct
+it/prp is/vbz also/rb assumed/vbn that/in the/dt observations/nns are/vbp generated/vbn independently/rb by/in some/dt distribution/nn on/in the/dt domain/nn of/in the/dt relation/nn and/cc that/in this/dt distribution/nn is/vbz fixed/vbn ./punct
+if/in the/dt class/nn of/in target/nn functions/nns has/vbz finite/jj ``/`` dimensionality/nn ''/'' then/rb a/dt function/nn in/in the/dt class/nn is/vbz characterized/vbn by/in its/prp$ values/nns on/in a/dt finite/jj number/nn of/in points/nns ./punct
+the/dt basic/jj idea/nn is/vbz to/to observe/vb the/dt labeling/nn of/in a/dt finite/jj number/nn of/in points/nns and/cc find/vb a/dt function/nn from/in a/dt class/nn of/in hypotheses/nns which/wdt tends/vbz to/to agree/vb with/in this/dt labeling/nn ./punct
+the/dt theory/nn tells/vbz us/prp that/in if/in the/dt sample/nn is/vbz large/jj enough/rb then/rb any/dt function/nn that/wdt tends/vbz to/to agree/vb with/in the/dt labeling/nn will/md ,/punct with/in high/jj probability/nn ,/punct be/vb a/dt good/jj approximation/nn of/in the/dt target/nn function/nn for/in future/jj observations/nns ./punct
+the/dt prime/jj objective/nn of/in pac/nn theory/nn is/vbz to/to develop/vb the/dt relevant/jj notion/nn of/in dimensionality/nn and/cc to/to formalize/vb the/dt tradeoff/nn between/in dimensionality/nn ,/punct sample/nn size/nn and/cc the/dt level/nn of/in confidence/nn in/in the/dt forecast/nn ./punct
+in/in the/dt revealed/vbn preference/nn setting/nn ,/punct our/prp$ objective/nn is/vbz to/to use/vb a/dt set/nn of/in observations/nns of/in prices/nns and/cc demand/nn to/to forecast/vb demand/nn for/in unobserved/jj prices/nns ./punct
+thus/rb the/dt target/nn function/nn is/vbz a/dt mapping/nn from/in prices/nns to/to bundles/nns ,/punct namely/rb f/sym :/punct rd/nn +/punct →/cd rd/nn +/punct ./punct
+the/dt theory/nn of/in pac/nn learning/nn for/in real/jj valued/vbn functions/nns is/vbz concerned/vbn predominantly/rb with/in functions/nns from/in rd/nn to/to r./nnp in/in this/dt section/nn we/prp introduce/vbp modifications/nns to/to the/dt classical/jj notions/nns of/in pac/nn learning/vbg to/to vector/nn valued/vbn functions/nns and/cc use/vb them/prp to/to prove/vb a/dt lower/jjr bound/vbn for/in sample/nn complexity/nn ./punct
+an/dt upper/jj bound/vbn on/in the/dt sample/nn complexity/nn can/md also/rb be/vb proved/vbn for/in our/prp$ definition/nn of/in fat/jj shattering/vbg ,/punct but/cc we/prp do/vbp not/rb bring/vb it/prp here/rb as/in the/dt proof/nn is/vbz much/rb more/rbr tedious/jj and/cc analogous/jj to/to the/dt proof/nn of/in theorem/nn 4/cd ./punct
+before/in we/prp can/md proceed/vb with/in the/dt formal/jj definition/nn ,/punct we/prp must/md clarify/vb what/wp we/prp mean/vbp by/in forecast/nn and/cc tend/vb to/to agree/vb ./punct
+in/in the/dt case/nn of/in discrete/jj learning/nn ,/punct we/prp would/md like/vb to/to obtain/vb a/dt function/nn h/nn that/wdt with/in high/jj probability/nn agrees/vbz with/in f./nn we/prp would/md then/rb take/vb the/dt probability/nn pσ/nn (/punct f/fw (/punct x/cc )/punct =/punct h/nn (/punct x/cc )/punct )/punct as/in the/dt measure/nn of/in the/dt quality/nn of/in the/dt estimation/nn ./punct
+demand/nn functions/nns are/vbp real/jj vector/nn functions/nns and/cc we/prp therefore/rb do/vbp not/rb expect/vb f/fw and/cc h/nn to/to agree/vb with/in high/jj probability/nn ./punct
+rather/rb we/prp are/vbp content/jj with/in having/vbg small/jj mean/nn square/jj errors/nns on/in all/dt coordinates/vbz ./punct
+thus/rb ,/punct our/prp$ measure/nn of/in estimation/nn error/nn is/vbz given/vbn by/in :/punct erσ/fw (/punct f/fw ,/punct h/nn )/punct =/punct z/nn (/punct ||f/nn −/cd h||∞/nn )/punct 2/cd dσ/nn ./punct
+for/in given/vbn observations/nns s/nn =/punct {/punct (/punct p1/nn ,/punct x1/nn )/punct ,/punct ./punct
+./punct
+./punct
+,/punct (/punct pn/nn ,/punct xn/nn )/punct }/punct we/prp measure/vb the/dt agreement/nn by/in the/dt sample/nn error/nn ers/vbz (/punct s/nn ,/punct h/nn )/punct =/punct x/nn j/nn (/punct ||xj/nn −/cd h/nn (/punct pj/nn )/punct ||∞/cd )/punct 2/cd ./punct
+a/dt sample/nn error/nn minimization/nn (/punct sem/nn )/punct algorithm/nn is/vbz an/dt algorithm/nn that/wdt finds/vbz a/dt hypothesis/nn minimizing/vbg ers/nn (/punct s/nn ,/punct h/nn )/punct ./punct
+in/in the/dt case/nn of/in revealed/vbn preference/nn ,/punct there/ex is/vbz a/dt function/nn that/wdt takes/vbz the/dt sample/nn error/nn to/to zero/cd ./punct
+nevertheless/rb ,/punct the/dt upper/jj bounds/nns theorem/vbp we/prp use/vb does/vbz not/rb require/vb the/dt sample/nn error/nn to/to be/vb zero/cd ./punct
+definition/nn 1/cd ./punct
+a/dt set/nn of/in demand/nn functions/nns c/nn is/vbz probably/rb approximately/rb correct/jj (/punct pac/nn )/punct learnable/jj by/in hypotheses/nns set/vbn h/nn if/in for/in any/dt ε/nn ,/punct δ/nn >/punct 0/cd ,/punct f/fw ∈/fw c/nn and/cc distribution/nn σ/nn on/in the/dt prices/nns 39/cd there/ex exists/vbz an/dt algorithm/nn l/nn that/wdt for/in a/dt set/nn of/in observations/nns of/in length/nn ml/nn =/punct ml/nn (/punct ε/nn ,/punct δ/nn )/punct =/punct poly/nn (/punct 1/cd δ/nn ,/punct 1/cd ε/nn )/punct finds/vbz a/dt function/nn h/nn from/in h/nn such/jj that/in erσ/fw (/punct f/fw ,/punct h/nn )/punct </punct ε/cd with/in probability/nn 1/cd −/cd δ./nn there/ex may/md be/vb several/jj learning/vbg algorithms/nns for/in c/nn with/in different/jj sample/nn complexities/nns ./punct
+the/dt minimal/jj ml/nn is/vbz called/vbn the/dt sample/nn complexity/nn of/in c./nnp note/vbp that/in in/in the/dt definition/nn there/ex is/vbz no/dt mention/nn of/in the/dt time/nn complexity/nn to/to find/vb h/nn in/in h/nn and/cc evaluating/vbg h/nn (/punct p/nn )/punct ./punct
+a/dt set/nn c/nn is/vbz efficiently/rb pac-learnable/jj if/in there/ex is/vbz a/dt poly/nn (/punct 1/cd δ/nn ,/punct 1/cd ε/nn )/punct time/nn algorithm/nn for/in choosing/vbg h/nn and/cc evaluating/vbg h/nn (/punct p/nn )/punct ./punct
+for/in discrete/jj function/nn sets/nns ,/punct sample/nn complexity/nn bounds/nns may/md be/vb derived/vbn from/in the/dt vc-dimension/nn of/in the/dt set/nn (/punct see/vbp [/punct 19/cd ,/punct 8/cd ]/punct )/punct ./punct
+an/dt analog/nn to/to this/dt notion/nn of/in dimension/nn for/in real/jj functions/nns is/vbz the/dt fat/jj shattering/vbg dimension/nn ./punct
+we/prp use/vbp an/dt adaptation/nn of/in this/dt notion/nn to/to real/jj vector/nn valued/vbn function/nn sets/nns ./punct
+let/vb γ/nnp ⊂/cd rd/nn +/punct and/cc let/vb c/nn be/vb a/dt set/nn of/in real/jj functions/nns from/in γ/nn to/to rd/nn +/punct ./punct
+definition/nn 2/cd ./punct
+for/in γ/nn >/punct 0/cd ,/punct a/dt set/nn of/in points/nns p1/nn ,/punct ./punct
+./punct
+./punct
+,/punct pn/nn ∈/nn γ/nn is/vbz γ-shattered/vbn by/in a/dt class/nn of/in real/jj functions/nns c/nn if/in there/ex exists/vbz x1/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn ∈/cd rd/nn +/punct and/cc parallel/jj affine/nn hyperplanes/nns h0/nn ,/punct h1/nn ⊂/cd rd/nn such/jj that/in 0/cd ∈/cd h−/nn 0/cd ∩/cd h+/nn 1/cd ,/punct dist/in (/punct h0/nn ,/punct h1/nn )/punct >/punct γ/nn and/cc for/in each/dt b/nn =/punct (/punct b1/nn ,/punct ./punct
+./punct
+./punct
+,/punct bn/nn )/punct ∈/cd {/punct 0/cd ,/punct 1/cd }/punct n/nn there/rb exists/vbz a/dt function/nn fb/nn ∈/nn c/nn such/jj that/in fb/nn (/punct pi/nn )/punct ∈/cd xi/nn +/punct h+/jj 0/cd if/in bi/nn =/punct 0/cd and/cc f/fw (/punct pi/nn )/punct ∈/cd xi/nn +/punct h−/nn 1/cd if/in bi/nn =/punct 1/cd ./punct
+we/prp define/vbp the/dt γ-fat/nn shattering/vbg dimension/nn of/in c/nn ,/punct denoted/vbn fatc/nn (/punct γ/nn )/punct as/in the/dt maximal/jj size/nn of/in a/dt γ-shattered/jj set/nn in/in γ./nnp if/in this/dt size/nn is/vbz unbounded/jj then/rb the/dt dimension/nn is/vbz infinite/jj ./punct
+to/to demonstrate/vb the/dt usefulness/nn of/in the/dt this/dt notion/nn we/prp use/vbp it/prp to/to derive/vb a/dt lower/jjr bound/vbn on/in the/dt sample/nn complexity/nn ./punct
+lemma/nn 2/cd ./punct
+suppose/vb the/dt functions/nns {/punct fb/nn :/punct b/nn ∈/cd {/punct 0/cd ,/punct 1/cd }/punct n/nn }/punct witness/nn the/dt shattering/vbg of/in {/punct p1/nn ,/punct ./punct
+./punct
+./punct
+,/punct pn/nn }/punct ./punct
+then/rb ,/punct for/in any/dt x/nn ∈/cd rd/nn +/punct and/cc labels/vbz b/nn ,/punct b/nn ∈/cd {/punct 0/cd ,/punct 1/cd }/punct n/nn such/jj that/in bi/nn =/punct bi/fw either/cc ||fb/fw (/punct pi/nn )/punct −/cd x||∞/nn >/punct γ/nn 2d/nn or/cc ||fb/jj (/punct pi/nn )/punct −/cd x||∞/nn >/punct γ/nn 2d/nn ./punct
+proof/nnp :/punct since/in the/dt max/nn exceeds/vbz the/dt mean/nn ,/punct it/prp follows/vbz that/in if/in fb/nn and/cc fb/nn correspond/vbp to/to labels/nns such/jj that/in bi/nn =/punct bi/nn then/rb ||fb/vbd (/punct pi/nn )/punct −/cd fb/nn (/punct pi/nn )/punct ||∞/cd ≥/nn 1/cd d/nn ||fb/nn (/punct pi/nn )/punct −/cd fb/nn (/punct pi/nn )/punct ||2/cd >/punct γ/nn d/nn ./punct
+this/dt implies/vbz that/in for/in any/dt x/nn ∈/cd rd/nn +/punct either/cc ||fb/jj (/punct pi/nn )/punct −/cd x||∞/nn >/punct γ/nn 2d/nn or/cc ||fb/jj (/punct pi/nn )/punct −/cd x||∞/nn >/punct γ/nn 2d/nn ✷/cd theorem/nnp 3/cd ./punct
+suppose/vb that/dt c/nn is/vbz a/dt class/nn of/in functions/nns mapping/vbg from/in γ/nn to/to rd/nn +/punct ./punct
+then/rb any/dt learning/vbg algorithm/nn l/nn for/in c/nn has/vbz sample/nn complexity/nn satisfying/vbg ml/nn (/punct ε/nn ,/punct δ/nn )/punct ≥/nn 1/cd 2/cd fatc/nn (/punct 4dε/cd )/punct an/dt analog/nn of/in this/dt theorem/nn for/in real/jj valued/vbn functions/nns with/in a/dt tighter/jjr bound/vbn can/md be/vb found/vbn in/in [/punct 2/cd ]/punct ,/punct this/dt version/nn will/md suffice/vb for/in our/prp$ needs/nns ./punct
+proof/nnp :/punct suppose/vb n/nn =/punct 1/cd 2/cd fatc/nn (/punct 4dε/cd )/punct then/rb there/rb exists/vbz a/dt set/nn γs/nn =/punct {/punct p1/nn ,/punct ./punct
+./punct
+./punct
+,/punct p2n/nn }/punct that/wdt is/vbz shattered/vbn by/in c./nnp it/prp suffices/vbz to/to show/vb that/in at/in least/jjs one/cd distribution/nn requires/vbz large/jj sample/nn ./punct
+we/prp construct/vbp such/jj a/dt distribution/nn ./punct
+let/vb σ/rb be/vb the/dt uniform/jj distribution/nn on/in γs/nn and/cc cs/nn =/punct {/punct fb/nn :/punct b/nn ∈/cd {/punct 0/cd ,/punct 1/cd }/punct 2n/jj }/punct be/vb the/dt set/nn of/in functions/nns that/wdt witness/nn the/dt shattering/vbg of/in {/punct p1/nn ./punct
+./punct
+./punct
+./punct
+,/punct pn/nn }/punct ./punct
+let/vb fb/nn be/vb a/dt function/nn chosen/vbn uniformly/rb at/in random/jj from/in cs/nnp ./punct
+it/prp follows/vbz from/in lemma/nn 2/cd (/punct with/in γ/nn =/punct 2d/jj )/punct that/wdt for/in any/dt fixed/jj function/nn h/nn the/dt probability/nn that/wdt ||fb/vbp (/punct p/nn )/punct −/cd h/nn (/punct p/nn )/punct ||∞/cd >/punct 2ε/nn for/in p/nn ∈/cd γs/nn is/vbz at/in least/jjs as/rb high/jj as/in getting/vbg heads/nns on/in a/dt fair/jj coin/nn toss/vbp ./punct
+therefore/rb eb/nn (/punct ||fb/nn (/punct p/nn )/punct −/cd h/nn (/punct p/nn )/punct ||∞/cd )/punct >/punct 2ε/nn ./punct
+suppose/vb for/in a/dt sequence/nn of/in observations/nns z/sym =/punct (/punct (/punct pi1/nn ,/punct x1/nn )/punct ,/punct ./punct
+./punct
+./punct
+,/punct (/punct pin/nn ,/punct xn/nn )/punct )/punct a/dt learning/nn algorithm/nn l/nn finds/vbz a/dt function/nn h./in the/dt observation/nn above/in and/cc fubini/nnp imply/vbp eb/nn (/punct erσ/nn (/punct h/nn ,/punct fb/nn )/punct )/punct >/punct ε./nn randomizing/vbg on/in the/dt sample/nn space/nn we/prp get/vbp eb/nnp ,/punct z/sym (/punct erσ/fw (/punct h/nn ,/punct fb/nn )/punct )/punct >/punct ε./nn this/dt shows/vbz eh/nnp ,/punct z/sym (/punct erσ/fw (/punct h/nn ,/punct fb0/nn )/punct )/punct >/punct ε/nn for/in some/dt fb0/nn ./punct
+w.l.g/nn we/prp may/md assume/vb the/dt error/nn is/vbz bounded/vbn (/punct since/in we/prp are/vbp looking/vbg at/in what/wp is/vbz essentially/rb a/dt finite/jj set/nn )/punct therefore/rb the/dt probability/nn that/in erσ/nn (/punct h/nn ,/punct fb0/nn )/punct >/punct ε/nn can/md not/rb be/vb too/rb small/jj ,/punct hence/rb fb0/nn is/vbz not/rb paclearnable/jj with/in a/dt sample/nn of/in size/nn n/nn ✷/cd the/dt following/vbg theorem/nn gives/vbz an/dt upper/jj bound/vbn on/in the/dt sample/nn complexity/nn required/vbn for/in learning/vbg a/dt set/nn of/in functions/nns with/in finite/jj fat/jj shattering/vbg dimension/nn ./punct
+the/dt theorem/nn is/vbz proved/vbn in/in [/punct 2/cd ]/punct for/in real/jj valued/vbn functions/nns ,/punct the/dt proof/nn for/in the/dt real/jj vector/nn case/nn is/vbz analogous/jj and/cc so/rb omitted/vbn ./punct
+theorem/nnp 4/cd ./punct
+let/vb c/nnp be/vb a/dt set/nn of/in real-valued/jj functions/nns from/in x/nn to/to [/punct 0/cd ,/punct 1/cd ]/punct with/in fatc/nn (/punct γ/nn )/punct </punct ∞/cd ./punct
+let/vb a/dt be/vb approximate-sem/jj algorithm/nn for/in c/nn and/cc define/vb l/nn (/punct z/sym )/punct =/punct a/dt (/punct z/sym ,/punct ε0/nn 6/cd )/punct for/in z/sym ∈/cd zm/nn and/cc ε0/nn =/punct 16√/cd m/nn ./punct
+then/rb l/nn is/vbz a/dt learning/nn algorithm/nn for/in c/nn with/in sample/nn complexity/nn given/vbn by/in :/punct ml/nn (/punct ε/nn ,/punct δ/nn )/punct =/punct o/nn „/nn 1/cd ε2/nn (/punct ln2/nn (/punct 1/cd ε/nn )/punct fatc/nn (/punct ε/nn )/punct +/punct ln/nn (/punct 1/cd δ/nn )/punct )/punct «/nn for/in any/dt ε/nn ,/punct δ/nn >/punct 0/cd ./punct
+5/cd ./punct
+learning/vbg from/in revealed/vbn preference/nn algorithm/nn 1/cd is/vbz an/dt efficient/jj learning/nn algorithm/nn in/in the/dt sense/nn that/in it/prp finds/vbz a/dt hypothesis/nn with/in sample/nn error/nn zero/cd in/in time/nn polynomial/jj in/in the/dt number/nn of/in observations/nns ./punct
+as/in we/prp have/vbp seen/vbn in/in section/nn 4/cd the/dt number/nn of/in observations/nns required/vbn to/to pac/nnp learn/vbp the/dt demand/nn depends/vbz on/in the/dt fat/jj shattering/vbg dimension/nn of/in the/dt class/nn of/in demand/nn functions/nns which/wdt in/in turn/nn depends/vbz on/in the/dt class/nn of/in utility/nn functions/nns they/prp are/vbp derived/vbn from/in ./punct
+we/prp compute/vbp the/dt fat/jj shattering/vbg dimension/nn for/in two/cd classes/nns of/in demands/nns ./punct
+the/dt first/jj is/vbz the/dt class/nn of/in all/dt demand/nn functions/nns ,/punct we/prp show/vbp that/in this/dt class/nn has/vbz infinite/jj shattering/vbg dimension/nn (/punct we/prp give/vbp two/cd proofs/nns )/punct and/cc is/vbz therefore/rb not/rb pac/nn learnable/jj ./punct
+the/dt second/jj class/nn we/prp consider/vbp is/vbz the/dt class/nn of/in demand/nn functions/nns derived/vbn from/in utilities/nns with/in bounded/jj support/nn and/cc income-lipschitz/nn ./punct
+we/prp show/vbp that/in the/dt class/nn has/vbz a/dt finite/jj fat/jj shattering/vbg dimension/nn that/in depends/vbz on/in the/dt support/nn and/cc the/dt income-lipschitz/jj constant/nn ./punct
+theorem/nnp 5/cd ./punct
+let/vb c/nnp be/vb a/dt set/nn of/in demand/nn functions/nns from/in rd/nn +/punct to/to rd/nn +/punct then/rb fatc/nn (/punct γ/nn )/punct =/punct ∞/cd proof/nn 1/cd :/punct for/in ε/nn >/punct 0/cd let/vbd pi/nn =/punct 2−i/cd p/nn for/in i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn be/vb a/dt set/nn of/in price/nn vectors/nns inducing/vbg parallel/jj budget/nn sets/nns bi/nn and/cc let/vb x1/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn be/vb the/dt intersection/nn of/in these/dt hyperplanes/nns with/in an/dt orthogonal/jj line/nn passing/vbg through/in the/dt center/nn ./punct
+let/vb h0/nn and/cc h1/nn be/vb hyperplanes/nns that/wdt are/vbp not/rb parallel/jj to/to p/nn and/cc let/vb xi/nn ∈/nn bi/nn ∩/cd (/punct xi/nn +/punct h+/nn 0/cd )/punct and/cc xi/nn ∈/cd bi/nn ∩/cd (/punct xi/nn +/punct h−/nn 1/cd )/punct for/in i/fw =/punct 1/cd ./punct
+./punct
+./punct
+n/nn (/punct see/vbp figure/nn 1/cd )/punct ./punct
+for/in any/dt labeling/nn b/nn =/punct (/punct b1/nn ,/punct ./punct
+./punct
+./punct
+,/punct bn/nn )/punct ∈/cd {/punct 0/cd ,/punct 1/cd }/punct n/nn let/vbd y/nn =/punct y/nn (/punct b/nn )/punct =/punct (/punct y1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yn/nn )/punct be/vb a/dt set/nn of/in demands/nns such/jj that/in yi/nn =/punct xi/nn if/in bi/nn =/punct 0/cd and/cc yi/nn =/punct xi/nn if/in bi/nn =/punct 1/cd (/punct we/prp omit/vbp an/dt additional/jj index/nn b/nn in/in y/nn for/in notational/jj convenience/nn )/punct ./punct
+to/to show/vb that/in p1/nn ,/punct ./punct
+./punct
+./punct
+,/punct pn/nn is/vbz shattered/vbn it/prp suffices/vbz to/to find/vb for/in every/dt b/nn a/dt demand/nn function/nn fb/nn supported/vbn by/in concave/jj utility/nn such/jj that/in fb/nn (/punct pi/nn )/punct =/punct yb/nn i/fw ./punct
+to/to show/vb that/in such/pdt a/dt function/nn exists/vbz it/prp suffices/vbz to/to show/vb that/in afriat/nnp ''/'' s/vbz conditions/nns are/vbp satisfied/jj ./punct
+since/in yi/nn are/vbp in/in the/dt budget/nn 40/cd set/nn yi/nns ·/vbp 2−i/jj p/nn =/punct 1/cd ,/punct therefore/rb pi/nn ·/nn (/punct yj/nn −/cd yi/nn )/punct =/punct 2j−i/cd −/nn 1/cd ./punct
+this/dt shows/vbz that/in pi/nn ·/nn (/punct yj/nn −/cd yi/nn )/punct ≤/nn 0/cd iff/nn j/nn </punct i/fw hence/rb there/ex can/md be/vb no/dt negative/jj cycles/nns and/cc the/dt condition/nn is/vbz met/vbn ./punct
+✷/nn proof/nn 2/cd :/punct the/dt utility/nn functions/vbz satisfying/vbg afriat/nnp ''/'' s/vbz condition/nn in/in the/dt first/jj proof/nn could/md be/vb trivial/jj assigning/vbg the/dt same/jj utility/nn to/to xi/vb as/in to/to xi/vb ./punct
+in/in fact/nn ,/punct pick/vb a/dt utility/nn function/nn whose/wp$ level/nn sets/nns are/vbp parallel/jj to/to the/dt budget/nn constraint/nn ./punct
+therefore/rb the/dt shattering/vbg of/in the/dt prices/nns p1/nn ,/punct ./punct
+./punct
+./punct
+,/punct pn/nn is/vbz the/dt result/nn of/in indifference/nn rather/rb than/in genuine/jj preference/nn ./punct
+to/to avoid/vb this/dt problem/nn we/prp reprove/vbp the/dt theorem/nn by/in constructing/vbg utility/nn functions/nns u/vbp such/jj that/in u/fw (/punct xi/fw )/punct =/punct u/fw (/punct xi/fw )/punct for/in all/dt i/fw and/cc therefore/rb a/dt distinct/jj utility/nn function/nn is/vbz associated/vbn with/in each/dt labeling/nn ./punct
+for/in i/fw =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+n/nn let/vbd pi1/nn ,/punct ./punct
+./punct
+./punct
+,/punct pid/nn be/vb price/nn vectors/nns satisfying/vbg the/dt following/jj conditions/nns :/punct 1./cd the/dt budget/nn sets/vbz bs/nns i/fw are/vbp supporting/vbg hyperplanes/nns of/in a/dt convex/nn polytope/nn λi/nn 2./fw yi/fw is/vbz a/dt vertex/nn of/in λi/nn 3/cd ./punct
+||yj/nn ||1/cd ·/nn ||pis/vbz −/cd pi||∞/nn =/punct o/nn (/punct 1/cd )/punct for/in s/nns =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+d/nn and/cc j/nn =/punct 1/cd ,/punct ./punct
+./punct
+./punct
+,/punct n/nn finally/rb let/vb yi1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yid/nn be/vb points/nns on/in the/dt facets/nns of/in λi/nn that/wdt intersect/vbp yi/nn ,/punct such/jj that/in ||pjr||1/nn ·/nn ||yi/nns −/vbp yis||∞/nn =/punct o/nn (/punct 1/cd )/punct for/in all/dt j/nn ,/punct s/nns and/cc r./vb we/prp call/vb the/dt set/nn of/in points/nns yi/nns ,/punct yi1/nn ,/punct ./punct
+./punct
+./punct
+,/punct yid/vbd the/dt level/nn i/fw demand/nn and/cc pi/nn ,/punct pi1/nn ,/punct ./punct
+./punct
+./punct
+,/punct pid/nn level/nn i/fw prices/nns ./punct
+applying/vbg h¨olders/nns inequality/nn we/prp get/vbp |pir/jj ·/nn yjs/nns −/cd pi/nn ·/nn yj/nn |/punct ≤/cd |/punct (/punct pir/nn −/cd pi/nn )/punct ·/nn yj|/nn +/punct |pir/fw ·/fw (/punct yjs/fw −/fw yj/fw )/punct |/punct ||pir/fw −/fw pi||∞/fw ·/fw ||yj/fw ||1/nn +/punct ||yjs/nns −/cd yj||∞/nn ·/nn ||pir||1/nn ./punct
+=/punct o/nn (/punct 1/cd )/punct this/dt shows/vbz that/in pir/fw ·/fw (/punct yjs/fw −/fw yir/fw )/punct =/punct pi/nn ·/nn (/punct ys/vbz −/cd yi/nn )/punct +/punct o/nn (/punct 1/cd )/punct =/punct 2j−i/cd −/nn 1/cd +/punct o/nn (/punct 1/cd )/punct therefore/rb pir/fw ·/fw (/punct yjs/fw −/fw yir/fw )/punct ≤/nn 0/cd iff/nn j/nn </punct i/fw or/cc i/fw =/punct j./nn this/dt implies/vbz that/in if/in there/ex is/vbz a/dt negative/jj cycle/nn then/rb all/pdt the/dt points/nns in/in the/dt cycle/nn must/md belong/vb to/to the/dt same/jj level/nn ./punct
+the/dt points/nns of/in any/dt one/cd level/nn lie/nn on/in the/dt facets/nns of/in a/dt polytope/nn λi/nn and/cc the/dt prices/nns pis/nn are/vbp supporting/vbg hyperplanes/nns of/in the/dt polytope/nn ./punct
+thus/rb ,/punct the/dt polytope/nn defines/vbz a/dt utility/nn function/nn for/in which/wdt these/dt demands/nns are/vbp utility/nn maximizing/vbg ./punct
+the/dt other/jj direction/nn of/in afriat/nnp ''/'' s/vbz theorem/nn therefore/rb implies/vbz there/ex can/md be/vb no/dt negative/jj cycles/nns within/in points/nns on/in the/dt same/jj level/nn ./punct
+it/prp follows/vbz that/in there/ex are/vbp no/dt negative/jj cycles/nns for/in the/dt union/nn of/in observations/nns from/in all/dt levels/nns hence/rb the/dt sequence/nn of/in observations/nns (/punct y1/nn ,/punct p1/nn )/punct ,/punct (/punct y11/nn ,/punct p11/nn )/punct ,/punct (/punct y12/nn ,/punct p12/nn )/punct ,/punct ./punct
+./punct
+./punct
+,/punct (/punct ynd/nn ,/punct pnd/nn )/punct is/vbz consistent/jj with/in monotone/nn concave/nn utility/nn function/nn maximization/nn and/cc again/rb by/in afriat/nnp ''/'' s/vbz theorem/nn there/ex exists/vbz u/nn supporting/vbg a/dt demand/nn function/nn fb/nn ✷/cd the/dt proof/nn above/in relies/vbz on/in the/dt fact/nn that/in an/dt agent/nn have/vbp high/jj utility/nn and/cc marginal/jj utility/nn for/in very/rb large/jj bundles/nns ./punct
+in/in many/jj cases/nns it/prp is/vbz reasonable/jj to/to assume/vb that/in the/dt marginal/jj for/in very/rb large/jj bundles/nns is/vbz very/rb small/jj ,/punct or/cc even/rb that/in the/dt utility/nn or/cc the/dt marginal/jj utility/nn have/vbp compact/jj support/nn ./punct
+unfortunately/rb ,/punct rescaling/vbg the/dt previous/jj example/nn shows/vbz that/in even/rb a/dt compact/jj set/nn may/md contain/vb a/dt large/jj shattered/jj set/nn ./punct
+we/prp notice/vbp however/rb ,/punct that/in in/in this/dt case/nn we/prp obtain/vbp a/dt utility/nn function/nn that/wdt yield/vbp demand/nn functions/nns that/wdt are/vbp very/rb sensitive/jj to/to small/jj price/nn changes/nns ./punct
+we/prp show/vbp that/in the/dt class/nn of/in utility/nn functions/nns that/wdt have/vbp marginal/jj utilities/nns with/in compact/jj support/nn and/cc for/in which/wdt the/dt relevant/jj demand/nn functions/nns are/vbp income-lipschitzian/jj has/vbz finite/jj fat/jj shattering/vbg dimension/nn ./punct
+✲/nn ✻/sym ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw ❅/fw (/punct 0,0/cd )/punct h0/nn h1r/nn x1/nn r/nn x1/nn ❈/cd ❈/cd ❜/cd ❜❜/nn r/nn x2/nn r/nn x2/nn ❚/cd ❚/cd ❚/nn ❚/cd ❚/cd ❚/nn ❚/cd ❚/cd ❚/nn ❚/cd ❚/cd ❜/nn ❜❜/cd figure/nnp 1/cd :/punct utility/nn function/nn shattering/vbg x1/nn and/cc x2/nn theorem/nnp 6/cd ./punct
+let/vb c/nnp be/vb a/dt set/nn of/in l-income-lipschitz/jj demand/nn functions/nns from/in ∆d/nn to/to rd/nn +/punct for/in some/dt global/jj constant/jj l/nn ∈/cd r./nnp then/rb fatc/nn (/punct γ/nn )/punct ≤/cd (/punct l/nn γ/nn )/punct d/nn proof/nnp :/punct let/vb p1/nn ,/punct ./punct
+./punct
+./punct
+,/punct pn/nn ∈/cd ∆d/nn be/vb a/dt shattered/jj set/nn with/in witnesses/nns x1/nn ,/punct ./punct
+./punct
+./punct
+,/punct xn/nn ∈/cd rd/nn +/punct ./punct
+w.l.g/nn ./punct
+xi+h+/jj 0/cd ∩xj/nn +h−/nn 0/cd =/punct ∅/cd implying/vbg xi/nn +/punct h−/nn 1/cd ∩/nn xj/nn +/punct h+/nn 1/cd =/punct ∅/nn ,/punct for/in a/dt labeling/nn b/nn =/punct (/punct b1/nn ,/punct ./punct
+./punct
+./punct
+,/punct bn/nn )/punct ∈/cd {/punct 0/cd ,/punct 1/cd }/punct n/nn such/jj that/in bi/nn =/punct 0/cd and/cc bj/nn =/punct 1/cd ,/punct ||fb/jj (/punct pi/nn )/punct −/cd fb/nn (/punct pj/nn )/punct ||∞/cd >/punct γ/nn hence/rb ||pi/jj −/nn pj||∞/nn >/punct γ/nn l/nn ./punct
+a/dt standard/jj packing/nn argument/nn implies/vbz n/nn ≤/cd (/punct l/nn γ/nn )/punct d/nn ✷/cd 6/cd ./punct
+acknowledgments/nns the/dt authors/nns would/md like/vb to/to thank/vb eli/nnp shamir/nnp ,/punct ehud/nnp kalai/nnp ,/punct julio/nnp gonz´alez/nnp d´ıaz/nnp ,/punct rosa/nnp matzkin/nnp ,/punct gad/nnp allon/nnp and/cc adam/nnp galambos/nnp for/in helpful/jj discussions/nns and/cc suggestions/nns ./punct
+7/cd ./punct
+references/nns [/punct 1/cd ]/punct afriat/nnp s./nnp n/nnp ./punct
+(/punct 1967/cd )/punct the/dt construction/nn of/in a/dt utility/nn function/nn from/in expenditure/nnp data/nnp international/nnp economic/nnp review/nnp 8/cd ,/punct 67-77/cd ./punct
+[/punct 2/cd ]/punct anthony/nnp m./nnp and/cc bartlett/nnp p./nnp l/nnp ./punct
+(/punct 1999/cd )/punct neural/nnp network/nnp learning/nnp :/punct theoretical/jj foundations/nns cambridge/nnp university/nnp press/nnp ./punct
+[/punct 3/cd ]/punct blundell/nnp r./nnp ,/punct browning/nnp m./nnp and/cc crawford/nnp i/prp ./punct
+(/punct 2003/cd )/punct nonparametric/nnp engel/nnp curves/nns and/cc revealed/vbd preference/nn ./punct
+econometrica/nnp ,/punct 71/cd (/punct 1/cd )/punct :205-240/cd ./punct
+[/punct 4/cd ]/punct blundell/nnp r/nn ./punct
+(/punct 2005/cd )/punct how/wrb revealing/jj is/vbz revealed/vbn preference/nn ?/punct
+european/jj economic/nnp journal/nnp 3/cd ,/punct 211/cd -/punct 235/cd ./punct
+[/punct 5/cd ]/punct diewert/nn e/nn ./punct
+(/punct 1973/cd )/punct afriat/nnp and/cc revealed/nnp preference/nnp theory/nnp review/nnp of/in economic/nnp studies/nnps 40/cd ,/punct 419/cd -/punct 426/cd ./punct
+[/punct 6/cd ]/punct farkas/nnp j/nnp ./punct
+(/punct 1902/cd )/punct ¨uber/nnp die/vb theorie/nnp der/fw einfachen/nnp ungleichungen/nnp journal/nnp f¨ur/jj die/nn reine/nnp und/vbd angewandte/nnp mathematik/nnp 124/cd 1-27/cd [/punct 7/cd ]/punct houthakker/nn h/nn ./punct
+(/punct 1950/cd )/punct revealed/vbn preference/nn and/cc the/dt utility/nn function/nn economica/nn 17/cd ,/punct 159/cd -/punct 174/cd ./punct
+[/punct 8/cd ]/punct kearns/nnp m./nnp and/cc vazirani/nnp u/nnp ./punct
+(/punct 1994/cd )/punct an/dt introduction/nn to/to computational/nnp learning/nnp theory/nnp the/nnp mit/nnp press/nnp cambridge/nnp ma/nnp ./punct
+41/cd [/punct 9/cd ]/punct knoblauch/nnp v/nnp ./punct
+(/punct 1992/cd )/punct a/dt tight/jj upper/nnp bound/vbn on/in the/dt money/nn metric/nnp utility/nnp function/nn ./punct
+the/dt american/nnp economic/nnp review/nnp ,/punct 82/cd (/punct 3/cd )/punct :660-663/cd ./punct
+[/punct 10/cd ]/punct mas-colell/nnp a/nnp ./punct
+(/punct 1977/cd )/punct the/dt recoverability/nn of/in consumers/nns ''/'' preferences/nnps from/in market/nnp demand/nn ./punct
+econometrica/nnp ,/punct 45/cd (/punct 6/cd )/punct :1409-1430/cd ./punct
+[/punct 11/cd ]/punct mas-colell/nn a/nn ./punct
+(/punct 1978/cd )/punct on/in revealed/vbn preference/nn analysis/nn ./punct
+the/dt review/nn of/in economic/nnp studies/nnps ,/punct 45/cd (/punct 1/cd )/punct :121-131/cd ./punct
+[/punct 12/cd ]/punct mas-colell/nnp a./nn ,/punct whinston/nnp m./nnp and/cc green/nnp j./nnp r/nnp ./punct
+(/punct 1995/cd )/punct microeconomic/nnp theory/nnp oxford/nnp university/nnp press/nnp ./punct
+[/punct 13/cd ]/punct matzkin/nnp r./nnp and/cc richter/nnp m/nn ./punct
+(/punct 1991/cd )/punct testing/nnp strictly/rb concave/nnp rationality/nn ./punct
+journal/nnp of/in economic/nnp theory/nnp ,/punct 53:287-303/cd ./punct
+[/punct 14/cd ]/punct papadimitriou/nnp c./nnp h./nnp and/cc steiglitz/nnp k/nnp ./punct
+(/punct 1982/cd )/punct combinatorial/nnp optimization/nnp dover/nnp publications/nnp inc/nn ./punct
+[/punct 15/cd ]/punct richter/nnp m/nn ./punct
+(/punct 1966/cd )/punct revealed/vbn preference/nn theory/nnp ./punct
+econometrica/nnp ,/punct 34/cd (/punct 3/cd )/punct :635-645/cd ./punct
+[/punct 16/cd ]/punct uzawa/nn h/nn ./punct
+(/punct 1960/cd )/punct preference/nn and/cc rational/jj choice/nn in/in the/dt theory/nn of/in consumption/nn ./punct
+in/in k./nnp j./nnp arrow/nnp ,/punct s./nnp karlin/nnp ,/punct and/cc p./nnp suppes/nnp ,/punct editors/nns ,/punct mathematical/jj models/nns in/in social/nnp science/nnp stanford/nnp university/nnp press/nnp ,/punct stanford/nnp ,/punct ca/nnp ./punct
+[/punct 17/cd ]/punct teo/nnp c./nnp p./nnp and/cc vohra/nnp r./nnp v/nnp ./punct
+(/punct 2003/cd )/punct afriat/nnp ''/'' s/vbz theorem/nnp and/cc negative/jj cycles/nns working/vbg paper/nnp [/punct 18/cd ]/punct samuelson/nnp p./nnp a/nnp ./punct
+(/punct 1948/cd )/punct consumption/nn theory/nnp in/in terms/nns of/in revealed/nnp preference/nnp economica/nnp 15/cd ,/punct 243/cd -/punct 253/cd ./punct
+[/punct 19/cd ]/punct vapnik/nnp v./nnp n/nnp ./punct
+(/punct 1998/cd )/punct statistical/nnp learning/nnp theory/nnp john/nnp wiley/nnp &/punct sons/nnps inc/nnp ./punct
+[/punct 20/cd ]/punct varian/nnp h./nnp r/nn ./punct
+(/punct 1982/cd )/punct the/dt non-parametric/jj approach/nn to/to demand/nn analysis/nn econometrica/nnp 50/cd ,/punct 945/cd -/punct 974/cd ./punct
+[/punct 21/cd ]/punct varian/nnp h./nnp r/nn ./punct
+(/punct 2005/cd )/punct revealed/vbn preference/nn ,/punct in/in michael/nnp szenberg/nnp editor/nn ,/punct samuelson/nnp economics/nnp and/cc the/dt 21st/cd century/nnp ./punct
+[/punct 22/cd ]/punct ziegler/nnp g./nnp m/nn ./punct
+(/punct 1994/cd )/punct lectures/nns on/in polytopes/nnp springer/nnp ./punct
+42/cd

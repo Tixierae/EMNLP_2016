@@ -1,0 +1,149 @@
+many/jj organizations/nns are/vbp required/vbn to/to author/nn documents/nns for/in various/jj purposes/nns ,/punct and/cc such/jj documents/nns may/md need/vb to/to be/vb accessible/jj by/in all/dt member/nn of/in the/dt organization/nn ./punct
+this/dt access/nn may/md be/vb needed/vbn for/in editing/nn or/cc simply/rb viewing/vbg a/dt document/nn ./punct
+in/in some/dt cases/nns these/dt documents/nns are/vbp shared/vbn between/in authors/nns ,/punct via/in email/nn ,/punct to/to be/vb edited/vbn ./punct
+this/dt can/md easily/rb cause/vb incorrect/jj version/nn to/to be/vb sent/vbn or/cc conflicts/nns created/vbn between/in multiple/jj users/nns trying/vbg to/to make/vb amendments/nns to/to a/dt document/nn ./punct
+there/ex may/md even/rb be/vb multiple/jj different/jj documents/nns in/in the/dt process/nn of/in being/vbg edited/vbn ./punct
+the/dt user/nn may/md be/vb required/vbn to/to search/vb for/in a/dt particular/jj document/nn ,/punct which/wdt some/dt search/nn tools/nns such/jj as/in google/nnp desktop/nnp may/md be/vb a/dt solution/nn for/in local/jj documents/nns but/cc will/md not/rb find/vb a/dt document/nn on/in another/dt user/nn ''/'' s/nns machine/nn ./punct
+another/dt problem/nn arises/vbz when/wrb a/dt document/nn is/vbz made/vbn available/jj on/in a/dt user/nn ''/'' s/nns machine/nn and/cc that/in user/nn is/vbz offline/jj ,/punct in/in which/wdt case/nn the/dt document/nn is/vbz no/rb longer/rb accessible/jj ./punct
+in/in this/dt paper/nn we/prp present/vbp apocrita/nnp ,/punct a/dt revolutionary/jj distributed/vbn p2p/nn file/nn sharing/vbg system/nn for/in intranets/nnps ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct computer-communication/nnp networks/nnp ]/punct :/punct distributed/vbn systems/nnps -/punct distributed/vbn applications/nns ./punct
+general/nnp terms/nns design/nn ,/punct experimentation/nn ,/punct performance/nnp ./punct
+1/ls ./punct
+introduction/nn the/dt peer-to-peer/nnp (/punct p2p/nn )/punct computing/nn paradigm/nn is/vbz becoming/vbg a/dt completely/rb new/jj form/nn of/in mutual/jj resource/nn sharing/vbg over/in the/dt internet/nn ./punct
+with/in the/dt increasingly/rb common/jj place/nn broadband/nn internet/nn access/nn ,/punct p2p/nn technology/nn has/vbz finally/rb become/vb a/dt viable/jj way/nn to/to share/vb documents/nns and/cc media/nns files/nns ./punct
+there/ex are/vbp already/rb programs/nns on/in the/dt market/nn that/wdt enable/vbp p2p/nn file/nn sharing/nn ./punct
+these/dt programs/nns enable/vbp millions/nns of/in users/nns to/to share/vb files/nns among/in themselves/prp ./punct
+while/in the/dt utilization/nn of/in p2p/nn clients/nns is/vbz already/rb a/dt gigantic/jj step/nn forward/rb compared/vbn to/to downloading/vbg files/nns off/in websites/nns ,/punct using/vbg such/jj programs/nns are/vbp not/rb without/in their/prp$ problems/nns ./punct
+the/dt downloaded/vbn files/nns still/rb require/vbp a/dt lot/nn of/in manual/jj management/nn by/in the/dt user/nn ./punct
+the/dt user/nn still/rb needs/vbz to/to put/vb the/dt files/nns in/in the/dt proper/jj directory/nn ,/punct manage/vbp files/nns with/in multiple/jj versions/nns ,/punct delete/vbp the/dt files/nns when/wrb they/prp are/vbp no/rb longer/rb wanted/vbd ./punct
+we/prp strive/vbp to/to make/vb the/dt process/nn of/in sharing/vbg documents/nns within/in an/dt intranet/nnp easier/jjr ./punct
+many/jj organizations/nns are/vbp required/vbn to/to author/nn documents/nns for/in various/jj purposes/nns ,/punct and/cc such/jj documents/nns may/md need/vb to/to be/vb accessible/jj by/in all/dt members/nns of/in the/dt organization/nn ./punct
+this/dt access/nn may/md be/vb needed/vbn for/in editing/nn or/cc simply/rb viewing/vbg a/dt document/nn ./punct
+in/in some/dt cases/nns these/dt documents/nns are/vbp sent/vbn between/in authors/nns ,/punct via/in email/nn ,/punct to/to be/vb edited/vbn ./punct
+this/dt can/md easily/rb cause/vb incorrect/jj version/nn to/to be/vb sent/vbn or/cc conflicts/nns created/vbn between/in multiple/jj users/nns trying/vbg to/to make/vb amendments/nns to/to a/dt document/nn ./punct
+there/ex may/md even/rb be/vb multiple/jj different/jj documents/nns in/in the/dt process/nn of/in being/vbg edited/vbn ./punct
+the/dt user/nn may/md be/vb required/vbn to/to search/vb for/in a/dt particular/jj document/nn ,/punct which/wdt some/dt search/nn tools/nns such/jj as/in google/nnp desktop/nnp may/md be/vb a/dt solution/nn for/in local/jj documents/nns but/cc will/md not/rb find/vb a/dt document/nn on/in another/dt user/nn ''/'' s/nns machine/nn ./punct
+furthermore/rb ,/punct some/dt organizations/nns do/vbp not/rb have/vb a/dt file/nn sharing/vbg server/nn or/cc the/dt necessary/jj network/nn infrastructure/nn to/to enable/vb one/cd ./punct
+in/in this/dt paper/nn we/prp present/vbp apocrita/nnp ,/punct which/wdt is/vbz a/dt cost-effective/jj distributed/vbn p2p/nn file/nn sharing/vbg system/nn for/in such/jj organizations/nns ./punct
+the/dt rest/nn of/in this/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+in/in section/nn 2/cd ,/punct we/prp present/vbp apocrita/nnp ./punct
+the/dt distributed/vbn indexing/nn mechanism/nn and/cc protocol/nn are/vbp presented/vbn in/in section/nn 3/cd ./punct
+section/nn 4/cd presents/vbz the/dt peer-topeer/jj distribution/nn model/nn ./punct
+a/dt proof/nn of/in concept/nn prototype/nn is/vbz presented/vbn in/in section/nn 5/cd ,/punct and/cc performance/nn evaluations/nns are/vbp discussed/vbn in/in section/nn 6/cd ./punct
+related/jj work/nn is/vbz presented/vbn is/vbz section/nn 7/cd ,/punct and/cc finally/rb conclusions/nns and/cc future/jj work/nn are/vbp discussed/vbn in/in section/nn 8/cd ./punct
+2/ls ./punct
+apocrita/nnp apocrita/nnp is/vbz a/dt distributed/vbn peer-to-peer/nn file/nn sharing/vbg system/nn ,/punct and/cc has/vbz been/vbn designed/vbn to/to make/vb finding/vbg documents/nns easier/jjr in/in an/dt intranet/nnp environment/nn ./punct
+currently/rb ,/punct it/prp is/vbz possible/jj for/in documents/nns to/to be/vb located/vbn on/in a/dt user/nn 's/pos machine/nn or/cc on/in a/dt remote/jj machine/nn ./punct
+it/prp is/vbz even/rb possible/jj that/in different/jj revisions/nns could/md reside/vb on/in each/dt node/nn on/in the/dt intranet/nnp ./punct
+this/dt means/vbz there/ex must/md be/vb a/dt manual/jj process/nn to/to maintain/vb document/nn versions/nns ./punct
+apocrita/nn solves/vbz this/dt problem/nn using/vbg two/cd approaches/nns ./punct
+first/rb ,/punct due/jj to/to the/dt inherent/jj nature/nn of/in apocrita/nnp ,/punct the/dt document/nn will/md only/rb reside/vb on/in a/dt single/jj logical/jj location/nn ./punct
+second/nnp ,/punct apocrita/nnp provides/vbz a/dt method/nn of/in reverting/vbg to/to previous/jj document/nn versions/nns ./punct
+apocrita/nnp permission/nn to/to make/vb digital/jj or/cc hard/jj copies/nns of/in all/dt or/cc part/nn of/in this/dt work/nn for/in personal/jj or/cc classroom/nn use/nn is/vbz granted/vbn without/in fee/nn provided/vbd that/in copies/nns are/vbp not/rb made/vbn or/cc distributed/vbn for/in profit/nn or/cc commercial/jj advantage/nn and/cc that/in copies/nns bear/vbp this/dt notice/nn and/cc the/dt full/jj citation/nn on/in the/dt first/jj page/nn ./punct
+to/to copy/vb otherwise/rb ,/punct or/cc republish/nn ,/punct to/to post/vb on/in servers/nns or/cc to/to redistribute/vb to/to lists/nns ,/punct requires/vbz prior/rb specific/jj permission/nn and/or/in a/dt fee/nn ./punct
+acmse/nn ''/'' 07/rb ,/punct march/nn 23-24/cd ,/punct 2007/cd ,/punct winston-salem/nnp ,/punct nc/nnp ,/punct usa/nnp ./punct
+copyright/nnp 2007/cd acm/nnp 978-1-59593-629-5/07/0003/cd …/cd $/punct 5.00/cd ./punct
+174/cd will/md also/rb distribute/vb documents/nns across/in multiple/jj machines/nns to/to ensure/vb high/jj availability/nn of/in important/jj documents/nns ./punct
+for/in example/nn ,/punct if/in a/dt machine/nn contains/vbz an/dt important/jj document/nn and/cc the/dt machine/nn is/vbz currently/rb inaccessible/jj ,/punct the/dt system/nn is/vbz capable/jj of/in maintaining/vbg availability/nn of/in the/dt document/nn through/in this/dt distribution/nn mechanism/nn ./punct
+it/prp provides/vbz a/dt simple/jj interface/nn for/in searching/vbg and/cc accessing/vbg files/nns that/wdt may/md exist/vb either/cc locally/rb or/cc remotely/rb ./punct
+the/dt distributed/vbn nature/nn of/in the/dt documents/nns is/vbz transparent/jj to/to the/dt user/nn ./punct
+apocrita/nn supports/vbz a/dt decentralized/jj network/nn model/nn where/wrb the/dt peers/nns use/vbp a/dt discovery/nn protocol/nn to/to determine/vb peers/nns ./punct
+apocrita/nn is/vbz intended/vbn for/in network/nn users/nns on/in an/dt intranet/nnp ./punct
+the/dt main/jj focus/nn is/vbz organizations/nns that/wdt may/md not/rb have/vb a/dt network/nn large/jj enough/rb to/to require/vb a/dt file/nn server/nn and/cc supporting/vbg infrastructure/nn ./punct
+it/prp eliminates/vbz the/dt need/nn for/in documents/nns to/to be/vb manually/rb shared/vbn between/in users/nns while/in being/vbg edited/vbn and/cc reduces/vbz the/dt possibility/nn of/in conflicting/vbg versions/nns being/vbg distributed/vbn ./punct
+the/dt system/nn also/rb provides/vbz some/dt redundancy/nn and/cc in/in the/dt event/nn of/in a/dt single/jj machine/nn failure/nn ,/punct no/dt important/jj documents/nns will/md be/vb lost/vbn ./punct
+it/prp is/vbz operating/vbg system/nn independent/jj ,/punct and/cc easy/jj to/to access/nn through/in a/dt web/nn browser/nn or/cc through/in a/dt standalone/jj application/nn ./punct
+to/to decrease/vb the/dt time/nn required/vbn for/in indexing/nn a/dt large/jj number/nn of/in documents/nns ,/punct the/dt indexing/nn process/nn is/vbz distributed/vbn across/in available/jj idle/jj nodes/nns ./punct
+local/jj and/cc remote/jj files/nns should/md be/vb easily/rb accessible/jj through/in a/dt virtual/jj mountable/jj file/nn system/nn ,/punct providing/vbg transparency/nn for/in users/nns ./punct
+3/ls ./punct
+distributed/vbn indexing/nn apocrita/nn uses/vbz a/dt distributed/vbn index/nn for/in all/pdt the/dt documents/nns that/wdt are/vbp available/jj on/in the/dt intranet/nnp ./punct
+each/dt node/nn will/md contain/vb part/nn of/in the/dt full/jj index/nn ,/punct and/cc be/vb aware/jj of/in what/wp part/nn of/in the/dt index/nn each/dt other/jj node/nn has/vbz ./punct
+a/dt node/nn will/md be/vb able/jj to/to contact/vb each/dt node/nn that/wdt contains/vbz a/dt unique/jj portion/nn of/in the/dt index/nn ./punct
+in/in addition/nn ,/punct each/dt node/nn has/vbz a/dt separate/jj local/jj index/nn of/in its/prp$ own/jj documents/nns ./punct
+but/cc as/in discussed/vbn later/rb ,/punct in/in the/dt current/jj implementation/nn ,/punct each/dt node/nn has/vbz a/dt copy/nn of/in the/dt entire/jj index/nn ./punct
+indexing/nn of/in the/dt documents/nns is/vbz distributed/vbn ./punct
+therefore/rb ,/punct if/in a/dt node/nn is/vbz in/in the/dt process/nn of/in indexing/nn many/jj documents/nns ,/punct it/prp will/md break/vb up/rp the/dt work/nn over/in the/dt nodes/nns ./punct
+once/rb a/dt node/nn ''/'' s/nns local/jj index/nn is/vbz updated/vbn with/in the/dt new/jj documents/nns ,/punct the/dt distributed/vbn index/nn will/md then/rb be/vb updated/vbn ./punct
+the/dt current/jj distributed/vbn indexing/nn system/nn consists/vbz of/in three/cd separate/jj modules/nns :/punct nodecontroller/nnp ,/punct filesender/nnp ,/punct and/cc nodeindexer/nnp ./punct
+the/dt responsibility/nn of/in each/dt module/nn is/vbz discussed/vbn later/rb in/in this/dt section/nn ./punct
+the/dt protocol/nn we/prp have/vbp designed/vbn for/in the/dt distributed/vbn indexing/nn is/vbz depicted/vbn in/in figure/nnp 1/cd ./punct
+idle/jj query/nn :/punct the/dt idle/jj query/nn is/vbz sent/vbn out/rp from/in the/dt initiating/vbg node/nn to/to determine/vb which/wdt other/jj nodes/nns may/md be/vb able/jj to/to help/vb with/in the/dt overall/jj indexing/nn process/nn ./punct
+there/ex are/vbp no/dt parameters/nns sent/vbn with/in the/dt command/nn ./punct
+the/dt receiving/vbg node/nn will/md respond/vb with/in either/cc a/dt busy/jj or/cc idle/jj command/nn ./punct
+if/in the/dt idle/jj command/nn is/vbz received/vbn ,/punct the/dt initiating/vbg node/nn will/md add/vb the/dt responding/vbg node/nn to/to a/dt list/nn of/in available/jj distributed/vbn indexing/nn helpers/nns ./punct
+in/in the/dt case/nn of/in a/dt busy/jj command/nn being/vbg received/vbn ,/punct the/dt responding/vbg node/nn is/vbz ignored/vbn ./punct
+busy/jj :/punct once/rb a/dt node/nn received/vbd an/dt idl/nnp query/nnp ,/punct it/prp will/md determine/vb whether/in it/prp can/md be/vb considered/vbn a/dt candidate/nn for/in distributed/vbn indexing/nn ./punct
+this/dt determination/nn is/vbz based/vbn on/in the/dt overall/jj cpu/nnp usage/nn of/in the/dt node/nn ./punct
+if/in the/dt node/nn is/vbz using/vbg most/jjs of/in its/prp$ cpu/nnp for/in other/jj processes/nns ,/punct the/dt node/nn will/md respond/vb to/to the/dt idle/nnp query/nn with/in a/dt busy/jj command/nn ./punct
+idle/nnp :/punct as/in with/in the/dt case/nn of/in the/dt busy/jj response/nn ,/punct the/dt node/nn receiving/vbg the/dt idle/nnp query/nnp will/md determine/vb its/prp$ eligibility/nn for/in distributed/vbn indexing/nn ./punct
+to/to be/vb considered/vbn a/dt candidate/nn for/in distributed/vbn dedicated/jj indexing/nn of/in the/dt distributed/vbn documents/nns ./punct
+if/in this/dt is/vbz the/dt case/nn ,/punct the/dt node/nn will/md respond/vb with/in an/dt idle/jj command/nn ./punct
+incoming/jj file/nn :/punct once/in the/dt initiating/vbg node/nn assembles/vbz a/dt set/nn of/in idle/jj nodes/nns to/to assist/vb with/in the/dt distributed/vbn indexing/nn ,/punct it/prp will/md divide/vb the/dt incoming/jj file/nn message/nn ,/punct which/wdt contains/vbz the/dt name/nn of/in the/dt file/nn as/rb well/rb as/in the/dt size/nn in/in bytes/nns ./punct
+after/in the/dt incoming/jj file/nn command/nn has/vbz been/vbn sent/vbn ,/punct the/dt initiating/vbg node/nn will/md begin/vb to/to stream/nn the/dt file/nn to/to the/dt other/jj node/nn ./punct
+the/dt initiating/vbg node/nn will/md loop/nn through/in the/dt files/nns that/wdt are/vbp to/to be/vb sent/vbn to/to the/dt other/jj node/nn ;/punct each/dt file/nn stream/nn being/vbg preceded/vbn by/in the/dt incoming/jj file/nn command/nn with/in the/dt appropriate/jj parameters/nns ./punct
+index/nn file/nn :/punct once/in the/dt indexing/nn node/nn has/vbz completed/vbn the/dt indexing/nn process/nn of/in the/dt set/nn of/in files/nns ,/punct it/prp must/md send/vb the/dt resultant/jj index/nn back/rb to/to the/dt initiating/vbg node/nn ./punct
+the/dt index/nn is/vbz comprised/vbn of/in multiple/jj files/nns ,/punct which/wdt exist/vbp on/in the/dt file/nn system/nn of/in the/dt indexing/nn node/nn ./punct
+as/in with/in the/dt incoming/jj file/nn command/nn ,/punct the/dt indexing/nn node/nn streams/nns each/dt index/nn file/nn after/in sending/vbg an/dt index/nnp file/nn command/nn ./punct
+the/dt index/nnp file/nn command/nn has/vbz two/cd parameters/nns :/punct the/dt first/jj being/vbg bytes/nns ./punct
+send/vb complete/nnp :/punct when/wrb sending/vbg the/dt sets/nns of/in files/nns for/in both/cc the/dt index/nn and/cc the/dt files/nns to/to be/vb indexed/vbn ,/punct the/dt node/nn must/md notify/vb the/dt corresponding/jj node/nn when/wrb the/dt process/nn is/vbz complete/jj ./punct
+once/rb the/dt indexed/vbn ,/punct it/prp will/md then/rb send/vb a/dt send/nnp complete/nnp command/nn indicating/vbg to/to the/dt indexing/nn node/nn that/in there/ex are/vbp no/rb more/rbr files/nns and/cc the/dt node/nn can/md proceed/vb with/in indexing/nn the/dt files/nns ./punct
+in/in the/dt case/nn of/in the/dt initiating/vbg node/nn sending/vbg the/dt index/nn files/nns ,/punct the/dt indexing/nn node/nn will/md complete/vb the/dt transfer/nn with/in the/dt send/nnp complete/nnp command/nn indicating/vbg to/to the/dt initiating/vbg node/nn that/in there/ex are/vbp no/rb more/rbr index/nn files/nns to/to be/vb sent/vbn and/cc the/dt initiating/vbg node/nn can/md then/rb assemble/vb those/dt index/nn files/vbz into/in the/dt main/jj index/nn ./punct
+the/dt nodecontroller/nnp is/vbz responsible/jj for/in setting/vbg up/rp connections/nns with/in nodes/nns in/in the/dt idle/jj state/nn to/to distribute/vb the/dt indexing/nn process/nn ./punct
+using/vbg jxta/nn ,/punct the/dt node/nn controller/nn will/md obtain/vb a/dt set/nn of/in nodes/nns ./punct
+this/dt set/nn of/in nodes/nns is/vbz iterated/vbn and/cc each/dt one/cd is/vbz sent/vbn the/dt idle/nnp query/nnp command/nn ./punct
+the/dt nodes/nns that/wdt respond/vbp with/in idle/jj are/vbp then/rb collected/vbn ./punct
+the/dt set/nn of/in idle/jj nodes/nns includes/vbz the/dt node/nn initiating/vbg the/dt distributed/vbn indexing/nn process/nn ,/punct referred/vbn to/to as/in the/dt local/jj node/nn ./punct
+once/rb the/dt collection/nn of/in idle/jj nodes/nns is/vbz obtained/vbn ,/punct the/dt node/nn updates/nns the/dt set/nn of/in controllers/nns and/cc evenly/rb divides/vbz the/dt set/nn of/in documents/nns that/wdt are/vbp to/to be/vb indexed/vbn ./punct
+for/in example/nn ,/punct if/in there/ex are/vbp 100/cd documents/nns and/cc 10/cd nodes/nns (/punct including/vbg the/dt local/jj node/nn )/punct then/rb each/dt node/nn will/md have/vb 10/cd documents/nns to/to index/nn ./punct
+for/in each/dt indexing/nn node/nn an/dt instance/nn of/in the/dt filesender/nn that/wdt node/nn is/vbz responsible/jj for/in ./punct
+once/rb a/dt filesender/nn object/nn has/vbz been/vbn created/vbn for/in each/dt node/nn ,/punct the/dt nodecontroller/nnp waits/vbz for/in each/dt filesender/nn to/to complete/vb ./punct
+when/wrb the/dt filesender/nn objects/nns have/vbp completed/vbn the/dt nodecontroller/nnp will/md take/vb the/dt resultant/jj indexes/nns from/in each/dt node/nn and/cc pass/vb them/prp to/to an/dt instance/nn of/in the/dt indexcompiler/nnp ,/punct which/wdt maintains/vbz the/dt index/nn and/cc the/dt list/nn of/in filesenders/nns ./punct
+once/rb the/dt indexcompiler/nnp has/vbz completed/vbn it/prp will/md return/vb to/to the/dt idle/jj state/nn and/cc activate/vbp the/dt directory/nn scanner/nn to/to monitor/vb the/dt locally/rb owned/vbn set/nn of/in documents/nns for/in changes/nns that/wdt may/md require/vb reindexing/nn ./punct
+the/dt nodeindexer/nnp is/vbz responsible/jj for/in receiving/vbg documents/nns sent/vbn to/to it/prp by/in the/dt initiating/vbg node/nn and/cc then/rb indexing/vbg them/prp using/vbg the/dt lucene/nnp engine/nn ./punct
+once/rb the/dt indexing/nn is/vbz complete/jj the/dt resulting/vbg index/nn is/vbz indexer/nn nodes/nns own/vbp local/jj index/nn ./punct
+before/in initiating/vbg the/dt indexing/nn first/jj command/nn that/wdt sets/vbz off/rp the/dt indexing/nn process/nn ./punct
+the/dt indexer/nn node/nn will/md determine/vb whether/in it/prp is/vbz considered/vbn idle/jj based/vbn on/in the/dt current/jj cpu/nnp usage/nn ./punct
+as/in outlined/vbn in/in the/dt protocol/nn section/nn if/in the/dt node/nn is/vbz not/rb being/vbg used/vbn and/cc has/vbz a/dt low/jj overall/jj cpu/nnp usage/nn percentage/nn it/prp will/md return/vb idle/nnp to/to the/dt idle/nnp query/nnp command/nn ./punct
+if/in the/dt indexer/nn returns/nns to/to its/prp$ listening/vbg state/nn waiting/vbg for/in another/dt idle/nnp query/nnp will/md enter/vb the/dt state/nn where/wrb it/prp will/md receive/vb files/nns from/in the/dt initiating/vbg node/nn that/in it/prp is/vbz responsible/jj for/in indexing/nn ./punct
+once/rb all/dt of/in the/dt files/nns are/vbp received/vbn by/in the/dt initiating/vbg node/nn ,/punct indicated/vbn by/in a/dt send/nnp complete/nnp message/nn ,/punct it/prp starts/vbz an/dt instance/nn of/in the/dt lucene/jj indexing/nn engine/nn ./punct
+the/dt files/nns are/vbp stored/vbn in/in a/dt temporary/jj directory/nn separate/jj from/in the/dt nodes/nns local/jj documents/nns that/in it/prp is/vbz responsible/jj for/in maintaining/vbg an/dt index/nn of/in ./punct
+the/dt lucene/jj index/nn writer/nn then/rb indexes/nns all/dt of/in the/dt transferred/vbn files/nns ./punct
+the/dt index/nn is/vbz stored/vbn on/in the/dt drive/nn within/in a/dt temporary/jj directory/nn separate/jj from/in the/dt current/jj index/nn ./punct
+after/in the/dt indexing/nn of/in the/dt files/nns completes/vbz the/dt indexer/nn node/nn enters/vbz the/dt state/nn where/wrb the/dt index/nn files/nns are/vbp sent/vbn back/rb to/to the/dt initiating/vbg node/nn ./punct
+the/dt indexer/nn node/nn loops/nns through/in all/dt of/in the/dt files/nns created/vbn by/in lucene/nn ''/'' s/nns indexwriter/nnp and/cc streams/nns them/prp to/to the/dt initiating/vbg node/nn ./punct
+once/rb these/dt files/nns are/vbp sent/vbn back/rp that/dt index/nn is/vbz then/rb merged/vbn into/in the/dt indexer/nn nodes/nns own/vbp full/jj index/nn of/in the/dt existing/vbg files/nns ./punct
+it/prp then/rb enters/vbz the/dt idle/jj state/nn where/wrb it/prp will/md then/rb listen/vb for/in any/dt other/jj nodes/nns that/wdt required/vbd distributing/vbg the/dt indexing/nn process/nn ./punct
+the/dt filesender/nn object/nn is/vbz the/dt initiating/vbg node/nn equivalent/nn of/in the/dt indexer/nn node/nn ./punct
+it/prp initiates/vbz the/dt communication/nn between/in the/dt initiating/vbg node/nn and/cc the/dt node/nn that/wdt will/md assist/vb in/in the/dt distributed/vbn indexing/nn ./punct
+the/dt initiating/vbg node/nn runs/vbz many/jj instances/nns of/in the/dt filesender/nnp node/nn one/cd for/in each/dt other/jj node/nn it/prp has/vbz determined/vbn to/to be/vb idle/jj ./punct
+upon/in responsible/jj for/in contacting/vbg and/cc the/dt set/nn of/in files/nns that/wdt must/md be/vb sent/vbn ./punct
+other/jj node/nn ./punct
+it/prp sends/vbz each/dt file/nn using/vbg the/dt incoming/jj file/nn command/nn ./punct
+with/in that/dt command/nn it/prp sends/vbz the/dt name/nn of/in the/dt file/nn being/vbg sent/vbn and/cc the/dt size/nn in/in bytes/nns ./punct
+once/rb all/dt files/nns have/vbp been/vbn sent/vbn the/dt filesender/nn sends/vbz the/dt send/nnp complete/nnp command/nn ./punct
+the/dt filesender/nn creates/vbz an/dt instance/nn of/in lucene/nnp ''/'' s/vbz indexwriter/nnp and/cc system/nn ./punct
+the/dt filesender/nnp will/md begin/vb to/to receive/vb the/dt files/nns that/wdt are/vbp to/to be/vb saved/vbn within/in the/dt index/nn ./punct
+it/prp receives/vbz an/dt index/nnp file/nn command/nn with/in the/dt name/nn of/in the/dt files/nns and/cc the/dt size/nn in/in bytes/nns ./punct
+this/dt file/nn is/vbz then/rb streamed/vbn into/in the/dt temporary/jj index/nn directory/nn on/in the/dt filesender/nnp node/nn ./punct
+after/in the/dt transfer/nn of/in the/dt index/nn files/nns has/vbz been/vbn completed/vbn the/dt filesender/nn notifies/vbz the/dt instance/nn of/in the/dt index/nn compiler/nn that/in it/prp is/vbz ready/jj to/to combine/vb the/dt index/nn ./punct
+each/dt instance/nn of/in the/dt filesender/nnp has/vbz its/prp$ own/jj unique/jj section/nn of/in temporary/jj space/nn to/to store/vb the/dt index/nn that/wdt has/vbz been/vbn transferred/vbn back/rb from/in the/dt indexing/nn node/nn ./punct
+when/wrb notifying/vbg the/dt indexcompiler/nnp it/prp will/md also/rb pass/vb the/dt location/nn of/in the/dt particular/jj filesenders/nnp directory/nn location/nn of/in that/dt index/nn ./punct
+apocrita/nnp uses/vbz a/dt peer-to-peer/jj distribution/nn model/nn in/in order/nn to/to distribute/vb files/nns ./punct
+files/nns are/vbp distributed/vbn solely/rb from/in a/dt serving/vbg node/nn to/to a/dt client/nn node/nn without/in regard/nn for/in the/dt availability/nn of/in file/nn pieces/nns from/in other/jj clients/nns in/in the/dt network/nn ./punct
+this/dt means/vbz that/in the/dt file/nn transfers/nns will/md be/vb fast/jj and/cc efficient/jj and/cc should/md not/rb severely/rb affect/vb the/dt usability/nn of/in serving/vbg nodes/nns from/in the/dt point/nn of/in view/nn of/in a/dt local/jj user/nn ./punct
+the/dt jxta/nn framework/nn is/vbz used/vbn in/in order/nn to/to implement/vb peer-to-peer/jj functionality/nn ./punct
+this/dt has/vbz been/vbn decided/vbn due/jj to/to the/dt extremely/rb five/cd years/nns of/in testing/nn and/cc development/nn and/cc support/nn from/in many/jj large/jj organizations/nns employing/vbg jxta/nnp in/in their/prp$ own/jj products/nns ./punct
+we/prp are/vbp not/rb concerned/vbn with/in any/dt potential/jj quality/nn problems/nns because/in jxta/nnp is/vbz considered/vbn to/to be/vb the/dt most/rbs mature/jj and/cc stable/jj peer-to-peer/jj framework/nn available/jj ./punct
+using/vbg jxta/nn terminology/nn ,/punct there/ex are/vbp three/cd types/nns of/in peers/nns used/vbn in/in node/nn classification/nn ./punct
+edge/nnp peers/nns are/vbp typically/rb low-bandwidth/jj ,/punct non-dedicated/jj nodes/nns ./punct
+due/jj to/to these/dt characteristics/nns ,/punct edge/nn peers/nns are/vbp not/rb used/vbn with/in apocrita/nn ./punct
+relay/nnp peers/nns are/vbp typically/rb higher-bandwidth/jj ,/punct dedicated/jj nodes/nns ./punct
+this/dt is/vbz the/dt classification/nn of/in all/dt nodes/nns in/in the/dt apocrita/nnp network/nn ,/punct and/cc ,/punct as/in such/jj ,/punct are/vbp the/dt default/nn classification/nn used/vbn ./punct
+rendezvous/jj peers/nns are/vbp used/vbn to/to coordinate/vb message/nn passing/vbg between/in nodes/nns in/in the/dt apocrita/nnp network/nn ./punct
+this/dt means/vbz that/in a/dt minimum/nn of/in one/cd rendezvous/nn peer/vbp per/in subnet/nn is/vbz required/vbn ./punct
+the/dt apocrita/nnp server/nn subsystem/nn uses/vbz the/dt jxta/nnp peer/nnp discovery/nnp protocol/nnp (/punct pdp/nn )/punct in/in order/nn to/to find/vb participating/vbg peers/nns within/in the/dt network/nn as/in shown/vbn in/in figure/nn 2/cd ./punct
+the/dt pdp/nn listens/vbz for/in peer/vb advertisements/nns from/in other/jj nodes/nns in/in the/dt apocrita/nn swarm/nn ./punct
+if/in a/dt peer/vbp advertisement/nn is/vbz detected/vbn ,/punct the/dt server/nn will/md attempt/vb to/to join/vb the/dt peer/vb group/nn and/cc start/vb actively/rb contributing/vbg server/nn will/md create/vb a/dt new/jj peer/vbp group/nn and/cc start/vb advertising/vbg this/dt peer/vb group/nn ./punct
+this/dt new/jj peer/vbp group/nn will/md be/vb periodically/rb advertised/vbn on/in the/dt network/nn ;/punct any/dt new/jj peers/nns joining/vbg the/dt network/nn will/md attach/vb to/to this/dt peer/vb group/nn ./punct
+a/dt distinct/jj advantage/nn of/in using/vbg the/dt jxta/nnp pdp/nn is/vbz that/in apocrita/nn does/vbz not/rb have/vb to/to be/vb sensitive/jj to/to particular/jj networking/nn nuances/nns such/jj as/in maximum/nnp transmission/nnp unit/nnp (/punct mtu/nnp )/punct ./punct
+in/in addition/nn ,/punct apocrita/nn does/vbz not/rb have/vb to/to support/vb one-to-many/jj packet/nn delivery/nn methods/nns such/jj as/in multicast/nn and/cc instead/rb can/md rely/vb on/in jxta/nn for/in this/dt support/nn ./punct

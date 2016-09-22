@@ -1,0 +1,381 @@
+publish/subscribe/nn systems/nns provide/vbp an/dt efficient/jj ,/punct event-based/jj ,/punct wide-area/jj distributed/vbn communications/nns infrastructure/nn ./punct
+large/jj scale/nn publish/subscribe/nn systems/nns are/vbp likely/jj to/to employ/vb components/nns of/in the/dt event/nn transport/nn network/nn owned/vbn by/in cooperating/vbg ,/punct but/cc independent/jj organisations/nns ./punct
+as/in the/dt number/nn of/in participants/nns in/in the/dt network/nn increases/vbz ,/punct security/nn becomes/vbz an/dt increasing/vbg concern/nn ./punct
+this/dt paper/nn extends/vbz previous/jj work/nn to/to present/jj and/cc evaluate/vb a/dt secure/jj multi-domain/jj publish/subscribe/nn infrastructure/nn that/wdt supports/vbz and/cc enforces/vbz fine-grained/jj access/nn control/nn over/in the/dt individual/jj attributes/nns of/in event/nn types/nns ./punct
+key/nn refresh/nn allows/vbz us/prp to/to ensure/vb forward/rb and/cc backward/rb security/nn when/wrb event/nn brokers/nns join/vb and/cc leave/vb the/dt network/nn ./punct
+we/prp demonstrate/vbp that/in the/dt time/nn and/cc space/nn overheads/nns can/md be/vb minimised/vbn by/in careful/jj consideration/nn of/in encryption/nn techniques/nns ,/punct and/cc by/in the/dt use/nn of/in caching/nn to/to decrease/vb unnecessary/jj decryptions/nns ./punct
+we/prp show/vbp that/in our/prp$ approach/nn has/vbz a/dt smaller/jjr overall/jj communication/nn overhead/nn than/in existing/vbg approaches/nns for/in achieving/vbg the/dt same/jj degree/nn of/in control/nn over/in security/nn in/in publish/subscribe/nn networks/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct computer-communication/nnp networks/nnp ]/punct :/punct distributed/vbn systems-distributed/jj applications/nns general/jj terms/nns security/nn ,/punct performance/nnp 1/cd ./punct
+introduction/nn publish/subscribe/nn is/vbz well/rb suited/vbn as/in a/dt communication/nn mechanism/nn for/in building/vbg internet-scale/jj distributed/vbn event-driven/jj applications/nns ./punct
+much/jj of/in its/prp$ capacity/nn for/in scale/nn in/in the/dt number/nn of/in participants/nns comes/vbz from/in its/prp$ decoupling/nn of/in publishers/nns and/cc subscribers/nns by/in placing/vbg an/dt asynchronous/jj event/nn delivery/nn service/nn between/in them/prp ./punct
+in/in truly/rb internet-scale/jj publish/subscribe/nn systems/nns ,/punct the/dt event/nn delivery/nn service/nn will/md include/vb a/dt large/jj set/nn of/in interconnected/jj broker/nn nodes/nns spanning/vbg a/dt wide/jj geographic/jj (/punct and/cc thus/rb network/nn )/punct area/nn ./punct
+however/rb ,/punct publish/subscribe/nn systems/nns that/wdt do/vbp span/vb a/dt wide/jj geographic/jj area/nn are/vbp likely/jj to/to also/rb span/vb multiple/jj administrative/jj domains/nns ,/punct be/vb they/prp independent/jj administrative/jj domains/nns inside/in a/dt single/jj organisation/nn ,/punct multiple/jj independent/jj organisations/nns ,/punct or/cc a/dt combination/nn of/in the/dt two/cd ./punct
+while/in the/dt communication/nn capabilities/nns of/in publish/subscribe/nn systems/nns are/vbp well/rb proved/vbn ,/punct spanning/vbg multiple/jj administrative/jj domains/nns is/vbz likely/jj to/to require/vb addressing/vbg security/nn considerations/nns ./punct
+as/in security/nn and/cc access/nn control/nn are/vbp almost/rb the/dt antithesis/nn of/in decoupling/nn ,/punct relatively/rb little/jj publish/subscribe/nn research/nn has/vbz focused/vbn on/in security/nn so/rb far/rb ./punct
+our/prp$ overall/jj research/nn aim/nn is/vbz to/to develop/vb internet-scale/jj publish/subscribe/nn networks/nns that/wdt provide/vbp secure/jj ,/punct efficient/jj delivery/nn of/in events/nns ,/punct fault-tolerance/nn and/cc self-healing/nn in/in the/dt delivery/nn infrastructure/nn ,/punct and/cc a/dt convenient/jj event/nn interface/nn ./punct
+in/in [/punct 12/cd ]/punct pesonen/nnp et/fw al/fw ./punct
+propose/vbp a/dt multi-domain/jj ,/punct capabilitybased/jj access/nn control/nn architecture/nn for/in publish/subscribe/nn systems/nns ./punct
+the/dt architecture/nn provides/vbz a/dt mechanism/nn for/in authorising/vbg event/nn clients/nns to/to publish/vb and/cc subscribe/vb to/to event/nn types/nns ./punct
+the/dt privileges/nns of/in the/dt client/nn are/vbp checked/vbn by/in the/dt local/jj broker/nn that/in the/dt client/nn connects/vbz to/to in/in order/nn to/to access/vb the/dt publish//nn subscribe/vbp system/nn ./punct
+the/dt approach/nn implements/vbz access/nn control/nn at/in the/dt edge/nn of/in the/dt broker/nn network/nn and/cc assumes/vbz that/in all/dt brokers/nns can/md be/vb trusted/vbn to/to enforce/vb the/dt access/nn control/nn policies/nns correctly/rb ./punct
+any/dt malicious/jj ,/punct compromised/vbn or/cc unauthorised/jj broker/nn is/vbz free/jj to/to read/vb and/cc write/vb any/dt events/nns that/wdt pass/vbp through/in it/prp on/in their/prp$ way/nn from/in the/dt publishers/nns to/to the/dt subscribers/nns ./punct
+this/dt might/md be/vb acceptable/jj in/in a/dt relatively/rb small/jj system/nn deployed/vbn inside/in a/dt single/jj organisation/nn ,/punct but/cc it/prp is/vbz not/rb appropriate/jj in/in a/dt multi-domain/jj environment/nn in/in which/wdt organisations/nns share/vbp a/dt common/jj infrastructure/nn ./punct
+we/prp propose/vbp enforcing/vbg access/nn control/nn within/in the/dt broker/nn network/nn by/in encrypting/vbg event/nn content/nn ,/punct and/cc that/dt policy/nn dictate/vbp controls/nns over/in the/dt necessary/jj encryption/nn keys/nns ./punct
+with/in encrypted/jj event/nn content/nn only/rb those/dt brokers/nns that/wdt are/vbp authorised/vbn to/to ac104/vb cess/nn the/dt encryption/nn keys/nns are/vbp able/jj to/to access/vb the/dt event/nn content/nn (/punct i.e/nn ./punct
+publish/vb ,/punct subscribe/vb to/to ,/punct or/cc filter/nn )/punct ./punct
+we/prp effectively/rb move/vbp the/dt enforcement/nn of/in access/nn control/nn from/in the/dt brokers/nns to/to the/dt encryption/nn key/nn managers/nns ./punct
+we/prp expect/vbp that/in access/nn control/nn would/md need/vb to/to be/vb enforced/vbn in/in a/dt multi-domain/jj publish/subscribe/nn system/nn when/wrb multiple/jj organisations/nns form/vbp a/dt shared/jj publish/subscribe/nn system/nn yet/rb run/vbp multiple/jj independent/jj applications/nns ./punct
+access/nn control/nn might/md also/rb be/vb needed/vbn when/wrb a/dt single/jj organisation/nn consists/vbz of/in multiple/jj sub-domains/nns that/wdt deliver/vbp confidential/jj data/nns over/in the/dt organisation-wide/jj publish/subscribe/nn system/nn ./punct
+both/dt cases/nns require/vbp access/nn control/nn because/in event/nn delivery/nn in/in a/dt dynamic/jj publish/subscribe/nn infrastructure/nn based/vbn on/in a/dt shared/jj broker/nn network/nn may/md well/rb lead/vb to/to events/nns being/vbg routed/vbn through/in unauthorised/jj domains/nns along/in their/prp$ paths/nns from/in publishers/nns to/to subscribers/nns ./punct
+there/ex are/vbp two/cd particular/jj benefits/nns to/to sharing/vbg the/dt publish//nn subscribe/vbp infrastructure/nn ,/punct both/dt of/in which/wdt relate/vbp to/to the/dt broker/nn network/nn ./punct
+first/rb ,/punct sharing/vbg brokers/nns will/md create/vb a/dt physically/rb larger/jjr network/nn that/wdt will/md provide/vb greater/jjr geographic/jj reach/nn ./punct
+second/rb ,/punct increasing/vbg the/dt inter-connectivity/nn of/in brokers/nns will/md allow/vb the/dt publish/subscribe/nn system/nn to/to provide/vb higher/jjr faulttolerance/nn ./punct
+figure/nnp 1/cd shows/vbz the/dt multi-domain/jj publish/subscribe/nn network/nn we/prp use/vbp as/in an/dt example/nn throughout/in this/dt paper/nn ./punct
+it/prp is/vbz based/vbn on/in the/dt united/nnp kingdom/nnp police/nnp forces/nnp ,/punct and/cc we/prp show/vbp three/cd particular/jj sub-domains/nns :/punct metropolitan/nnp police/nnp domain/nn ./punct
+this/dt domain/nn contains/vbz a/dt set/nn of/in cctv/nnp cameras/nns that/wdt publish/vbp information/nn about/in the/dt movements/nns of/in vehicles/nns around/in the/dt london/nnp area/nn ./punct
+we/prp have/vbp included/vbn detective/nnp smith/nnp as/in a/dt subscriber/nn in/in this/dt domain/nn ./punct
+congestion/nn charge/nnp service/nnp domain/nn ./punct
+the/dt charges/nns that/wdt are/vbp levied/vbn on/in the/dt vehicles/nns that/wdt have/vbp passed/vbn through/in the/dt london/nnp congestion/nnp charge/nnp zone/nn each/dt day/nn are/vbp issued/vbn by/in systems/nns within/in this/dt domain/nn ./punct
+the/dt source/nn numberplate/nn recognition/nn data/nn comes/vbz from/in the/dt cameras/nns in/in the/dt metropolitan/nnp police/nnp domain/nn ./punct
+the/dt fact/nn that/in the/dt ccs/nn are/vbp only/rb authorised/vbn to/to read/vb a/dt subset/nn of/in the/dt vehicle/nn event/nn data/nns will/md exercise/vb some/dt of/in the/dt key/jj features/nns of/in the/dt enforceable/jj publish/subscribe/nn system/nn access/nn control/nn presented/vbn in/in this/dt paper/nn ./punct
+pito/nnp domain/nn ./punct
+the/dt police/nnp information/nnp technology/nnp organisation/nnp (/punct pito/nnp )/punct is/vbz the/dt centre/nn from/in which/wdt police/nnp data/nns standards/nns are/vbp managed/vbn ./punct
+it/prp is/vbz the/dt event/nn type/nn owner/nn in/in this/dt particular/jj scenario/nn ./punct
+encryption/nn protects/vbz the/dt confidentiality/nn of/in events/nns should/md they/prp be/vb transported/vbn through/in unauthorised/jj domains/nns ./punct
+however/rb encrypting/vbg whole/jj events/nns means/vbz unauthorised/jj brokers/nns can/md not/rb make/vb efficient/jj routing/vbg decisions/nns ./punct
+our/prp$ approach/nn is/vbz to/to apply/vb encryption/nn to/to the/dt individual/jj attributes/nns of/in events/nns ./punct
+this/dt way/nn our/prp$ multi-domain/jj access/nn control/nn policy/nn works/vbz at/in a/dt finer/nn granularity/nn -/punct publishers/nns and/cc subscribers/nns may/md be/vb authorised/jj access/nn to/to a/dt subset/nn of/in the/dt available/jj attributes/nns ./punct
+in/in cases/nns where/wrb non-encrypted/jj events/nns are/vbp used/vbn for/in routing/vbg ,/punct we/prp can/md reduce/vb the/dt total/jj number/nn of/in events/nns sent/vbn through/in the/dt system/nn without/in revealing/vbg the/dt values/nns of/in sensitive/jj attributes/nns ./punct
+in/in our/prp$ example/nn scenario/nn ,/punct the/dt congestion/nnp charge/nnp service/nnp would/md only/rb be/vb authorised/vbn to/to read/vb the/dt numberplate/jj field/nn of/in vehicle/nn sightings/nns -/punct the/dt location/nn attribute/nn would/md not/rb be/vb decrypted/vbn ./punct
+we/prp thus/rb preserve/vbp the/dt privacy/nn of/in motorists/nns while/in still/rb allowing/vbg the/dt ccs/nn to/to do/vb its/prp$ job/nn using/vbg the/dt shared/jj publish/subscribe/nn infrastructure/nn ./punct
+let/vb us/prp assume/vb that/in a/dt metropolitan/nnp police/nnp service/nnp detective/nn is/vbz investigating/vbg a/dt crime/nn and/cc she/prp is/vbz interested/jj in/in sightings/nns of/in a/dt specific/jj vehicle/nn ./punct
+the/dt detective/nn gets/vbz a/dt court/nn order/nn that/wdt authorises/vbz her/prp to/to subscribe/vb to/to numberplate/jj events/nns of/in the/dt specific/jj numberplate/nn related/jj to/to her/prp$ case/nn ./punct
+current/jj publish/subscribe/nn access/nn control/nn systems/nns enforce/vbp security/nn at/in the/dt edge/nn of/in the/dt broker/nn network/nn where/wrb clients/nns connect/vbp to/to it/prp ./punct
+however/rb this/dt approach/nn will/md often/rb not/rb be/vb acceptable/jj in/in internet-scale/jj systems/nns ./punct
+we/prp propose/vbp enforcing/vbg security/nn within/in the/dt broker/nn network/nn as/rb well/rb as/in at/in the/dt edges/nns that/wdt event/nn clients/nns connect/vbp to/to ,/punct by/in encrypting/vbg event/nn content/nn ./punct
+publications/nnp will/md be/vb encrypted/vbn with/in their/prp$ event/nn type/nn specific/jj encryption/nn keys/nns ./punct
+by/in controlling/vbg access/nn to/to the/dt encryption/nn keys/nns ,/punct we/prp can/md control/vb access/nn to/to the/dt event/nn types/nns ./punct
+the/dt proposed/vbn approach/nn allows/vbz event/nn brokers/nns to/to route/nn events/nns even/rb when/wrb they/prp have/vbp access/nn only/rb to/to a/dt subset/nn of/in the/dt potential/jj encryption/nn keys/nns ./punct
+we/prp introduce/vbp decentralised/jj publish/subscribe/nn systems/nns and/cc relevant/jj cryptography/nn in/in section/nn 2/cd ./punct
+in/in section/nn 3/cd we/prp present/vbp our/prp$ model/nn for/in encrypting/vbg event/nn content/nn on/in both/cc the/dt event/nn and/cc the/dt attribute/nn level/nn ./punct
+section/nn 4/cd discusses/vbz managing/vbg encryption/nn keys/nns in/in multi-domain/jj publish/subscribe/nn systems/nns ./punct
+we/prp analytically/rb evaluate/vbp the/dt performance/nn of/in our/prp$ proposal/nn in/in section/nn 5/cd ./punct
+finally/rb section/nn 6/cd discusses/vbz related/jj work/nn in/in securing/vbg publish/subscribe/nn systems/nns and/cc section/nn 7/cd provides/vbz concluding/vbg remarks/nns ./punct
+2/ls ./punct
+background/nn in/in this/dt section/nn we/prp provide/vbp a/dt brief/jj introduction/nn to/to decentralised/jj publish/subscribe/nn systems/nns ./punct
+we/prp indicate/vbp our/prp$ assumptions/nns about/in multi-domain/jj publish/subscribe/nn systems/nns ,/punct and/cc describe/vbp how/wrb these/dt assumptions/nns influence/vbp the/dt developments/nns we/prp have/vbp made/vbn from/in our/prp$ previously/rb published/vbn work/nn ./punct
+a/dt publish/subscribe/nn system/nn includes/vbz publishers/nns ,/punct subscribers/nns ,/punct and/cc an/dt event/nn service/nn ./punct
+publishers/nnps publish/vb events/nns ,/punct subscribers/nns subscribe/vbp to/to events/nns of/in interest/nn to/to them/prp ,/punct and/cc the/dt event/nn service/nn is/vbz responsible/jj for/in delivering/vbg published/vbn events/nns to/to all/dt subscribers/nns whose/wp$ interests/nns match/vbp the/dt given/vbn event/nn ./punct
+the/dt event/nn service/nn in/in a/dt decentralised/jj publish/subscribe/nn system/nn is/vbz distributed/vbn over/in a/dt number/nn of/in broker/nn nodes/nns ./punct
+together/rb these/dt brokers/nns form/vbp a/dt network/nn that/wdt is/vbz responsible/jj for/in maintaining/vbg the/dt necessary/jj routing/vbg paths/nns from/in publishers/nns to/to subscribers/nns ./punct
+clients/nns (/punct publishers/nns and/cc subscribers/nns )/punct connect/vb to/to a/dt local/jj broker/nn ,/punct which/wdt is/vbz fully/rb trusted/vbn by/in the/dt client/nn ./punct
+in/in our/prp$ discussion/nn we/prp refer/vbp to/to the/dt client/nn hosting/vbg brokers/nns as/in publisher/nn hosting/vbg brokers/nns (/punct phb/nn )/punct or/cc subscriber/nn hosting/vbg brokers/nns (/punct shb/nnp )/punct a/dt broker/nn network/nn can/md have/vb a/dt static/jj topology/nn (/punct e.g/nn ./punct
+siena/nnp and/cc gryphon/nnp )/punct or/cc a/dt dynamic/jj topology/nn (/punct e.g/nn ./punct
+scribe/nn and/cc hermes/nnp )/punct ./punct
+our/prp$ proposed/vbn approach/nn will/md work/vb in/in both/dt cases/nns ./punct
+a/dt static/jj topology/nn enables/vbz the/dt system/nn administrator/nn to/to build/vb trusted/vbn domains/nns and/cc in/in that/dt way/nn improve/vb the/dt efficiency/nn of/in routing/vbg by/in avoiding/vbg unnecessary/jj encryptions/nns (/punct see/vb sect/nnp ./punct
+3.4/cd )/punct ,/punct which/wdt is/vbz very/rb difficult/jj with/in a/dt dynamic/jj topology/nn ./punct
+on/in the/dt other/jj hand/nn ,/punct a/dt dynamic/jj topology/nn allows/vbz the/dt broker/nn network/nn to/to dynamically/rb re-balance/vb itself/prp when/wrb brokers/nns join/vb result/nn of/in a/dt network/nn or/cc node/nn failure/nn ./punct
+content-based/jj publish/subscribe/nn middleware/nn that/wdt includes/vbz strong/jj event/nn type/nn support/nn ./punct
+in/in other/jj words/nns ,/punct each/dt publication/nn is/vbz an/dt instance/nn of/in a/dt particular/jj predefined/jj event/nn type/nn ./punct
+publications/nnp are/vbp type/nn checked/vbd at/in the/dt local/jj broker/nn of/in each/dt publisher/nn ./punct
+our/prp$ attribute/nn level/nn encryption/nn scheme/nn assumes/vbz that/in events/nns are/vbp typed/vbn ./punct
+hermes/nnp uses/vbz a/dt structured/jj overlay/nn network/nn as/in a/dt transport/nn and/cc therefore/rb has/vbz a/dt dynamic/jj topology/nn ./punct
+a/dt hermes/nnp publication/nn consists/vbz of/in an/dt event/nn type/nn identifier/nn and/cc a/dt set/nn of/in attribute/nn value/nn pairs/nns ./punct
+the/dt type/nn identifier/nn is/vbz the/dt route/nn the/dt publication/nn through/in the/dt event/nn broker/nn network/nn ./punct
+it/prp conveniently/rb hides/vbz the/dt type/nn of/in the/dt publication/nn ,/punct i.e/nn ./punct
+brokers/nns are/vbp prevented/vbn from/in seeing/vbg which/wdt events/nns are/vbp flowing/vbg through/in them/prp unless/in they/prp are/vbp aware/jj of/in the/dt specific/jj event/nn type/nn name/nn and/cc identifier/nn ./punct
+pesonen/nnp et/fw al/fw ./punct
+introduced/vbn secure/jj event/nn types/nns in/in ,/punct which/wdt can/md have/vb their/prp$ integrity/nn and/cc authenticity/nn confirmed/vbn by/in checking/vbg their/prp$ digital/jj signatures/nns ./punct
+a/dt useful/jj side/nn effect/nn of/in secure/jj event/nn types/nns are/vbp their/prp$ globally/rb unique/jj event/nn type/nn and/cc attribute/nn names/nns ./punct
+these/dt names/nns can/md be/vb referred/vbn to/to by/in access/nn control/nn policies/nns ./punct
+in/in this/dt paper/nn we/prp use/vbp the/dt secure/jj name/nn of/in the/dt event/nn type/nn or/cc attribute/nn to/to refer/vb to/to the/dt encryption/nn key/nn used/vbn to/to encrypt/vb the/dt event/nn or/cc attribute/nn ./punct
+pesonen/nnp et/fw al/fw ./punct
+proposed/vbn a/dt capability-based/jj access/nn control/nn architecture/nn for/in multi-domain/jj publish/subscribe/nn systems/nns in/in ./punct
+the/dt model/nn treats/vbz event/nn types/nns as/in resources/nns that/wdt publishers/nns ,/punct subscribers/nns ,/punct and/cc event/nn brokers/nns want/vbp to/to access/nn ./punct
+the/dt event/nn type/nn owner/nn is/vbz responsible/jj for/in managing/vbg access/nn control/nn for/in an/dt event/nn type/nn by/in issuing/vbg simple/jj public/nn key/nn infrastructure/nn (/punct spki/nn )/punct authorisation/nn certificates/nns that/wdt grant/vbp the/dt holder/nn access/nn to/to the/dt specified/vbn event/nn type/nn ./punct
+for/in example/nn ,/punct authorised/vbn publishers/nns will/md have/vb been/vbn issued/vbn an/dt authorisation/nn certificate/nn that/wdt specifies/vbz that/in the/dt publisher/nn ,/punct identified/vbn by/in public/jj key/nn ,/punct is/vbz authorised/vbn to/to publish/vb instances/nns of/in the/dt event/nn type/nn specified/vbn in/in the/dt certificate/nn ./punct
+we/prp leverage/nn the/dt above/jj mentioned/vbn access/nn control/nn mechanism/nn in/in this/dt paper/nn by/in controlling/vbg access/nn to/to encryption/nn keys/nns using/vbg the/dt same/jj authorisation/nn certificates/nns ./punct
+that/dt is/vbz ,/punct a/dt publisher/nn who/wp to/to access/vb the/dt encryption/nn keys/nns used/vbn to/to protect/vb events/nns of/in that/dt type/nn ./punct
+we/prp discuss/vbp this/dt in/in more/jjr detail/nn in/in sect/nnp ./punct
+4/ls ./punct
+the/dt goal/nn of/in the/dt proposed/vbn mechanism/nn is/vbz to/to enforce/vb access/nn control/nn for/in authorised/jj participants/nns in/in the/dt system/nn ./punct
+in/in our/prp$ case/nn the/dt first/jj level/nn of/in access/nn control/nn is/vbz applied/vbn when/wrb the/dt participant/nn tries/vbz to/to join/vb the/dt publish/subscribe/nn network/nn ./punct
+unauthorised/jj event/nn brokers/nns are/vbp not/rb allowed/vbn to/to join/vb the/dt broker/nn network/nn ./punct
+similarly/rb unauthorised/jj event/nn clients/nns are/vbp not/rb the/dt broker/nn network/nn between/in event/nn brokers/nns and/cc event/nn clients/nns utilise/vbp transport/nn layer/nnp security/nnp (/punct tls/nn )/punct in/in order/nn to/to prevent/vb unauthorised/jj access/nn on/in the/dt transport/nn layer/nn ./punct
+the/dt architecture/nn of/in the/dt publish/subscribe/nn system/nn means/vbz that/in able/jj to/to access/vb the/dt publish/subscribe/nn system/nn ./punct
+thus/rb we/prp assume/vbp that/in these/dt clients/nns are/vbp not/rb a/dt threat/nn ./punct
+the/dt event/nn client/nn relies/vbz completely/rb on/in the/dt local/jj event/nn broker/nn for/in access/nn to/to the/dt broker/nn network/nn ./punct
+therefore/rb the/dt event/nn client/nn is/vbz unable/jj to/to access/vb any/dt events/nns without/in the/dt assistance/nn of/in the/dt local/jj broker/nn ./punct
+the/dt brokers/nns on/in the/dt other/jj hand/nn are/vbp able/jj to/to analyse/vb all/dt events/nns in/in the/dt system/nn that/wdt pass/vbp through/in them/prp ./punct
+a/dt broker/nn can/md analyse/vb both/cc the/dt event/nn traffic/nn as/rb well/rb as/in the/dt number/nn and/cc names/nns attribute/vbp level/nn encryption/nn )/punct ./punct
+there/ex are/vbp viable/jj approaches/nns to/to preventing/vbg traffic/nn analysis/nn by/in inserting/vbg random/jj events/nns into/in the/dt event/nn stream/nn in/in order/nn to/to produce/vb a/dt uniform/jj traffic/nn pattern/nn ./punct
+similarly/rb attribute/vbp content/nn can/md be/vb padded/vbn to/to a/dt standard/jj length/nn in/in order/nn to/to avoid/vb leaking/vbg information/nn to/to the/dt adversary/nn ./punct
+while/in traffic/nn analysis/nn is/vbz an/dt important/jj concern/nn we/prp have/vbp not/rb addressed/vbn it/prp further/rb in/in this/dt paper/nn ./punct
+we/prp propose/vbp enforcing/vbg access/nn control/nn in/in a/dt decentralised/jj broker/nn network/nn by/in encrypting/vbg the/dt contents/nns of/in published/vbn events/nns and/cc controlling/vbg access/nn to/to the/dt encryption/nn keys/nns ./punct
+effectively/rb we/prp move/vbp the/dt responsibility/nn for/in access/nn control/nn from/in the/dt broker/nn network/nn to/to the/dt key/jj managers/nns ./punct
+they/prp can/md trust/vb and/cc that/dt is/vbz authorised/vbn to/to access/vb the/dt event/nn content/nn required/vbn by/in the/dt client/nn ./punct
+this/dt allows/vbz us/prp to/to implement/vb the/dt event/nn content/nn encryption/nn within/in the/dt broker/nn network/nn without/in involving/vbg the/dt clients/nns ./punct
+by/in delegating/vbg the/dt encryption/nn tasks/nns three-fold/jj :/punct i/fw )/punct fewer/jjr nodes/nns handle/vbp the/dt confidential/jj encryption/nn ii/ls )/punct key/jj refreshes/nns involve/vbp fewer/jjr nodes/nns which/wdt means/vbz that/in the/dt key/jj management/nn algorithm/nn will/md incur/vb smaller/jjr communication/nn and/cc processing/nn overheads/nns to/to the/dt publish/subscribe/nn system/nn ;/punct and/cc iii/ls )/punct the/dt local/jj broker/nn will/md decrypt/vb an/dt event/nn once/rb and/cc deliver/vb it/prp to/to all/dt subscribers/nns ,/punct instead/rb of/in each/dt subscriber/nn the/dt encryption/nn keys/nns are/vbp changed/vbn over/in time/nn in/in response/nn to/to brokers/nns joining/vbg or/cc leaving/vbg the/dt network/nn ,/punct and/cc periodically/rb to/to reduce/vb the/dt amount/nn of/in time/nn any/dt single/jj key/nn is/vbz used/vbn ./punct
+this/dt is/vbz having/vbg to/to decrypt/vb the/dt same/jj event/nn ./punct
+delegating/vbg encryption/nn tasks/nns to/to the/dt local/jj broker/nn is/vbz appropriate/jj ,/punct because/in encryption/nn is/vbz a/dt middleware/jj feature/nn used/vbn to/to enforce/vb access/nn control/nn within/in the/dt middleware/jj system/nn ./punct
+if/in applications/nns need/vbp to/to handle/vb encrypted/jj data/nns in/in the/dt application/nn layer/nn ,/punct they/prp are/vbp free/jj to/to publish/vb encrypted/jj data/nns over/in the/dt publish/subscribe/nn system/nn ./punct
+we/prp can/md implement/vb encryption/nn either/cc at/in the/dt event/nn level/nn or/cc the/dt attribute/nn level/nn ./punct
+event/nn encryption/nn is/vbz simpler/jjr ,/punct requires/vbz fewer/jjr keys/nns ,/punct fewer/jjr independent/jj cryptographic/jj operations/nns ,/punct and/cc thus/rb is/vbz usually/rb faster/rbr ./punct
+attribute/vb encryption/nn enables/vbz access/nn control/nn at/in the/dt attribute/nn level/nn ,/punct which/wdt means/vbz that/in we/prp have/vbp a/dt more/jjr expressive/jj and/cc powerful/jj access/nn control/nn mechanism/nn ,/punct while/in usually/rb incurring/vbg a/dt larger/jjr performance/nn penalty/nn ./punct
+in/in this/dt section/nn we/prp discuss/vbp encrypting/vbg event/nn content/nn both/cc at/in the/dt event/nn level/nn and/cc the/dt attribute/nn level/nn ;/punct avoiding/vbg leaking/vbg information/nn to/to unauthorised/jj brokers/nns by/in encrypting/vbg subscription/nn filters/nns ;/punct avoiding/vbg unnecessary/jj encryptions/nns between/in authorised/jj brokers/nns ;/punct and/cc finally/rb ,/punct how/wrb event/nn content/nn encryption/nn was/vbd implemented/vbn in/in our/prp$ prototype/nn ./punct
+note/vb that/dt since/in no/dt publish/subscribe/nn client/nn is/vbz ever/rb given/vbn access/nn to/to encryption/nn keys/nns ,/punct any/dt encryption/nn performed/vbn by/in the/dt brokers/nns is/vbz necessarily/rb completely/rb transparent/jj to/to all/dt clients/nns ./punct
+in/in event/nn encryption/nn all/pdt the/dt event/nn attributes/nns are/vbp encrypted/vbn as/in a/dt single/jj block/nn of/in plaintext/nn ./punct
+the/dt event/nn type/nn identifier/nn is/vbz left/vbn intact/jj (/punct i.e/nn ./punct
+in/in plaintext/nn )/punct in/in order/nn to/to facilitate/vb event/nn routing/vbg in/in the/dt broker/nn network/nn ./punct
+the/dt globally/rb unique/jj event/nn type/nn identifier/nn specifies/vbz the/dt encryption/nn key/nn used/vbn to/to encrypt/vb the/dt event/nn content/nn ./punct
+each/dt event/nn type/nn in/in the/dt system/nn will/md have/vb its/prp$ own/jj individual/jj encryption/nn key/nn ./punct
+keys/nns are/vbp refreshed/vbn ,/punct as/in discussed/vbn in/in sect/nnp ./punct
+4.2/cd ./punct
+while/in in/in transit/nn the/dt event/nn will/md consist/vb of/in a/dt tuple/nn containing/vbg the/dt type/nn identifier/nn ,/punct a/dt publication/nn timestamp/nn ,/punct ciphertext/nn ,/punct and/cc a/dt message/nn authentication/nn tag/nn :/punct </punct type/nn id/nn ,/punct timestamp/nn ,/punct cipher/nn text/nn ,/punct authentication/nn tag/nn >/punct ./punct
+event/nn brokers/nns that/wdt are/vbp authorised/vbn to/to access/vb the/dt event/nn ,/punct and/cc thus/rb have/vbp access/nn to/to the/dt encryption/nn key/nn ,/punct can/md decrypt/vb the/dt event/nn and/cc implement/vb content-based/jj routing/vbg ./punct
+event/nn brokers/nns that/wdt route/nn the/dt event/nn based/vbn only/rb on/in its/prp$ type/nn ./punct
+that/dt is/vbz ,/punct they/prp will/md not/rb be/vb able/jj to/to make/vb intelligent/jj decisions/nns about/in whether/in events/nns need/vbp not/rb be/vb transmitted/vbn down/rp their/prp$ outgoing/jj links/nns ./punct
+event/nn encryption/nn results/vbz in/in one/cd encryption/nn at/in the/dt publisher/nn hosting/vbg broker/nn ,/punct and/cc one/cd decryption/nn at/in each/dt filtering/vbg intermediate/jj broker/nn and/cc subscriber/nn hosting/vbg broker/nn that/in the/dt event/nn passes/vbz through/in ,/punct regardless/rb of/in the/dt number/nn of/in attributes/nns ./punct
+this/dt results/vbz in/in a/dt significant/jj performance/nn advantage/nn compared/vbn to/to attribute/vb encryption/nn ./punct
+encrypted/jj separately/rb with/in its/prp$ own/jj encryption/nn key/nn ./punct
+the/dt encryption/nn key/nn is/vbz identified/vbn by/in the/dt attribute/nn ''/'' s/nns globally/rb unique/jj identifier/nn (/punct the/dt globally/rb unique/jj event/nn identifier/nn defines/vbz a/dt namespace/nn inside/in which/wdt the/dt attribute/nn identifier/nn is/vbz a/dt fully/rb qualified/vbn name/nn )/punct ./punct
+the/dt event/nn type/nn identifier/nn is/vbz left/vbn intact/jj to/to facilitate/vb event/nn routing/vbg for/in unauthorised/jj brokers/nns ./punct
+the/dt attribute/nn identifiers/nns are/vbp also/rb left/vbn intact/jj to/to allow/vb authorised/jj brokers/nns to/to decrypt/vb the/dt attribute/nn values/nns with/in the/dt correct/jj keys/nns ./punct
+brokers/nns that/wdt are/vbp implement/vb content-based/jj routing/vbg over/in the/dt attributes/nns that/wdt are/vbp accessible/jj to/to them/prp ./punct
+an/dt attribute/nn encrypted/jj event/nn in/in transit/nn consists/vbz of/in the/dt event/nn type/nn identifier/nn ,/punct a/dt publication/nn timestamp/nn ,/punct and/cc a/dt set/nn of/in attribute/nn tuples/nns :/punct </punct type/nn id/nn ,/punct timestamp/nn ,/punct attributes/vbz >/punct ./punct
+attribute/vb tuples/nns consist/vbp of/in an/dt attribute/nn identifier/nn ,/punct ciphertext/nn ,/punct and/cc a/dt message/nn authentication/nn tag/nn :/punct </punct attr/cd id/nn ,/punct ciphertext/nn ,/punct authentication/nn tag/nn >/punct ./punct
+the/dt attribute/nn identifier/nn is/vbz the/dt sha-1/nn hash/nn of/in the/dt attribute/nn name/nn used/vbn in/in the/dt event/nn type/nn definition/nn ./punct
+using/vbg the/dt attribute/nn identifier/nn in/in the/dt published/vbn event/nn instead/rb of/in the/dt attribute/nn name/nn prevents/vbz unauthorised/jj parties/nns from/in learning/vbg which/wdt attributes/nns are/vbp included/vbn in/in the/dt publication/nn ./punct
+compared/vbn with/in event/nn encryption/nn ,/punct attribute/nn encryption/nn usually/rb results/vbz in/in larger/jjr processing/nn overheads/nns ,/punct because/in each/dt attribute/nn is/vbz encrypted/jj separately/rb ./punct
+in/in the/dt encryption/nn process/nn the/dt initialisation/nn of/in the/dt encryption/nn algorithm/nn takes/vbz a/dt significant/jj portion/nn of/in the/dt total/jj running/vbg time/nn of/in the/dt algorithm/nn ./punct
+once/rb the/dt algorithm/nn is/vbz initialised/vbn ,/punct increasing/vbg the/dt amount/nn of/in data/nns to/to be/vb encrypted/vbn does/vbz not/rb affect/vb the/dt running/vbg time/nn very/rb much/rb ./punct
+this/dt disparity/nn is/vbz emphasised/vbn in/in attribute/nn encryption/nn ,/punct where/wrb an/dt encryption/nn algorithm/nn must/md be/vb initialised/vbn for/in each/dt attribute/nn separately/rb ,/punct and/cc the/dt amount/nn of/in data/nns encrypted/vbn is/vbz relatively/rb small/jj ./punct
+as/in a/dt result/nn attribute/nn encryption/nn incurs/vbz larger/jjr processing/nn overheads/nns when/wrb compared/vbn with/in event/nn encryption/nn which/wdt can/md be/vb clearly/rb seen/vbn from/in the/dt performance/nn results/vbz in/in sect/nnp ./punct
+5/cd ./punct
+the/dt advantage/nn of/in attribute/nn encryption/nn is/vbz that/in the/dt type/nn owner/nn level/nn ./punct
+the/dt event/nn type/nn owner/nn can/md therefore/rb allow/vb clients/nns to/to have/vb different/jj levels/nns of/in access/nn to/to the/dt same/jj event/nn type/nn ./punct
+also/rb ,/punct attribute/nn level/nn encryption/nn enables/vbz content-based/jj routing/vbg in/in cases/nns where/wrb an/dt intermediate/jj broker/nn has/vbz access/nn only/rb to/to some/dt of/in the/dt attributes/nns of/in the/dt event/nn ,/punct thus/rb reducing/vbg the/dt overall/jj impact/nn of/in event/nn delivery/nn on/in the/dt broker/nn network/nn ./punct
+therefore/rb the/dt choice/nn between/in event/nn and/cc attribute/nn encryption/nn is/vbz a/dt trade-off/nn between/in expressiveness/nn and/cc performance/nn ,/punct and/cc depends/vbz on/in the/dt requirements/nns of/in the/dt distributed/vbn application/nn ./punct
+the/dt expressiveness/nn provided/vbn by/in attribute/nn encryption/nn can/md be/vb emulated/vbn by/in introducing/vbg a/dt new/jj event/nn type/nn for/in each/dt group/nn of/in subscribers/nns with/in the/dt same/jj authorisation/nn ./punct
+the/dt publisher/nn would/md then/rb publish/vb an/dt instance/nn of/in each/dt of/in these/dt types/nns instead/rb of/in publishing/vbg just/rb a/dt combined/jj event/nn ./punct
+for/in example/nn ,/punct in/in our/prp$ london/nnp police/nn network/nn ,/punct the/dt congestion/nn control/nn cameras/nns would/md have/vb to/to publish/vb one/cd event/nn for/in the/dt ccs/nn and/cc another/dt for/in the/dt detective/nn ./punct
+this/dt approach/nn could/md become/vb difficult/jj to/to manage/vb if/in the/dt attributes/nns have/vbp a/dt variety/nn of/in security/nn properties/nns ,/punct since/in a/dt large/jj number/nn of/in event/nn types/nns would/md be/vb required/vbn and/cc policies/nns and/cc subscriptions/nns may/md change/vb dynamically/rb ./punct
+this/dt approach/nn creates/vbz a/dt large/jj number/nn of/in extra/jj events/nns that/wdt must/md be/vb routed/vbn through/in the/dt network/nn ,/punct as/rb is/vbz shown/vbn in/in sect/nnp ./punct
+5.3/cd ./punct
+in/in order/nn to/to fully/rb protect/vb the/dt confidentiality/nn of/in event/nn content/nn we/prp must/md also/rb encrypt/vb subscriptions/nns ./punct
+encrypted/jj subscriptions/nns guarantee/nn :/punct i/fw )/punct that/wdt only/rb authorised/vbd brokers/nns are/vbp able/jj to/to submit/vb subscriptions/nns to/to the/dt broker/nn network/nn ,/punct and/cc ii/ls )/punct that/in unauthorised/jj brokers/nns do/vbp not/rb gain/vb information/nn about/in event/nn content/nn by/in monitoring/vbg which/wdt subscriptions/nns a/dt given/vbn event/nn matches/nns ./punct
+for/in example/nn ,/punct in/in the/dt first/jj case/nn an/dt unauthorised/jj broker/nn can/md create/vb subscriptions/nns with/in appropriately/rb chosen/vbn filters/nns ,/punct route/nn them/prp towards/in the/dt root/nn of/in the/dt event/nn dissemination/nn tree/nn ,/punct and/cc monitor/nn which/wdt events/nns were/vbd delivered/vbn to/to it/prp as/in matching/vbg the/dt subscription/nn ./punct
+the/dt fact/nn that/in the/dt event/nn matched/vbd the/dt subscription/nn would/md leak/nn information/nn to/to the/dt broker/nn about/in the/dt event/nn content/nn even/rb if/in the/dt event/nn was/vbd still/rb encrypted/vbn ./punct
+in/in the/dt second/jj case/nn ,/punct even/rb if/in an/dt unauthorised/jj broker/nn was/vbd unable/jj to/to create/vb subscriptions/nns itself/prp ,/punct it/prp could/md still/rb look/vb at/in subscriptions/nns that/wdt were/vbd routed/vbn through/in it/prp ,/punct take/vb note/nn of/in the/dt filters/nns on/in those/dt subscriptions/nns ,/punct and/cc monitor/nn which/wdt events/nns are/vbp delivered/vbn filters/nns ./punct
+this/dt would/md again/rb reveal/vb information/nn about/in the/dt event/nn content/nn to/to the/dt unauthorised/jj broker/nn ./punct
+in/in the/dt case/nn of/in encrypting/vbg complete/jj events/nns ,/punct we/prp also/rb encrypt/vbp the/dt complete/jj subscription/nn filter/nn ./punct
+the/dt event/nn type/nn identifier/nn in/in the/dt subscription/nn must/md be/vb left/vbn intact/jj to/to allow/vb brokers/nns to/to route/nn events/nns based/vbn on/in their/prp$ topic/nn when/wrb they/prp are/vbp not/rb authorised/vbn to/to access/vb the/dt filter/nn ./punct
+in/in such/jj cases/nns the/dt unauthorised/jj broker/nn is/vbz required/vbn to/to assume/vb that/dt events/nns of/in such/pdt a/dt type/nn match/nn all/dt filter/nn expressions/nns ./punct
+each/dt attribute/nn filter/nn is/vbz encrypted/jj individually/rb ,/punct much/rb as/in when/wrb encrypting/vbg a/dt publication/nn ./punct
+in/in addition/nn to/to the/dt event/nn type/nn identifier/nn the/dt attribute/nn identifiers/nns are/vbp also/rb left/vbn intact/jj to/to allow/vb authorised/jj brokers/nns to/to decrypt/vb those/dt filters/nns that/in they/prp have/vbp access/nn to/to ,/punct and/cc route/nn the/dt event/nn based/vbn on/in its/prp$ matching/vbg the/dt decrypted/jj filters/nns ./punct
+encrypting/vbg the/dt event/nn content/nn is/vbz not/rb necessary/jj if/in the/dt current/jj broker/nn and/cc the/dt next/jj broker/nn down/in the/dt event/nn dissemination/nn tree/nn have/vbp the/dt same/jj credentials/nns with/in respect/nn to/to the/dt event/nn type/nn at/in hand/nn ./punct
+for/in example/nn ,/punct one/cd can/md assume/vb that/in all/dt brokers/nns inside/in an/dt organisation/nn would/md share/vb the/dt same/jj credentials/nns the/dt same/jj domain/nn ,/punct the/dt event/nn can/md be/vb routed/vbn to/to it/prp in/in plaintext/nn ./punct
+with/in attribute/nn encryption/nn it/prp is/vbz possible/jj that/in the/dt attributes/nns ,/punct in/in which/wdt case/nn those/dt attributes/nns that/in the/dt broker/nn is/vbz not/rb authorised/vbn to/to access/nn would/md be/vb passed/vbn to/to it/prp encrypted/vbd ./punct
+form/nn ,/punct the/dt brokers/nns exchange/nn credentials/nns as/in part/nn of/in a/dt handshake/nn when/wrb they/prp connect/vbp to/to each/dt other/jj ./punct
+in/in cases/nns when/wrb the/dt brokers/nns are/vbp able/jj to/to verify/vb each/dt others/nns ''/'' credentials/nns ,/punct they/prp will/md add/vb them/prp to/to the/dt routing/vbg table/nn for/in future/jj reference/nn ./punct
+if/in a/dt broker/nn acquires/vbz new/jj credentials/nns after/in the/dt initial/jj handshake/nn ,/punct it/prp will/md present/vb these/dt new/jj credentials/nns to/to its/prp$ neighbours/nns while/in in/in session/nn ./punct
+regardless/rb of/in its/prp$ neighbouring/jj brokers/nns ,/punct the/dt phb/nnp will/md always/rb encrypt/vb the/dt event/nn content/nn ,/punct because/in it/prp is/vbz cheaper/jjr to/to encrypt/vb the/dt event/nn once/rb at/in the/dt root/nn of/in the/dt event/nn dissemination/nn tree/nn ./punct
+in/in hermes/nnp the/dt rendezvous/nn node/nn for/in each/dt event/nn type/nn is/vbz selected/vbn uniformly/rb randomly/rb (/punct the/dt event/nn type/nn name/nn is/vbz hashed/vbn with/in the/dt sha-1/nn hash/nn algorithm/nn to/to produce/vb the/dt event/nn type/nn to/to avoid/vb unnecessary/jj decryptions/nns ,/punct we/prp attach/vbp a/dt plaintext/jj content/nn cache/nn to/to encrypted/jj events/nns ./punct
+a/dt broker/nn fills/vbz the/dt cache/nn with/in content/nn that/in it/prp has/vbz decrypted/vbn ,/punct for/in example/nn ,/punct in/in order/nn to/to filter/nn on/in the/dt content/nn ./punct
+the/dt cache/nn is/vbz accessed/vbn by/in the/dt broker/nn when/wrb the/dt event/nn matches/vbz the/dt subscription/nn filter/nn ,/punct but/cc the/dt broker/nn also/rb sends/vbz the/dt cache/nn to/to the/dt next/jj broker/nn with/in the/dt encrypted/jj event/nn ./punct
+the/dt next/jj broker/nn can/md look/vb the/dt attribute/nn up/rp from/in the/dt cache/nn an/dt unauthorised/jj broker/nn ,/punct the/dt cache/nn will/md be/vb discarded/vbn before/in the/dt event/nn is/vbz sent/vbn ./punct
+obviously/rb sending/vbg the/dt cache/nn with/in the/dt encrypted/jj event/nn will/md add/vb to/to the/dt communication/nn cost/nn ,/punct but/cc this/dt is/vbz outweighed/vbn by/in the/dt saving/nn in/in encryption/decryption/nn processing/nn ./punct
+in/in fig/nn ./punct
+3/cd we/prp see/vbp two/cd separate/jj cached/jj plaintext/nn streams/nns accompanying/vbg an/dt event/nn depending/vbg on/in the/dt inter-broker/jj relationships/nns in/in two/cd different/jj domains/nns ./punct
+we/prp show/vbp in/in sect/nnp ./punct
+5.2/cd that/in the/dt overhead/nn of/in sending/vbg encrypted/jj messages/nns with/in a/dt full/jj plaintext/nn cache/nn incurs/vbz almost/rb no/dt overhead/nn compared/vbn to/to sending/vbg plaintext/jj messages/nns ./punct
+in/in our/prp$ implementation/nn we/prp have/vbp used/vbn the/dt eax/nnp mode/nn of/in operation/nn when/wrb encrypting/vbg events/nns ,/punct attributes/nns ,/punct and/cc subscription/nn filters/nns ./punct
+eax/nnp is/vbz a/dt mode/nn of/in operation/nn for/in block/nn ciphers/nns ,/punct also/rb called/vbd an/dt authenticated/nnp encryption/nn with/in associated/nnp data/nnp (/punct aead/nnp )/punct algorithm/nn that/wdt provides/vbz simultaneously/rb both/dt data/nns confidentiality/nn and/cc integrity/nn protection/nn ./punct
+the/dt algorithm/nn implements/vbz a/dt two-pass/jj scheme/nn where/wrb during/in the/dt first/jj pass/nn the/dt plain/jj text/nn is/vbz encrypted/jj ,/punct and/cc on/in the/dt second/jj pass/nn a/dt message/nn authentication/nn code/nn (/punct mac/nnp )/punct is/vbz generated/vbn for/in the/dt encrypted/jj data/nns ./punct
+the/dt eax/nnp mode/nn is/vbz compatible/jj with/in any/dt block/nn cipher/nn ./punct
+we/prp decided/vbd to/to use/vb the/dt advanced/nnp encryption/nnp standard/nnp (/punct aes/nn )/punct algorithm/nn in/in our/prp$ implementation/nn ,/punct because/in of/in its/prp$ standard/jj status/nn and/cc the/dt fact/nn that/in the/dt algorithm/nn has/vbz gone/vbn through/in thorough/jj cryptanalysis/nn during/in its/prp$ existence/nn and/cc no/dt serious/jj vulnerabilities/nns have/vbp been/vbn found/vbn thus/rb far/rb ./punct
+in/in addition/nn to/to providing/vbg both/dt confidentiality/nn and/cc integrity/nn protection/nn ,/punct the/dt eax/nnp mode/nn uses/vbz the/dt underlying/vbg block/nn cipher/nn in/in counter/nn mode/nn (/punct ctr/nn mode/nn )/punct ./punct
+a/dt block/nn cipher/nn in/in counter/jj xored/vbn with/in the/dt plaintext/nn ./punct
+effectively/rb ctr/nn mode/nn transforms/vbz a/dt block/nn cipher/nn into/in a/dt stream/nn cipher/nn ./punct
+the/dt advantage/nn of/in stream/nn ciphers/nns is/vbz that/in the/dt ciphertext/nn is/vbz the/dt same/jj length/nn as/in the/dt plaintext/nn ,/punct whereas/in with/in block/nn ciphers/nns the/dt plaintext/nn must/md (/punct e.g/nn ./punct
+the/dt aes/nn block/nn size/nn is/vbz 128/cd bits/nns )/punct ./punct
+avoiding/vbg padding/nn is/vbz very/rb important/jj in/in attribute/nn encryption/nn ,/punct because/in the/dt padding/nn might/md increase/vb the/dt size/nn of/in the/dt attribute/nn disproportionally/rb ./punct
+cipher/nn ./punct
+with/in event/nn encryption/nn the/dt message/nn expansion/nn is/vbz not/rb that/in relevant/jj ,/punct since/in the/dt length/nn of/in padding/nn required/vbn to/to reach/vb the/dt next/jj 16/cd byte/nn multiple/nn will/md probably/rb be/vb a/dt small/jj proportion/nn of/in the/dt overall/jj plaintext/nn length/nn ./punct
+in/in encryption/nn mode/nn the/dt eax/nnp algorithm/nn takes/vbz as/in input/nn a/dt nonce/jj (/punct a/dt number/nn used/vbn once/rb )/punct ,/punct an/dt encryption/nn key/nn and/cc the/dt plaintext/nn ,/punct and/cc it/prp returns/vbz the/dt ciphertext/nn and/cc an/dt authentication/nn tag/nn ./punct
+in/in decryption/nn mode/nn the/dt algorithm/nn takes/vbz as/in input/nn the/dt encryption/nn key/nn ,/punct the/dt ciphertext/nn and/cc the/dt authentication/nn authentication/nn check/nn failed/vbd ./punct
+the/dt nonce/jj is/vbz expanded/vbn to/to the/dt block/nn length/nn of/in the/dt underlying/vbg block/nn cipher/nn by/in passing/vbg it/prp through/in an/dt omac/nn construct/nn (/punct see/vbp )/punct ./punct
+it/prp is/vbz important/jj that/in particular/jj nonce/jj values/nns are/vbp not/rb reused/vbn ,/punct otherwise/rb the/dt block/nn cipher/nn in/in ctr/nnp mode/nn would/md produce/vb an/dt identical/jj key/jj stream/nn ./punct
+in/in our/prp$ implementation/nn we/prp used/vbd the/dt phb/nn defined/vbn event/nn timestamp/nn (/punct 64-bit/jj value/nn counting/vbg the/dt milliseconds/nns since/in january/nnp 1/cd ,/punct 1970/cd utc/nnp )/punct appended/vbn by/in the/dt phb/nn ''/'' s/nns identity/nn (/punct i.e/nn ./punct
+public/jj key/jj )/punct as/in the/dt nonce/jj ./punct
+the/dt broker/nn is/vbz responsible/jj for/in ensuring/vbg that/in the/dt timestamps/jj increase/nn monotonically/rb ./punct
+the/dt authentication/nn tag/nn is/vbz appended/vbn to/to the/dt produced/vbn cipher/nn text/nn to/to create/vb a/dt two-tuple/nn ./punct
+with/in event/nn encryption/nn a/dt single/jj tag/nn is/vbz created/vbn for/in the/dt encrypted/jj event/nn ./punct
+with/in attribute/nn encryption/nn each/dt attribute/nn is/vbz encrypted/vbn and/cc authenticated/vbn separately/rb ,/punct and/cc they/prp all/dt have/vbp their/prp$ individual/jj tags/nns ./punct
+the/dt tag/nn length/nn is/vbz configurable/jj in/in eax/nn without/in restrictions/nns ,/punct which/wdt allows/vbz the/dt user/nn to/to make/vb a/dt trade-off/nn between/in the/dt authenticity/nn guarantees/vbz provided/vbn by/in eax/nn and/cc the/dt added/vbn in/in our/prp$ implementation/nn ,/punct but/cc one/cd could/md make/vb the/dt tag/nn length/nn a/dt publisher/subscriber/nn defined/vbn parameter/nn for/in each/dt publication/subscription/nn or/cc include/vbp it/prp in/in the/dt event/nn type/nn definition/nn to/to make/vb it/prp a/dt type/nn specific/jj parameter/nn ./punct
+eax/nnp also/rb supports/vbz including/vbg unencrypted/jj associated/vbn data/nns in/in the/dt tag/nn calculation/nn ./punct
+the/dt integrity/nn of/in this/dt data/nn is/vbz protected/vbn ,/punct used/vbn with/in event/nn encryption/nn in/in cases/nns where/wrb some/dt of/in the/dt event/nn content/nn is/vbz public/jj and/cc thus/rb would/md be/vb useful/jj for/in content-based/jj routing/vbg ./punct
+the/dt integrity/nn of/in the/dt data/nns would/md still/rb be/vb protected/vbn against/in changes/nns ,/punct but/cc unauthorised/jj brokers/nns would/md be/vb able/jj to/to apply/vb filters/nns ./punct
+we/prp have/vbp included/vbn the/dt event/nn type/nn identifier/nn as/in associated/vbn data/nns in/in order/nn to/to protect/vb its/prp$ integrity/nn ./punct
+other/jj aead/nn algorithms/nns include/vbp the/dt offset/vbn codebook/nn mode/nn (/punct ocb/nn )/punct and/cc the/dt counter/nn with/in cbc-mac/nn mode/nn (/punct ccm/nnp )/punct ./punct
+contrarily/rb to/to the/dt eax/nnp mode/nn the/dt ocb/nnp mode/nn requires/vbz only/rb one/cd pass/nn over/in the/dt plaintext/nn ,/punct which/wdt makes/vbz it/prp roughly/rb twice/rb as/in fast/jj as/in eax/nn ./punct
+unfortunately/rb the/dt ocb/nnp mode/nn has/vbz a/dt patent/nn application/nn in/in place/nn in/in the/dt usa/nnp ,/punct which/wdt restricts/vbz its/prp$ use/nn ./punct
+the/dt ccm/nnp mode/nn is/vbz the/dt predecessor/nn of/in the/dt eax/nnp mode/nn ./punct
+ocb/nn ./punct
+the/dt eax/nn was/vbd developed/vbn later/rb to/to address/vb some/dt issues/nns with/in ccm/nn ./punct
+similarly/rb to/to eax/nnp ,/punct ccm/nnp is/vbz also/rb a/dt two-pass/jj mode/nn ./punct
+in/in both/dt encryption/nn approaches/vbz the/dt encrypted/jj event/nn content/nn has/vbz a/dt globally/rb unique/jj identifier/nn (/punct i.e/nn ./punct
+the/dt event/nn type/nn or/cc the/dt attribute/nn identifier/nn )/punct ./punct
+that/dt identifier/nn is/vbz used/vbn to/to determine/vb the/dt encryption/nn key/nn to/to use/vb when/wrb encrypting/vbg or/cc decrypting/vbg the/dt content/nn ./punct
+each/dt event/nn type/nn ,/punct in/in event/nn encryption/nn ,/punct and/cc attribute/nn ,/punct in/in attribute/nn encryption/nn ,/punct has/vbz its/prp$ own/jj individual/jj encryption/nn key/nn ./punct
+by/in controlling/vbg access/nn to/to the/dt encryption/nn key/nn we/prp effectively/rb control/vbp access/nn to/to the/dt encrypted/jj event/nn content/nn ./punct
+key/jj group/nn of/in brokers/nns for/in each/dt individual/jj encryption/nn key/nn ./punct
+the/dt key/jj group/nn is/vbz used/vbn to/to refresh/vb the/dt key/nn when/wrb necessary/jj and/cc to/to deliver/vb the/dt new/jj key/nn to/to all/dt current/jj members/nns of/in the/dt key/jj group/nn ./punct
+the/dt key/jj group/nn manager/nn is/vbz responsible/jj for/in verifying/vbg that/in a/dt new/jj member/nn requesting/vbg to/to join/vb the/dt key/jj group/nn is/vbz authorised/vbn to/to do/vb so/rb ./punct
+therefore/rb the/dt key/jj group/nn manager/nn must/md be/vb trusted/vbn by/in the/dt type/nn owner/nn to/to enforce/vb the/dt access/nn control/nn policy/nn ./punct
+we/prp assume/vbp that/in the/dt key/jj group/nn manager/nn is/vbz either/cc a/dt trusted/vbn third/jj party/nn or/cc alternatively/rb a/dt member/nn of/in the/dt type/nn owner/nn ''/'' s/nns domain/nn ./punct
+in/in pesonen/nnp et/fw al/fw ./punct
+proposed/vbn a/dt capability-based/jj access/nn control/nn architecture/nn for/in multi-domain/jj publish/subscribe/nn systems/nns ./punct
+the/dt approach/nn uses/vbz capabilities/nns to/to decentralise/vb the/dt access/nn control/nn policy/nn amongst/in the/dt publish/subscribe/nn nodes/nns (/punct i.e/nn ./punct
+clients/nns and/cc brokers/nns )/punct :/punct each/dt node/nn holds/vbz a/dt set/nn of/in capabilities/nns that/wdt define/vbp the/dt authority/nn granted/vbn to/to that/dt node/nn ./punct
+defines/vbz the/dt event/nn type/nn ,/punct the/dt action/nn ,/punct and/cc the/dt attributes/nns that/wdt receiving/vbg appropriate/jj keys/nns ./punct
+the/dt node/nn is/vbz authorised/vbn to/to access/nn ./punct
+for/in example/nn ,/punct a/dt tuple/nn </punct np/nn ,/punct subscribe/vbp ,/punct */punct >/punct would/md authorise/vb the/dt owner/nn to/to subscribe/vb to/to numberplate/jj events/nns with/in access/nn to/to all/dt attributes/nns in/in the/dt published/vbn events/nns ./punct
+the/dt sequence/nn of/in events/nns required/vbn for/in a/dt broker/nn to/to successfully/rb join/vb a/dt key/jj group/nn is/vbz shown/vbn in/in fig/nn ./punct
+4/ls ./punct
+both/cc the/dt client/nn hosting/vbg broker/nn and/cc the/dt client/nn must/md be/vb authorised/vbn to/to make/vb the/dt client/nn ''/'' s/nns request/nn ./punct
+that/dt is/vbz ,/punct if/in the/dt client/nn makes/vbz a/dt subscription/nn request/nn for/in numberplate/jj events/nns ,/punct both/cc the/dt client/nn and/cc the/dt local/jj broker/nn must/md be/vb authorised/vbn to/to subscribe/vb to/to numberplate/jj events/nns ./punct
+this/dt is/vbz because/in from/in the/dt perspective/nn of/in the/dt broker/nn network/nn ,/punct the/dt local/jj broker/nn acts/vbz as/in a/dt proxy/nn for/in the/dt client/nn ./punct
+key/jj group/nn that/wdt are/vbp used/vbn to/to authorise/vb publish/subscribe/nn requests/nns ./punct
+not/rb doing/vbg so/rb could/md lead/vb to/to the/dt inconsistent/jj situation/nn of/in its/prp$ clients/nns ,/punct but/cc is/vbz not/rb able/jj to/to decrypt/vb incoming/jj event/nn content/nn for/in them/prp ./punct
+in/in the/dt numberplate/nnp example/nn above/in ,/punct the/dt local/jj broker/nn holding/vbg the/dt above/jj capability/nn is/vbz authorised/vbn to/to join/vb the/dt numberplate/nnp key/jj group/nn as/rb well/rb as/in the/dt key/jj groups/nns for/in all/pdt the/dt attributes/nns in/in the/dt numberplate/nnp event/nn type/nn ./punct
+event/nn content/nn encryption/nn in/in a/dt decentralised/jj multi-domain/jj secure/jj group/nn communication/nn ./punct
+in/in both/dt cases/nns the/dt key/jj management/nn system/nn must/md scale/vb well/rb with/in the/dt number/nn of/in clients/nns ,/punct clients/nns might/md be/vb spread/vbn over/in large/jj geographic/jj areas/nns ,/punct there/ex might/md be/vb high/jj rates/nns of/in churn/vbp in/in group/nn membership/nn ,/punct and/cc all/dt members/nns must/md be/vb synchronised/vbn with/in each/dt other/jj in/in time/nn in/in order/nn to/to use/vb the/dt same/jj encryption/nn key/nn at/in the/dt same/jj time/nn ./punct
+there/ex are/vbp a/dt number/nn of/in scalable/jj key/jj management/nn protocols/nns for/in secure/jj group/nn communication/nn ./punct
+we/prp have/vbp implemented/vbn the/dt one-way/jj function/nn tree/nn (/punct oft/nnp )/punct protocol/nn as/in a/dt proof/nn relatively/rb simplicity/nn and/cc good/jj performance/nn ./punct
+our/prp$ implementation/nn uses/vbz the/dt same/jj structured/jj overlay/nn network/nn used/vbn by/in the/dt broker/nn network/nn as/in a/dt transport/nn ./punct
+the/dt oft/nnp protocol/nn is/vbz based/vbn the/dt tree/nn ./punct
+it/prp scales/nns in/in log2n/nn in/in processing/nn and/cc participant/nn ,/punct which/wdt we/prp have/vbp verified/vbn in/in our/prp$ simulations/nns ./punct
+traditionally/rb in/in group/nn key/jj management/nn schemes/nns the/dt encryption/nn key/nn is/vbz refreshed/vbn when/wrb a/dt new/jj member/nn joins/vbz the/dt group/nn ,/punct an/dt existing/vbg member/nn leaves/vbz the/dt group/nn ,/punct or/cc a/dt timer/nn expires/vbz ./punct
+refreshing/vbg the/dt key/nn when/wrb a/dt new/jj member/nn joins/vbz provides/vbz backward/rb secrecy/nn ,/punct i.e/nn ./punct
+the/dt new/jj member/nn is/vbz prevented/vbn from/in accessing/vbg old/jj messages/nns ./punct
+similarly/rb refreshing/vbg the/dt key/nn when/wrb an/dt existing/vbg member/nn leaves/vbz provides/vbz forward/rb secrecy/nn ,/punct i.e/nn ./punct
+the/dt old/jj member/nn is/vbz prevented/vbn from/in accessing/vbg future/jj messages/nns ./punct
+timer/nn triggered/vbd refreshes/nns are/vbp issued/vbn periodically/rb in/in order/nn to/to limit/vb the/dt damage/nn caused/vbn by/in the/dt current/jj key/nn being/vbg compromised/vbn ./punct
+even/rb though/in the/dt state-of-the-art/jj key/jj management/nn protocols/nns are/vbp efficient/jj ,/punct refreshing/vbg the/dt key/jj unnecessarily/rb introduces/vbz extra/jj traffic/nn and/cc processing/nn amongst/in the/dt key/jj group/nn members/nns ./punct
+in/in our/prp$ case/nn key/jj group/nn membership/nn is/vbz based/vbn on/in the/dt broker/nn holding/vbg a/dt capability/nn that/wdt authorises/vbz it/prp to/to join/vb the/dt key/jj group/nn ./punct
+the/dt capability/nn has/vbz a/dt set/nn of/in validity/nn conditions/nns that/wdt in/in their/prp$ simplest/jjs form/nn define/vb a/dt time/nn period/nn when/wrb the/dt certificate/nn is/vbz valid/jj ,/punct and/cc in/in more/rbr complex/jj cases/nns involve/vbp on-line/jj checks/nns back/rb towards/in the/dt issuer/nn ./punct
+in/in order/nn to/to avoid/vb unnecessary/jj key/jj refreshes/vbz the/dt key/jj manager/nn looks/vbz at/in the/dt certificate/nn validity/nn member/nn ,/punct if/in the/dt manager/nn can/md ascertain/vb that/in the/dt certificate/nn was/vbd valid/jj at/in the/dt time/nn of/in the/dt previous/jj key/jj refresh/nn ,/punct a/dt new/jj key/jj refresh/nn can/md be/vb avoided/vbn ./punct
+similarly/rb ,/punct instead/rb of/in refreshing/vbg the/dt key/jj immediately/rb when/wrb a/dt member/nn leaves/vbz the/dt key/jj group/nn ,/punct the/dt key/jj manager/nn can/md cache/nn their/prp$ credentials/nns and/cc refresh/vb the/dt key/nn only/rb when/wrb the/dt credentials/nns expire/vbp ./punct
+these/dt situations/nns are/vbp both/dt illustrated/vbn in/in fig.5/nn ./punct
+it/prp can/md be/vb assumed/vbn that/in the/dt credentials/nns granted/vbn to/to brokers/nns are/vbp relatively/rb static/jj ,/punct i.e/nn ./punct
+once/rb a/dt domain/nn is/vbz authorised/vbn to/to access/vb an/dt event/nn type/nn ,/punct the/dt authority/nn will/md be/vb delegated/vbn to/to all/dt brokers/nns of/in that/dt domain/nn ,/punct and/cc they/prp will/md have/vb the/dt authority/nn for/in the/dt foreseeable/jj future/nn ./punct
+more/rbr fine/jj grained/vbn and/cc dynamic/jj access/nn control/nn would/md be/vb implemented/vbn at/in the/dt edge/nn of/in the/dt broker/nn network/nn between/in the/dt clients/nns and/cc the/dt client/nn hosting/vbg brokers/nns ./punct
+when/wrb an/dt encryption/nn key/nn is/vbz refreshed/vbn the/dt new/jj key/nn is/vbz tagged/vbn with/in a/dt timestamp/nn ./punct
+the/dt encryption/nn key/nn to/to use/vb for/in a/dt given/vbn event/nn is/vbz selected/vbn based/vbn on/in the/dt event/nn ''/'' s/nns publication/nn timestamp/nn ./punct
+the/dt old/jj keys/nns will/md be/vb kept/vbn for/in a/dt reasonable/jj amount/nn of/in time/nn in/in order/nn to/to allow/vb for/in some/dt clock/nn drift/nn ./punct
+setting/vbg this/dt value/nn is/vbz part/nn of/in the/dt key/jj management/nn protocol/nn ,/punct although/in exactly/rb how/wrb long/rb this/dt time/nn should/md be/vb will/md depend/vb on/in the/dt nature/nn of/in the/dt application/nn and/cc possibly/rb the/dt size/nn of/in the/dt network/nn ./punct
+it/prp can/md be/vb configured/vbn independently/rb per/in key/jj group/nn if/in necessary/jj ./punct
+in/in order/nn to/to evaluate/vb the/dt performance/nn of/in event/nn content/nn encryption/nn we/prp have/vbp implemented/vbn both/dt encryption/nn approaches/vbz running/vbg over/in our/prp$ implementation/nn of/in the/dt hermes/nnp publish//nn subscribe/vb middleware/nn ./punct
+the/dt implementation/nn supports/vbz three/cd modes/nns :/punct plaintext/jj content/nn ,/punct event/nn encryption/nn ,/punct and/cc attribute/nn encryption/nn ,/punct in/in a/dt single/jj publish/subscribe/nn system/nn ./punct
+we/prp ran/vbd three/cd performance/nn tests/nns in/in a/dt discrete/jj event/nn simulator/nn ./punct
+the/dt simulator/nn was/vbd run/vbn on/in an/dt intel/nnp p4/nn 3.2ghz/nn workstation/nn handle/vb all/dt messages/nns in/in the/dt system/nn ./punct
+the/dt following/vbg sections/nns describe/vbp the/dt specific/jj test/nn setups/nns and/cc the/dt results/nns in/in more/jjr detail/nn ./punct
+the/dt end-to-end/jj overhead/jj test/nn shows/vbz how/wrb much/rb the/dt overall/jj message/nn throughput/nn of/in the/dt simulator/nn was/vbd affected/vbn by/in event/nn content/nn encryption/nn ./punct
+we/prp formed/vbd a/dt broker/nn network/nn with/in two/cd subscriber/nn to/to the/dt other/jj one/cd ./punct
+the/dt subscriber/nn subscribed/vbd to/to the/dt advertised/jj event/nn type/nn without/in any/dt filters/nns ,/punct i.e/nn ./punct
+each/dt publication/nn matched/vbd the/dt subscriber/nn ''/'' s/nns publication/nn and/cc thus/rb was/vbd delivered/vbn to/to the/dt subscriber/nn ./punct
+the/dt test/nn measures/vbz the/dt combined/jj time/nn it/prp takes/vbz to/to publish/vb and/cc deliver/vb 100,000/cd events/nns ./punct
+if/in the/dt content/nn is/vbz encrypted/vbn this/dt includes/vbz both/cc encrypting/vbg the/dt content/nn at/in the/dt phb/nn and/cc decrypting/vbg it/prp at/in the/dt shb/nnp ./punct
+the/dt event/nn type/nn the/dt publisher/nn publishes/vbz 100,000/cd events/nns ,/punct and/cc the/dt elapsed/jj time/nn is/vbz measured/vbn to/to derive/vb the/dt message/nn throughput/nn ./punct
+the/dt test/nn was/vbd repeated/vbn five/cd times/nns for/in each/dt number/nn of/in attributes/nns and/cc we/prp use/vbp the/dt average/nn of/in all/dt iterations/nns in/in the/dt graph/nn ,/punct but/cc the/dt results/nns were/vbd highly/rb consistent/jj so/in the/dt standard/jj deviation/nn is/vbz not/rb shown/vbn ./punct
+the/dt same/jj tests/nns were/vbd run/vbn with/in no/dt content/nn encryption/nn ,/punct event/nn encryption/nn ,/punct and/cc attribute/nn encryption/nn ./punct
+a/dt large/jj overhead/nn compared/vbn to/to not/rb using/vbg encryption/nn ./punct
+the/dt throughput/nn when/wrb using/vbg attribute/nn encryption/nn with/in an/dt event/nn type/nn with/in one/cd attribute/nn is/vbz 46/cd %/punct of/in the/dt throughput/nn achieved/vbn when/wrb events/nns are/vbp sent/vbn in/in plaintext/nn ./punct
+when/wrb the/dt number/nn of/in attributes/nns increases/vbz the/dt performance/nn gap/nn increases/vbz as/rb well/rb :/punct with/in ten/cd attributes/vbz the/dt performance/nn with/in attribute/nn encryption/nn has/vbz decreased/vbn to/to 11.7/cd %/punct of/in plaintext/jj performance/nn ./punct
+event/nn encryption/nn fares/nns better/rbr ,/punct because/in of/in fewer/jjr encryption/nn operations/nns ./punct
+the/dt increase/nn in/in the/dt amount/nn of/in encrypted/jj data/nns does/vbz not/rb affect/vb the/dt performance/nn as/rb much/rb as/in the/dt number/nn of/in individual/jj encryption/nn operations/nns does/vbz ./punct
+the/dt difference/nn in/in performance/nn with/in event/nn encryption/nn and/cc attribute/nn encryption/nn with/in only/rb one/cd attribute/nn is/vbz caused/vbn by/in the/dt java/nnp object/nn serialisation/nn mechanism/nn :/punct in/in the/dt event/nn encryption/nn case/nn the/dt whole/jj attribute/nn structure/nn is/vbz serialised/vbn ,/punct which/wdt results/vbz in/in more/jjr objects/nns than/in serialising/vbg a/dt single/jj attribute/nn value/nn ./punct
+a/dt more/rbr efficient/jj implementation/nn would/md provide/vb its/prp$ own/jj marshalling/nn mechanism/nn ./punct
+note/vb that/in the/dt eax/nnp implementation/nn we/prp use/vbp runs/vbz the/dt nonce/jj (/punct i.e/nn ./punct
+initialisation/nn vector/nn )/punct through/in an/dt omac/nn construct/nn to/to increase/vb its/prp$ randomness/nn ./punct
+since/in the/dt nonce/jj is/vbz not/rb required/vbn to/to be/vb kept/vbn secret/jj (/punct just/rb unique/jj )/punct ,/punct there/ex is/vbz a/dt potential/jj time/space/nn trade-off/nn we/prp have/vbp not/rb yet/rb investigated/vbn in/in attaching/vbg extra/jj nonce/jj attributes/nns that/wdt have/vbp already/rb had/vbn this/dt omac/nn construct/nn applied/vbd to/to them/prp ./punct
+we/prp explained/vbd in/in sect/nnp ./punct
+3.4/cd that/wdt event/nn content/nn decryption/nn and/cc encryption/nn can/md be/vb avoided/vbn if/in both/dt brokers/nns are/vbp authorised/vbn to/to access/vb the/dt event/nn content/nn ./punct
+this/dt test/nn was/vbd designed/vbn to/to show/vb that/in the/dt use/nn of/in the/dt encrypted/jj event/nn content/nn mechanism/nn between/in two/cd authorised/jj brokers/nns incurs/vbz only/rb a/dt small/jj performance/nn overhead/nn ./punct
+in/in this/dt test/nn we/prp again/rb form/vbp a/dt broker/nn network/nn with/in two/cd brokers/nns ./punct
+the/dt publisher/nn publishes/vbz 100,000/cd events/nns and/cc the/dt test/nn measures/vbz the/dt elapsed/jj time/nn in/in order/nn to/to derive/vb the/dt system/nn ''/'' s/nns message/nn throughput/nn ./punct
+the/dt event/nn content/nn is/vbz encrypted/vbn outside/in the/dt timing/nn measurement/nn ,/punct i.e/nn ./punct
+the/dt encryption/nn cost/nn is/vbz not/rb included/vbn where/wrb a/dt broker/nn has/vbz received/vbn a/dt message/nn from/in another/dt authorised/vbn broker/nn ,/punct and/cc it/prp routes/vbz the/dt event/nn to/to a/dt third/jj authorised/jj broker/nn ./punct
+in/in this/dt scenario/nn the/dt middle/jj broker/nn does/vbz not/rb need/vb to/to decrypt/vb nor/cc encrypt/vb the/dt event/nn content/nn ./punct
+number/nn of/in attributes/nns in/in the/dt published/vbn event/nn was/vbd increased/vbn character/nn strings/nns ./punct
+each/dt test/nn is/vbz repeated/vbn five/cd times/nns ,/punct and/cc we/prp use/vbp the/dt average/nn of/in all/dt iterations/nns in/in the/dt graph/nn ./punct
+the/dt same/jj test/nn was/vbd then/rb repeated/vbn with/in no/dt encryption/nn ,/punct event/nn encryption/nn and/cc attribute/nn encryption/nn turned/vbd on/rp ./punct
+the/dt encrypted/jj modes/nns follow/vbp each/dt other/jj very/rb closely/rb ./punct
+predictably/rb ,/punct the/dt plaintext/nn mode/nn performs/vbz a/dt little/jj better/jjr for/in all/dt attribute/vbp counts/nns ./punct
+the/dt difference/nn can/md be/vb explained/vbn partially/rb by/in the/dt encrypted/jj events/nns being/vbg larger/jjr in/in size/nn ,/punct because/in they/prp include/vbp both/cc the/dt plaintext/nn and/cc the/dt encrypted/jj content/nn in/in this/dt test/nn ./punct
+the/dt difference/nn in/in performance/nn is/vbz 3.7/cd %/punct with/in one/cd attribute/nn and/cc 2.5/cd %/punct with/in 25/cd attributes/nns ./punct
+we/prp believe/vbp that/in the/dt roughness/nn of/in the/dt graphs/nns can/md be/vb explained/vbn by/in the/dt java/nnp garbage/nn collector/nn interfering/vbg with/in the/dt simulation/nn ./punct
+the/dt fact/nn that/in all/dt three/cd graphs/nns show/vbp the/dt same/jj irregularities/nns supports/vbz this/dt theory/nn ./punct
+through/in the/dt definition/nn of/in multiple/jj event/nn types/nns ,/punct it/prp is/vbz possible/jj to/to emulate/vb the/dt expressiveness/nn of/in attribute/nn encryption/nn using/vbg only/rb event/nn content/nn encryption/nn ./punct
+the/dt last/jj test/nn we/prp ran/vbd was/vbd to/to show/vb the/dt communication/nn overhead/nn caused/vbn by/in this/dt emulation/nn technique/nn ,/punct compared/vbn to/to using/vbg real/jj attribute/nn encryption/nn ./punct
+attach/vb one/cd publisher/nn to/to one/cd of/in the/dt brokers/nns ,/punct and/cc an/dt increasing/vbg number/nn of/in subscribers/nns to/to the/dt remaining/vbg brokers/nns ./punct
+each/dt subscriber/nn simulates/vbz a/dt group/nn of/in subscribers/nns that/in all/dt have/vbp the/dt same/jj access/nn rights/nns to/to the/dt published/vbn event/nn ./punct
+each/dt subscriber/nn group/nn has/vbz its/prp$ own/jj event/nn type/nn in/in the/dt test/nn ./punct
+of/in subscriber/nn groups/nns is/vbz increased/vbn from/in 1/cd to/to 50/cd (/punct the/dt x-axis/nn )/punct ./punct
+for/in each/dt n/nn subscriber/nn groups/nns the/dt publisher/nn publishes/vbz one/cd event/nn to/to represent/vb the/dt use/nn of/in attribute/nn encryption/nn and/cc n/nn events/nns representing/vbg the/dt events/nns for/in each/dt subscriber/nn group/nn ./punct
+we/prp count/vbp the/dt number/nn of/in hops/vbz each/dt publication/nn makes/vbz through/in the/dt broker/nn network/nn (/punct y-axis/nn )/punct ./punct
+note/vb that/dt fig/nn ./punct
+8/cd shows/nns workloads/nns beyond/in what/wp we/prp would/md expect/vb in/in common/jj usage/nn ,/punct in/in which/wdt many/jj event/nn types/nns are/vbp likely/jj to/to contain/vb fewer/jjr than/in ten/cd attributes/nns ./punct
+the/dt subscriber/nn groups/nns used/vbn in/in this/dt test/nn represent/vbp disjoint/nn permission/nn sets/vbz over/in such/jj event/nn attributes/nns ./punct
+the/dt number/nn of/in these/dt sets/nns can/md be/vb determined/vbn from/in the/dt particular/jj access/nn control/nn policy/nn in/in use/nn ,/punct number/nn of/in attributes/nns in/in a/dt given/vbn event/nn type/nn ./punct
+the/dt graphs/nns indicate/vbp that/in attribute/nn encryption/nn performs/vbz better/jjr than/in event/nn encryption/nn even/rb for/in small/jj numbers/nns of/in subscriber/nn groups/nns ./punct
+indeed/rb ,/punct with/in only/rb two/cd subscriber/nn groups/nns (/punct e.g/nn ./punct
+the/dt case/nn with/in numberplate/jj events/nns )/punct the/dt hop/nn count/nn increases/vbz from/in 7.2/cd hops/vbz for/in attribute/nn encryption/nn to/to 16.6/cd hops/vbz for/in event/nn encryption/nn ./punct
+with/in 10/cd subscriber/nn groups/nns the/dt corresponding/jj numbers/nns are/vbp 24.2/cd and/cc 251.0/cd ,/punct i.e/nn ./punct
+an/dt order/nn of/in magnitude/nn difference/nn ./punct
+wang/nnp et/fw al/fw ./punct
+have/vb categorised/vbn the/dt various/jj security/nn issues/nns that/wdt security/nn issues/nns in/in publish/subscribe/nn systems/nns and/cc as/in such/jj tries/nns to/to draw/vb attention/nn to/to the/dt issues/nns rather/rb than/in providing/vbg solutions/nns ./punct
+bacon/nnp et/fw al/fw ./punct
+in/in examine/vb the/dt use/nn of/in role-based/jj access/nn control/nn in/in multi-domain/jj ,/punct distributed/vbn publish/subscribe/nn systems/nns ./punct
+their/prp$ work/nn is/vbz complementary/jj to/to this/dt paper/nn :/punct distributed/vbn rbac/nn is/vbz one/cd potential/jj policy/nn formalism/nn that/wdt might/md use/vb the/dt enforcement/nn mechanisms/nns we/prp have/vbp presented/vbn ./punct
+opyrchal/nnp and/cc prakash/nnp address/vbp the/dt problem/nn of/in event/nn confidentiality/nn at/in the/dt last/jj link/nn between/in the/dt subscriber/nn and/cc the/dt shb/nnp in/in ./punct
+they/prp correctly/rb state/vbp that/in a/dt secure/jj group/nn communication/nn approach/nn is/vbz infeasible/jj in/in an/dt environment/nn like/in publish/subscribe/nn that/wdt has/vbz highly/rb dynamic/jj group/nn memberships/nns ./punct
+as/in a/dt solution/nn they/prp propose/vbp a/dt scheme/nn utilising/vbg key/jj caching/nn and/cc subscriber/nn grouping/nn in/in order/nn to/to minimise/vb the/dt number/nn of/in required/vbn encryptions/nns when/wrb delivering/vbg a/dt assume/vb in/in our/prp$ work/nn that/in the/dt shb/nnp is/vbz powerful/jj enough/rb to/to both/dt srivatsa/nnp et/fw al/fw ./punct
+and/cc raiciu/nnp et/fw al/fw ./punct
+present/jj mechanisms/nns for/in protecting/vbg the/dt confidentiality/nn of/in messages/nns in/in decentralised/jj publish/subscribe/nn infrastructures/nns ./punct
+compared/vbn to/to our/prp$ work/nn both/cc papers/nns aim/vbp to/to provide/vb the/dt means/nns for/in protecting/vbg the/dt integrity/nn and/cc confidentiality/nn of/in messages/nns whereas/in the/dt goal/nn for/in our/prp$ work/nn is/vbz to/to enforce/vb access/nn control/nn inside/in the/dt broker/nn network/nn ./punct
+raiciu/nnp et/fw al/fw ./punct
+assume/vb in/in their/prp$ work/nn that/in none/nn of/in the/dt brokers/nns in/in the/dt network/nn are/vbp trusted/vbn and/cc therefore/rb all/dt events/nns are/vbp encrypted/vbn from/in publisher/nn to/to subscriber/nn and/cc that/in publication/nn are/vbp trusted/vbn to/to access/nn that/wdt publication/nn and/cc are/vbp therefore/rb able/jj to/to implement/vb event/nn matching/nn ./punct
+we/prp also/rb assume/vbp that/in the/dt publisher/nn and/cc subscriber/nn hosting/vbg brokers/nns are/vbp always/rb trusted/vbn to/to access/vb the/dt publication/nn ./punct
+the/dt contributions/nns of/in srivatsa/nnp et/fw al/fw ./punct
+and/cc raiciu/nnp et/fw al/fw ./punct
+are/vbp complementary/jj to/to the/dt contributions/nns in/in this/dt paper/nn ./punct
+finally/rb ,/punct fiege/nnp et/fw al/fw ./punct
+address/nn the/dt related/jj topic/nn of/in event/nn visibility/nn in/in ./punct
+while/in the/dt work/nn concentrated/vbd on/in using/vbg scopes/nns as/in mechanism/nn for/in structuring/vbg large-scale/jj event-based/jj systems/nns ,/punct the/dt notion/nn of/in event/nn visibility/nn does/vbz resonate/vb with/in access/nn control/nn to/to some/dt extent/nn ./punct
+event/nn content/nn encryption/nn can/md be/vb used/vbn to/to enforce/vb an/dt access/nn control/nn policy/nn while/in events/nns are/vbp in/in transit/nn in/in the/dt broker/nn network/nn of/in a/dt multi-domain/jj publish/subscribe/nn system/nn ./punct
+alternative/nn when/wrb access/nn control/nn is/vbz required/vbn ,/punct and/cc ii/ls )/punct the/dt performance/nn penalty/nn can/md be/vb lessened/vbn with/in implementation/nn optimisations/nns ,/punct such/jj as/in passing/vbg cached/jj plaintext/nn content/nn alongside/in encrypted/jj content/nn between/in brokers/nns with/in identical/jj security/nn credentials/nns ./punct
+this/dt is/vbz particularly/rb appropriate/jj if/in broker-to-broker/jj issue/nn ./punct
+attribute/vb level/nn encryption/nn can/md be/vb implemented/vbn in/in order/nn to/to enforce/vb fine-grained/jj access/nn control/nn policies/nns ./punct
+in/in addition/nn to/to providing/vbg attribute-level/jj access/nn control/nn ,/punct attribute/nn encryption/nn enables/vbz partially/rb authorised/vbn brokers/nns to/to implement/vb contentbased/jj routing/vbg based/vbn on/in the/dt attributes/nns that/wdt are/vbp accessible/jj to/to them/prp ./punct
+our/prp$ experiments/nns show/vbp that/in i/fw )/punct by/in caching/vbg plaintext/nn and/cc ciphertext/nn content/nn when/wrb possible/jj ,/punct we/prp are/vbp able/jj to/to deliver/vb comparable/jj performance/nn to/to plaintext/nn events/nns ,/punct and/cc ii/ls )/punct that/wdt attribute/vbp encryption/nn within/in an/dt event/nn incurs/vbz far/rb less/rbr overhead/jj than/in defining/vbg separate/jj event/nn types/nns for/in the/dt attributes/nns that/wdt need/vbp different/jj levels/nns of/in protection/nn ./punct
+in/in environments/nns comprising/vbg multiple/jj domains/nns ,/punct where/wrb eventbrokers/nns have/vbp different/jj security/nn credentials/nns ,/punct we/prp have/vbp quantified/vbn how/wrb a/dt trade-off/nn can/md be/vb made/vbn between/in performance/nn and/cc expressiveness/nn ./punct
+we/prp would/md like/vb to/to thank/vb the/dt anonymous/jj reviewers/nns for/in their/prp$ very/rb helpful/jj comments/nns ./punct
+lauri/nnp pesonen/nnp is/vbz supported/vbn by/in epsrc/nnp (/punct gr/t28164/nn )/punct and/cc the/dt nokia/nnp foundation/nnp ./punct
+david/nnp eyers/nnp is/vbz supported/vbn by/in epsrc/nnp (/punct gr/s94919/nn )/punct ./punct
+j./nnp bacon/nnp ,/punct d./nnp m./nnp eyers/nnp ,/punct k./nnp moody/nnp ,/punct and/cc l./nnp i./nnp w./nnp pesonen/nnp ./punct
+securing/vbg publish/subscribe/nn for/in multi-domain/jj systems/nns ./punct
+in/in g./nnp alonso/nnp ,/punct editor/nn ,/punct middleware/nnp ,/punct volume/nn 3790/cd of/in lecture/nnp notes/nnp in/in computer/nnp science/nnp ,/punct pages/nns 1-20/cd ./punct
+springer/nnp ,/punct 2005./cd conventional/jj authenticated-encryption/nn mode/nn ./punct
+cryptology/nnp eprint/nnp archive/nnp ,/punct report/nnp 2003/069/cd ,/punct 2003./cd http/nn :/punct //eprint.iacr.org//nn ./punct
+a./nn carzaniga/nnp ,/punct d./nnp s./nnp rosenblum/nnp ,/punct and/cc a./nn l./nnp wolf/nnp ./punct
+design/nn and/cc evaluation/nn of/in a/dt wide-area/jj event/nn notification/nn service/nn ./punct
+acm/nnp transactions/nns on/in computer/nnp systems/nnps ,/punct 19/cd (/punct 3/cd )/punct :332-383/cd ,/punct aug/nnp ./punct
+2001/cd ./punct
+m./nnp castro/nnp ,/punct p./nnp druschel/nnp ,/punct a./nnp kermarrec/nnp ,/punct and/cc decentralized/vbn application-level/jj multicast/jj infrastructure/nn ./punct
+ieee/nnp journal/nnp on/in selected/nnp areas/nns in/in communications/nns (/punct jsac/nn )/punct ,/punct 20/cd (/punct 8/cd )/punct :1489-1499/cd ,/punct oct/nn ./punct
+2002/cd ./punct
+t./nnp dierks/nnp and/cc c./nnp allen/nnp ./punct
+the/dt tls/nn protocol/nn ,/punct version/nn 0/cd ./punct

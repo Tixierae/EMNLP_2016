@@ -1,0 +1,177 @@
+in/in this/dt work/nn we/prp study/vbp cost/nn sharing/vbg connection/nn games/nns ,/punct where/wrb each/dt player/nn has/vbz a/dt source/nn and/cc sink/vb he/prp would/md like/vb to/to connect/vb ,/punct and/cc the/dt cost/nn of/in the/dt edges/nns is/vbz either/cc shared/vbn equally/rb (/punct fair/jj connection/nn games/nns )/punct or/cc in/in an/dt arbitrary/jj way/nn (/punct general/jj connection/nn games/nns )/punct ./punct
+we/prp study/vbp the/dt graph/nn topologies/nns that/wdt guarantee/vbp the/dt existence/nn of/in a/dt strong/jj equilibrium/nn (/punct where/wrb no/dt coalition/nn can/md improve/vb the/dt cost/nn of/in each/dt of/in its/prp$ members/nns )/punct regardless/rb of/in the/dt specific/jj costs/nns on/in the/dt edges/nns ./punct
+our/prp$ main/jj existence/nn results/nns are/vbp the/dt following/nn :/punct (/punct 1/cd )/punct for/in a/dt single/jj source/nn and/cc sink/nn we/prp show/vbp that/in there/ex is/vbz always/rb a/dt strong/jj equilibrium/nn (/punct both/cc for/in fair/jj and/cc general/jj connection/nn games/nns )/punct ./punct
+(/punct 2/cd )/punct for/in a/dt single/jj source/nn multiple/jj sinks/vbz we/prp show/vbp that/in for/in a/dt series/nn parallel/nn graph/nn a/dt strong/jj equilibrium/nn always/rb exists/vbz (/punct both/cc for/in fair/jj and/cc general/jj connection/nn games/nns )/punct ./punct
+(/punct 3/cd )/punct for/in multi/nns source/nn and/cc sink/nn we/prp show/vbp that/in an/dt extension/nn parallel/nn graph/nn always/rb admits/vbz a/dt strong/jj equilibrium/nn in/in fair/jj connection/nn games/nns ./punct
+as/in for/in the/dt quality/nn of/in the/dt strong/jj equilibrium/nn we/prp show/vbp that/in in/in any/dt fair/jj connection/nn games/nns the/dt cost/nn of/in a/dt strong/jj equilibrium/nn is/vbz θ/nnp (/punct log/nn n/nn )/punct from/in the/dt optimal/jj solution/nn ,/punct where/wrb n/nn is/vbz the/dt number/nn of/in players/nns ./punct
+(/punct this/dt should/md be/vb contrasted/vbn with/in the/dt ω/nn (/punct n/nn )/punct price/nn of/in anarchy/nn for/in the/dt same/jj setting/nn ./punct
+)/punct for/in single/jj source/nn general/jj connection/nn games/nns and/cc single/jj source/nn single/jj sink/nn fair/jj connection/nn games/nns ,/punct we/prp show/vbp that/in a/dt strong/jj equilibrium/nn is/vbz always/rb an/dt optimal/jj solution/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct computer-communication/nnp networks/nnp ]/punct :/punct distributed/vbn systems/nnps ;/punct f.2.0/nn [/punct analysis/nn of/in algorithms/nns and/cc problem/nnp complexity/nnp ]/punct :/punct general/nnp ;/punct j.4/nn [/punct social/nnp and/cc behavioral/nnp sciences/nnps ]/punct :/punct economics/nnp ;/punct k.4.4/nn [/punct electronic/jj commerce/nnp ]/punct :/punct payment/nn schemes/nns general/nnp terms/nns theory/nnp ,/punct economics/nnp ,/punct algorithms/nnp 1/cd ./punct
+introduction/nnp computational/nnp game/nn theory/nn has/vbz introduced/vbn the/dt issue/nn of/in incentives/nns to/to many/jj of/in the/dt classical/jj combinatorial/jj optimization/nn problems/nns ./punct
+the/dt view/nn that/in the/dt demand/nn side/nn is/vbz many/jj times/nns not/rb under/in the/dt control/nn of/in a/dt central/jj authority/nn that/wdt optimizes/vbz the/dt global/jj performance/nn ,/punct but/cc rather/rb under/in the/dt control/nn of/in individuals/nns with/in different/jj incentives/nns ,/punct has/vbz led/vbn already/rb to/to many/jj important/jj insights/nns ./punct
+consider/vb classical/jj routing/vbg and/cc transportation/nn problems/nns such/jj as/in multicast/nn or/cc multi-commodity/jj problems/nns ,/punct which/wdt are/vbp many/jj times/nns viewed/vbd as/in follows/vbz ./punct
+we/prp are/vbp given/vbn a/dt graph/nn with/in edge/nn costs/nns and/cc connectivity/nn demands/nns between/in nodes/nns ,/punct and/cc our/prp$ goal/nn is/vbz to/to find/vb a/dt minimal/jj cost/nn solution/nn ./punct
+the/dt classical/jj centralized/jj approach/nn assumes/vbz that/in all/pdt the/dt individual/jj demands/nns can/md both/dt be/vb completely/rb coordinated/vbn and/cc have/vbp no/dt individual/jj incentives/nns ./punct
+the/dt game/nn theory/nn point/nn of/in view/nn would/md assume/vb that/in each/dt individual/jj demand/nn is/vbz controlled/vbn by/in a/dt player/nn that/wdt optimizes/vbz its/prp$ own/jj utility/nn ,/punct and/cc the/dt resulting/vbg outcome/nn could/md be/vb far/rb from/in the/dt optimal/jj solution/nn ./punct
+when/wrb considering/vbg individual/jj incentives/nns one/cd needs/vbz to/to discuss/vb the/dt appropriate/jj solution/nn concept/nn ./punct
+much/jj of/in the/dt research/nn in/in computational/jj game/nn theory/nn has/vbz focused/vbn on/in the/dt classical/jj nash/nnp equilibrium/nn as/in the/dt primary/jj solution/nn concept/nn ./punct
+indeed/rb nash/nnp equilibrium/nn has/vbz many/jj benefits/nns ,/punct and/cc most/rbs importantly/rb it/prp always/rb exists/vbz (/punct in/in mixed/jj strategies/nns )/punct ./punct
+however/rb ,/punct the/dt solution/nn concept/nn of/in nash/nnp equilibrium/nn is/vbz resilient/jj only/rb to/to unilateral/jj deviations/nns ,/punct while/in in/in reality/nn ,/punct players/nns may/md be/vb able/jj to/to coordinate/vb their/prp$ actions/nns ./punct
+a/dt strong/jj equilibrium/nn [/punct 4/cd ]/punct is/vbz a/dt state/nn from/in which/wdt no/dt coalition/nn (/punct of/in any/dt size/nn )/punct can/md deviate/vb and/cc improve/vb the/dt utility/nn of/in every/dt member/nn of/in the/dt coalition/nn (/punct while/in possibly/rb lowering/vbg the/dt utility/nn 84/cd of/in players/nns outside/in the/dt coalition/nn )/punct ./punct
+this/dt resilience/nn to/to deviations/nns by/in coalitions/nns of/in the/dt players/nns is/vbz highly/rb attractive/jj ,/punct and/cc one/prp can/md hope/vb that/in once/rb a/dt strong/jj equilibrium/nn is/vbz reached/vbn it/prp is/vbz highly/rb likely/jj to/to sustain/vb ./punct
+from/in a/dt computational/jj game/nn theory/nn point/nn of/in view/nn ,/punct an/dt additional/jj benefit/nn of/in a/dt strong/jj equilibrium/nn is/vbz that/in it/prp has/vbz a/dt potential/jj to/to reduce/vb the/dt distance/nn between/in the/dt optimal/jj solution/nn and/cc the/dt solution/nn obtained/vbn as/in an/dt outcome/nn of/in selfish/jj behavior/nn ./punct
+the/dt strong/jj price/nn of/in anarchy/nn (/punct spoa/nn )/punct ,/punct introduced/vbn in/in [/punct 1/cd ]/punct ,/punct is/vbz the/dt ratio/nn between/in the/dt cost/nn of/in the/dt worst/jjs strong/jj equilibrium/nn and/cc the/dt cost/nn of/in an/dt optimal/jj solution/nn ./punct
+obviously/rb ,/punct spoa/nn is/vbz meaningful/jj only/rb in/in those/dt cases/nns where/wrb a/dt strong/jj equilibrium/nn exists/vbz ./punct
+a/dt major/jj downside/nn of/in strong/jj equilibrium/nn is/vbz that/in most/jjs games/nns do/vbp not/rb admit/vb any/dt strong/jj equilibrium/nn ./punct
+even/rb simple/jj classical/jj games/nns like/in the/dt prisoner/nn ''/'' s/nns dilemma/nn do/vbp not/rb posses/vb any/dt strong/jj equilibrium/nn (/punct which/wdt is/vbz also/rb an/dt example/nn of/in a/dt congestion/nn game/nn that/wdt does/vbz not/rb posses/vb a/dt strong/jj equilibrium1/nn )/punct ./punct
+this/dt unfortunate/jj fact/nn has/vbz reduced/vbn the/dt concentration/nn in/in strong/jj equilibrium/nn ,/punct despite/in its/prp$ highly/rb attractive/jj properties/nns ./punct
+yet/rb ,/punct [/punct 1/cd ]/punct have/vbp identified/vbn two/cd broad/jj families/nns of/in games/nns ,/punct namely/rb job/nn scheduling/nn and/cc network/nn formation/nn ,/punct where/wrb a/dt strong/jj equilibrium/nn always/rb exists/vbz and/cc the/dt spoa/nn is/vbz significantly/rb lower/jjr than/in the/dt price/nn of/in anarchy/nn (/punct which/wdt is/vbz the/dt ratio/nn between/in the/dt worst/jjs nash/nnp equilibrium/nn and/cc the/dt optimal/jj solution/nn [/punct 15/cd ,/punct 18/cd ,/punct 5/cd ,/punct 6/cd ]/punct )/punct ./punct
+in/in this/dt work/nn we/prp concentrate/vbp on/in cost/nn sharing/nn connection/nn games/nns ,/punct introduced/vbn by/in [/punct 3/cd ,/punct 2/cd ]/punct ./punct
+in/in such/pdt a/dt game/nn ,/punct there/ex is/vbz an/dt underlying/vbg directed/vbn graph/nn with/in edge/nn costs/nns ,/punct and/cc individual/jj users/nns have/vbp connectivity/nn demands/nns (/punct between/in a/dt source/nn and/cc a/dt sink/nn )/punct ./punct
+we/prp consider/vbp two/cd models/nns ./punct
+the/dt fair/jj cost/nn connection/nn model/nn [/punct 2/cd ]/punct allows/vbz each/dt player/nn to/to select/vb a/dt path/nn from/in the/dt source/nn to/to the/dt sink2/nn ./punct
+in/in this/dt game/nn the/dt cost/nn of/in an/dt edge/nn is/vbz shared/vbn equally/rb between/in all/pdt the/dt players/nns that/wdt selected/vbd the/dt edge/nn ,/punct and/cc the/dt cost/nn of/in the/dt player/nn is/vbz the/dt sum/nn of/in its/prp$ costs/nns on/in the/dt edges/nns it/prp selected/vbd ./punct
+the/dt general/jj connection/nn game/nn [/punct 3/cd ]/punct allows/vbz each/dt player/nn to/to offer/vb prices/nns for/in edges/nns ./punct
+in/in this/dt game/nn an/dt edge/nn is/vbz bought/vbn if/in the/dt sum/nn of/in the/dt offers/nns at/in least/jjs covers/vbz its/prp$ cost/nn ,/punct and/cc the/dt cost/nn of/in the/dt player/nn is/vbz the/dt sum/nn of/in its/prp$ offers/nns on/in the/dt bought/vbn edges/nns (/punct in/in both/cc games/nns we/prp assume/vbp that/in the/dt player/nn has/vbz to/to guarantee/vb the/dt connectivity/nn between/in its/prp$ source/nn and/cc sink/vb )/punct ./punct
+in/in this/dt work/nn we/prp focus/vbp on/in two/cd important/jj issues/nns ./punct
+the/dt first/jj one/cd is/vbz identifying/vbg under/in what/wp conditions/nns the/dt existence/nn of/in a/dt strong/jj equilibrium/nn is/vbz guaranteed/vbn ,/punct and/cc the/dt second/jj one/cd is/vbz the/dt quality/nn of/in the/dt strong/jj equilibria/nns ./punct
+for/in the/dt existence/nn part/nn ,/punct we/prp identify/vbp families/nns of/in graph/nn topologies/nns that/wdt possess/vbp some/dt strong/jj equilibrium/nn for/in any/dt assignment/nn of/in edge/nn costs/nns ./punct
+one/prp can/md view/vb this/dt separation/nn between/in the/dt graph/nn topology/nn and/cc the/dt edge/nn costs/nns ,/punct as/in a/dt separation/nn between/in the/dt underlying/vbg infrastructure/nn and/cc the/dt costs/nns the/dt players/nns observe/vbp to/to purchase/vb edges/nns ./punct
+while/in one/cd expects/vbz the/dt infrastructure/nn to/to be/vb stable/jj over/in long/jj periods/nns of/in time/nn ,/punct the/dt costs/nns the/dt players/nns observe/vbp can/md be/vb easily/rb modified/vbn over/in short/jj time/nn periods/nns ./punct
+such/pdt a/dt topological/jj characterization/nn of/in the/dt underlying/vbg infrastructure/nn provides/vbz a/dt network/nn designer/nn topological/jj conditions/nns that/wdt will/md ensure/vb stability/nn in/in his/prp$ network/nn ./punct
+our/prp$ results/nns are/vbp as/in follows/vbz ./punct
+for/in the/dt single/jj commodity/nn case/nn (/punct all/pdt the/dt players/nns have/vbp the/dt same/jj source/nn and/cc sink/vb )/punct ,/punct there/ex is/vbz a/dt strong/jj equilibrium/nn in/in any/dt graph/nn (/punct both/cc for/in fair/jj and/cc general/jj connection/nn games/nns )/punct ./punct
+moreover/rb ,/punct the/dt strong/jj equilibrium/nn is/vbz also/rb 1/cd while/in any/dt congestion/nn game/nn is/vbz known/vbn to/to admit/vb at/in least/jjs one/cd nash/nnp equilibrium/nn in/in pure/jj strategies/nns [/punct 16/cd ]/punct ./punct
+2/cd the/dt fair/jj cost/nn sharing/vbg scheme/nn is/vbz also/rb attractive/jj from/in a/dt mechanism/nn design/nn point/nn of/in view/nn ,/punct as/in it/prp is/vbz a/dt strategyproof/jj costsharing/nn mechanism/nn [/punct 14/cd ]/punct ./punct
+the/dt optimal/jj solution/nn (/punct namely/rb ,/punct the/dt players/nns share/vbp a/dt shortest/jjs path/nn from/in the/dt common/jj source/nn to/to the/dt common/jj sink/nn )/punct ./punct
+for/in the/dt case/nn of/in a/dt single/jj source/nn and/cc multiple/jj sinks/nns (/punct for/in example/nn ,/punct in/in a/dt multicast/jj tree/nn )/punct ,/punct we/prp show/vbp that/in in/in a/dt fair/jj connection/nn game/nn there/ex is/vbz a/dt strong/jj equilibrium/nn if/in the/dt underlying/vbg graph/nn is/vbz a/dt series/nn parallel/nn graph/nn ,/punct and/cc we/prp show/vbp an/dt example/nn of/in a/dt nonseries/jj parallel/nn graph/nn that/wdt does/vbz not/rb have/vb a/dt strong/jj equilibrium/nn ./punct
+for/in the/dt case/nn of/in multi-commodity/jj (/punct multi/nns sources/nns and/cc sinks/vbz )/punct ,/punct we/prp show/vbp that/in in/in a/dt fair/jj connection/nn game/nn if/in the/dt graph/nn is/vbz an/dt extension/nn parallel/nn graph/nn then/rb there/ex is/vbz always/rb a/dt strong/jj equilibrium/nn ,/punct and/cc we/prp show/vbp an/dt example/nn of/in a/dt series/nn parallel/nn graph/nn that/wdt does/vbz not/rb have/vb a/dt strong/jj equilibrium/nn ./punct
+as/in far/rb as/in we/prp know/vbp ,/punct we/prp are/vbp the/dt first/jj to/to provide/vb a/dt topological/jj characterization/nn for/in equilibrium/nn existence/nn in/in multi-commodity/jj and/cc single-source/jj network/nn games/nns ./punct
+for/in any/dt fair/jj connection/nn game/nn we/prp show/vbp that/in if/in there/ex exists/vbz a/dt strong/jj equilibrium/nn it/prp is/vbz at/in most/jjs a/dt factor/nn of/in θ/nn (/punct log/nn n/nn )/punct from/in the/dt optimal/jj solution/nn ,/punct where/wrb n/nn is/vbz the/dt number/nn of/in players/nns ./punct
+this/dt should/md be/vb contrasted/vbn with/in the/dt θ/nn (/punct n/nn )/punct bound/vbd that/in exists/vbz for/in the/dt price/nn of/in anarchy/nn [/punct 2/cd ]/punct ./punct
+for/in single/jj source/nn general/jj connection/nn games/nns ,/punct we/prp show/vbp that/in any/dt series/nn parallel/nn graph/nn possesses/vbz a/dt strong/jj equilibrium/nn ,/punct and/cc we/prp show/vbp an/dt example/nn of/in a/dt graph/nn that/wdt does/vbz not/rb have/vb a/dt strong/jj equilibrium/nn ./punct
+in/in this/dt case/nn we/prp also/rb show/vbp that/in any/dt strong/jj equilibrium/nn is/vbz optimal/jj ./punct
+related/jj work/nn topological/jj characterizations/nns for/in single-commodity/jj network/nn games/nns have/vbp been/vbn recently/rb provided/vbn for/in various/jj equilibrium/nn properties/nns ,/punct including/vbg equilibrium/nn existence/nn [/punct 12/cd ,/punct 7/cd ,/punct 8/cd ]/punct ,/punct equilibrium/nn uniqueness/nn [/punct 10/cd ]/punct and/cc equilibrium/nn efficiency/nn [/punct 17/cd ,/punct 11/cd ]/punct ./punct
+the/dt existence/nn of/in pure/jj nash/nnp equilibrium/nn in/in single-commodity/jj network/nn congestion/nn games/nns with/in player-specific/jj costs/nns or/cc weights/nns was/vbd studied/vbn in/in [/punct 12/cd ]/punct ./punct
+the/dt existence/nn of/in strong/jj equilibrium/nn was/vbd studied/vbn in/in both/cc utility-decreasing/jj (/punct e.g./fw ,/punct routing/vbg )/punct and/cc utility-increasing/jj (/punct e.g./fw ,/punct fair/jj cost-sharing/jj )/punct congestion/nn games/nns ./punct
+[/punct 7/cd ,/punct 8/cd ]/punct have/vbp provided/vbn a/dt full/jj topological/jj characterization/nn for/in a/dt se/nn existence/nn in/in single-commodity/jj utility-decreasing/jj congestion/nn games/nns ,/punct and/cc showed/vbd that/in a/dt se/nn always/rb exists/vbz if/in and/cc only/rb if/in the/dt underlying/vbg graph/nn is/vbz extension-parallel/jj ./punct
+[/punct 19/cd ]/punct have/vbp shown/vbn that/in in/in single-commodity/jj utility-increasing/jj congestion/nn games/nns ,/punct the/dt topological/jj characterization/nn is/vbz essentially/rb equivalent/jj to/to parallel/vb links/nns ./punct
+in/in addition/nn ,/punct they/prp have/vbp shown/vbn that/in these/dt results/nns hold/vbp for/in correlated/vbn strong/jj equilibria/nns as/rb well/rb (/punct in/in contrast/nn to/to the/dt decreasing/vbg setting/nn ,/punct where/wrb correlated/vbd strong/jj equilibria/nns might/md not/rb exist/vb at/in all/dt )/punct ./punct
+while/in the/dt fair/jj cost/nn sharing/vbg games/nns we/prp study/nn are/vbp utility/nn increasing/vbg network/nn congestion/nn games/nns ,/punct we/prp derive/vbp a/dt different/jj characterization/nn than/in [/punct 19/cd ]/punct due/jj to/to the/dt different/jj assumptions/nns regarding/vbg the/dt players/nns ''/'' actions.3/nn 2/cd ./punct
+model/nn
+in/in they/prp allow/vbp to/to restrict/vb some/dt players/nns from/in using/vbg certain/jj links/nns ,/punct even/rb though/in the/dt links/nns exist/vbp in/in the/dt graph/nn ,/punct while/in we/prp do/vbp not/rb allow/vb this/dt ,/punct and/cc assume/vb that/in the/dt available/jj strategies/nns for/in players/nns are/vbp fully/rb represented/vbn by/in the/dt underlying/vbg graph/nn ./punct
+the/dt profile/nn of/in actions/nns taken/vbn by/in the/dt players/nns ,/punct and/cc let/vb s−i/nn =/punct by/in all/dt players/nns other/jj than/in player/nn i./nn note/vbp that/in s/nn =/punct (/punct si/nnp ,/punct s−i/nnp )/punct ./punct
+the/dt players/nns ,/punct and/cc we/prp denote/vbp by/in opt/nn (/punct λ/nn )/punct the/dt minimal/jj social/jj costλ/nn (/punct s/nn )/punct =/punct i∈n/nn ci/nn (/punct s/nn )/punct ./punct
+i/fw ∈/fw n/nn can/md benefit/vb from/in unilaterally/rb deviating/vbg from/in his/prp$ action/nn ci/nn (/punct s/nn )/punct ./punct
+we/prp denote/vbp by/in ne/nns (/punct λ/nn )/punct the/dt set/nn of/in pure/jj nash/nnp equilibria/nns in/in the/dt game/nn λ./nn such/jj a/dt way/nn that/in each/dt player/nn in/in the/dt coalition/nn reduces/vbz its/prp$ cost/nn )/punct ./punct
+strong/jj equilibrium/nn (/punct se/nn )/punct ./punct
+next/in we/prp define/vbp the/dt price/nn of/in anarchy/nnp ,/punct price/nnp of/in stability/nn ,/punct and/cc their/prp$ extension/nn to/to strong/jj price/nn of/in anarchy/nnp and/cc strong/jj price/nn of/in stability/nn ./punct
+of/in anarchy/nn (/punct k-spoa/nn )/punct for/in the/dt game/nn λ./nnp the/nnp price/nnp of/in anarchy/nnp (/punct poa/nn )/punct is/vbz the/dt ratio/nn between/in the/dt maximal/jj cost/nn of/in a/dt pure/jj nash/nnp equilibrium/nn (/punct assuming/vbg one/cd exists/vbz )/punct and/cc the/dt social/jj optimum/nn ,/punct i.e./fw ,/punct maxs∈ne/nn (/punct λ/nn )/punct costλ/nn (/punct s/nn )/punct /opt/nn (/punct λ/nn )/punct ./punct
+similarly/rb ,/punct the/dt price/nn of/in stability/nn (/punct pos/nn )/punct is/vbz the/dt ratio/nn between/in the/dt minimal/jj cost/nn of/in a/dt pure/jj nash/nnp equilibrium/nn and/cc k-strong/jj price/nn of/in anarchy/nnp (/punct k-spoa/nn )/punct is/vbz the/dt ratio/nn between/in the/dt maximal/jj cost/nn of/in a/dt k-strong/jj equilibrium/nn (/punct assuming/vbg one/cd exists/vbz )/punct and/cc the/dt social/jj optimum/nn ,/punct i.e./fw ,/punct maxs∈k-se/jj (/punct λ/nn )/punct costλ/nn (/punct s/nn )/punct /opt/nn (/punct λ/nn )/punct ./punct
+the/dt spoa/nn is/vbz the/dt n-spoa/nn ./punct
+similarly/rb ,/punct the/dt strong/jj price/nn of/in stability/nn (/punct spos/nn )/punct is/vbz the/dt ratio/nn between/in the/dt minimal/jj cost/nn of/in a/dt pure/jj strong/jj equilibrium/nn and/cc the/dt social/jj optimum/nn ,/punct and/cc spos/nn are/vbp defined/vbn only/rb if/in some/dt strong/jj equilibrium/nn exists/vbz ./punct
+a/dt cost/nn sharing/vbg connection/nn game/nn has/vbz an/dt underlying/jj i/fw ∈/fw n/nn has/vbz an/dt associated/vbn source/nn si/nns and/cc sink/vb ti/nns ./punct
+shared/vbn equally/rb by/in the/dt set/nn of/in all/dt players/nns whose/wp$ paths/nns sum/nn of/in his/prp$ costs/nns on/in the/dt edges/nns it/prp selected/vbd ./punct
+more/rbr formally/rb ,/punct fe/nn (/punct ne/nn (/punct s/nn )/punct )/punct ./punct
+simplicity/nn ./punct
+the/dt full/jj version/nn contains/vbz the/dt complete/jj proofs/nns for/in the/dt case/nn ce/nn ≥/cd 0/cd ./punct
+(/punct v/nn ,/punct ep/nn )/punct denote/vbp the/dt graph/nn bought/vbn by/in the/dt players/nns for/in profile/nn i/fw ci/fw (/punct p/nn )/punct the/dt total/jj cost/nn under/in the/dt profile/nn p./nn for/in a/dt subgraph/nn h/nn of/in g/nn we/prp denote/vbp the/dt total/jj cost/nn of/in the/dt edges/nns in/in h/nn by/in c/nn (/punct h/nn )/punct ./punct
+a/dt symmetric/jj connection/nn game/nn implies/vbz that/in the/dt source/nn and/cc sink/nn of/in all/pdt the/dt players/nns are/vbp identical/jj ./punct
+(/punct we/prp also/rb call/vbp a/dt symmetric/jj connection/nn game/nn a/dt single/jj source/nn single/jj sink/nn connection/nn game/nn ,/punct or/cc a/dt single/jj commodity/nn connection/nn game/nn ./punct
+)/punct a/nn single/jj source/nn connection/nn game/nn implies/vbz that/in the/dt sources/nns of/in all/pdt the/dt players/nns are/vbp identical/jj ./punct
+finally/rb ,/punct a/dt multi/jj commodity/nn connection/nn game/nn implies/vbz that/in each/dt player/nn has/vbz its/prp$ own/jj source/nn and/cc sink/nn ./punct
+our/prp$ directed/vbn graphs/nns would/md be/vb acyclic/jj ,/punct and/cc would/md have/vb a/dt source/nn node/nn (/punct from/in which/wdt all/dt nodes/nns are/vbp reachable/jj )/punct and/cc a/dt sink/nn node/nn (/punct which/wdt every/dt node/nn can/md reach/vb )/punct ./punct
+we/prp first/rb define/vb the/dt following/vbg actions/nns for/in composition/nn of/in directed/vbn graphs/nns ./punct
+•/nn identification/nn :/punct the/dt identification/nn operation/nn allows/vbz to/to collapse/vb two/cd nodes/nns to/to one/cd ./punct
+more/rbr formally/rb ,/punct given/vbn graph/nn and/cc v2/nn are/vbp now/rb connected/vbn to/to v/ls ./punct
+•/nn parallel/jj composition/nn :/punct given/vbn two/cd directed/vbn graphs/nns ,/punct g1/nn =/punct a/dt new/jj source/nn node/nn s/nns ,/punct and/cc identify/vb the/dt sinks/nns t1/nn and/cc t2/nn ,/punct forming/vbg a/dt new/jj sink/nn t/nn ./punct
+•/nnp series/nnp composition/nn :/punct given/vbn two/cd directed/vbn graphs/nns ,/punct g1/nn =/punct sink/nn t/nn =/punct t2/nn ./punct
+•/nn extension/nnp composition/nn :/punct a/dt series/nn composition/nn when/wrb single/jj directed/jj edge/nn is/vbz an/dt extension/nn composition/nn ,/punct and/cc we/prp denote/vbp it/prp by/in g/nn =/punct g1/nn →e/nn g2/nn ./punct
+and/cc payment/nn only/rb on/in those/dt edges/nns ./punct
+this/dt implies/vbz that/in in/in equilibrium/nn every/dt player/nn has/vbz its/prp$ sink/nn and/cc source/nn connected/vbn by/in a/dt path/nn in/in gp/nn ./punct
+extension/nn parallel/nn graphs/nns (/punct and/cc in/in the/dt extension/nn composition/nn g2/nn ,/punct where/wrb g1/nn and/cc g2/nn are/vbp series/nn parallel/jj graphs/nns ./punct
+whose/wp$ proof/nn appears/vbz in/in the/dt full/jj version/nn ,/punct would/md be/vb the/dt main/jj topological/jj tool/nn in/in the/dt case/nn of/in single/jj source/nn graph/nn ./punct
+q/nnp contains/vbz y/nn and/cc the/dt paths/nns qy/nn ,/punct t/nn and/cc q/nnp are/vbp edge/nn disjoint/nn ./punct
+this/dt section/nn derives/vbz our/prp$ results/nns for/in fair/jj connection/nn games/nns ./punct
+while/in it/prp is/vbz known/vbn that/in every/dt fair/jj connection/nn game/nn possesses/vbz a/dt nash/nnp equilibrium/nn in/in pure/jj strategies/nns ,/punct this/dt is/vbz not/rb necessarily/rb the/dt case/nn for/in a/dt strong/jj equilibrium/nn ./punct
+in/in this/dt section/nn ,/punct we/prp study/vbp the/dt existence/nn of/in strong/jj equilibrium/nn in/in fair/jj connection/nn games/nns ./punct
+we/prp begin/vbp with/in a/dt simple/jj case/nn ,/punct showing/vbg that/in every/dt symmetric/jj fair/jj connection/nn game/nn possesses/vbz a/dt strong/jj equilibrium/nn ./punct
+choose/vb the/dt same/jj shortest/jjs path/nn q/nnp (/punct from/in the/dt source/nn s/vbz to/to the/dt j/nn ∈/cd γ/nn decreases/vbz ./punct
+let/vb qj/nnp be/vb a/dt new/jj path/nn used/vbn by/in player/nn j/nn ∈/cd γ./nn c/nn (/punct q/nnp \/punct (/punct q/nnp ∩/cd qj/nn )/punct )/punct ,/punct for/in any/dt path/nn qj/nn ./punct
+therefore/rb for/in every/dt player/nn the/dt fact/nn that/in all/dt players/nns in/in γ/nn reduce/vb their/prp$ cost/nn ./punct
+(/punct in/in fact/nn ,/punct no/dt while/in every/dt symmetric/jj fair/jj connection/nn game/nn admits/vbz a/dt se/nn ,/punct it/prp does/vbz not/rb hold/vb for/in every/dt fair/jj connection/nn game/nn ./punct
+in/in what/wdt follows/vbz ,/punct we/prp study/vbp the/dt network/nn topologies/nns that/wdt admit/vbp a/dt strong/jj equilibrium/nn for/in any/dt assignment/nn of/in edge/nn costs/nns ,/punct and/cc give/vb examples/nns of/in topologies/nns for/in which/wdt a/dt strong/jj equilibrium/nn does/vbz not/rb exist/vb ./punct
+the/dt following/vbg lemma/nn ,/punct whose/wp$ proof/nn appears/vbz in/in the/dt full/jj se/nn ./punct
+parallel/jj graph/nn g/nn with/in source/nn s/nns and/cc sink/vb t./rb assume/vb that/in player/nn i.e./fw ,/punct ci/fw (/punct s/nn )/punct =/punct mint/nn ∈se/nn (/punct λ/nn )/punct ci/nn (/punct t/nn )/punct and/cc let/vb s∗/nn minimizes/vbz the/dt cost/nn of/in player/nn i/fw (/punct out/in of/in all/dt possible/jj profiles/nns )/punct ,/punct )/punct ./punct
+the/dt next/jj lemma/nn considers/vbz parallel/jj composition/nn ./punct
+every/dt fair/jj connection/nn game/nn on/in the/dt graphs/nns g1/nn and/cc g2/nn possesses/vbz a/dt strong/jj equilibrium/nn ,/punct then/rb the/dt game/nn λ/nnp possesses/vbz a/dt strong/jj equilibrium/nn ./punct
+set/nn of/in players/nns with/in an/dt endpoint/nn in/in vi/nnp \/punct {/punct s/nns ,/punct t/nn }/punct ,/punct for/in i/fw ∈/fw {/punct 1/cd ,/punct 2/cd }/punct ./punct
+and/cc g2/nn with/in players/nns t1/nn ∪/cd t3/nn and/cc t2/nn ∪/cd t3/nn ,/punct respectively/rb ./punct
+the/dt cost/nn of/in players/nns in/in t3/nn ,/punct respectively/rb ./punct
+assume/vb w.l.o.g/nn ./punct
+that/in se/nn in/in λ2/nn ./punct
+we/prp will/md show/vb that/in the/dt profile/nn s/nn =/punct s/nn ∪/cd ¯s/nn is/vbz a/dt se/nn in/in λ./nnp s/nnp being/vbg a/dt se/nn in/in λ1/nn or/cc ¯s/nn being/vbg a/dt se/nn in/in λ2/nn ./punct
+the/dt following/vbg theorem/nn considers/vbz the/dt case/nn of/in single/jj source/nn fair/jj connection/nn games/nns ./punct
+players/nns j/vbp such/jj that/in tj/nn ∈/cd v2/nn \/punct {/punct s2/nn }/punct ./punct
+graphs/nns g1/nn and/cc g2/nn with/in players/nns t1/nn ∪/cd t2/nn and/cc t2/nn ,/punct respectively/rb ./punct
+be/vb his/prp$ induced/jj action/nn in/in the/dt game/nn λ2/nn ./punct
+use/vb the/dt profile/nn sj/nn =/punct sj/nn ∪/cd sj/nn ./punct
+player/nn j/nn ∈/cd γ/nn decreases/vbz ./punct
+now/rb ,/punct there/ex are/vbp two/cd cases/nns :/punct case/nnp 1/cd :/punct γ/nn ⊆/cd t1/nn ./punct
+this/dt is/vbz a/dt contradiction/nn to/to s/nn being/vbg a/dt se/nn ./punct
+improve/vb its/prp$ cost/nn ./punct
+however/rb ,/punct this/dt contradicts/vbz the/dt fact/nn that/in s/nn is/vbz a/dt se/nn in/in λ2/nn ./punct
+parallel/jj composition/nn ./punct
+follows/nns from/in lemma/nnp 3.3/cd ./punct
+while/in multi-commodity/jj fair/jj connection/nn games/nns on/in series/nn parallel/nn graphs/nns do/vbp not/rb necessarily/rb possess/vb a/dt se/nn (/punct see/vbp show/nn that/in the/dt profile/nn s/nn =/punct s/nn ∪/cd s/nn is/vbz a/dt se/nn in/in the/dt game/nn λ./nn a/dt coalition/nn γ/nn of/in minimal/jj size/nn that/wdt can/md deviate/vb such/jj that/in the/dt this/dt contradicts/vbz the/dt fact/nn that/in s/nn is/vbz a/dt se/nn in/in λ2/nn ./punct
+topologies/nns in/in which/wdt a/dt strong/jj equilibrium/nn does/vbz not/rb exist/vb ,/punct showing/vbg that/in our/prp$ characterization/nn is/vbz almost/rb tight/jj ./punct
+4/cd ,/punct and/cc thus/rb improves/vbz its/prp$ cost/nn ./punct
+for/in claim/nn (/punct 2/cd )/punct consider/vbp a/dt single/jj source/nn fair/jj connection/nn game/nn on/in the/dt graph/nn g/nn depicted/vbn in/in figure/nn 2/cd ./punct
+there/ex are/vbp two/cd players/nns ./punct
+to/to 2/cd −/cd /2/nn ./punct
+unfortunately/rb ,/punct our/prp$ characterization/nn is/vbz not/rb completely/rb tight/jj ./punct
+parallel/jj graph/nn which/wdt always/rb admits/vbz a/dt strong/jj equilibrium/nn ./punct
+while/in the/dt price/nn of/in anarchy/nn in/in fair/jj connection/nn games/nns can/md =/punct θ/nn (/punct log/nn n/nn )/punct ./punct
+denote/vb by/in φ/nn (/punct s/nn (/punct γ/nn )/punct )/punct the/dt potential/jj function/nn of/in the/dt profile/nn s/nn (/punct γ/nn )/punct decrease/vb his/prp$ cost/nn ./punct
+n/nn ,/punct ./punct
+./punct
+./punct
+,/punct 1/cd ,/punct since/in s/nn is/vbz a/dt se/nn ,/punct there/ex exists/vbz a/dt player/nn in/in γk/nn ,/punct w.l.o.g/nn ./punct
+in/in this/dt way/nn ,/punct γk/nn is/vbz defined/vbn recursively/rb ,/punct such/jj that/in for/in every/dt let/vb ck/nn (/punct s/nn (/punct γk/nn )/punct )/punct denote/vbp the/dt cost/nn of/in player/nn k/nn in/in the/dt game/nn λ/nn (/punct γk/nn )/punct under/in the/dt induced/vbn profile/nn s/nn (/punct γk/nn )/punct ./punct
+it/prp is/vbz easy/jj to/to see/vb that/dt (/punct γk−1/nn )/punct )/punct ./punct
+where/wrb the/dt first/jj inequality/nn follows/vbz since/in the/dt sum/nn of/in the/dt right/jj hand/nn side/nn of/in equation/nn (/punct 3/cd )/punct telescopes/nns ,/punct and/cc the/dt second/jj equality/nn follows/vbz from/in equation/nn (/punct 1/cd )/punct ./punct
+next/in we/prp bound/vbd the/dt spoa/nn when/wrb coalitions/nns of/in size/nn at/in most/jjs k/nn are/vbp allowed/vbn ./punct
+graph/nn g/nn played/vbn by/in the/dt set/nn of/in players/nns tj/nnp ./punct
+let/vb s/nn (/punct tj/nn )/punct denote/vbp ≤/nn h/nn (/punct k/nn )/punct ·/nn opt/nn (/punct λj/nn )/punct ≤/nn h/nn (/punct k/nn )/punct ·/nn opt/nn (/punct λ/nn )/punct ./punct
+where/wrb the/dt first/jj inequality/nn follows/vbz since/in for/in each/dt group/nn tj/nn and/cc player/nn i/fw ∈/fw tj/nn ,/punct it/prp holds/vbz that/in ci/nn (/punct s/nn )/punct ≤/cd ci/nn (/punct s/nn (/punct tj/nn )/punct )/punct ./punct
+next/in we/prp show/vbp an/dt almost/rb matching/vbg lower/jjr bound/vbn ./punct
+(/punct the/dt this/dt follows/vbz since/in for/in any/dt strategy/nn profile/nn s/nn ,/punct if/in a/dt single/jj player/nn k/nn deviates/vbz to/to strategy/nn sk/nn ,/punct then/rb the/dt change/nn in/in the/dt the/dt cost/nn to/to player/nn k./nn spos/nn >/punct pos/nn ./punct
+consider/vb the/dt profile/nn s/nn in/in which/wdt all/dt n/nn players/nns use/vbp the/dt link/nn is/vbz a/dt k-se/nn ,/punct and/cc k-spoa/nn =/punct n/k/nn ./punct
+the/dt results/nns of/in theorems/nns 3.7/cd and/cc 3.8/cd can/md be/vb extended/vbn to/to concave/vb cost/nn functions/nns ./punct
+consider/vb the/dt extended/jj fair/jj connection/nn game/nn ,/punct where/wrb each/dt edge/nn has/vbz a/dt cost/nn which/wdt depends/vbz on/in the/dt number/nn of/in players/nns using/vbg that/in edge/nn ,/punct ce/nn (/punct ne/nn )/punct ./punct
+we/prp assume/vbp that/in the/dt cost/nn function/nn ce/nn (/punct ne/nn )/punct is/vbz a/dt nondecreasing/jj ,/punct concave/jj function/nn ./punct
+note/vb that/in the/dt cost/nn of/in an/dt edge/nn ce/nn (/punct ne/nn )/punct might/md increase/vb with/in the/dt number/nn of/in players/nns using/vbg it/prp ,/punct but/cc the/dt cost/nn per/in player/nn fe/nn (/punct ne/nn )/punct =/punct ce/nn (/punct ne/nn )/punct /ne/nn decreases/vbz when/wrb ce/nn (/punct ne/nn )/punct is/vbz concave/nn ./punct
+using/vbg the/dt arguments/nns in/in the/dt proof/nn of/in theorem/nnp 3.10/cd and/cc nash/nnp equilibria/nnp ,/punct it/prp must/md hold/vb that/dt spoa/nn ≤/cd poa/nn ,/punct meaning/vbg that/in the/dt spoa/nn can/md only/rb be/vb improved/vbn compared/vbn to/to the/dt poa/nn ./punct
+however/rb ,/punct with/in respect/nn to/to the/dt price/nn of/in stability/nn the/dt opposite/jj direction/nn holds/vbz ,/punct that/dt is/vbz ,/punct spos/nn ≥/cd pos/nn ./punct
+we/prp next/rb show/vbp that/in there/ex exists/vbz a/dt fair/jj connection/nn game/nn in/in which/wdt the/dt inequality/nn is/vbz strict/jj ./punct
+in/in this/dt section/nn ,/punct we/prp derive/vbp our/prp$ results/nns for/in general/jj connection/nn games/nns ./punct
+strong/jj equilibrium/nn in/in symmetric/jj general/jj connection/nn games/nns ./punct
+similar/jj to/to theorem/nnp 3.1/cd (/punct using/vbg a/dt similar/jj proof/nn )/punct we/prp establish/vbp ,/punct while/in every/dt single/jj source/nn general/jj connection/nn game/nn possesses/vbz a/dt pure/jj nash/nnp equilibrium/nn ,/punct it/prp does/vbz not/rb necessarily/rb this/dt is/vbz a/dt variation/nn on/in the/dt example/nn given/vbn in/in ./punct
+we/prp thank/vbp elliot/nnp anshelevich/nnp ,/punct whose/wp$ similar/jj topology/nn for/in the/dt fair-connection/nn game/nn inspired/vbd this/dt example/nn ./punct
+next/in we/prp show/vbp that/in for/in the/dt class/nn of/in series/nn parallel/nn graphs/nns ,/punct source/nn ./punct
+way/nn )/punct ,/punct and/cc w.l.o.g/nn ./punct
+we/prp assume/vbp that/in 1/cd →/nn 2/cd →/cd ·/nn ·/nn ·/nn →/cd n./nn the/dt algorithm/nn compute-se/nn ,/punct considers/vbz the/dt players/nns in/in an/dt increasing/vbg order/nn ,/punct starting/vbg with/in player/nn 1/cd ./punct
+each/dt player/nn i/fw will/md consider/vb the/dt cost/nn of/in those/dt (/punct bought/vbd )/punct edges/nns as/in zero/cd ./punct
+when/wrb compute-se/nn considers/vbz player/nn j/nn ,/punct the/dt cost/nn of/in the/dt edges/nns pj/vbp (/punct e/sym )/punct =/punct 0/cd ./punct
+we/prp next/rb show/vbp that/in the/dt algorithm/nn computese/nnp computes/vbz a/dt se/nn ./punct
+se/nn ./punct
+then/rb ,/punct there/ex exists/vbz a/dt coalition/nn that/wdt can/md improve/vb the/dt costs/nns two/cd cases/nns we/prp consider/vbp ./punct
+case/nn a/dt :/punct after/in the/dt deviation/nn player/nn i/fw does/vbz not/rb pay/vb for/in edges/nns smaller/jjr coalition/nn with/in payments/nns ¯p/nn ./punct
+case/nn b/nn :/punct otherwise/rb ,/punct we/prp show/vbp that/in player/nn i/fw cost/nn after/in the/dt deviation/nn ,/punct i.e/nn ./punct
+ci/nn (/punct ¯p/nn )/punct ,/punct is/vbz at/in least/jjs his/prp$ cost/nn before/in the/dt deviation/nn ,/punct i.e/nn ./punct
+ci/nn (/punct p/nn )/punct ,/punct contradicting/vbg the/dt fact/nn that/in player/nn i/fw improved/vbd his/prp$ cost/nn ./punct
+¯qu/nnp ,/punct v/ls the/dt subpath/nn of/in ¯q/nn from/in u/fw to/to v./cc no/dt player/nn k/nn >/punct i/fw pays/vbz for/in any/dt edge/nn on/in any/dt path/nn from/in s/nns to/to ti/vb ./punct
+on/in any/dt path/nn connecting/vbg s/nns and/cc yk/nn ./punct
+therefore/rb player/nn i/fw fully/rb computese/nnp at/in the/dt step/nn when/wrb player/nn i/fw selects/vbz a/dt shortest/jjs path/nn from/in this/dt point/nn ,/punct player/nn i/fw could/md buy/vb the/dt path/nn ¯qi/nn ci/nn (/punct ¯p/nn )/punct ≥/cd ci/nn (/punct p/nn )/punct ./punct
+this/dt contradicts/vbz the/dt fact/nn that/in player/nn i/fw improved/vbd its/prp$ cost/nn and/cc therefore/rb not/rb all/pdt the/dt players/nns in/in γ/nn reduce/vb their/prp$ cost/nn ./punct
+this/dt implies/vbz that/in p/nn is/vbz a/dt strong/jj equilibrium/nn ./punct

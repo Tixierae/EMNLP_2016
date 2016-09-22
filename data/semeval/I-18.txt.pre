@@ -1,0 +1,180 @@
+the/dt paper/nn deals/vbz with/in on-board/jj planning/nn for/in a/dt satellite/nn swarm/nn via/in communication/nn and/cc negotiation/nn ./punct
+we/prp aim/vbp at/in defining/vbg individual/jj behaviours/nns that/wdt result/vbp in/in a/dt global/jj behaviour/nn that/wdt meets/vbz the/dt mission/nn requirements/nns ./punct
+we/prp will/md present/vb the/dt formalization/nn of/in the/dt problem/nn ,/punct a/dt communication/nn protocol/nn ,/punct a/dt solving/vbg method/nn based/vbn on/in reactive/jj decision/nn rules/nns ,/punct and/cc first/jj results/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp h.4/nn [/punct information/nnp systems/nnp applications/nns ]/punct :/punct miscellaneous/nnp ;/punct i.2.8/nn [/punct artificial/nnp intelligence/nnp ]/punct :/punct problem/nnp solving/vbg ,/punct control/nnp methods/nns ,/punct and/cc search-plan/jj execution/nn ,/punct formation/nn ,/punct and/cc generation/nn ;/punct i.2.11/nn [/punct artificial/nnp intelligence/nnp ]/punct :/punct distributed/vbn artificial/jj intelligence-coherence/nn and/cc coordination/nn general/nnp terms/nns algorithms/nns 1/cd ./punct
+introduction/nn much/jj research/nn has/vbz been/vbn undertaken/vbn to/to increase/vb satellite/nn autonomy/nn such/jj as/in enabling/vbg them/prp to/to solve/vb by/in themselves/prp problems/nns that/wdt may/md occur/vb during/in a/dt mission/nn ,/punct adapting/vbg their/prp$ behaviour/nn to/to new/jj events/nns and/cc transferring/vbg planning/nn on-board/jj ;/punct even/rb if/in the/dt development/nn cost/nn of/in such/pdt a/dt satellite/nn is/vbz increased/vbn ,/punct there/ex is/vbz an/dt increase/nn in/in performance/nn and/cc mission/nn possibilities/nns [/punct 34/cd ]/punct ./punct
+moreover/rb ,/punct the/dt use/nn of/in satellite/nn swarms/nns -/punct sets/nns of/in satellites/nns flying/vbg in/in formation/nn or/cc in/in constellation/nn around/in the/dt earthmakes/nnps it/prp possible/jj to/to consider/vb joint/jj activities/nns ,/punct to/to distribute/vb skills/nns and/cc to/to ensure/vb robustness/nn ./punct
+multi-agent/jj architectures/nns have/vbp been/vbn developed/vbn for/in satellite/nn swarms/nns [/punct 36/cd ,/punct 38/cd ,/punct 42/cd ]/punct but/cc strong/jj assumptions/nns on/in deliberation/nn and/cc communication/nn capabilities/nns are/vbp made/vbn in/in order/nn to/to build/vb a/dt collective/jj plan/nn ./punct
+mono-agent/jj planning/nn [/punct 4/cd ,/punct 18/cd ,/punct 28/cd ]/punct and/cc task/nn allocation/nn [/punct 20/cd ]/punct are/vbp widely/rb studied/vbn ./punct
+in/in a/dt multi-agent/jj context/nn ,/punct agents/nns that/wdt build/vbp a/dt collective/jj plan/nn must/md be/vb able/jj to/to change/vb their/prp$ goals/nns ,/punct reallocate/vb resources/nns and/cc react/vb to/to environment/nn changes/nns and/cc to/to the/dt others/nns ''/'' choices/nns ./punct
+a/dt coordination/nn step/nn must/md be/vb added/vbn to/to the/dt planning/nn step/nn [/punct 40/cd ,/punct 30/cd ,/punct 11/cd ]/punct ./punct
+however/rb ,/punct this/dt step/nn needs/vbz high/jj communication/nn and/cc computation/nn capabilities/nns ./punct
+for/in instance/nn ,/punct coalition-based/jj [/punct 37/cd ]/punct ,/punct contract-based/jj [/punct 35/cd ]/punct and/cc all/dt negotiationbased/jj [/punct 25/cd ]/punct mechanisms/nns need/vbp these/dt capabilities/nns ,/punct especially/rb in/in dynamic/jj environments/nns ./punct
+in/in order/nn to/to relax/vb communication/nn constraints/nns ,/punct coordination/nn based/vbn on/in norms/nns and/cc conventions/nns [/punct 16/cd ]/punct or/cc strategies/nns [/punct 17/cd ]/punct are/vbp considered/vbn ./punct
+norms/nns constraint/nn agents/nns in/in their/prp$ decisions/nns in/in such/jj a/dt way/nn that/in the/dt possibilities/nns of/in conflicts/nns are/vbp reduced/vbn ./punct
+strategies/nns are/vbp private/jj decision/nn rules/nns that/wdt allow/vbp an/dt agent/nn to/to draw/vb benefit/nn from/in the/dt knowledgeable/jj world/nn without/in communication/nn ./punct
+however/rb ,/punct communication/nn is/vbz still/rb needed/vbn in/in order/nn to/to share/vb information/nn and/cc build/vb collective/jj conjectures/nns and/cc plans/nns ./punct
+communication/nn can/md be/vb achieved/vbn through/in a/dt stigmergic/jj approach/nn (/punct via/in the/dt environment/nn )/punct or/cc through/in message/nn exchange/nn and/cc a/dt protocol/nn ./punct
+a/dt protocol/nn defines/vbz interactions/nns between/in agents/nns and/cc can/md not/rb be/vb uncoupled/vbn from/in its/prp$ goal/nn ,/punct e.g/nn ./punct
+exchanging/vbg information/nn ,/punct finding/vbg a/dt trade-off/nn ,/punct allocating/vbg tasks/nns and/cc so/rb on/in ./punct
+protocols/nns can/md be/vb viewed/vbn as/in an/dt abstraction/nn of/in an/dt interaction/nn [/punct 9/cd ]/punct ./punct
+they/prp may/md be/vb represented/vbn in/in a/dt variety/nn of/in ways/nns ,/punct e.g/nn ./punct
+auml/nn [/punct 32/cd ]/punct or/cc petri-nets/jj [/punct 23/cd ]/punct ./punct
+as/in protocols/nns are/vbp originally/rb designed/vbn for/in a/dt single/jj goal/nn ,/punct some/dt works/nns aim/nn at/in endowing/vbg them/prp with/in flexibility/nn [/punct 8/cd ,/punct 26/cd ]/punct ./punct
+however/rb ,/punct an/dt agent/nn can/md not/rb always/rb communicate/vbp with/in another/dt agent/nn or/cc the/dt communication/nn possibilites/nns are/vbp restricted/jj to/to short/jj time/nn intervals/nns ./punct
+the/dt objective/nn of/in this/dt work/nn is/vbz to/to use/vb intersatellite/jj connections/nns ,/punct called/vbn intersatellite/nnp links/nnp or/cc isl/nnp ,/punct in/in an/dt earth/nnp observation/nn constellation/nn inspired/vbn from/in the/dt fuego/nnp mission/nn [/punct 13/cd ,/punct 19/cd ]/punct ,/punct in/in order/nn to/to increase/vb the/dt system/nn reactivity/nn and/cc to/to improve/vb the/dt mission/nn global/jj return/nn through/in a/dt hybrid/nn agent/nn approach/nn ./punct
+at/in the/dt individual/jj level/nn ,/punct agents/nns are/vbp deliberative/jj in/in order/nn to/to create/vb a/dt local/jj plan/nn but/cc at/in the/dt collective/jj level/nn ,/punct they/prp use/vbp normative/jj decision/nn rules/nns in/in order/nn to/to coordinate/vb with/in one/cd another/dt ./punct
+we/prp will/md present/vb the/dt features/nns of/in our/prp$ problem/nn ,/punct a/dt communication/nn protocol/nn ,/punct a/dt method/nn for/in request/nn allocation/nn and/cc finally/rb ,/punct collaboration/nn strategies/nns ./punct
+287/cd 978-81-904262-7-5/cd (/punct rps/vbz )/punct c/nn 2007/cd ifaamas/nnp 2/cd ./punct
+problem/nn features/vbz an/dt observation/nn satellite/nn constellation/nn is/vbz a/dt set/nn of/in satellites/nns in/in various/jj orbits/nns whose/wp$ mission/nn is/vbz to/to take/vb pictures/nns of/in various/jj areas/nns on/in the/dt earth/nnp surface/nn ,/punct for/in example/nn hot/jj points/nns corresponding/vbg to/to volcanos/nns or/cc forest/nn fires/nns ./punct
+the/dt ground/nn sends/vbz the/dt constellation/nn observation/nn requests/nns characterized/vbn by/in their/prp$ geographical/jj positions/nns ,/punct priorities/nns specifying/vbg if/in the/dt requests/nns are/vbp urgent/jj or/cc not/rb ,/punct the/dt desired/vbn dates/nns of/in observation/nn and/cc the/dt desired/vbn dates/nns for/in data/nns downloading/vbg ./punct
+the/dt satellites/nns are/vbp equipped/vbn with/in a/dt single/jj observation/nn instrument/nn whose/wp$ mirror/nn can/md roll/vb to/to shift/vb the/dt line/nn of/in sight/nn ./punct
+a/dt minimum/jj duration/nn is/vbz necessary/jj to/to move/vb the/dt mirror/nn ,/punct so/rb requests/nns that/wdt are/vbp too/rb close/jj together/rb can/md not/rb be/vb realized/vbn by/in the/dt same/jj satellite/nn ./punct
+the/dt satellites/nns are/vbp also/rb equipped/vbn with/in a/dt detection/nn instrument/nn pointed/vbd forward/rb that/in detects/vbz hot/jj points/nns and/cc generates/vbz observation/nn requests/nns on-board/jj ./punct
+the/dt constellations/nns that/in we/prp consider/vbp are/vbp such/jj as/in the/dt orbits/nns of/in the/dt various/jj satellites/nns meet/vbp around/in the/dt poles/nns ./punct
+a/dt judicious/jj positioning/nn of/in the/dt satellites/nns in/in their/prp$ orbits/nns makes/vbz it/prp possible/jj to/to consider/vb that/in two/cd (/punct or/cc more/jjr )/punct satellites/nns meet/vbp in/in the/dt polar/jj areas/nns ,/punct and/cc thus/rb can/md communicate/vb without/in the/dt ground/nn intervention/nn ./punct
+intuitively/rb ,/punct intersatellite/nn communication/nn increases/vbz the/dt reactivity/nn of/in the/dt constellation/nn since/in each/dt satellite/nn is/vbz within/in direct/jj view/nn of/in a/dt ground/nn station/nn (/punct and/cc thus/rb can/md communicate/vb with/in it/prp )/punct only/rb 10/cd %/punct of/in the/dt time/nn ./punct
+the/dt features/nns of/in the/dt problem/nn are/vbp the/dt following/nn :/punct -/punct 3/cd to/to 20/cd satellites/nns in/in the/dt constellation/nn ;/punct -/punct pair/nn communication/nn around/in the/dt poles/nns ;/punct -/punct no/dt ground/nn intervention/nn during/in the/dt planning/nn process/nn ;/punct -/punct asynchronous/jj requests/nns with/in various/jj priorities/nns ./punct
+3/ls ./punct
+a/dt multi-agent/jj approach/nn as/in each/dt satellite/nn is/vbz a/dt single/jj entity/nn that/wdt is/vbz a/dt piece/nn of/in the/dt global/jj swarm/nn ,/punct a/dt multi-agent/jj system/nn fits/vbz to/to model/vb satellite/nn constellations/nns [/punct 39/cd ]/punct ./punct
+this/dt approach/nn has/vbz been/vbn developped/vbn through/in the/dt objectagent/nnp architecture/nn [/punct 38/cd ]/punct ,/punct teamagent/nnp [/punct 31/cd ]/punct ,/punct dips/vbz [/punct 14/cd ]/punct or/cc prospecting/vbg ants/nns [/punct 12/cd ]/punct ./punct
+order/nn and/cc the/dt agents/nns (/punct the/dt satellites/nns )/punct do/vbp not/rb have/vb any/dt physical/jj interaction/nn ./punct
+carrying/vbg out/rp a/dt request/nn can/md not/rb prevent/vb another/dt agent/nn from/in carrying/vbg out/rp another/dt one/cd ,/punct even/rb the/dt same/jj one/cd ./punct
+at/in ./punct
+in/in the/dt sequel/nn ,/punct we/prp will/md assume/vb that/in the/dt agents/nns share/vbp a/dt common/jj clock/nn ./punct
+for/in a/dt given/vbn agent/nn and/cc a/dt given/vbn time/nn ,/punct the/dt vicinity/nn relation/nn returns/vbz the/dt set/nn of/in agents/nns with/in whom/wp it/prp can/md communicate/vb at/in that/dt time/nn ./punct
+as/in we/prp have/vbp seen/vbn previously/rb ,/punct this/dt relation/nn exists/vbz when/wrb the/dt agents/nns meet/vbp ./punct
+this/dt term/nn will/md designate/vb a/dt satellite/nn constellation/nn with/in intersatellite/nnp links/nnp ./punct
+requests/nns are/vbp the/dt observation/nn tasks/nns that/in the/dt satellite/nn swarm/nn must/md achieve/vb ./punct
+as/in we/prp have/vbp seen/vbn previously/rb ,/punct the/dt requests/nns are/vbp generated/vbn both/dt on/in the/dt ground/nn and/cc on/in board/nn ./punct
+each/dt agent/nn is/vbz allocated/vbn a/dt set/nn of/in initial/jj requests/nns ./punct
+during/in the/dt mission/nn ,/punct new/jj requests/nns are/vbp sent/vbn to/to the/dt agents/nns by/in the/dt ground/nn or/cc agents/nns can/md generate/vb new/jj requests/nns by/in themselves/prp ./punct
+formally/rb ,/punct a/dt request/nn is/vbz tuple/nn </punct idr/nn ,/punct pos/nn (/punct r/nn )/punct ,/punct prio/nn (/punct r/nn )/punct ,/punct tbeg/nn (/punct r/nn )/punct ,/punct br/nn >/punct :/punct -/punct br/nn ∈/cd {/punct true/jj ,/punct false/jj }/punct specifies/vbz if/in r/nn has/vbz been/vbn realized/vbn ./punct
+important/jj for/in the/dt user/nn ,/punct namely/rb the/dt request/nn sender/nn ,/punct that/in the/dt request/nn should/md be/vb carried/vbn out/rp ./punct
+thus/rb a/dt request/nn with/in a/dt high/jj priority/nn must/md be/vb realized/vbn at/in all/dt costs/nns ./punct
+in/in our/prp$ application/nn ,/punct priorities/nns are/vbp comprised/vbn between/in 1/cd and/cc 5/cd (/punct the/dt highest/jjs )/punct ./punct
+are/vbp known/vbn by/in agent/nn si/nns at/in time/nn t/nn ∈/cd t./nnp costsi/nns (/punct r/nn )/punct ∈/cd r/nn ,/punct representing/vbg how/wrb far/rb from/in the/dt desired/vbn date/nn desired/vbn date/nn of/in observation/nn ,/punct the/dt lower/jjr the/dt cost/nn value/nn ./punct
+an/dt agent/nn may/md have/vb several/jj intentions/nns about/in a/dt request/nn ,/punct i.e/nn ./punct
+-/punct refuse/nn to/to carry/vb out/rp r/nn :/punct si/nns will/md not/rb realize/vb r./nnp we/prp can/md notice/vb that/in these/dt four/cd propositions/nns are/vbp modalities/nns -/punct ¬2c/nn means/vbz that/in si/fw refuses/vbz to/to carry/vb out/rp r/nn ./punct
+-/punct dnlc/nn ∈/cd t/nn is/vbz the/dt download/nn date/nn ./punct
+then/rb ,/punct our/prp$ problem/nn is/vbz the/dt following/nn :/punct we/prp would/md like/vb each/dt agent/nn to/to build/vb request/nn allocations/nns (/punct i.e/rb a/dt plan/nn )/punct dynamically/rb such/jj as/in if/in these/dt requests/nns are/vbp carried/vbn out/rp their/prp$ number/nn is/vbz the/dt highest/jjs possible/jj or/cc the/dt global/jj cost/nn is/vbz minimal/jj ./punct
+more/rbr formally/rb ,/punct prio/nn (/punct r/nn )/punct is/vbz maximal/jj ./punct
+costsi/nn (/punct r/nn )/punct is/vbz minimal/jj ./punct
+let/vb us/prp notice/vb that/in these/dt criteria/nns are/vbp not/rb necessarily/rb compatible/jj ./punct
+of/in the/dt others/nns ,/punct it/prp is/vbz necessary/jj that/in the/dt agents/nns should/md reason/vb necessary/jj to/to set/vb up/rp an/dt effective/jj communication/nn protocol/nn ./punct
+communication/nn is/vbz commonly/rb associated/vbn with/in cooperation/nn ./punct
+deliberative/jj agents/nns need/vbp communication/nn to/to cooperate/vb ,/punct whereas/in it/prp is/vbz not/rb necessarily/rb the/dt case/nn for/in reactive/jj agents/nns ./punct
+gossip/nn protocols/nns ,/punct or/cc epidemic/jj protocols/nns ,/punct are/vbp used/vbn to/to share/vb knowledge/nn with/in multicast/nn ./punct
+each/dt agent/nn selects/vbz a/dt set/vbn speed/nn of/in information/nn transmission/nn is/vbz contingent/jj upon/in the/dt length/nn of/in the/dt discussion/nn round/nn ./punct
+the/dt suggested/vbn protocol/nn is/vbz inspired/vbn from/in what/wp we/prp name/vbp the/dt corridor/nn metaphor/nn ,/punct which/wdt represents/vbz well/rb the/dt satellite/nn where/wrb objects/nns to/to collect/vb appear/vb from/in time/nn to/to time/nn ./punct
+two/cd objects/nns that/wdt are/vbp too/rb close/jj to/to each/dt other/jj can/md not/rb be/vb collected/vbn by/in the/dt same/jj agent/nn because/in the/dt action/nn takes/vbz some/dt time/nn and/cc an/dt agent/nn can/md not/rb stop/vb its/prp$ movement/nn ./punct
+in/in order/nn to/to optimize/vb the/dt collection/nn ,/punct the/dt agents/nns can/md communicate/vb when/wrb they/prp meet/vbp ./punct
+may/md have/vb passed/vbn before/in s2/nn ,/punct but/cc it/prp can/md take/vb it/prp into/in account/nn in/in its/prp$ plan/nn ./punct
+not/rb been/vbn collected/vbn ./punct
+s2/nn can/md thus/rb believe/vb that/in a/nn does/vbz not/rb exist/vb anymore/rb and/cc can/md withdraw/vb it/prp from/in its/prp$ plan/nn ./punct
+current/jj requests/nns and/cc the/dt others/nns agents/nns ''/'' intentions/nns ./punct
+for/in each/dt agent/nn two/cd kinds/nns of/in knowledge/nn to/to maintain/vb are/vbp defined/vbn :/punct -/punct candidacies/nns (/punct definition/nn 3/cd )/punct ./punct
+-/punct tk/nn ∈/cd t/nn is/vbz a/dt temporal/jj timestamp/nn ./punct
+at/in time/nn t/nn ∈/cd t./nnp from/in the/dt corridor/nn metaphor/nn ,/punct we/prp can/md define/vb a/dt communication/nn protocol/nn that/wdt benefits/vbz from/in all/dt the/dt communication/nn opportunities/nns ./punct
+an/dt agent/nn notifies/vbz any/dt change/nn within/in its/prp$ knowledge/nn and/cc each/dt agent/nn must/md propagate/vb these/dt changes/nns to/to its/prp$ vicinity/nn who/wp update/vbp their/prp$ knowledge/nn bases/nns and/cc reiterate/vb the/dt process/nn ./punct
+this/dt protocol/nn is/vbz a/dt variant/nn of/in epidemic/jj protocols/nns inspired/vbn from/in the/dt work/nn on/in overhearing/vbg ./punct
+b./nn if/in sj/nn acknowledges/vbz receipt/nn of/in k/nnp ,/punct sk/nnp ←/cd sk/nnp ∪/cd {/punct sj/nn }/punct ./punct
+2./ls sj/nn acknowledges/vbz receipt/nn of/in k/nn to/to si/fw ./punct
+two/cd kinds/nns of/in updates/nns exist/vbp for/in an/dt agent/nn :/punct -/punct an/dt external/jj update/vbp from/in received/vbn knowledge/nn ./punct
+for/in an/dt internal/jj update/vbp ,/punct updating/vbg k/nn depends/vbz on/in data/nns (/punct k/nnp )/punct :/punct updated/vbn ,/punct the/dt timestamp/nn is/vbz updated/vbn too/rb ./punct
+-/punct when/wrb data/nns (/punct k/nn )/punct is/vbz modified/vbn ./punct
+2/ls ./punct
+sk/nn ←/cd {/punct si/fw }/punct ./punct
+for/in an/dt external/jj update/vbp ,/punct only/rb the/dt most/rbs recent/jj knowledge/nn k/nn is/vbz taken/vbn into/in account/nn because/in timestamps/nns change/vbp only/rb when/wrb knowledge/nn ./punct
+if/in the/dt incoming/jj information/nn has/vbz a/dt more/rbr recent/jj timestamp/nn ,/punct it/prp means/vbz that/in the/dt receiver/nn agent/nn has/vbz obsolete/jj information/nn ./punct
+consequently/rb ,/punct it/prp replaces/vbz the/dt old/jj information/nn by/in the/dt new/jj one/cd and/cc adds/vbz itself/prp to/to the/dt set/nn of/in agents/nns knowing/vbg k/nnp (/punct 1.a.i/cd )/punct ./punct
+if/in both/dt timestamps/nns are/vbp the/dt same/jj ,/punct both/dt pieces/nns of/in information/nn are/vbp the/dt same/jj ./punct
+only/rb the/dt set/nn of/in the/dt agents/nns knowing/vbg k/nn may/md have/vb changed/vbn because/in agents/nns si/nns and/cc sj/nn may/md have/vb already/rb transmitted/vbn the/dt information/nn to/to other/jj agents/nns ./punct
+consequently/rb ,/punct the/dt sets/nns of/in agents/nns knowing/vbg k/nn are/vbp unified/vbn (/punct 1.a.ii/cd )/punct ./punct
+communication/nn between/in two/cd agents/nns when/wrb they/prp meet/vbp is/vbz sequel/nn ,/punct we/prp call/vbp this/dt conjunction/nn a/dt communication/nn occurrence/nn ./punct
+the/dt structure/nn of/in the/dt transmitted/vbn information/nn and/cc the/dt internal/jj update/vbp mechanism/nn (/punct protocol/nnp 2/cd )/punct allow/vbp the/dt process/nn to/to (/punct realized/vbn or/cc not/rb )/punct given/vbn by/in the/dt boolean/jj br/nn ./punct
+once/rb an/dt internal/jj former/jj state/nn ./punct
+consequently/rb ,/punct an/dt internal/jj update/vbp can/md only/rb be/vb performed/vbn once/rb ./punct
+as/in far/rb as/in candidacies/nns are/vbp concerned/vbn ,/punct updates/nns only/rb modify/vbp the/dt modalities/nns ,/punct which/wdt may/md change/vb many/jj times/nns and/cc go/vb back/rb to/to previous/jj states/nns ./punct
+then/rb it/prp seems/vbz that/in livelocks2/nn and/cc a/dt realization/nn date/nn (/punct the/dt deadline/nn given/vbn by/in obsc/nn )/punct ./punct
+after/in the/dt deadline/nn ,/punct the/dt candidacy/nn becomes/vbz meaningless/jj ./punct
+thus/rb for/in propagate/vb no/dt more/rbr ./punct
+single/jj one/nn has/vbz a/dt new/jj piece/nn of/in information/nn ,/punct an/dt epidemic/jj protocol/nn takes/vbz o/nn (/punct logn/nn )/punct steps/nns to/to broadcast/vb the/dt information/nn ./punct
+during/in one/cd step/nn ,/punct each/dt agent/nn has/vbz a/dt communication/nn occurrence/nn ./punct
+communication/nn occurrence/nn must/md not/rb have/vb a/dt too/rb big/jj temporal/jj complexity/nn ,/punct which/wdt we/prp can/md prove/vb formally/rb :/punct proposition/nn 1/cd ./punct
+the/dt temporal/jj complexity/nn of/in a/dt information/nn for/in each/dt received/vbn candidacy/nn ./punct
+consequently/rb ,/punct the/dt thus/rb ,/punct the/dt temporal/jj complexity/nn of/in a/dt communication/nn architectures/nns for/in on-board/jj planning/nn ./punct
+however/rb ,/punct they/prp assume/vbp high/jj communication/nn and/cc computation/nn capabilities/nns ./punct
+relax/vb these/dt constraints/nns by/in cleaving/vbg planning/nn modules/nns :/punct on/in the/dt first/jj hand/nn ,/punct satellites/nns have/vbp a/dt planner/nn that/wdt builds/vbz plans/nns on/in a/dt large/jj horizon/nn and/cc on/in the/dt second/jj hand/nn ,/punct they/prp have/vbp a/dt decision/nn observation/nn ./punct
+swarms/nns ,/punct it/prp may/md be/vb advantageous/jj to/to delay/vb the/dt decision/nn until/in the/dt last/jj moment/nn (/punct i.e/nn ./punct
+the/dt realization/nn date/nn )/punct ,/punct especially/rb if/in there/ex are/vbp several/jj possibilities/nns for/in a/dt given/vbn request/nn ./punct
+the/dt main/jj idea/nn the/dt initial/jj plan/nn where/wrb the/dt risks/nns of/in failures/nns are/vbp most/rbs important/jj and/cc to/to incrementally/rb build/vb contingency/nn branches/nns for/in these/dt situations/nns ./punct
+inspired/vbn from/in both/dt approaches/nns ,/punct we/prp propose/vbp to/to build/vb will/md be/vb made/vbn at/in the/dt end/nn of/in the/dt decision/nn horizon/nn ./punct
+this/dt horizon/nn corresponds/vbz to/to the/dt request/nn realization/nn date/nn ./punct
+proposing/vbg such/jj partial/jj allocations/nns allows/vbz conflicts/nns to/to be/vb solved/vbn locally/rb without/in propagating/vbg them/prp through/in the/dt whole/jj plan/nn ./punct
+in/in order/nn to/to build/vb the/dt agents/nns ''/'' initial/jj plans/nns ,/punct let/vb us/prp assume/vb that/in each/dt agent/nn is/vbz equipped/vbn with/in an/dt on-board/jj planner/nn ./punct
+a/dt a/dt set/nn of/in candidacies/nns ./punct
+let/vb us/prp define/vb three/cd ./punct
+building/vbg a/dt plan/nn generates/vbz candidacies/nns ./punct
+./punct
+when/wrb two/cd agents/nns compare/vbp their/prp$ respective/jj plans/nns some/dt allocations/nns on/in a/dt given/vbn request/nn ,/punct i.e/nn ./punct
+:/punct several/jj agents/nns stand/vbp as/in candidates/nns to/to carry/vb out/rp this/dt request/nn ./punct
+whereas/in such/jj redundancies/nns may/md sometimes/rb be/vb useful/jj to/to ensure/vb the/dt realization/nn of/in a/dt request/nn (/punct the/dt realization/nn may/md fail/vb ,/punct e.g/vb ./punct
+because/in of/in clouds/nns )/punct ,/punct with/in ,/punct at/in time/nn t/nn ,/punct candidacies/nns csi/nns and/cc csj/nn respectively/rb (/punct scsi/nns let/vb us/prp notice/vb that/in the/dt agents/nns have/vbp the/dt means/nns to/to know/vb whether/in they/prp are/vbp in/in conflict/nn with/in another/dt one/cd during/in the/dt communication/nn process/nn ./punct
+indeed/rb ,/punct they/prp exchange/vbp information/nn not/rb only/rb concerning/vbg their/prp$ own/jj plan/nn but/cc also/rb concerning/vbg what/wp they/prp know/vbp about/in the/dt other/jj agents/nns ''/'' plans/nns ./punct
+all/pdt the/dt conflicts/nns do/vbp not/rb have/vb the/dt same/jj strength/nn ,/punct meaning/vbg that/in they/prp can/md be/vb solved/vbn with/in more/jjr or/cc less/jjr difficulty/nn according/vbg to/to the/dt agents/nns ''/'' communication/nn capacities/nns ./punct
+a/dt conflict/nn is/vbz soft/jj when/wrb the/dt concerned/jj agents/nns can/md communicate/vb before/in one/cd or/cc the/dt other/jj carries/vbz out/rp the/dt request/nn in/in question/nn ./punct
+a/dt conflict/nn is/vbz hard/rb when/wrb the/dt agents/nns can/md not/rb communicate/vb before/in the/dt realization/nn of/in the/dt request/nn ./punct
+two/cd agents/nns in/in conflict/nn such/jj as/in information/nn can/md propagate/vb before/in both/dt agents/nns realize/vbp the/dt request/nn ./punct
+if/in this/dt chain/nn does/vbz not/rb exist/vb ,/punct it/prp means/vbz that/in the/dt agents/nns in/in conflict/nn can/md not/rb communicate/vb directly/rb or/cc not/rb ./punct
+consequently/rb ,/punct the/dt conflict/nn is/vbz hard/rb ./punct
+in/in satellite/nn swarms/nns ,/punct the/dt geographical/jj positions/nns of/in the/dt requests/nns are/vbp known/vbn as/rb well/rb as/in the/dt satellite/nn orbits/nns ./punct
+so/in each/dt agent/nn is/vbz able/jj to/to determine/vb if/in a/dt conflict/nn is/vbz soft/jj or/cc hard/jj ./punct
+agent/nn and/cc r/nn a/dt request/nn in/in conflict/nn ./punct
+the/dt conflict/nn cardinality/nn |modc/nn ∈/cd {/punct 2/cd ,/punct 3/cd }/punct ,/punct cr/nn =/punct r/nn }/punct |/punct ./punct
+the/dt conflict/nn cardinality/nn corresponds/vbz to/to the/dt number/nn of/in agents/nns that/wdt are/vbp candidates/nns or/cc committed/vbn to/to the/dt same/jj request/nn ./punct
+thus/rb ,/punct a/dt conflict/nn has/vbz at/in least/jjs a/dt cardinality/nn of/in 2/cd ./punct
+in/in space/nn contexts/nns ,/punct communication/nn time/nn and/cc agents/nns ''/'' computing/vbg capacities/nns are/vbp limited/vbn ./punct
+when/wrb they/prp are/vbp in/in conflict/nn ,/punct the/dt agents/nns must/md find/vb a/dt local/jj agreement/nn (/punct instead/rb of/in an/dt expensive/jj global/jj agreement/nn )/punct by/in using/vbg the/dt conflict/nn in/in order/nn to/to increase/vb the/dt number/nn of/in realized/vbn requests/nns ,/punct to/to decrease/vb the/dt time/nn of/in mission/nn return/nn ,/punct to/to increase/vb the/dt quality/nn of/in the/dt pictures/nns taken/vbn or/cc to/to make/vb sure/jj that/in a/dt request/nn is/vbz carried/vbn out/rp ./punct
+between/in agents/nns si/nns and/cc sj/nn ./punct
+we/prp would/md like/vb that/in the/dt most/rbs expert/jj agent/nn ,/punct i.e/nn ./punct
+the/dt agent/nn that/wdt can/md carry/vb out/rp the/dt request/nn under/in the/dt best/jjs conditions/nns ,/punct does/vbz it/prp ./punct
+let/vb us/prp suppose/vb si/fw is/vbz the/dt expert/nn ./punct
+to/to ensure/vb redundancy/nn ./punct
+consequently/rb ,/punct we/prp can/md define/vb collaboration/nn strategies/nns intrinsic/jj to/to an/dt agent/nn )/punct decision/nn process/nn that/wdt allows/vbz an/dt agent/nn strategies/nns specify/vbp what/wp to/to do/vb with/in redundancies/nns ./punct
+in/in our/prp$ application/nn ,/punct cost/nn is/vbz linked/vbn to/to the/dt realization/nn dates/nns ./punct
+carrying/vbg out/rp a/dt request/nn consumes/vbz the/dt agents/nns ''/'' resources/nns (/punct e.g/nn ./punct
+:/punct on-board/jj energy/nn ,/punct memory/nn )/punct ./punct
+consequently/rb ,/punct an/dt observation/nn realized/vbd :/punct the/dt closer/jjr the/dt realization/nn date/nn to/to the/dt desired/vbn date/nn of/in observation/nn ,/punct the/dt lower/jjr the/dt cost/nn ./punct
+candidacy/nn c/nn is/vbz defined/vbn as/in :/punct costsi/nns (/punct rc/nn )/punct =/punct |obsc/nn −/nn tbeg/nn (/punct rc/nn )/punct |/punct ./punct
+from/in this/dt cost/nn notion/nn ,/punct we/prp can/md formally/rb define/vb an/dt expert/nn notion/nn between/in two/cd agents/nns ./punct
+the/dt expertise/nn for/in an/dt agent/nn means/vbz it/prp can/md realize/vb the/dt request/nn at/in the/dt lower/jjr cost/nn ./punct
+only/rb if/in costsi/nn (/punct r/nn )/punct ≤/nn costsj/nn (/punct r/nn )/punct ./punct
+three/cd strategies/nns are/vbp proposed/vbn to/to solve/vb a/dt conflict/nn ./punct
+the/dt expert/nn strategy/nn means/vbz that/in the/dt expert/nn agent/nn maintains/vbz its/prp$ candidacy/nn whereas/in the/dt other/jj one/cd gives/vbz up/rp ./punct
+the/dt altruist/nn strategy/nn means/vbz that/in the/dt agent/nn that/wdt can/md download/vb first3/nn cost/nn increase/nn is/vbz negligible/jj ,/punct maintains/vbz its/prp$ candidacy/nn whereas/in the/dt other/jj one/cd gives/vbz up/rp ./punct
+the/dt insurance/nn strategy/nn means/vbz that/in both/dt agents/nns maintain/vbp their/prp$ candidacies/nns in/in order/nn to/to ensure/vb redundancy/nn ./punct
+conflict/nn on/in their/prp$ respective/jj candidacies/nns csi/nn and/cc csj/nn such/jj as/in si/nn is/vbz the/dt expert/nn agent/nn ./punct
+the/dt expert/nn strategy/nn is/vbz :/punct modcsi/nn =/punct ¬2/cd ./punct
+in/in conflict/nn on/in their/prp$ respective/jj candidacies/nns csi/nn and/cc csj/nn such/jj cost/nn increase/nn ./punct
+the/dt altruist/nn strategy/nn is/vbz :/punct if/in dnlcsi/nn and/cc |costsi/jj (/punct r/nn )/punct −/nn costsj/nn (/punct r/nn )/punct |/punct </punct then/rb modcsi/nn =/punct 2./fw in/in conflict/nn on/in their/prp$ respective/jj candidacies/nns csi/nn and/cc csj/nn such/jj as/in si/nn is/vbz the/dt expert/nn agent/nn ./punct
+let/vb α/nn ∈/nn r/nn be/vb a/dt priority/nn threshold/nn ./punct
+=/punct 3./ls i.e/nn ./punct
+the/dt agent/nn using/vbg memory/nn resources/nns during/in a/dt shorter/jjr time/nn ./punct
+in/in the/dt insurance/nn strategy/nn ,/punct redundancy/nn triggering/nn is/vbz adjusted/vbn by/in the/dt conflict/nn cardinality/nn cardc/nn (/punct r/nn )/punct ./punct
+the/dt reason/nn is/vbz the/dt following/nn :/punct the/dt more/rbr redundancies/nns on/in a/dt given/vbn request/nn ,/punct the/dt less/jjr a/dt new/jj redundancy/nn on/in this/dt request/nn is/vbz needed/vbn ./punct
+the/dt three/cd strategies/nns are/vbp implemented/vbn in/in a/dt negotiation/nn protocol/nn dedicated/vbn to/to soft/jj conflicts/nns ./punct
+the/dt protocol/nn is/vbz based/vbn on/in a/dt subsumption/nn architecture/nn on/in strategies/nns :/punct the/dt insurance/nn strategy/nn (/punct 1/cd )/punct is/vbz the/dt major/jj strategy/nn because/in it/prp ensures/vbz redundancy/nn for/in which/wdt the/dt swarm/nn is/vbz implemented/vbn ./punct
+then/rb the/dt to/to enhance/vb the/dt mission/nn return/nn ./punct
+finally/rb ,/punct the/dt expert/nn strategy/nn that/wdt does/vbz not/rb have/vb preconditions/nns (/punct 3/cd )/punct enhances/vbz the/dt cost/nn of/in the/dt plan/nn ./punct
+request/nn in/in a/dt soft/jj conflict/nn between/in two/cd agents/nns ,/punct si/nns and/cc sj/nn ./punct
+these/dt agents/nns have/vbp csi/nns and/cc csj/nn for/in respective/jj candidacies/nns ./punct
+let/vb si/fw be/vb the/dt expert/nn agent/nn ./punct
+agents/nns apply/vbp strategies/nns as/in the/dt choice/nn of/in parameters/nns α/nn and/cc allows/vbz to/to adjust/vb the/dt protocol/nn results/vbz ./punct
+for/in example/nn ,/punct if/in =/punct 0/cd ,/punct the/dt altruist/nn strategy/nn is/vbz never/rb used/vbn ./punct
+necessarily/rb realize/vb the/dt request/nn (/punct with/in success/nn or/cc not/rb )/punct ./punct
+need/nn redundancy/nn ./punct
+therefore/rb ,/punct we/prp will/md use/vb the/dt insurance/nn strategy/nn (/punct refer/vbp to/to section/nn 6.2/cd )/punct and/cc define/vb a/dt competitive/jj strategy/nn ./punct
+./punct
+threshold/nn ./punct
+the/dt competitive/jj strategy/nn is/vbz :/punct if/in costsi/nn (/punct r/nn )/punct </punct costsj/nn =/punct 3/cd ./punct

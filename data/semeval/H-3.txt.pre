@@ -1,0 +1,300 @@
+user/nn query/nn is/vbz an/dt element/nn that/wdt specifies/vbz an/dt information/nn need/nn ,/punct but/cc it/prp is/vbz not/rb the/dt only/jj one/cd ./punct
+studies/nns in/in literature/nn have/vbp found/vbn many/jj contextual/jj factors/nns that/wdt strongly/rb influence/vbp the/dt interpretation/nn of/in a/dt query/nn ./punct
+recent/jj studies/nns have/vbp tried/vbn to/to consider/vb the/dt user/nn ''/'' s/nns interests/nns by/in creating/vbg a/dt user/nn profile/nn ./punct
+however/rb ,/punct a/dt single/jj profile/nn for/in a/dt user/nn may/md not/rb be/vb sufficient/jj for/in a/dt variety/nn of/in queries/nns of/in the/dt user/nn ./punct
+in/in this/dt study/nn ,/punct we/prp propose/vbp to/to use/vb query-specific/jj contexts/nns instead/rb of/in user-centric/jj ones/nns ,/punct including/vbg context/nn around/in query/nn and/cc context/nn within/in query/nn ./punct
+the/dt former/jj specifies/vbz the/dt environment/nn of/in a/dt query/nn such/jj as/in the/dt domain/nn of/in interest/nn ,/punct while/in the/dt latter/jj refers/vbz to/to context/nn words/nns within/in the/dt query/nn ,/punct which/wdt is/vbz particularly/rb useful/jj for/in the/dt selection/nn of/in relevant/jj term/nn relations/nns ./punct
+in/in this/dt paper/nn ,/punct both/dt types/nns of/in context/nn are/vbp integrated/vbn in/in an/dt ir/nn model/nn based/vbn on/in language/nn modeling/nn ./punct
+our/prp$ experiments/nns on/in several/jj trec/nn collections/nns show/vbp that/in each/dt of/in the/dt context/nn factors/nns brings/vbz significant/jj improvements/nns in/in retrieval/nn effectiveness/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp h.3.3/nn [/punct information/nn storage/nn and/cc retrieval/nn ]/punct :/punct information/nnp search/vb and/cc retrieval/nnp -/punct retrieval/nnp models/nns general/nnp terms/nns algorithms/nns ,/punct performance/nnp ,/punct experimentation/nnp ,/punct theory/nnp ./punct
+1/ls ./punct
+introduction/nnp queries/nnps ,/punct especially/rb short/jj queries/nns ,/punct do/vbp not/rb provide/vb a/dt complete/jj specification/nn of/in the/dt information/nn need/nn ./punct
+many/jj relevant/jj terms/nns can/md be/vb absent/jj from/in queries/nns and/cc terms/nns included/vbd may/md be/vb ambiguous/jj ./punct
+these/dt issues/nns have/vbp been/vbn addressed/vbn in/in a/dt large/jj number/nn of/in previous/jj studies/nns ./punct
+typical/jj solutions/nns include/vbp expanding/vbg either/cc document/nn or/cc query/nn representation/nn [/punct 19/cd ]/punct [/punct 35/cd ]/punct by/in exploiting/vbg different/jj resources/nns [/punct 24/cd ]/punct [/punct 31/cd ]/punct ,/punct using/vbg word/nn sense/nn disambiguation/nn [/punct 25/cd ]/punct ,/punct etc/fw ./punct
+in/in these/dt studies/nns ,/punct however/rb ,/punct it/prp has/vbz been/vbn generally/rb assumed/vbn that/in query/nn is/vbz the/dt only/jj element/nn available/jj about/in the/dt user/nn ''/'' s/nns information/nn need/nn ./punct
+in/in reality/nn ,/punct query/nn is/vbz always/rb formulated/vbn in/in a/dt search/nn context/nn ./punct
+as/in it/prp has/vbz been/vbn found/vbn in/in many/jj previous/jj studies/nns [/punct 2/cd ]/punct [/punct 14/cd ]/punct [/punct 20/cd ]/punct [/punct 21/cd ]/punct [/punct 26/cd ]/punct ,/punct contextual/jj factors/nns have/vbp a/dt strong/jj influence/nn on/in relevance/nn judgments/nns ./punct
+these/dt factors/nns include/vbp ,/punct among/in many/jj others/nns ,/punct the/dt user/nn ''/'' s/nns domain/nn of/in interest/nn ,/punct knowledge/nn ,/punct preferences/nns ,/punct etc/fw ./punct
+all/pdt these/dt elements/nns specify/vbp the/dt contexts/nns around/in the/dt query/nn ./punct
+so/in we/prp call/vbp them/prp context/nn around/in query/nn in/in this/dt paper/nn ./punct
+it/prp has/vbz been/vbn demonstrated/vbn that/in user/nn ''/'' s/nns query/nn should/md be/vb placed/vbn in/in its/prp$ context/nn for/in a/dt correct/jj interpretation/nn ./punct
+recent/jj studies/nns have/vbp investigated/vbn the/dt integration/nn of/in some/dt contexts/nns around/in the/dt query/nn [/punct 9/cd ]/punct [/punct 30/cd ]/punct [/punct 23/cd ]/punct ./punct
+typically/rb ,/punct a/dt user/nn profile/nn is/vbz constructed/vbn to/to reflect/vb the/dt user/nn ''/'' s/nns domains/nns of/in interest/nn and/cc background/nn ./punct
+a/dt user/nn profile/nn is/vbz used/vbn to/to favor/vb the/dt documents/nns that/wdt are/vbp more/rbr closely/rb related/jj to/to the/dt profile/nn ./punct
+however/rb ,/punct a/dt single/jj profile/nn for/in a/dt user/nn can/md group/vb a/dt variety/nn of/in different/jj domains/nns ,/punct which/wdt are/vbp not/rb always/rb relevant/jj to/to a/dt particular/jj query/nn ./punct
+for/in example/nn ,/punct if/in a/dt user/nn working/vbg in/in computer/nn science/nn issues/nns a/dt query/nn java/nnp hotel/nn ,/punct the/dt documents/nns on/in java/nnp language/nn will/md be/vb incorrectly/rb favored/vbn ./punct
+a/dt possible/jj solution/nn to/to this/dt problem/nn is/vbz to/to use/vb query-related/jj profiles/nns or/cc models/nns instead/rb of/in user-centric/jj ones/nns ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp to/to model/vb topic/nn domains/nns ,/punct among/in which/wdt the/dt related/jj one/cd (/punct s/nns )/punct will/md be/vb selected/vbn for/in a/dt given/vbn query/nn ./punct
+this/dt method/nn allows/vbz us/prp to/to select/vb more/jjr appropriate/jj query-specific/jj context/nn around/in the/dt query/nn ./punct
+another/dt strong/jj contextual/jj factor/nn identified/vbn in/in literature/nn is/vbz domain/nn knowledge/nn ,/punct or/cc domain-specific/jj term/nn relations/nns ,/punct such/jj as/in program→computer/nn in/in computer/nn science/nn ./punct
+using/vbg this/dt relation/nn ,/punct one/cd would/md be/vb able/jj to/to expand/vb the/dt query/nn program/nn with/in the/dt term/nn computer/nn ./punct
+however/rb ,/punct domain/nn knowledge/nn is/vbz available/jj only/rb for/in a/dt few/jj domains/nns (/punct e.g/nn ./punct
+medicine/nnp )/punct ./punct
+the/dt shortage/nn of/in domain/nn knowledge/nn has/vbz led/vbn to/to the/dt utilization/nn of/in general/jj knowledge/nn for/in query/nn expansion/nn [/punct 31/cd ]/punct ,/punct which/wdt is/vbz more/rbr available/jj from/in resources/nns such/jj as/in thesauri/nn ,/punct or/cc it/prp can/md be/vb automatically/rb extracted/vbn from/in documents/nns [/punct 24/cd ]/punct [/punct 27/cd ]/punct ./punct
+however/rb ,/punct the/dt use/nn of/in general/jj knowledge/nn gives/vbz rise/nn to/to an/dt enormous/jj problem/nn of/in knowledge/nn ambiguity/nn [/punct 31/cd ]/punct :/punct we/prp are/vbp often/rb unable/jj to/to determine/vb if/in a/dt relation/nn applies/vbz to/to a/dt query/nn ./punct
+for/in example/nn ,/punct usually/rb little/jj information/nn is/vbz available/jj to/to determine/vb whether/in program→computer/nn is/vbz applicable/jj to/to queries/nns java/nnp program/nn and/cc tv/nn program/nn ./punct
+therefore/rb ,/punct the/dt relation/nn has/vbz been/vbn applied/vbn to/to all/dt queries/nns containing/vbg program/nn in/in previous/jj studies/nns ,/punct leading/vbg to/to a/dt wrong/jj expansion/nn for/in tv/nn program/nn ./punct
+looking/vbg at/in the/dt two/cd query/nn examples/nns ,/punct however/rb ,/punct people/nns can/md easily/rb determine/vb whether/in the/dt relation/nn is/vbz applicable/jj ,/punct by/in considering/vbg the/dt context/nn words/nns java/nnp and/cc tv/nnp ./punct
+so/in the/dt important/jj question/nn is/vbz how/wrb we/prp can/md serve/vb these/dt context/nn words/nns in/in queries/nns to/to select/vb the/dt appropriate/jj relations/nns to/to apply/vb ./punct
+these/dt context/nn words/nns form/vbp a/dt context/nn within/in query/nn ./punct
+in/in some/dt previous/jj studies/nns [/punct 24/cd ]/punct [/punct 31/cd ]/punct ,/punct context/nn words/nns in/in a/dt query/nn have/vbp been/vbn used/vbn to/to select/vb expansion/nn terms/nns suggested/vbn by/in term/nn relations/nns ,/punct which/wdt are/vbp ,/punct however/rb ,/punct context-independent/jj (/punct such/jj as/in program→computer/nn )/punct ./punct
+although/in improvements/nns are/vbp observed/vbn in/in some/dt cases/nns ,/punct they/prp are/vbp limited/vbn ./punct
+we/prp argue/vbp that/in the/dt problem/nn stems/vbz from/in the/dt lack/nn of/in necessary/jj context/nn information/nn in/in relations/nns themselves/prp ,/punct and/cc a/dt more/rbr radical/jj solution/nn lies/vbz in/in the/dt addition/nn of/in contexts/nns in/in relations/nns ./punct
+the/dt method/nn we/prp propose/vbp is/vbz to/to add/vb context/nn words/nns into/in the/dt condition/nn of/in a/dt relation/nn ,/punct such/jj as/in {/punct java/nnp ,/punct program/nn }/punct →/cd computer/nn ,/punct to/to limit/vb its/prp$ applicability/nn to/to the/dt appropriate/jj context/nn ./punct
+this/dt paper/nn aims/vbz to/to make/vb contributions/nns on/in the/dt following/vbg aspects/nns :/punct •/cd query-specific/jj domain/nn model/nn :/punct we/prp construct/vbp more/rbr specific/jj domain/nn models/nns instead/rb of/in a/dt single/jj user/nn model/nn grouping/vbg all/pdt the/dt domains/nns ./punct
+the/dt domain/nn related/jj to/to a/dt specific/jj query/nn is/vbz selected/vbn (/punct either/cc manually/rb or/cc automatically/rb )/punct for/in each/dt query/nn ./punct
+•/nn context/nn within/in query/nn :/punct we/prp integrate/vbp context/nn words/nns in/in term/nn relations/nns so/in that/in only/rb appropriate/jj relations/nns can/md be/vb applied/vbn to/to the/dt query/nn ./punct
+•/nn multiple/jj contextual/jj factors/nns :/punct finally/rb ,/punct we/prp propose/vbp a/dt framework/nn based/vbn on/in language/nn modeling/nn approach/nn to/to integrate/vb multiple/jj contextual/jj factors/nns ./punct
+our/prp$ approach/nn has/vbz been/vbn tested/vbn on/in several/jj trec/nn collections/nns ./punct
+the/dt experiments/nns clearly/rb show/vbp that/in both/dt types/nns of/in context/nn can/md result/vb in/in significant/jj improvements/nns in/in retrieval/nn effectiveness/nn ,/punct and/cc their/prp$ effects/nns are/vbp complementary/jj ./punct
+we/prp will/md also/rb show/vb that/in it/prp is/vbz possible/jj to/to determine/vb the/dt query/nn domain/nn automatically/rb ,/punct and/cc this/dt results/vbz in/in comparable/jj effectiveness/nn to/to a/dt manual/jj specification/nn of/in domain/nn ./punct
+this/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+in/in section/nn 2/cd ,/punct we/prp review/vbp some/dt related/jj work/nn and/cc introduce/vb the/dt principle/nn of/in our/prp$ approach/nn ./punct
+section/nn 3/cd presents/vbz our/prp$ general/jj model/nn ./punct
+then/rb sections/nns 4/cd and/cc 5/cd describe/vbp respectively/rb the/dt domain/nn model/nn and/cc the/dt knowledge/nn model/nn ./punct
+section/nn 6/cd explains/vbz the/dt method/nn for/in parameter/nn training/nn ./punct
+experiments/nns are/vbp presented/vbn in/in section/nn 7/cd and/cc conclusions/nns in/in section/nn 8/cd ./punct
+2/ls ./punct
+contexts/nns and/cc utilization/nn in/in ir/nnp there/ex are/vbp many/jj contextual/jj factors/nns in/in ir/nnp :/punct the/dt user/nn ''/'' s/nns domain/nn of/in interest/nn ,/punct knowledge/nn about/in the/dt subject/nn ,/punct preference/nn ,/punct document/nn recency/nn ,/punct and/cc so/rb on/in [/punct 2/cd ]/punct [/punct 14/cd ]/punct ./punct
+among/in them/prp ,/punct the/dt user/nn ''/'' s/nns domain/nn of/in interest/nn and/cc knowledge/nn are/vbp considered/vbn to/to be/vb among/in the/dt most/rbs important/jj ones/nns [/punct 20/cd ]/punct [/punct 21/cd ]/punct ./punct
+in/in this/dt section/nn ,/punct we/prp review/vbp some/dt of/in the/dt studies/nns in/in ir/nn concerning/vbg these/dt aspects/nns ./punct
+domain/nn of/in interest/nn and/cc context/nn around/in query/nn a/nn domain/nn of/in interest/nn specifies/vbz a/dt particular/jj background/nn for/in the/dt interpretation/nn of/in a/dt query/nn ./punct
+it/prp can/md be/vb used/vbn in/in different/jj ways/nns ./punct
+most/jjs often/rb ,/punct a/dt user/nn profile/nn is/vbz created/vbn to/to encompass/vb all/pdt the/dt domains/nns of/in interest/nn of/in a/dt user/nn [/punct 23/cd ]/punct ./punct
+in/in [/punct 5/cd ]/punct ,/punct a/dt user/nn profile/nn contains/vbz a/dt set/nn of/in topic/nn categories/nns of/in odp/nn (/punct open/nnp directory/nnp project/nnp ,/punct http/nn :/punct //dmoz.org/nn )/punct identified/vbn by/in the/dt user/nn ./punct
+the/dt documents/nns (/punct web/nn pages/nns )/punct classified/vbn in/in these/dt categories/nns are/vbp used/vbn to/to create/vb a/dt term/nn vector/nn ,/punct which/wdt represents/vbz the/dt whole/jj domains/nns of/in interest/nn of/in the/dt user/nn ./punct
+on/in the/dt other/jj hand/nn ,/punct [/punct 9/cd ]/punct [/punct 15/cd ]/punct [/punct 26/cd ]/punct [/punct 30/cd ]/punct ,/punct as/rb well/rb as/in google/nnp personalized/nnp search/vb [/punct 12/cd ]/punct use/vbp the/dt documents/nns read/vbn by/in the/dt user/nn ,/punct stored/vbn on/in user/nn ''/'' s/nns computer/nn or/cc extracted/vbn from/in user/nn ''/'' s/vbz search/nn history/nn ./punct
+in/in all/dt these/dt studies/nns ,/punct we/prp observe/vbp that/in a/dt single/jj user/nn profile/nn (/punct usually/rb a/dt statistical/jj model/nn or/cc vector/nn )/punct is/vbz created/vbn for/in a/dt user/nn without/in distinguishing/vbg the/dt different/jj topic/nn domains/nns ./punct
+the/dt systematic/jj application/nn of/in the/dt user/nn profile/nn can/md incorrectly/rb bias/nn the/dt results/nns for/in queries/nns unrelated/jj to/to the/dt profile/nn ./punct
+this/dt situation/nn can/md often/rb occur/vb in/in practice/nn as/in a/dt user/nn can/md search/vb for/in a/dt variety/nn of/in topics/nns outside/in the/dt domains/nns that/in he/prp has/vbz previously/rb searched/vbn in/in or/cc identified/vbn ./punct
+a/dt possible/jj solution/nn to/to this/dt problem/nn is/vbz the/dt creation/nn of/in multiple/jj profiles/nns ,/punct one/cd for/in a/dt separate/jj domain/nn of/in interest/nn ./punct
+the/dt domains/nns related/vbn to/to a/dt query/nn are/vbp then/rb identified/vbn according/vbg to/to the/dt query/nn ./punct
+this/dt will/md enable/vb us/prp to/to use/vb a/dt more/rbr appropriate/jj query-specific/jj profile/nn ,/punct instead/rb of/in a/dt user-centric/jj one/cd ./punct
+this/dt approach/nn is/vbz used/vbn in/in [/punct 18/cd ]/punct in/in which/wdt odp/nn directories/nns are/vbp used/vbn ./punct
+however/rb ,/punct only/rb a/dt small/jj scale/nn experiment/nn has/vbz been/vbn carried/vbn out/rp ./punct
+a/dt similar/jj approach/nn is/vbz used/vbn in/in [/punct 8/cd ]/punct ,/punct where/wrb domain/nn models/nns are/vbp created/vbn using/vbg odp/nn categories/nns and/cc user/nn queries/nns are/vbp manually/rb mapped/vbn to/to them/prp ./punct
+however/rb ,/punct the/dt experiments/nns showed/vbd variable/jj results/nns ./punct
+it/prp remains/vbz unclear/jj whether/in domain/nn models/nns can/md be/vb effectively/rb used/vbn in/in ir/nnp ./punct
+in/in this/dt study/nn ,/punct we/prp also/rb model/vbp topic/nn domains/nns ./punct
+we/prp will/md carry/vb out/rp experiments/nns on/in both/dt automatic/jj and/cc manual/jj identification/nn of/in query/nn domains/nns ./punct
+domain/nn models/nns will/md also/rb be/vb integrated/vbn with/in other/jj factors/nns ./punct
+in/in the/dt following/vbg discussion/nn ,/punct we/prp will/md call/vb the/dt topic/nn domain/nn of/in a/dt query/nn a/dt context/nn around/in query/nn to/to contrast/nn with/in another/dt context/nn within/in query/nn that/in we/prp will/md introduce/vb ./punct
+knowledge/nn and/cc context/nn within/in query/nn due/jj to/to the/dt unavailability/nn of/in domain-specific/jj knowledge/nn ,/punct general/jj knowledge/nn resources/nns such/jj as/in wordnet/nnp and/cc term/nn relations/nns extracted/vbn automatically/rb have/vbp been/vbn used/vbn for/in query/nn expansion/nn [/punct 27/cd ]/punct [/punct 31/cd ]/punct ./punct
+in/in both/dt cases/nns ,/punct the/dt relations/nns are/vbp defined/vbn between/in two/cd single/jj terms/nns such/jj as/in t1→t2/nn ./punct
+if/in a/dt query/nn contains/vbz term/nn t1/nn ,/punct then/rb t2/nn is/vbz always/rb considered/vbn as/in a/dt candidate/nn for/in expansion/nn ./punct
+as/in we/prp mentioned/vbd earlier/rbr ,/punct we/prp are/vbp faced/vbn with/in the/dt problem/nn of/in relation/nn ambiguity/nn :/punct some/dt relations/nns apply/vbp to/to a/dt query/nn and/cc some/dt others/nns should/md not/rb ./punct
+for/in example/nn ,/punct program→computer/nn should/md not/rb be/vb applied/vbn to/to tv/nn program/nn even/rb if/in the/dt latter/jj contains/vbz program/nn ./punct
+however/rb ,/punct little/jj information/nn is/vbz available/jj in/in the/dt relation/nn to/to help/vb us/prp determine/vb if/in an/dt application/nn context/nn is/vbz appropriate/jj ./punct
+to/to remedy/vb this/dt problem/nn ,/punct approaches/nns have/vbp been/vbn proposed/vbn to/to make/vb a/dt selection/nn of/in expansion/nn terms/nns after/in the/dt application/nn of/in relations/nns [/punct 24/cd ]/punct [/punct 31/cd ]/punct ./punct
+typically/rb ,/punct one/cd defines/vbz some/dt sort/nn of/in global/jj relation/nn between/in the/dt expansion/nn term/nn and/cc the/dt whole/jj query/nn ,/punct which/wdt is/vbz usually/rb a/dt sum/nn of/in its/prp$ relations/nns to/to every/dt query/nn word/nn ./punct
+although/in some/dt inappropriate/jj expansion/nn terms/nns can/md be/vb removed/vbn because/in they/prp are/vbp only/rb weakly/rb connected/vbn to/to some/dt query/nn terms/nns ,/punct many/jj others/nns remain/vbp ./punct
+for/in example/nn ,/punct if/in the/dt relation/nn program→computer/nn is/vbz strong/jj enough/rb ,/punct computer/nn will/md have/vb a/dt strong/jj global/jj relation/nn to/to the/dt whole/jj query/nn tv/nn program/nn and/cc it/prp still/rb remains/vbz as/in an/dt expansion/nn term/nn ./punct
+it/prp is/vbz possible/jj to/to integrate/vb stronger/jjr control/nn on/in the/dt utilization/nn of/in knowledge/nn ./punct
+for/in example/nn ,/punct [/punct 17/cd ]/punct defined/vbn strong/jj logical/jj relations/nns to/to encode/vb knowledge/nn of/in different/jj domains/nns ./punct
+if/in the/dt application/nn of/in a/dt relation/nn leads/vbz to/to a/dt conflict/nn with/in the/dt query/nn (/punct or/cc with/in other/jj pieces/nns of/in evidence/nn )/punct ,/punct then/rb it/prp is/vbz not/rb applied/vbn ./punct
+however/rb ,/punct this/dt approach/nn requires/vbz encoding/vbg all/pdt the/dt logical/jj consequences/nns including/vbg contradictions/nns in/in knowledge/nn ,/punct which/wdt is/vbz difficult/jj to/to implement/vb in/in practice/nn ./punct
+in/in our/prp$ earlier/jjr study/nn [/punct 1/cd ]/punct ,/punct a/dt simpler/jjr and/cc more/jjr general/jj approach/nn is/vbz proposed/vbn to/to solve/vb the/dt problem/nn at/in its/prp$ source/nn ,/punct i.e/nn ./punct
+the/dt lack/nn of/in context/nn information/nn in/in term/nn relations/nns :/punct by/in introducing/vbg stricter/jjr conditions/nns in/in a/dt relation/nn ,/punct for/in example/nn {/punct java/nnp ,/punct program/nn }/punct →computer/nn and/cc {/punct algorithm/nn ,/punct program/nn }/punct →computer/nn ,/punct the/dt applicability/nn of/in the/dt relations/nns will/md be/vb naturally/rb restricted/jj to/to correct/vb contexts/nns ./punct
+as/in a/dt result/nn ,/punct computer/nn will/md be/vb used/vbn to/to expand/vb queries/nns java/nnp program/nn or/cc program/nn algorithm/nn ,/punct but/cc not/rb tv/nn program/nn ./punct
+this/dt principle/nn is/vbz similar/jj to/to that/dt of/in [/punct 33/cd ]/punct for/in word/nn sense/nn disambiguation/nn ./punct
+however/rb ,/punct we/prp do/vbp not/rb explicitly/rb assign/vb a/dt meaning/nn to/to a/dt word/nn ;/punct rather/rb we/prp try/vbp to/to make/vb differences/nns between/in word/nn usages/nns in/in different/jj contexts/nns ./punct
+from/in this/dt point/nn of/in view/nn ,/punct our/prp$ approach/nn is/vbz more/rbr similar/jj to/to word/nn sense/nn discrimination/nn [/punct 27/cd ]/punct ./punct
+in/in this/dt paper/nn ,/punct we/prp use/vbp the/dt same/jj approach/nn and/cc we/prp will/md integrate/vb it/prp into/in a/dt more/rbr global/jj model/nn with/in other/jj context/nn factors/nns ./punct
+as/in the/dt context/nn words/nns added/vbd into/in relations/nns allow/vbp us/prp to/to exploit/vb the/dt word/nn context/nn within/in the/dt query/nn ,/punct we/prp call/vbp such/jj factors/nns context/nn within/in query/nn ./punct
+within/in query/nn context/nn exists/vbz in/in many/jj queries/nns ./punct
+in/in fact/nn ,/punct users/nns often/rb do/vbp not/rb use/vb a/dt single/jj ambiguous/jj word/nn such/jj as/in java/nnp as/in query/nn (/punct if/in they/prp are/vbp aware/jj of/in its/prp$ ambiguity/nn )/punct ./punct
+some/dt context/nn words/nns are/vbp often/rb used/vbn together/rp with/in it/prp ./punct
+in/in these/dt cases/nns ,/punct contexts/nns within/in query/nn are/vbp created/vbn and/cc can/md be/vb exploited/vbn ./punct
+query/jj profile/nn and/cc other/jj factors/nns many/jj attempts/nns have/vbp been/vbn made/vbn in/in ir/nnp to/to create/vb query-specific/jj profiles/nns ./punct
+we/prp can/md consider/vb implicit/jj feedback/nn or/cc blind/jj feedback/nn [/punct 7/cd ]/punct [/punct 16/cd ]/punct [/punct 29/cd ]/punct [/punct 32/cd ]/punct [/punct 35/cd ]/punct in/in this/dt family/nn ./punct
+a/dt short-term/jj feedback/nn model/nn is/vbz created/vbn for/in the/dt given/vbn query/nn from/in feedback/nn documents/nns ,/punct which/wdt has/vbz been/vbn proven/vbn to/to be/vb effective/jj to/to capture/vb some/dt aspects/nns of/in the/dt user/nn ''/'' s/nns intent/nn behind/in the/dt query/nn ./punct
+in/in order/nn to/to create/vb a/dt good/jj query/nn model/nn ,/punct such/pdt a/dt query-specific/jj feedback/nn model/nn should/md be/vb integrated/vbn ./punct
+there/ex are/vbp many/jj other/jj contextual/jj factors/nns (/punct [/punct 26/cd ]/punct )/punct that/in we/prp do/vbp not/rb deal/vb with/in in/in this/dt paper/nn ./punct
+however/rb ,/punct it/prp seems/vbz clear/jj that/in many/jj factors/nns are/vbp complementary/jj ./punct
+as/in found/vbn in/in [/punct 32/cd ]/punct ,/punct a/dt feedback/nn model/nn creates/vbz a/dt local/jj context/nn related/jj to/to the/dt query/nn ,/punct while/in the/dt general/jj knowledge/nn or/cc the/dt whole/jj corpus/nn defines/vbz a/dt global/jj context/nn ./punct
+both/dt types/nns of/in contexts/nns have/vbp been/vbn proven/vbn useful/jj [/punct 32/cd ]/punct ./punct
+domain/nn model/nn specifies/vbz yet/rb another/dt type/nn of/in useful/jj information/nn :/punct it/prp reflects/vbz a/dt set/nn of/in specific/jj background/nn terms/nns for/in a/dt domain/nn ,/punct for/in example/nn pollution/nn ,/punct rain/nn ,/punct greenhouse/nn ,/punct etc/fw ./punct
+for/in the/dt domain/nn of/in environment/nn ./punct
+these/dt terms/nns are/vbp often/rb presumed/vbn when/wrb a/dt user/nn issues/nns a/dt query/nn such/jj as/in waste/nn cleanup/nn in/in the/dt domain/nn ./punct
+it/prp is/vbz useful/jj to/to add/vb them/prp into/in the/dt query/nn ./punct
+we/prp see/vbp a/dt clear/jj complementarity/nn among/in these/dt factors/nns ./punct
+it/prp is/vbz then/rb useful/jj to/to combine/vb them/prp together/rb in/in a/dt single/jj ir/nnp model/nn ./punct
+in/in this/dt study/nn ,/punct we/prp will/md integrate/vb all/pdt the/dt above/jj factors/nns within/in a/dt unified/vbn framework/nn based/vbn on/in language/nn modeling/nn ./punct
+each/dt component/nn contextual/nn factor/nn will/md determines/vbz a/dt different/jj ranking/jj score/nn ,/punct and/cc the/dt final/jj document/nn ranking/jj combines/nns all/dt of/in them/prp ./punct
+this/dt is/vbz described/vbn in/in the/dt following/vbg section/nn ./punct
+3/ls ./punct
+general/jj ir/nnp model/nnp in/in the/dt language/nn modeling/nn framework/nn ,/punct a/dt typical/jj score/nn function/nn is/vbz defined/vbn in/in kl-divergence/nn as/in follows/vbz :/punct (/punct )/punct (/punct )/punct (/punct )/punct (/punct )/punct dq/nn vt/nnp dq/nn kltptpdqscore/nn θθθθ/nn |||log|/nn ,/punct −∝=/cd ∑∈/cd (/punct 1/cd )/punct where/wrb θd/nn is/vbz a/dt (/punct unigram/nn )/punct language/nn model/nn created/vbn for/in a/dt document/nn d/nn ,/punct θq/nn a/dt language/nn model/nn for/in the/dt query/nn q/nnp ,/punct and/cc v/nn the/dt vocabulary/nn ./punct
+smoothing/vbg on/in document/nn model/nn is/vbz recognized/vbn to/to be/vb crucial/jj [/punct 35/cd ]/punct ,/punct and/cc one/cd of/in common/jj smoothing/nn methods/nns is/vbz the/dt jelinek-mercer/jj interpolation/nn smoothing/nn :/punct (/punct )/punct (/punct )/punct (/punct )/punct (/punct )/punct cdd/nn tptptp/nn θλθλθ/nn ||1'|/cd +−=/cd (/punct 2/cd )/punct where/wrb λ/nn is/vbz an/dt interpolation/nn parameter/nn and/cc θc/nn the/dt collection/nn model/nn ./punct
+in/in the/dt basic/jj language/nn modeling/nn approaches/nns ,/punct the/dt query/nn model/nn is/vbz estimated/vbn by/in maximum/nnp likelihood/nnp estimation/nn (/punct mle/nn )/punct without/in any/dt smoothing/nn ./punct
+in/in such/pdt a/dt setting/nn ,/punct the/dt basic/jj retrieval/nn operation/nn is/vbz still/rb limited/vbn to/to keyword/vb matching/nn ,/punct according/vbg to/to a/dt few/jj words/nns in/in the/dt query/nn ./punct
+to/to improve/vb retrieval/nn effectiveness/nn ,/punct it/prp is/vbz important/jj to/to create/vb a/dt more/rbr complete/jj query/nn model/nn that/wdt represents/vbz better/jjr the/dt information/nn need/nn ./punct
+in/in particular/jj ,/punct all/pdt the/dt related/jj and/cc presumed/jj words/nns should/md be/vb included/vbn in/in the/dt query/nn model/nn ./punct
+a/dt more/jjr complete/jj query/nn model/nn by/in several/jj methods/nns have/vbp been/vbn proposed/vbn using/vbg feedback/nn documents/nns [/punct 16/cd ]/punct [/punct 35/cd ]/punct or/cc using/vbg term/nn relations/nns [/punct 1/cd ]/punct [/punct 10/cd ]/punct [/punct 34/cd ]/punct ./punct
+in/in these/dt cases/nns ,/punct we/prp construct/vbp two/cd models/nns for/in the/dt query/nn :/punct the/dt initial/jj query/nn model/nn containing/vbg only/rb the/dt original/jj terms/nns ,/punct and/cc a/dt new/jj model/nn containing/vbg the/dt added/vbn terms/nns ./punct
+they/prp are/vbp then/rb combined/vbn through/in interpolation/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp generalize/vbp this/dt approach/nn and/cc integrate/vb more/jjr models/nns for/in the/dt query/nn ./punct
+let/vb us/prp use/vb 0/cd qθ/nn to/to denote/vb the/dt original/jj query/nn model/nn ,/punct f/nn qθ/nn for/in the/dt feedback/nn model/nn created/vbn from/in feedback/nn documents/nns ,/punct dom/nnp qθ/nnp for/in a/dt domain/nn model/nn and/cc k/nn qθ/nn for/in a/dt knowledge/nn model/nn created/vbn by/in applying/vbg term/nn relations/nns ./punct
+0/cd qθ/nn can/md be/vb created/vbn by/in mle/nnp ./punct
+f/nn qθ/nn has/vbz been/vbn used/vbn in/in several/jj previous/jj studies/nns [/punct 16/cd ]/punct [/punct 35/cd ]/punct ./punct
+in/in this/dt paper/nn ,/punct f/nn qθ/nn is/vbz extracted/vbn using/vbg the/dt 20/cd blind/jj feedback/nn documents/nns ./punct
+we/prp will/md describe/vb the/dt details/nns to/to construct/vb dom/nnp qθ/nnp and/cc k/nnp qθ/nnp in/in section/nnp 4/cd and/cc 5/cd ./punct
+given/vbn these/dt models/nns ,/punct we/prp create/vbp the/dt following/vbg final/jj query/nn model/nn by/in interpolation/nn :/punct ∑∈/nn =/punct xi/nn i/fw qiq/fw tptp/nn )/punct |/punct (/punct )/punct |/punct (/punct θαθ/nn (/punct 3/cd )/punct where/wrb x=/nn {/punct 0/cd ,/punct dom/nnp ,/punct k/nnp ,/punct f/nn }/punct is/vbz the/dt set/nn of/in all/dt component/nn models/nns and/cc iα/nn (/punct with/in 1=∑∈xi/nn iα/nn )/punct are/vbp their/prp$ mixture/nn weights/nns ./punct
+then/rb the/dt document/nn score/nn in/in equation/nn (/punct 1/cd )/punct is/vbz extended/vbn as/in follows/vbz :/punct (/punct )/punct ∑∑∑/cd ∈∈/nn ∈/cd ==/cd xi/nn ii/ls vt/nnp xi/nn d/nn i/fw qi/fw dqscoretptpdqscore/nn )/punct ,/punct (/punct )/punct |/punct (/punct log/nn )/punct |/punct (/punct ,/punct αθθα/nn (/punct 4/cd )/punct where/wrb )/punct |/punct (/punct log/nn )/punct |/punct (/punct )/punct ,/punct (/punct d/nn vt/nnp i/fw qi/fw tptpdqscore/nn θθ∑∈/nn =/punct is/vbz the/dt score/nn according/vbg to/to each/dt component/nn model/nn ./punct
+here/rb we/prp can/md see/vb that/in our/prp$ strategy/nn of/in enhancing/vbg the/dt query/nn model/nn by/in contextual/jj factors/nns is/vbz equivalent/jj to/to document/vb re-ranking/nn ,/punct which/wdt is/vbz used/vbn in/in [/punct 5/cd ]/punct [/punct 15/cd ]/punct [/punct 30/cd ]/punct ./punct
+the/dt remaining/vbg problem/nn is/vbz to/to construct/vb domain/nn models/nns and/cc knowledge/nn model/nn and/cc to/to combine/vb all/pdt the/dt models/nns (/punct parameter/nn setting/nn )/punct ./punct
+we/prp describe/vbp this/dt in/in the/dt following/vbg sections/nns ./punct
+4/ls ./punct
+constructing/vbg and/cc using/vbg domain/nn models/nns as/in in/in previous/jj studies/nns ,/punct we/prp exploit/vbp a/dt set/nn of/in documents/nns already/rb classified/vbn in/in each/dt domain/nn ./punct
+these/dt documents/nns can/md be/vb identified/vbn in/in two/cd different/jj ways/nns :/punct 1/cd )/punct one/cd can/md take/vb advantages/nns of/in an/dt existing/jj domain/nn hierarchy/nn and/cc the/dt documents/nns manually/rb classified/vbn in/in them/prp ,/punct such/jj as/in odp/nn ./punct
+in/in that/dt case/nn ,/punct a/dt new/jj query/nn should/md be/vb classified/vbn into/in the/dt same/jj domains/nns either/cc manually/rb or/cc automatically/rb ./punct
+2/cd )/punct a/dt user/nn can/md define/vb his/prp$ own/jj domains/nns ./punct
+by/in assigning/vbg a/dt domain/nn to/to his/prp$ queries/nns ,/punct the/dt system/nn can/md gather/vb a/dt set/nn of/in answers/nns to/to the/dt queries/nns automatically/rb ,/punct which/wdt are/vbp then/rb considered/vbn to/to be/vb in-domain/jj documents/nns ./punct
+the/dt answers/nns could/md be/vb those/dt that/in the/dt user/nn have/vbp read/vbn ,/punct browsed/vbn through/in ,/punct or/cc judged/vbn relevant/jj to/to an/dt in-domain/jj query/nn ,/punct or/cc they/prp can/md be/vb simply/rb the/dt top-ranked/jj retrieval/nn results/nns ./punct
+an/dt earlier/jjr study/nn [/punct 4/cd ]/punct has/vbz compared/vbn the/dt above/jj two/cd strategies/nns using/vbg trec/nn queries/nns 51-150/cd ,/punct for/in which/wdt a/dt domain/nn has/vbz been/vbn manually/rb assigned/vbn ./punct
+these/dt domains/nns have/vbp been/vbn mapped/vbn to/to odp/nn categories/nns ./punct
+it/prp is/vbz found/vbn that/in both/dt approaches/nns mentioned/vbn above/rb are/vbp equally/rb effective/jj and/cc result/vbp in/in comparable/jj performance/nn ./punct
+therefore/rb ,/punct in/in this/dt study/nn ,/punct we/prp only/rb use/vbp the/dt second/jj approach/nn ./punct
+this/dt choice/nn is/vbz also/rb motivated/vbn by/in the/dt possibility/nn to/to compare/vb between/in manual/jj and/cc automatic/jj assignment/nn of/in domain/nn to/to a/dt new/jj query/nn ./punct
+this/dt will/md be/vb explained/vbn in/in detail/nn in/in our/prp$ experiments/nns ./punct
+whatever/wdt the/dt strategy/nn ,/punct we/prp will/md obtain/vb a/dt set/nn of/in documents/nns for/in each/dt domain/nn ,/punct from/in which/wdt a/dt language/nn model/nn can/md be/vb extracted/vbn ./punct
+if/in maximum/jj likelihood/nn estimation/nn is/vbz used/vbn directly/rb on/in these/dt documents/nns ,/punct the/dt resulting/vbg domain/nn model/nn will/md contain/vb both/dt domain-specific/jj terms/nns and/cc general/jj terms/nns ,/punct and/cc the/dt former/jj do/vbp not/rb emerge/vb ./punct
+therefore/rb ,/punct we/prp employ/vbp an/dt em/nn process/nn to/to extract/vb the/dt specific/jj part/nn of/in the/dt domain/nn as/in follows/vbz :/punct we/prp assume/vbp that/in the/dt documents/nns in/in a/dt domain/nn are/vbp generated/vbn by/in a/dt domain-specific/jj model/nn (/punct to/to be/vb extracted/vbn )/punct and/cc general/jj language/nn model/nn (/punct collection/nn model/nn )/punct ./punct
+then/rb the/dt likelihood/nn of/in a/dt document/nn in/in the/dt domain/nn can/md be/vb formulated/vbn as/in follows/vbz :/punct (/punct )/punct (/punct )/punct (/punct )/punct (/punct )/punct [/punct ]/punct (/punct )/punct ∏∈/fw +−=/fw dt/nn dtc/nn cdomdom/nn tptpdp/nn ;/punct ||1'|/cd θηθηθ/nn (/punct 5/cd )/punct where/wrb c/nn (/punct t/nn ;/punct d/nn )/punct is/vbz the/dt count/nn of/in t/nn in/in document/nn d/nn and/cc η/nn is/vbz a/dt smoothing/nn parameter/nn (/punct which/wdt will/md be/vb fixed/vbn at/in 0.5/cd as/in in/in [/punct 35/cd ]/punct )/punct ./punct
+the/dt em/nnp algorithm/nn is/vbz used/vbn to/to extract/vb the/dt domain/nn model/nn domθ/nn that/wdt maximizes/vbz p/nn (/punct dom|/nn θ/nn ''/'' dom/nnp )/punct (/punct where/wrb dom/nnp is/vbz the/dt set/nn of/in documents/nns in/in the/dt domain/nn )/punct ,/punct that/wdt is/vbz :/punct (/punct )/punct (/punct )/punct (/punct )/punct (/punct )/punct [/punct ]/punct (/punct )/punct ∏/fw ∏∈/fw ∈/fw +−=/nn =/punct domd/nn dt/nn dtc/nn cdom/nn domdom/nn tptp/nn domp/nn dom/nnp dom/nnp ;/punct '/punct ||1maxarg/jj |maxarg/nn θηθη/nn θθ/nn θ/nn θ/nn (/punct 6/cd )/punct this/dt is/vbz the/dt same/jj process/nn as/in the/dt one/cd used/vbn to/to extract/vb feedback/nn model/nn in/in [/punct 35/cd ]/punct ./punct
+it/prp is/vbz able/jj to/to extract/vb the/dt most/rbs specific/jj words/nns of/in the/dt domain/nn from/in the/dt documents/nns while/in filtering/vbg out/rp the/dt common/jj words/nns of/in the/dt language/nn ./punct
+this/dt can/md be/vb observed/vbn in/in the/dt following/vbg table/nn ,/punct which/wdt shows/vbz some/dt words/nns in/in the/dt domain/nn model/nn of/in environment/nn before/in and/cc after/in em/nn iterations/nns (/punct 50/cd iterations/nns )/punct ./punct
+table/nnp 1/cd ./punct
+term/nn probabilities/nns before/after/jj em/nnp term/nnp initial/jj final/jj change/nn term/nnp initial/jj final/jj change/nn air/nn 0.00358/cd 0.00558/cd +/punct 56/cd %/punct year/nn 0.00357/cd 0.00052/cd -/punct 86/cd %/punct environment/nn 0.00213/cd 0.00340/cd +/punct 60/cd %/punct system/nn 0.00212/cd 7.13*e-6/nn -/punct 99/cd %/punct rain/nn 0.00197/cd 0.00336/cd +/punct 71/cd %/punct program/nn 0.00189/cd 0.00040/cd -/punct 79/cd %/punct pollution/nn 0.00177/cd 0.00301/cd +/punct 70/cd %/punct million/cd 0.00131/cd 5.80*e-6/nn -/punct 99/cd %/punct storm/nn 0.00176/cd 0.00302/cd +/punct 72/cd %/punct make/vbp 0.00108/cd 5.79*e-5/jj -/punct 95/cd %/punct flood/nn 0.00164/cd 0.00281/cd +/punct 71/cd %/punct company/nn 0.00099/cd 8.52*e-8/nn -/punct 99/cd %/punct tornado/nn 0.00072/cd 0.00125/cd +/punct 74/cd %/punct president/nn 0.00077/cd 2.71*e-6/cd -/punct 99/cd %/punct greenhouse/nn 0.00034/cd 0.00058/cd +/punct 72/cd %/punct month/nn 0.00073/cd 3.88*e-5/nn -/punct 95/cd %/punct given/vbn a/dt set/nn of/in domain/nn models/nns ,/punct the/dt related/jj ones/nns have/vbp to/to be/vb assigned/vbn to/to a/dt new/jj query/nn ./punct
+this/dt can/md be/vb done/vbn manually/rb by/in the/dt user/nn or/cc automatically/rb by/in the/dt system/nn using/vbg query/nn classification/nn ./punct
+we/prp will/md compare/vb both/dt approaches/nns ./punct
+query/nnp classification/nn has/vbz been/vbn investigated/vbn in/in several/jj studies/nns [/punct 18/cd ]/punct [/punct 28/cd ]/punct ./punct
+in/in this/dt study/nn ,/punct we/prp use/vbp a/dt simple/jj classification/nn method/nn :/punct the/dt selected/vbn domain/nn is/vbz the/dt one/cd with/in which/wdt the/dt query/nn ''/'' s/nns kl-divergence/jj score/nn is/vbz the/dt lowest/jjs ,/punct i.e/nn ./punct
+:/punct )/punct |/punct (/punct log/nn )/punct |/punct (/punct minarg/nn 0/cd dom/nnp qt/nnp q/nnp dom/nnp q/nnp tptp/nnp dom/nnp θθθ/nn θ/nn ∑∈/nn =/punct (/punct 7/cd )/punct this/dt classification/nn method/nn is/vbz an/dt extension/nn to/to naïve/nnp bayes/nnp as/in shown/vbn in/in [/punct 22/cd ]/punct ./punct
+the/dt score/nn depending/vbg on/in the/dt domain/nn model/nn is/vbz then/rb as/in follows/vbz :/punct ∑∈/nn =/punct vt/nnp d/nnp dom/nnp qdom/nnp tptpdqscore/nn )/punct |/punct (/punct log/nn )/punct |/punct (/punct )/punct ,/punct (/punct θθ/nn (/punct 8/cd )/punct although/in the/dt above/jj equation/nn requires/vbz using/vbg all/pdt the/dt terms/nns in/in the/dt vocabulary/nn ,/punct in/in practice/nn ,/punct only/rb the/dt strongest/jjs terms/nns in/in the/dt domain/nn model/nn are/vbp useful/jj and/cc the/dt terms/nns with/in low/jj probabilities/nns are/vbp often/rb noise/nn ./punct
+therefore/rb ,/punct we/prp only/rb retain/vbp the/dt top/jj 100/cd strongest/jjs terms/nns ./punct
+the/dt same/jj strategy/nn is/vbz used/vbn for/in knowledge/nn model/nn ./punct
+although/in domain/nn models/nns are/vbp more/rbr refined/jj than/in a/dt single/jj user/nn profile/nn ,/punct the/dt topics/nns in/in a/dt single/jj domain/nn can/md still/rb be/vb very/rb different/jj ,/punct making/vbg the/dt domain/nn model/nn too/rb large/jj ./punct
+this/dt is/vbz particularly/rb true/jj for/in large/jj domains/nns such/jj as/in science/nnp and/cc technology/nn defined/vbn in/in trec/nn queries/nns ./punct
+using/vbg such/jj a/dt large/jj domain/nn model/nn as/in the/dt background/nn can/md introduce/vb much/jj noise/nn terms/nns ./punct
+therefore/rb ,/punct we/prp further/rb construct/vb a/dt sub-domain/jj model/nn more/rbr related/jj to/to the/dt given/vbn query/nn ,/punct by/in using/vbg a/dt subset/nn of/in in-domain/jj documents/nns that/wdt are/vbp related/jj to/to the/dt query/nn ./punct
+these/dt documents/nns are/vbp the/dt top-ranked/jj documents/nns retrieved/vbn with/in the/dt original/jj query/nn within/in the/dt domain/nn ./punct
+this/dt approach/nn is/vbz indeed/rb a/dt combination/nn of/in domain/nn and/cc feedback/nn models/nns ./punct
+in/in our/prp$ experiments/nns ,/punct we/prp will/md see/vb that/in this/dt further/jj specification/nn of/in sub-domain/nn is/vbz necessary/jj in/in some/dt cases/nns ,/punct but/cc not/rb in/in all/dt ,/punct especially/rb when/wrb feedback/nnp model/nn is/vbz also/rb used/vbn ./punct
+5/cd ./punct
+extracting/vbg context-dependent/jj term/nn relations/nns from/in documents/nns in/in this/dt paper/nn ,/punct we/prp extract/vbp term/nn relations/nns from/in the/dt document/nn collection/nn automatically/rb ./punct
+in/in general/jj ,/punct a/dt term/nn relation/nn can/md be/vb represented/vbn as/in a→b/nn ./punct
+both/dt a/nn and/cc b/nn have/vbp been/vbn restricted/jj to/to single/jj terms/nns in/in previous/jj studies/nns ./punct
+a/dt single/jj term/nn in/in a/dt means/vbz that/in the/dt relation/nn is/vbz applicable/jj to/to all/dt the/dt queries/nns containing/vbg that/in term/nn ./punct
+as/in we/prp explained/vbd earlier/rbr ,/punct this/dt is/vbz the/dt source/nn of/in many/jj wrong/jj applications/nns ./punct
+the/dt solution/nn we/prp propose/vbp is/vbz to/to add/vb more/jjr context/nn terms/nns into/in a/nn ,/punct so/rb that/in it/prp is/vbz applicable/jj only/rb when/wrb all/pdt the/dt terms/nns in/in a/dt appear/vbp in/in a/dt query/nn ./punct
+for/in example/nn ,/punct instead/rb of/in creating/vbg a/dt context-independent/jj relation/nn java→program/nn ,/punct we/prp will/md create/vb {/punct java/nnp ,/punct computer/nn }/punct →program/nn ,/punct which/wdt means/vbz that/in program/nn is/vbz selected/vbn when/wrb both/dt java/nnp and/cc computer/nn appear/vbp in/in a/dt query/nn ./punct
+the/dt term/nn added/vbd in/in the/dt condition/nn specifies/vbz a/dt stricter/jjr context/nn to/to apply/vb the/dt relation/nn ./punct
+we/prp call/vbp this/dt type/nn of/in relation/nn context-dependent/jj relation/nn ./punct
+in/in principle/nn ,/punct the/dt addition/nn is/vbz not/rb restricted/jj to/to one/cd term/nn ./punct
+however/rb ,/punct we/prp will/md make/vb this/dt restriction/nn due/jj to/to the/dt following/vbg reasons/nns :/punct •/cd user/nn queries/nns are/vbp usually/rb very/rb short/jj ./punct
+adding/vbg more/jjr terms/nns into/in the/dt condition/nn will/md create/vb many/jj rarely/rb applicable/jj relations/nns ;/punct •/cd in/in most/jjs cases/nns ,/punct an/dt ambiguous/jj word/nn such/jj as/in java/nnp can/md be/vb effectively/rb disambiguated/vbn by/in one/cd useful/jj context/nn word/nn such/jj as/in computer/nn or/cc hotel/nn ;/punct •/cd the/dt addition/nn of/in more/jjr terms/nns will/md also/rb lead/vb to/to a/dt higher/jjr space/nn and/cc time/nn complexity/nn for/in extracting/vbg and/cc storing/vbg term/nn relations/nns ./punct
+the/dt extraction/nn of/in relations/nns of/in type/nn {/punct tj/nn ,/punct tk/nn }/punct →/cd ti/nns can/md be/vb performed/vbn using/vbg mining/nn algorithms/nns for/in association/nn rules/nns [/punct 13/cd ]/punct ./punct
+here/rb ,/punct we/prp use/vbp a/dt simple/jj co-occurrence/nn analysis/nn ./punct
+windows/nnp of/in fixed/vbn size/nn (/punct 10/cd words/nns in/in our/prp$ case/nn )/punct are/vbp used/vbn to/to obtain/vb co-occurrence/nn counts/nns of/in three/cd terms/nns ,/punct and/cc the/dt probability/nn )/punct |/punct (/punct kji/nn tttp/nn is/vbz determined/vbn as/in follows/vbz :/punct ∑=/cd lt/nn kjlkjikji/nn tttctttctttp/nn )/punct ,/punct ,/punct (/punct )/punct ,/punct ,/punct (/punct )/punct |/punct (/punct (/punct 9/cd )/punct where/wrb )/punct ,/punct ,/punct (/punct kji/nn tttc/nn is/vbz the/dt count/nn of/in co-occurrences/nns ./punct
+in/in order/nn to/to reduce/vb space/nn requirement/nn ,/punct we/prp further/rb apply/vb the/dt following/vbg filtering/vbg criteria/nns :/punct •/cd the/dt two/cd terms/nns in/in the/dt condition/nn should/md appear/vb at/in least/jjs certain/jj time/nn together/rb in/in the/dt collection/nn (/punct 10/cd in/in our/prp$ case/nn )/punct and/cc they/prp should/md be/vb related/vbn ./punct
+we/prp use/vbp the/dt following/vbg pointwise/nn mutual/jj information/nn as/in a/dt measure/nn of/in relatedness/nn (/punct mi/nn >/punct 0/cd )/punct [/punct 6/cd ]/punct :/punct )/punct (/punct )/punct (/punct )/punct ,/punct (/punct log/nn )/punct ,/punct (/punct kj/nn kj/nn kj/nn tptp/nn ttp/nn ttmi/nn =/punct •/cd the/dt probability/nn of/in a/dt relation/nn should/md be/vb higher/jjr than/in a/dt threshold/nn (/punct 0.0001/cd in/in our/prp$ case/nn )/punct ;/punct having/vbg a/dt set/nn of/in relations/nns ,/punct the/dt corresponding/jj knowledge/nn model/nn is/vbz defined/vbn as/in follows/vbz :/punct )/punct |/punct (/punct )/punct |/punct (/punct )/punct |/punct (/punct )/punct |/punct (/punct )/punct |/punct (/punct )/punct |/punct (/punct 00/cd )/punct (/punct 0/cd )/punct (/punct qkqjkj/nnp qtt/nnp i/fw qkjkj/nnp qtt/nnp i/fw k/nnp q/nnp tptptttp/nn ttptttptp/nn kj/nn kj/nn θθ/nn θθ/nn ∑/nn ∑/cd ∈/cd ∈/nn =/punct =/punct (/punct 10/cd )/punct where/wrb (/punct tj/nn tk/nn )/punct ∈q/nn means/vbz any/dt combination/nn of/in two/cd terms/nns in/in the/dt query/nn ./punct
+this/dt is/vbz a/dt direct/jj extension/nn of/in the/dt translation/nn model/nn proposed/vbn in/in [/punct 3/cd ]/punct to/to our/prp$ context-dependent/jj relations/nns ./punct
+the/dt score/nn according/vbg to/to the/dt knowledge/nn model/nn is/vbz then/rb defined/vbn as/in follows/vbz :/punct ∑/cd ∑∈/cd ∈/nn =/punct vt/nnp diqkqjkj/nnp qtt/nnp ik/nnp i/fw kj/fw tptptptttpdqscore/nn )/punct |/punct (/punct log/nn )/punct |/punct (/punct )/punct |/punct (/punct )/punct |/punct (/punct )/punct ,/punct (/punct 00/cd )/punct (/punct θθθ/nn (/punct 11/cd )/punct again/rb ,/punct only/rb the/dt top/jj 100/cd expansion/nn terms/nns are/vbp used/vbn ./punct
+6/cd ./punct
+model/nn parameters/nns there/ex are/vbp several/jj parameters/nns in/in our/prp$ model/nn :/punct λ/nn in/in equation/nn (/punct 2/cd )/punct and/cc αi/nn (/punct i∈/nn {/punct 0/cd ,/punct dom/nnp ,/punct k/nnp ,/punct f/nn }/punct )/punct in/in equation/nn (/punct 3/cd )/punct ./punct
+as/in the/dt parameter/nn λ/nn only/rb affects/vbz document/nn model/nn ,/punct we/prp will/md set/vb it/prp to/to the/dt same/jj value/nn in/in all/dt our/prp$ experiments/nns ./punct
+the/dt value/nn λ=0.5/nn is/vbz determined/vbn to/to maximize/vb the/dt effectiveness/nn of/in the/dt baseline/nn models/nns (/punct see/vb section/nn 7.2/cd )/punct on/in the/dt training/nn data/nns :/punct trec/nn queries/nns 1-50/cd and/cc documents/nns on/in disk/nn 2/cd ./punct
+the/dt mixture/nn weights/nns αi/nn of/in component/nn models/nns are/vbp trained/vbn on/in the/dt same/jj training/nn data/nns using/vbg the/dt following/vbg method/nn of/in line/nn search/nn [/punct 11/cd ]/punct to/to maximize/vb the/dt mean/nn average/jj precision/nn (/punct map/nn )/punct :/punct each/dt parameter/nn is/vbz considered/vbn as/in a/dt search/nn direction/nn ./punct
+we/prp start/vbp by/in searching/vbg in/in one/cd direction/nn -/punct testing/vbg all/pdt the/dt values/nns in/in that/dt direction/nn ,/punct while/in keeping/vbg the/dt values/nns in/in other/jj directions/nns unchanged/jj ./punct
+each/dt direction/nn is/vbz searched/vbn in/in turn/nn ,/punct until/in no/dt improvement/nn in/in map/nn is/vbz observed/vbn ./punct
+in/in order/nn to/to avoid/vb being/vbg trapped/vbn at/in a/dt local/jj maximum/nn ,/punct we/prp started/vbd from/in 10/cd random/jj points/nns and/cc the/dt best/jjs setting/nn is/vbz selected/vbn ./punct
+7/cd ./punct
+experiments/nns
+the/dt main/jj test/nn data/nns are/vbp those/dt from/in trec/nn 1-3/cd ad-hoc/jj and/cc filtering/vbg tracks/nns ,/punct including/vbg queries/nns 1-150/cd ,/punct and/cc documents/nns on/in disks/nns 1-3/cd ./punct
+the/dt specified/jj domain/nn for/in each/dt query/nn ./punct
+this/dt allows/vbz us/prp to/to compare/vb with/in an/dt approach/nn using/vbg automatic/jj domain/nn identification/nn ./punct
+below/nnp is/vbz an/dt we/prp only/rb use/vbp topic/nn titles/nns in/in all/dt our/prp$ tests/nns ./punct
+queries/nns 1-50/cd are/vbp used/vbn for/in training/nn and/cc 51-150/nn for/in testing/nn ./punct
+13/cd domains/nns are/vbp defined/vbn in/in these/dt queries/nns and/cc their/prp$ distributions/nns among/in the/dt two/cd sets/nns of/in queries/nns are/vbp shown/vbn in/in fig/nn ./punct
+1/ls ./punct
+we/prp can/md see/vb that/in the/dt distribution/nn varies/vbz strongly/rb between/in domains/nns and/cc between/in the/dt two/cd query/nn sets/nns ./punct
+used/vbn for/in testing/nn ./punct
+some/dt statistics/nns of/in the/dt data/nns are/vbp described/vbn in/in tab/nnp ./punct
+2/ls ./punct
+all/pdt the/dt documents/nns are/vbp preprocessed/vbn using/vbg porter/nnp stemmer/nn in/in lemur/nnp and/cc the/dt standard/jj stoplist/nn is/vbz used/vbn ./punct
+some/dt queries/nns (/punct 4/cd ,/punct 5/cd and/cc 3/cd in/in the/dt three/cd query/nn sets/nns )/punct only/rb contain/vbp one/cd word/nn ./punct
+for/in these/dt queries/nns ,/punct knowledge/nn model/nn is/vbz not/rb applicable/jj ./punct
+on/in domain/nn models/nns ,/punct we/prp examine/vbp several/jj questions/nns :/punct incorporate/vb the/dt domain/nn model/nn ?/punct
+automatically/rb ?/punct
+how/wrb effective/jj is/vbz this/dt method/nn ?/punct
+either/dt using/vbg documents/nns judged/vbn relevant/jj to/to queries/nns in/in the/dt domain/nn or/cc using/vbg documents/nns retrieved/vbn for/in these/dt queries/nns ./punct
+how/wrb do/vbp they/prp compare/vb ?/punct
+also/rb want/vbp to/to compare/vb the/dt context-dependent/jj relations/nns with/in context-independent/jj ones/nns ./punct
+finally/rb ,/punct we/prp will/md see/vb the/dt impact/nn of/in each/dt component/nn model/nn when/wrb all/pdt the/dt factors/nns are/vbp combined/vbn ./punct
+two/cd baseline/nn models/nns are/vbp used/vbn :/punct the/dt classical/jj unigram/nn model/nn without/in any/dt expansion/nn ,/punct and/cc the/dt model/nn with/in feedback/nn ./punct
+in/in all/pdt the/dt experiments/nns ,/punct document/nn models/nns are/vbp created/vbn using/vbg jelinek-mercer/nnp smoothing/nn ./punct
+this/dt choice/nn is/vbz made/vbn according/vbg to/to the/dt observation/nn in/in that/in the/dt method/nn performs/vbz very/rb well/rb for/in long/jj queries/nns ./punct
+in/in our/prp$ case/nn ,/punct as/in queries/nns are/vbp expanded/vbn ,/punct they/prp perform/vbp similarly/rb to/to long/rb queries/nns ./punct
+in/in our/prp$ preliminary/jj tests/nns ,/punct we/prp also/rb found/vbd this/dt method/nn performed/vbn better/jjr than/in the/dt other/jj methods/nns (/punct e.g/nn ./punct
+dirichlet/jj )/punct ,/punct especially/rb for/in the/dt main/jj baseline/nn method/nn with/in feedback/nn model/nn ./punct
+table/nnp 3/cd shows/vbz the/dt retrieval/nn effectiveness/nn on/in all/pdt the/dt collections/nns ./punct
+this/dt model/nn is/vbz combined/vbn with/in both/dt baseline/nn models/nns (/punct with/in or/cc without/in feedback/nn )/punct ./punct
+we/prp also/rb compare/vbp the/dt context-dependent/jj knowledge/nn model/nn with/in the/dt traditional/jj context-independent/jj term/nn relations/nns (/punct defined/vbn between/in two/cd single/jj terms/nns )/punct ,/punct which/wdt are/vbp used/vbn to/to expand/vb queries/nns ./punct
+this/dt latter/jj selects/vbz expansion/nn terms/nns with/in strongest/jjs global/jj relation/nn to/to the/dt query/nn ./punct
+this/dt relation/nn is/vbz measured/vbn by/in the/dt sum/nn ov/nn ./punct
+sci./nnp &/punct tech/nnp ./punct
+as/in we/prp can/md see/vb ,/punct simple/jj co-occurrence/nn relations/nns can/md produce/vb relatively/rb strong/jj improvements/nns ;/punct but/cc context-dependent/jj relations/nns can/md produce/vb much/jj stronger/jjr improvements/nns in/in all/dt cases/nns ,/punct especially/rb when/wrb feedback/nn is/vbz not/rb used/vbn ./punct
+all/pdt the/dt improvements/nns over/in cooccurrence/nn model/nn are/vbp statistically/rb significant/jj (/punct this/dt is/vbz not/rb shown/vbn in/in the/dt table/nn )/punct ./punct
+the/dt large/jj differences/nns between/in the/dt two/cd types/nns of/in relation/nn clearly/rb show/vbp that/in context-dependent/jj relations/nns are/vbp more/rbr appropriate/jj for/in query/nn expansion/nn ./punct
+this/dt confirms/vbz the/dt hypothesis/nn we/prp made/vbd ,/punct that/in by/in incorporating/vbg context/nn information/nn into/in relations/nns ,/punct we/prp can/md better/rb determine/vb the/dt appropriate/jj relations/nns to/to apply/vb and/cc thus/rb avoid/vb introducing/vbg inappropriate/jj expansion/nn terms/nns ./punct
+the/dt following/vbg example/nn can/md further/rb confirm/vb this/dt observation/nn ,/punct where/wrb we/prp show/vbp the/dt strongest/jjs expansion/nn terms/nns suggested/vbn by/in both/dt types/nns of/in relation/nn for/in in/in comparison/nn with/in the/dt baseline/nn model/nn with/in feedback/nn (/punct tab/nn ./punct
+3/cd )/punct ,/punct we/prp see/vbp that/in the/dt improvements/nns made/vbn by/in knowledge/nn model/nn alone/rb are/vbp slightly/rb lower/jjr ./punct
+however/rb ,/punct when/wrb both/cc models/nns are/vbp combined/vbn ,/punct there/ex are/vbp additional/jj improvements/nns over/in the/dt feedback/nn model/nn ,/punct and/cc these/dt demonstrates/vbz that/in the/dt impacts/nns produced/vbn by/in feedback/nn and/cc term/nn relations/nns are/vbp different/jj and/cc complementary/jj ./punct
+in/in this/dt section/nn ,/punct we/prp test/vbp several/jj strategies/nns to/to create/vb and/cc use/vb domain/nn models/nns ,/punct by/in exploiting/vbg the/dt domain/nn information/nn of/in the/dt query/nn set/vbn in/in various/jj ways/nns ./punct
+c1/nn -/punct with/in the/dt relevant/jj documents/nns for/in the/dt in-domain/jj queries/nns :/punct this/dt strategy/nn simulates/vbz the/dt case/nn where/wrb we/prp have/vbp an/dt existing/vbg directory/nn in/in which/wdt documents/nns relevant/jj to/to the/dt domain/nn are/vbp included/vbn ./punct
+c2/nn -/punct with/in the/dt top-100/jj documents/nns retrieved/vbn with/in the/dt in-domain/jj queries/nns :/punct this/dt strategy/nn simulates/vbz the/dt case/nn where/wrb the/dt user/nn specifies/vbz a/dt domain/nn for/in his/prp$ queries/nns without/in judging/vbg document/nn relevance/nn ,/punct and/cc the/dt system/nn gathers/vbz related/jj documents/nns from/in his/prp$ search/nn history/nn ./punct
+u1/nn -/punct the/dt domain/nn model/nn is/vbz determined/vbn by/in the/dt user/nn manually/rb ./punct
+u2/nn -/punct the/dt domain/nn model/nn is/vbz determined/vbn by/in the/dt system/nn ./punct
+queries/nns 51-150/cd is/vbz used/vbn in/in turn/nn as/in the/dt test/nn query/nn while/in the/dt other/jj queries/nns and/cc their/prp$ relevant/jj documents/nns (/punct c1/nn )/punct or/cc top-ranked/jj retrieved/vbn documents/nns (/punct c2/nn )/punct are/vbp used/vbn to/to create/vb domain/nn models/nns ./punct
+the/dt same/jj method/nn is/vbz used/vbn on/in queries/nns 1-50/cd to/to tune/vb the/dt parameters/nns ./punct
+models/nns can/md generally/rb improve/vb retrieval/nn effectiveness/nn in/in all/pdt the/dt cases/nns ./punct
+the/dt improvements/nns on/in disks/nns 1-3/cd and/cc trec7/nn are/vbp statistically/rb significant/jj ./punct
+however/rb ,/punct the/dt improvement/nn scales/nns are/vbp smaller/jjr than/in using/vbg feedback/nn and/cc relation/nn models/nns ./punct
+looking/vbg at/in the/dt distribution/nn of/in the/dt domains/nns (/punct fig/nn ./punct
+1/cd )/punct ,/punct this/dt observation/nn is/vbz not/rb surprising/jj :/punct for/in many/jj domains/nns ,/punct we/prp only/rb have/vbp few/jj training/nn queries/nns ,/punct thus/rb few/jj indomain/jj documents/nns to/to create/vb domain/nn models/nns ./punct
+in/in addition/nn ,/punct topics/nns in/in the/dt same/jj domain/nn can/md vary/vb greatly/rb ,/punct in/in particular/jj in/in large/jj domains/nns such/jj as/in science/nn and/cc technology/nn ,/punct international/jj politics/nns ,/punct etc/fw ./punct
+second/rb ,/punct we/prp observe/vbp that/in the/dt two/cd methods/nns to/to create/vb domain/nn models/nns perform/vbp equally/rb well/rb (/punct tab/nn ./punct
+6/cd vs/cc ./punct
+tab/nn ./punct
+5/cd )/punct ./punct
+in/in other/jj words/nns ,/punct providing/vbg relevance/nn judgments/nns for/in queries/nns does/vbz not/rb add/vb much/jj advantage/nn for/in the/dt purpose/nn of/in creating/vbg domain/nn models/nns ./punct
+this/dt may/md seem/vb surprising/jj ./punct
+an/dt analysis/nn immediately/rb shows/vbz the/dt reason/nn :/punct a/dt domain/nn model/nn (/punct in/in the/dt way/nn we/prp created/vbd )/punct only/rb captures/vbz term/nn distribution/nn in/in the/dt domain/nn ./punct
+relevant/jj documents/nns for/in all/dt in-domain/jj queries/nns vary/vbp greatly/rb ./punct
+therefore/rb ,/punct in/in some/dt large/jj domains/nns ,/punct characteristic/jj terms/nns have/vbp distribution/nn ,/punct even/rb if/in the/dt top/jj documents/nns retrieved/vbn for/in the/dt in-domain/jj queries/nns are/vbp irrelevant/jj ,/punct they/prp can/md still/rb contain/vb domain/nn characteristic/jj terms/nns similarly/rb to/to relevant/jj documents/nns ./punct
+thus/rb both/dt strategies/nns produce/vbp very/rb similar/jj effects/nns ./punct
+this/dt result/nn opens/vbz the/dt door/nn for/in a/dt simpler/jjr method/nn that/wdt does/vbz not/rb require/vb relevance/nn judgments/nns ,/punct for/in example/nn using/vbg search/nn history/nn ./punct
+third/nnp ,/punct without/in feedback/nnp model/nn ,/punct the/dt sub-domain/jj models/nns constructed/vbn with/in relevant/jj documents/nns perform/vbp much/rb better/jjr than/in the/dt whole/jj domain/nn models/nns (/punct tab/nn ./punct
+5/cd )/punct ./punct
+however/rb ,/punct once/rb feedback/nnp model/nn is/vbz used/vbn ,/punct the/dt advantage/nn disappears/vbz ./punct
+on/in one/cd hand/nn ,/punct this/dt confirms/vbz our/prp$ suggest/vbp relevant/jj terms/nns for/in new/jj queries/nns in/in the/dt domain/nn ./punct
+it/prp indirectly/rb validates/vbz our/prp$ first/jj hypothesis/nn that/in a/dt single/jj user/nn model/nn or/cc profile/nn may/md be/vb too/rb large/jj ,/punct so/rb smaller/jjr domain/nn models/nns are/vbp preferred/vbn ./punct
+on/in the/dt other/jj hand/nn ,/punct sub-domain/jj models/nns capture/vbp similar/jj characteristics/nns to/to feedback/nnp model/nn ./punct
+so/rb when/wrb the/dt latter/jj is/vbz used/vbn ,/punct sub-domain/jj models/nns become/vbp superfluous/jj ./punct
+however/rb ,/punct if/in domain/nn models/nns are/vbp constructed/vbn with/in top-ranked/jj documents/nns (/punct tab/nn ./punct
+6/cd )/punct ,/punct sub-domain/jj models/nns make/vbp much/rb less/jjr differences/nns ./punct
+this/dt can/md be/vb explained/vbn by/in the/dt fact/nn that/in the/dt domains/nns constructed/vbn with/in top-ranked/jj documents/nns tend/vbp to/to be/vb more/rbr uniform/jj than/in relevant/jj documents/nns with/in respect/nn to/to term/vb distribution/nn ,/punct as/in the/dt top/jj retrieved/vbn documents/nns usually/rb have/vbp stronger/jjr statistical/jj correspondence/nn with/in the/dt queries/nns than/in the/dt relevant/jj documents/nns ./punct
+queries/nns ./punct
+here/rb ,/punct we/prp examine/vbp the/dt possibility/nn to/to automatically/rb identify/vb query/nn domains/nns ./punct
+table/nnp 7/cd shows/vbz the/dt results/nns with/in this/dt strategy/nn using/vbg both/cc strategies/nns for/in domain/nn model/nn construction/nn ./punct
+we/prp can/md observe/vb that/in the/dt effectiveness/nn is/vbz only/rb slightly/rb lower/jjr than/in those/dt produced/vbn models/nns )/punct ./punct
+this/dt shows/vbz that/in automatic/jj domain/nn identification/nn is/vbz a/dt way/nn to/to select/jj domain/nn model/nn as/in effective/jj as/in manual/jj identification/nn ./punct
+this/dt also/rb demonstrates/vbz the/dt feasibility/nn to/to use/vb domain/nn models/nns for/in queries/nns when/wrb no/dt domain/nn information/nn is/vbz provided/vbn ./punct
+looking/vbg at/in the/dt accuracy/nn of/in the/dt automatic/jj domain/nn identification/nn ,/punct however/rb ,/punct it/prp is/vbz surprisingly/rb low/jj :/punct for/in queries/nns 51-150/cd ,/punct only/rb 38/cd %/punct of/in the/dt determined/vbn domains/nns correspond/vbp to/to the/dt manual/jj identifications/nns ./punct
+this/dt is/vbz much/rb lower/jjr than/in the/dt above/jj 80/cd %/punct rates/nns reported/vbn in/in ./punct
+a/dt detailed/jj analysis/nn reveals/vbz that/in the/dt main/jj reason/nn is/vbz the/dt closeness/nn of/in several/jj domains/nns in/in trec/nn queries/nns (/punct e.g/nn ./punct
+international/nnp relations/nns ,/punct international/nnp politics/nns ,/punct politics/nns )/punct ./punct
+however/rb ,/punct in/in this/dt situation/nn ,/punct wrong/jj domains/nns assigned/vbn to/to queries/nns are/vbp not/rb always/rb irrelevant/jj and/cc useless/jj ./punct
+for/in example/nn ,/punct even/rb when/wrb a/dt query/nn in/in international/nnp relations/nns is/vbz classified/vbn in/in international/nnp politics/nns ,/punct the/dt latter/jj domain/nn can/md still/rb suggest/vb useful/jj terms/nns to/to the/dt query/nn ./punct
+therefore/rb ,/punct the/dt relatively/rb low/jj classification/nn accuracy/nn does/vbz not/rb mean/vb low/jj usefulness/nn of/in the/dt domain/nn models/nns ./punct

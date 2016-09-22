@@ -1,0 +1,247 @@
+grids/nns are/vbp inherently/rb heterogeneous/jj and/cc dynamic/jj ./punct
+one/cd important/jj problem/nn in/in grid/nn computing/nn is/vbz resource/nn selection/nn ,/punct that/wdt is/vbz ,/punct finding/vbg an/dt appropriate/jj resource/nn set/vbn for/in the/dt application/nn ./punct
+another/dt problem/nn is/vbz adaptation/nn to/to the/dt changing/vbg characteristics/nns of/in the/dt grid/nn environment/nn ./punct
+existing/vbg solutions/nns to/to these/dt two/cd problems/nns require/vbp that/in a/dt performance/nn model/nn for/in an/dt application/nn is/vbz known/vbn ./punct
+however/rb ,/punct constructing/vbg such/jj models/nns is/vbz a/dt complex/jj task/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp investigate/vbp an/dt approach/nn that/wdt does/vbz not/rb require/vb performance/nn models/nns ./punct
+we/prp start/vbp an/dt application/nn on/in any/dt set/nn of/in resources/nns ./punct
+during/in the/dt application/nn run/nn ,/punct we/prp periodically/rb collect/vbp the/dt statistics/nns about/in the/dt application/nn run/nn and/cc deduce/vbp application/nn requirements/nns from/in these/dt statistics/nns ./punct
+then/rb ,/punct we/prp adjust/vbp the/dt resource/nn set/vbn to/to better/rb fit/vb the/dt application/nn needs/vbz ./punct
+this/dt approach/nn allows/vbz us/prp to/to avoid/vb performance/nn bottlenecks/nns ,/punct such/jj as/in overloaded/jj wan/nnp links/nns or/cc very/rb slow/jj processors/nns ,/punct and/cc therefore/rb can/md yield/vb significant/jj performance/nn improvements/nns ./punct
+we/prp evaluate/vbp our/prp$ approach/nn in/in a/dt number/nn of/in scenarios/nns typical/jj for/in the/dt grid/nnp ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct computer/nnp communication/nnp networks/nnp ]/punct :/punct distributed/vbn systems-distributed/jj applications/nns ;/punct c.4/nn [/punct performance/nn of/in systems/nnp ]/punct :/punct measurement/nn techniques/nns ,/punct modelling/vbg techniques/nns general/nnp terms/nns algorithms/nns ,/punct measurement/nnp ,/punct performance/nnp ,/punct experimentation/nn 1/cd ./punct
+introduction/nn in/in recent/jj years/nns ,/punct grid/nn computing/nn has/vbz become/vbn a/dt real/jj alternative/nn to/to traditional/jj parallel/jj computing/nn ./punct
+a/dt grid/nn provides/vbz much/jj computational/jj power/nn ,/punct and/cc thus/rb offers/vbz the/dt possibility/nn to/to solve/vb very/rb large/jj problems/nns ,/punct especially/rb if/in applications/nns can/md run/vb on/in multiple/jj sites/nns at/in the/dt same/jj time/nn (/punct 7/cd ;/punct 15/cd ;/punct 20/cd )/punct ./punct
+however/rb ,/punct the/dt complexity/nn of/in grid/nnp environments/nns also/rb is/vbz many/jj times/nns larger/jjr than/in that/dt of/in traditional/jj parallel/jj machines/nns like/in clusters/nns and/cc supercomputers/nns ./punct
+one/cd important/jj problem/nn is/vbz resource/nn selection/nn -/punct selecting/vbg a/dt set/nn of/in compute/vb nodes/nns such/jj that/in the/dt application/nn achieves/vbz good/jj performance/nn ./punct
+even/rb in/in traditional/jj ,/punct homogeneous/jj parallel/nn environments/nns ,/punct finding/vbg the/dt optimal/jj number/nn of/in nodes/nns is/vbz a/dt hard/jj problem/nn and/cc is/vbz often/rb solved/vbn in/in a/dt trial-and-error/jj fashion/nn ./punct
+in/in a/dt grid/nn environment/nn this/dt problem/nn is/vbz even/rb more/rbr difficult/jj ,/punct because/in of/in the/dt heterogeneity/nn of/in resources/nns :/punct the/dt compute/vbp nodes/nns have/vbp various/jj speeds/nns and/cc the/dt quality/nn of/in network/nn connections/nns between/in them/prp varies/vbz from/in low-latency/nn and/cc high-bandwidth/jj local-area/nn networks/nns (/punct lans/nns )/punct to/to high-latency/nn and/cc possibly/rb low-bandwidth/jj wide-area/jj networks/nns (/punct wans/nns )/punct ./punct
+another/dt important/jj problem/nn is/vbz that/in the/dt performance/nn and/cc availability/nn of/in grid/nn resources/nns varies/vbz over/in time/nn :/punct the/dt network/nn links/nns or/cc compute/vb nodes/nns may/md become/vb overloaded/jj ,/punct or/cc the/dt compute/vbp nodes/nns may/md become/vb unavailable/jj because/in of/in crashes/nns or/cc because/in they/prp have/vbp been/vbn claimed/vbn by/in a/dt higher/jjr priority/nn application/nn ./punct
+also/rb ,/punct new/jj ,/punct better/rbr resources/nns may/md become/vb available/jj ./punct
+to/to maintain/vb a/dt reasonable/jj performance/nn level/nn ,/punct the/dt application/nn therefore/rb needs/vbz to/to adapt/vb to/to the/dt changing/vbg conditions/nns ./punct
+the/dt adaptation/nn problem/nn can/md be/vb reduced/vbn to/to the/dt resource/nn selection/nn problem/nn :/punct the/dt resource/nn selection/nn phase/nn can/md be/vb repeated/vbn during/in application/nn execution/nn ,/punct either/cc at/in regular/jj intervals/nns ,/punct or/cc when/wrb a/dt performance/nn problem/nn is/vbz detected/vbn ,/punct or/cc when/wrb new/jj resources/nns become/vbp available/jj ./punct
+this/dt approach/nn has/vbz been/vbn adopted/vbn by/in a/dt number/nn of/in systems/nns (/punct 5/cd ;/punct 14/cd ;/punct 18/cd )/punct ./punct
+for/in resource/nn selection/nn ,/punct the/dt application/nn runtime/nn is/vbz estimated/vbn for/in some/dt resource/nn sets/nns and/cc the/dt set/nn that/wdt yields/vbz the/dt shortest/jjs runtime/nn is/vbz selected/vbn for/in execution/nn ./punct
+predicting/vbg the/dt application/nn runtime/nn on/in a/dt given/vbn set/nn of/in resources/nns ,/punct however/rb ,/punct requires/vbz knowledge/nn about/in the/dt application/nn ./punct
+typically/rb ,/punct an/dt analytical/jj performance/nn model/nn is/vbz used/vbn ,/punct but/cc constructing/vbg such/jj a/dt model/nn is/vbz inherently/rb difficult/jj and/cc requires/vbz an/dt expertise/nn which/wdt application/nn programmers/nns may/md not/rb have/vb ./punct
+in/in this/dt paper/nn ,/punct we/prp introduce/vbp and/cc evaluate/vbp an/dt alternative/jj approach/nn to/to application/nn adaptation/nn and/cc resource/nn selection/nn which/wdt does/vbz not/rb need/vb a/dt performance/nn model/nn ./punct
+we/prp start/vbp an/dt application/nn on/in any/dt set/nn of/in resources/nns ./punct
+during/in the/dt application/nn run/nn ,/punct we/prp periodically/rb collect/vbp information/nn about/in the/dt communication/nn times/nns and/cc idle/jj times/nns of/in the/dt processors/nns ./punct
+we/prp use/vbp these/dt statistics/nns to/to automatically/rb estimate/vb the/dt resource/nn requirements/nns of/in the/dt application/nn ./punct
+next/rb ,/punct we/prp adjust/vbp the/dt resource/nn set/vbd the/dt application/nn is/vbz running/vbg on/rp by/in adding/vbg or/cc removing/vbg compute/vb nodes/nns or/cc even/rb entire/jj clusters/nns ./punct
+our/prp$ adaptation/nn strategy/nn uses/vbz the/dt work/nn by/in eager/nnp et/fw al/fw ./punct
+(/punct 10/cd )/punct to/to determine/vb the/dt efficiency/nn and/cc tries/vbz to/to keep/vb the/dt efficiency/nn of/in the/dt application/nn between/in a/dt lower/jjr and/cc upper/jj threshold/nn derived/vbn from/in their/prp$ theory/nn ./punct
+processors/nns are/vbp added/vbn or/cc deleted/vbn to/to stay/vb between/in the/dt thresholds/nns ,/punct thus/rb adapting/vbg automatically/rb to/to the/dt changing/vbg environment/nn ./punct
+a/dt major/jj advantage/nn of/in our/prp$ approach/nn is/vbz that/in it/prp improves/vbz application/nn performance/nn in/in many/jj different/jj situations/nns that/wdt are/vbp typical/jj for/in grid/nn computing/nn ./punct
+it/prp handles/vbz all/dt of/in the/dt following/vbg cases/nns :/punct •/cd automatically/rb adapting/vbg the/dt number/nn of/in processors/nns to/to the/dt degree/nn of/in parallelism/nn in/in the/dt application/nn ,/punct even/rb when/wrb this/dt degree/nn changes/nns dynamically/rb during/in the/dt computation/nn •/nn migrating/vbg (/punct part/nn of/in )/punct a/dt computation/nn away/rb from/in overloaded/jj resources/nns •/vbp removing/vbg resources/nns with/in poor/jj communication/nn links/nns that/wdt slow/vbp down/rp the/dt computation/nn •/nn adding/vbg new/jj resources/nns to/to replace/vb resources/nns that/wdt have/vbp crashed/vbn our/prp$ work/nn assumes/vbz the/dt application/nn is/vbz malleable/jj and/cc can/md run/vb (/punct efficiently/rb )/punct on/in multiple/jj sites/nns of/in a/dt grid/nn (/punct i.e./fw ,/punct using/vbg co-allocation/jj (/punct 15/cd )/punct )/punct ./punct
+it/prp should/md not/rb use/vb static/jj load/nn balancing/nn or/cc be/vb very/rb sensitive/jj to/to wide121/vb area/nn latencies/nns ./punct
+we/prp have/vbp applied/vbn our/prp$ ideas/nns to/to divide-and-conquer/jj applications/nns ,/punct which/wdt satisfy/vbp these/dt requirements/nns ./punct
+divide-and-conquer/jjr has/vbz been/vbn shown/vbn to/to be/vb an/dt attractive/jj paradigm/nn for/in programming/nn grid/nn applications/nns (/punct 4/cd ;/punct 20/cd )/punct ./punct
+we/prp believe/vbp that/in our/prp$ approach/nn can/md be/vb extended/vbn to/to other/jj classes/nns of/in applications/nns with/in the/dt given/vbn assumptions/nns ./punct
+we/prp implemented/vbd our/prp$ strategy/nn in/in satin/nnp ,/punct which/wdt is/vbz a/dt java-centric/jj framework/nn for/in writing/vbg grid-enabled/jj divide-and-conquer/jj applications/nns (/punct 20/cd )/punct ./punct
+we/prp evaluate/vbp the/dt performance/nn of/in our/prp$ approach/nn on/in the/dt das-2/nn wide-area/nn system/nn and/cc we/prp will/md show/vb that/in our/prp$ approach/nn yields/nns major/jj performance/nn improvements/nns (/punct roughly/rb 10-60/cd %/punct )/punct in/in the/dt above/jj scenarios/nns ./punct
+the/dt rest/nn of/in this/dt paper/nn is/vbz structured/vbn as/in follows/vbz ./punct
+in/in section/nn 2/cd ,/punct we/prp explain/vbp what/wp assumptions/nns we/prp are/vbp making/vbg about/in the/dt applications/nns and/cc grid/nn resources/nns ./punct
+in/in section/nn 3/cd ,/punct we/prp present/vbp our/prp$ resource/nn selection/nn and/cc adaptation/nn strategy/nn ./punct
+in/in section/nn 4/cd ,/punct we/prp describe/vbp its/prp$ implementation/nn in/in the/dt satin/nnp framework/nn ./punct
+in/in section/nn 5/cd ,/punct we/prp evaluate/vbp our/prp$ approach/nn in/in a/dt number/nn of/in grid/nn scenarios/nns ./punct
+in/in section/nn 6/cd ,/punct we/prp compare/vbp our/prp$ approach/nn with/in the/dt related/jj work/nn ./punct
+finally/rb ,/punct in/in section/nn 7/cd ,/punct we/prp conclude/vbp and/cc describe/vbp future/jj work/nn ./punct
+2/ls ./punct
+background/nn and/cc assumptions/nns in/in this/dt section/nn ,/punct we/prp describe/vbp our/prp$ assumptions/nns about/in the/dt applications/nns and/cc their/prp$ resources/nns ./punct
+we/prp assume/vbp the/dt following/vbg resource/nn model/nn ./punct
+the/dt applications/nns are/vbp running/vbg on/in multiple/jj sites/nns at/in the/dt same/jj time/nn ,/punct where/wrb sites/nns are/vbp clusters/nns or/cc supercomputers/nns ./punct
+we/prp also/rb assume/vbp that/in the/dt processors/nns of/in the/dt sites/nns are/vbp accessible/jj using/vbg a/dt grid/nn scheduling/nn system/nn ,/punct such/jj as/in koala/nnp (/punct 15/cd )/punct ,/punct zorilla/nnp (/punct 9/cd )/punct or/cc grms/nn (/punct 3/cd )/punct ./punct
+processors/nns belonging/vbg to/to one/cd site/nn are/vbp connected/vbn by/in a/dt fast/jj lan/nn with/in a/dt low/jj latency/nn and/cc high/jj bandwidth/nn ./punct
+the/dt different/jj sites/nns are/vbp connected/vbn by/in a/dt wan/nnp ./punct
+communication/nn between/in sites/nns suffers/vbz from/in high/jj latencies/nns ./punct
+we/prp assume/vbp that/in the/dt links/nns connecting/vbg the/dt sites/nns with/in the/dt internet/nn backbone/nn might/md become/vb bottlenecks/nns causing/vbg the/dt inter-site/jj communication/nn to/to suffer/vb from/in low/jj bandwidths/nns ./punct
+we/prp studied/vbd the/dt adaptation/nn problem/nn in/in the/dt context/nn of/in divide-andconquer/jj applications/nns ./punct
+however/rb ,/punct we/prp believe/vbp that/in our/prp$ methodology/nn can/md be/vb used/vbn for/in other/jj types/nns of/in applications/nns as/rb well/rb ./punct
+in/in this/dt section/nn we/prp summarize/vbp the/dt assumptions/nns about/in applications/nns that/wdt are/vbp important/jj to/to our/prp$ approach/nn ./punct
+the/dt first/jj assumption/nn we/prp make/vbp is/vbz that/in the/dt application/nn is/vbz malleable/jj ,/punct i.e./fw ,/punct it/prp is/vbz able/jj to/to handle/vb processors/nns joining/vbg and/cc leaving/vbg the/dt on-going/jj computation/nn ./punct
+in/in (/punct 23/cd )/punct ,/punct we/prp showed/vbd how/wrb divide-andconquer/jj applications/nns can/md be/vb made/vbn fault/nn tolerant/jj and/cc malleable/jj ./punct
+processors/nns can/md be/vb added/vbn or/cc removed/vbn at/in any/dt point/nn in/in the/dt computation/nn with/in little/jj overhead/nn ./punct
+the/dt second/jj assumption/nn is/vbz that/in the/dt application/nn can/md efficiently/rb run/vb on/in processors/nns with/in different/jj speeds/nns ./punct
+this/dt can/md be/vb achieved/vbn by/in using/vbg a/dt dynamic/jj load/nn balancing/nn strategy/nn ,/punct such/jj as/in work/nn stealing/vbg used/vbn by/in divide-and-conquer/jj applications/nns (/punct 19/cd )/punct ./punct
+also/rb ,/punct master-worker/nn applications/nns typically/rb use/vbp dynamic/jj load-balancing/jj strategies/nns (/punct e.g./fw ,/punct mw/sym -/punct a/dt framework/nn for/in writing/vbg gridenabled/jj master-worker/nn applications/nns (/punct 12/cd )/punct )/punct ./punct
+we/prp find/vbp it/prp a/dt reasonable/jj assumption/nn for/in a/dt grid/nn application/nn ,/punct since/in applications/nns for/in which/wdt the/dt slowest/jjs processor/nn becomes/vbz a/dt bottleneck/nn will/md not/rb be/vb able/jj to/to efficiently/rb utilize/vb grid/nn resources/nns ./punct
+finally/rb ,/punct the/dt application/nn should/md be/vb insensitive/jj to/to wide-area/jj latencies/nns ,/punct so/in it/prp can/md run/vb efficiently/rb on/in a/dt widearea/nn grid/nn (/punct 16/cd ;/punct 17/cd )/punct ./punct
+3/ls ./punct
+self-adaptation/nn in/in this/dt section/nn we/prp will/md explain/vb how/wrb we/prp use/vbp application/nn malleability/nn to/to find/vb a/dt suitable/jj set/nn of/in resources/nns for/in a/dt given/vbn application/nn and/cc to/to adapt/vb to/to changing/vbg conditions/nns in/in the/dt grid/nn environment/nn ./punct
+in/in order/nn to/to monitor/vb the/dt application/nn performance/nn and/cc guide/nn the/dt adaptation/nn ,/punct we/prp added/vbd an/dt extra/jj process/nn to/to the/dt computation/nn which/wdt we/prp call/vbp adaptation/nn coordinator/nn ./punct
+the/dt adaptation/nn coordinator/nn periodically/rb collects/vbz performance/nn statistics/nns from/in the/dt application/nn processors/nns ./punct
+we/prp introduce/vbp a/dt new/jj application/nn performance/nn metric/nn :/punct weighted/jj average/jj efficiency/nn which/wdt describes/vbz the/dt application/nn performance/nn on/in a/dt heterogeneous/jj set/nn of/in resources/nns ./punct
+the/dt coordinator/nn uses/vbz statistics/nns from/in application/nn processors/nns to/to compute/vb the/dt weighted/jj average/jj efficiency/nn ./punct
+if/in the/dt efficiency/nn falls/vbz above/in or/cc below/in certain/jj thresholds/nns ,/punct the/dt coordinator/nn decides/vbz on/in adding/vbg or/cc removing/vbg processors/nns ./punct
+a/dt heuristic/nn formula/nn is/vbz used/vbn to/to decide/vb which/wdt processors/nns have/vbp to/to be/vb removed/vbn ./punct
+during/in this/dt process/nn the/dt coordinator/nn learns/vbz the/dt application/nn requirements/nns by/in remembering/vbg the/dt characteristics/nns of/in the/dt removed/vbn processors/nns ./punct
+these/dt requirements/nns are/vbp then/rb used/vbn to/to guide/vb the/dt adding/vbg of/in new/jj processors/nns ./punct
+in/in traditional/jj parallel/jj computing/nn ,/punct a/dt standard/jj metric/jj describing/vbg the/dt defined/vbn as/in the/dt average/jj utilization/nn of/in the/dt processors/nns ,/punct that/dt is/vbz ,/punct the/dt fraction/nn of/in time/nn the/dt processors/nns spend/vbp doing/vbg useful/jj work/nn rather/rb than/in being/vbg idle/jj or/cc communicating/vbg with/in other/jj processors/nns (/punct 10/cd )/punct ./punct
+processor/nn spends/vbz being/vbg idle/jj or/cc communicating/vbg ./punct
+efficiency/nn indicates/vbz the/dt benefit/nn of/in using/vbg multiple/jj processors/nns ./punct
+typically/rb ,/punct the/dt efficiency/nn drops/vbz as/in new/jj processors/nns are/vbp added/vbn to/to the/dt computation/nn ./punct
+therefore/rb ,/punct achieving/vbg a/dt high/jj speedup/nn (/punct and/cc thus/rb a/dt low/jj execution/nn time/nn )/punct and/cc achieving/vbg a/dt high/jj system/nn utilization/nn are/vbp conflicting/vbg goals/nns (/punct 10/cd )/punct ./punct
+the/dt optimal/jj number/nn of/in processors/nns is/vbz the/dt number/nn for/in which/wdt the/dt ratio/nn of/in efficiency/nn to/to execution/nn time/nn is/vbz maximized/vbn ./punct
+adding/vbg processors/nns beyond/in this/dt number/nn yields/nns little/jj benefit/nn ./punct
+theoretically/rb proven/vbn that/in if/in the/dt optimal/jj number/nn of/in processors/nns is/vbz used/vbn ,/punct the/dt efficiency/nn is/vbz at/in least/jjs 50/cd %/punct ./punct
+therefore/rb ,/punct adding/vbg processors/nns when/wrb efficiency/nn is/vbz smaller/jjr or/cc equal/jj to/to 50/cd %/punct will/md only/rb decrease/vb the/dt system/nn utilization/nn without/in significant/jj performance/nn gains/nns ./punct
+for/in heterogeneous/jj environments/nns with/in different/jj processor/nn speeds/nns ,/punct we/prp extended/vbd the/dt notion/nn of/in efficiency/nn and/cc introduced/vbn weighted/jj average/jj efficiency/nn ./punct
+relative/jj to/to the/dt fastest/jjs processor/nn ./punct
+the/dt fastest/jjs processor/nn has/vbz speed/nn =/punct 1/cd ,/punct modeled/vbn as/in fast/jj ones/nns that/wdt spend/vbp a/dt large/jj fraction/nn of/in the/dt time/nn being/vbg idle/jj ./punct
+weighted/jj average/jj efficiency/nn reflects/vbz the/dt fact/nn that/in adding/vbg slow/jj processors/nns yields/nns less/rbr benefit/nn than/in adding/vbg fast/jj processors/nns ./punct
+processors/nns if/in the/dt efficiency/nn is/vbz lower/jjr than/in 50/cd %/punct unless/in the/dt added/vbn processor/nn is/vbz faster/rbr than/in some/dt of/in the/dt currently/rb used/vbn processors/nns ./punct
+adding/vbg faster/rbr processors/nns might/md be/vb beneficial/jj regardless/rb of/in the/dt efficiency/nn ./punct
+each/dt processor/nn measures/vbz the/dt time/nn it/prp spends/vbz communicating/vbg or/cc being/vbg idle/jj ./punct
+the/dt computation/nn is/vbz divided/vbn into/in monitoring/nn periods/nns ./punct
+after/in each/dt monitoring/nn period/nn ,/punct the/dt processors/nns compute/vbp their/prp$ overhead/nn over/in this/dt period/nn as/in the/dt percentage/nn of/in the/dt time/nn they/prp spent/vbd being/vbg idle/jj or/cc communicating/vbg in/in this/dt period/nn ./punct
+apart/rb from/in total/jj overhead/nn ,/punct each/dt processor/nn also/rb computes/vbz the/dt overhead/nn of/in inter-cluster/nn and/cc intracluster/nn communication/nn ./punct
+to/to calculate/vb weighted/jj average/jj efficiency/nn ,/punct we/prp need/vbp to/to know/vb the/dt relative/jj speeds/nns of/in the/dt processors/nns ,/punct which/wdt depend/vbp on/in the/dt application/nn and/cc the/dt problem/nn size/nn used/vbn ./punct
+since/in it/prp is/vbz impractical/jj to/to run/vb the/dt whole/jj application/nn on/in each/dt processor/nn separately/rb ,/punct we/prp use/vbp applicationspecific/jj benchmarks/nns ./punct
+currently/rb we/prp use/vbp the/dt same/jj application/nn with/in a/dt small/jj problem/nn size/nn as/in a/dt benchmark/nn and/cc we/prp require/vbp the/dt application/nn programmer/nn to/to specify/vb this/dt problem/nn size/nn ./punct
+this/dt approach/nn requires/vbz extra/jj effort/nn from/in the/dt programmer/nn to/to find/vb the/dt right/jj problem/nn size/nn and/cc possibly/rb to/to produce/vb input/nn files/nns for/in this/dt problem/nn size/nn ,/punct which/wdt may/md original/jj application/nn ./punct
+benchmarks/nns have/vbp to/to be/vb re-run/jj periodically/rb because/in the/dt speed/nn of/in application/nn (/punct for/in time-shared/jj machines/nns )/punct ./punct
+there/ex is/vbz a/dt trade-off/nn between/in the/dt accuracy/nn of/in speed/nn measurements/nns and/cc the/dt overhead/nn it/prp incurs/vbz ./punct
+the/dt longer/jjr the/dt benchmark/nn ,/punct the/dt greater/jjr the/dt accuracy/nn of/in the/dt measurement/nn ./punct
+the/dt more/rbr often/rb it/prp is/vbz run/vbn ,/punct the/dt faster/rbr changes/nns in/in processor/nn speed/nn are/vbp detected/vbn ./punct
+in/in our/prp$ current/jj implementation/nn ,/punct the/dt application/nn programmer/nn specifies/vbz the/dt length/nn of/in the/dt benchmark/jj (/punct by/in specifying/vbg its/prp$ problem/nn size/nn )/punct and/cc the/dt maximal/jj overhead/nn it/prp is/vbz allowed/vbn to/to cause/vb ./punct
+specified/vbn overhead/nn ./punct
+in/in the/dt future/nn ,/punct we/prp plan/vbp to/to combine/vb benchmarking/vbg with/in monitoring/vbg the/dt load/nn of/in the/dt processor/nn which/wdt would/md allow/vb is/vbz detected/vbn ./punct
+this/dt optimization/nn will/md further/rbr reduce/vb the/dt benchmarking/nn overhead/nn ./punct
+note/vb that/in the/dt benchmarking/nn overhead/nn could/md be/vb avoided/vbn completely/rb for/in more/jjr regular/jj applications/nns ,/punct for/in example/nn ,/punct for/in masterworker/nn applications/nns with/in tasks/nns of/in equal/jj or/cc similar/jj size/nn ./punct
+the/dt processor/nn speed/nn could/md then/rb be/vb measured/vbn by/in counting/vbg the/dt tasks/nns processed/vbn by/in this/dt processor/nn within/in one/cd monitoring/nn period/nn ./punct
+unfortunately/rb ,/punct divide-and-conquer/jj applications/nns typically/rb exhibit/vbp a/dt very/rb irregular/jj structure/nn ./punct
+the/dt sizes/nns of/in tasks/nns can/md vary/vb by/in many/jj orders/nns of/in magnitude/nn ./punct
+at/in the/dt end/nn of/in each/dt monitoring/nn period/nn ,/punct the/dt processors/nns send/vbp the/dt overhead/nn statistics/nns and/cc processor/nn speeds/nns to/to the/dt coordinator/nn ./punct
+periodically/rb ,/punct the/dt coordinator/nn computes/vbz the/dt weighted/jj average/jj efficiency/nn and/cc other/jj statistics/nns ,/punct such/jj as/in average/jj inter-cluster/jj overhead/nn or/cc overheads/nns in/in each/dt cluster/nn ./punct
+the/dt clocks/nns of/in the/dt processors/nns are/vbp not/rb synchronized/vbn with/in each/dt other/jj or/cc with/in the/dt clock/nn of/in the/dt coordinator/nn ./punct
+each/dt processor/nn decides/vbz separately/rb when/wrb it/prp is/vbz time/nn to/to send/vb data/nns ./punct
+occasionally/rb ,/punct the/dt coordinator/nn may/md miss/vb data/nns at/in the/dt end/nn of/in a/dt monitoring/nn period/nn ,/punct so/in it/prp has/vbz to/to use/vb data/nns from/in the/dt previous/jj monitoring/nn period/nn for/in these/dt processors/nns ./punct
+this/dt causes/vbz small/jj inaccuracies/nns in/in the/dt calculations/nns of/in the/dt coordinator/nn ,/punct but/cc does/vbz not/rb influence/vb the/dt performance/nn of/in adaptation/nn ./punct
+the/dt adaptation/nn coordinator/nn tries/vbz to/to keep/vb the/dt weighted/jj average/jj efficiency/nn between/in emin/nnp and/cc emax/nnp ./punct
+when/wrb it/prp exceeds/vbz emax/nnp ,/punct the/dt coordinator/nn requests/nns new/jj processors/nns from/in the/dt scheduler/nn ./punct
+the/dt number/nn of/in requested/vbn processors/nns depends/vbz on/in the/dt current/jj efficiency/nn :/punct the/dt higher/jjr the/dt efficiency/nn ,/punct the/dt more/jjr processors/nns are/vbp requested/vbn ./punct
+the/dt coordinator/nn starts/vbz removing/vbg processors/nns when/wrb the/dt weighted/jj average/jj efficiency/nn drops/vbz below/in emin/nnp ./punct
+the/dt number/nn of/in nodes/nns that/wdt are/vbp removed/vbn again/rb depends/vbz on/in the/dt weighted/jj average/jj efficiency/nn ./punct
+the/dt lower/jjr the/dt efficiency/nn ,/punct the/dt more/jjr nodes/nns are/vbp removed/vbn ./punct
+the/dt thresholds/nns we/prp use/vbp are/vbp emax/nn =/punct 50/cd %/punct ,/punct because/in we/prp know/vbp that/in adding/vbg processors/nns when/wrb efficiency/nn is/vbz lower/jjr does/vbz not/rb make/vb sense/nn ,/punct and/cc emin/nn =/punct 30/cd %/punct ./punct
+efficiency/nn of/in 30/cd %/punct or/cc lower/jjr might/md indicate/vb performance/nn problems/nns such/jj as/in low/jj bandwidth/nn or/cc overloaded/jj processors/nns ./punct
+in/in that/dt case/nn ,/punct removing/vbg bad/jj processors/nns will/md be/vb beneficial/jj for/in the/dt application/nn ./punct
+such/jj low/jj efficiency/nn might/md also/rb indicate/vb that/in we/prp simply/rb have/vbp too/rb many/jj processors/nns ./punct
+in/in that/dt case/nn ,/punct removing/vbg some/dt processors/nns may/md not/rb be/vb beneficial/jj but/cc it/prp will/md not/rb harm/vb the/dt application/nn ./punct
+the/dt coordinator/nn always/rb tries/vbz big/jj )/punct and/cc high/jj inter-cluster/nn overhead/nn (/punct ic/jj overhead/jj )/punct ./punct
+high/jj intercluster/nn overhead/nn indicates/vbz that/in the/dt bandwidth/nn to/to this/dt processor/nn ''/'' s/nns cluster/nn is/vbz insufficient/jj ./punct
+removing/vbg processors/nns located/jj in/in a/dt single/jj cluster/nn is/vbz desirable/jj since/in it/prp decreases/vbz the/dt amount/nn of/in wide-area/nn communication/nn ./punct
+therefore/rb ,/punct processors/nns belonging/vbg to/to the/dt worst/jjs cluster/nn are/vbp preferred/vbn ./punct
+function/nn inw/nn orstcluster/nn (/punct i/fw )/punct returns/nns 1/cd for/in processors/nns belonging/vbg to/to the/dt worst/jjs cluster/nn and/cc 0/cd otherwise/rb ./punct
+the/dt coefficients/nns determine/vbp the/dt relative/jj importance/nn of/in the/dt terms/nns ./punct
+those/dt coefficients/nns are/vbp established/vbn empirically/rb ./punct
+currently/rb we/prp are/vbp using/vbg on/in the/dt observation/nn that/in ic/jj overhead/jj >/punct 0.2/cd indicates/vbz bandwidth/nn problems/nns and/cc processors/nns with/in speed/nn </punct 0.05/cd do/vbp not/rb contribute/vb to/to the/dt computation/nn ./punct
+additionally/rb ,/punct when/wrb one/cd of/in the/dt clusters/nns has/vbz an/dt exceptionally/rb high/jj inter-cluster/nn overhead/nn (/punct larger/jjr than/in 0.25/cd )/punct ,/punct we/prp conclude/vbp that/in the/dt bandwidth/nn on/in the/dt link/nn between/in this/dt cluster/nn and/cc the/dt internet/nn backbone/nn is/vbz insufficient/jj for/in the/dt application/nn ./punct
+in/in that/dt case/nn ,/punct we/prp simply/rb remove/vb the/dt whole/jj cluster/nn instead/rb of/in computing/vbg node/nn badness/nn and/cc removing/vbg the/dt worst/jjs nodes/nns ./punct
+after/in deciding/vbg which/wdt nodes/nns are/vbp removed/vbn ,/punct the/dt coordinator/nn sends/vbz a/dt message/nn to/to these/dt nodes/nns and/cc the/dt nodes/nns leave/vbp the/dt computation/nn ./punct
+figure/nnp 1/cd shows/vbz a/dt schematic/jj view/nn of/in the/dt adaptation/nn strategy/nn ./punct
+dashed/vbn lines/nns indicate/vbp a/dt part/nn that/wdt is/vbz not/rb supported/vbn yet/rb ,/punct as/rb will/md be/vb explained/vbn below/in ./punct
+this/dt simple/jj adaptation/nn strategy/nn allows/vbz us/prp to/to improve/vb application/nn performance/nn in/in several/jj situations/nns typical/jj for/in the/dt grid/nnp :/punct parallelism/nn allows/vbz ,/punct it/prp will/md automatically/rb expand/vb to/to more/jjr processors/nns (/punct as/rb soon/rb as/in there/ex are/vbp extra/jj resources/nns available/jj )/punct ./punct
+conversely/rb ,/punct efficiently/rb use/nn ,/punct a/dt part/nn of/in the/dt processors/nns will/md be/vb released/vbn ./punct
+but/cc after/in a/dt while/in some/dt of/in the/dt resources/nns (/punct processors/nns and/or/jj network/nn links/nns )/punct become/vbn overloaded/jj and/cc slow/vb down/rp the/dt computation/nn ,/punct the/dt overloaded/jj resources/nns will/md be/vb removed/vbn ./punct
+after/in removing/vbg the/dt overloaded/jj resources/nns ,/punct the/dt weighted/jj average/jj efficiency/nn will/md increase/vb to/to above/in the/dt emax/nn threshold/nn and/cc the/dt adaptation/nn coordinator/nn will/md try/vb to/to add/vb new/jj resources/nns ./punct
+therefore/rb ,/punct the/dt application/nn will/md be/vb migrated/vbn from/in overloaded/jj resources/nns ./punct
+inappropriate/jj for/in the/dt application/nn ,/punct for/in example/nn the/dt bandwidth/nn to/to one/cd of/in the/dt clusters/nns is/vbz too/rb small/jj ,/punct the/dt inappropriate/jj resources/nns will/md be/vb removed/vbn ./punct
+if/in necessary/jj ,/punct the/dt adaptation/nn component/nn will/md try/vb to/to add/vb other/jj resources/nns ./punct
+will/md crash/vb ,/punct the/dt adaptation/nn component/nn will/md try/vb to/to add/vb new/jj resources/nns to/to replace/vb the/dt crashed/vbn processors/nns ./punct
+without/in monitoring/nn and/cc adaptation/nn (/punct runtime/nn 1/cd )/punct with/in monitoring/nn and/cc adaptation/nn (/punct runtime/nn 2/cd )/punct with/in monitoring/nn but/cc no/dt adaptation/nn (/punct runtime/nn 3/cd )/punct further/jj improvements/nns are/vbp possible/jj ,/punct but/cc require/vbp extra/jj functionality/nn from/in the/dt grid/nn scheduler/nn and/or/nn integration/nn with/in monitoring/nn services/nns such/jj as/in nws/nn (/punct 22/cd )/punct ./punct
+for/in example/nn ,/punct adding/vbg nodes/nns to/to a/dt computation/nn can/md be/vb improved/vbn ./punct
+currently/rb ,/punct we/prp add/vbp any/dt nodes/nns the/dt scheduler/nn gives/vbz us/prp ./punct
+however/rb ,/punct it/prp would/md be/vb more/rbr efficient/jj to/to ask/vb for/in the/dt fastest/jjs processors/nns among/in the/dt available/jj ones/nns ./punct
+this/dt could/md be/vb done/vbn ,/punct for/in can/md measure/vb processor/nn speeds/nns in/in an/dt application/nn specific/jj way/nn ./punct
+per/in site/nn ,/punct since/in clusters/nns and/cc supercomputers/nns are/vbp usually/rb homogeneous/jj ./punct
+an/dt alternative/jj approach/nn would/md be/vb ranking/vbg the/dt processors/nns based/vbn on/in parameters/nns such/jj as/in clock/nn speed/nn and/cc cache/nn size/nn ./punct
+this/dt approach/nn is/vbz sometimes/rb used/vbn for/in resource/nn selection/nn for/in sequential/jj applications/nns (/punct 14/cd )/punct ./punct
+however/rb ,/punct it/prp is/vbz less/rbr accurate/jj than/in using/vbg an/dt application/nn specific/jj benchmark/nn ./punct
+also/rb ,/punct during/in application/nn execution/nn ,/punct we/prp can/md learn/vb some/dt application/nn requirements/nns and/cc pass/vb them/prp to/to the/dt scheduler/nn ./punct
+one/cd example/nn is/vbz minimal/jj bandwidth/nn required/vbn by/in the/dt application/nn ./punct
+the/dt lower/jjr bound/vbn on/in minimal/jj required/vbn bandwidth/nn is/vbz tightened/vbn each/dt time/nn a/dt cluster/nn with/in high/jj inter-cluster/nn overhead/nn is/vbz removed/vbn ./punct
+the/dt bandwidth/nn between/in each/dt pair/nn of/in clusters/nns is/vbz estimated/vbn during/in the/dt computation/nn by/in measuring/vbg data/nns transfer/nn times/nns ,/punct and/cc the/dt bandwidth/nn to/to the/dt removed/vbn monitoring/nn system/nn can/md be/vb used/vbn ./punct
+such/jj bounds/nns can/md be/vb passed/vbn to/to the/dt scheduler/nn to/to avoid/vb adding/vbg inappropriate/jj resources/nns ./punct
+it/prp is/vbz especially/rb important/jj when/wrb migrating/vbg from/in resources/nns that/wdt cause/vbp performance/nn allow/vbp adding/vbg resources/nns we/prp removed/vbd before/rb ./punct
+this/dt means/vbz ,/punct however/rb ,/punct that/in we/prp can/md not/rb use/vb these/dt resources/nns even/rb if/in the/dt cause/nn of/in the/dt performance/nn problem/nn disappears/vbz ,/punct e.g/nn ./punct
+the/dt bandwidth/nn of/in a/dt link/nn might/md improve/vb if/in the/dt background/nn traffic/nn diminishes/vbz ./punct
+we/prp are/vbp currently/rb not/rb able/jj to/to perform/vb opportunistic/jj migration/nn application/nn runs/vbz with/in efficiency/nn between/in emin/nnp and/cc emax/nnp ,/punct the/dt adaptation/nn component/nn will/md not/rb undertake/vb any/dt action/nn ,/punct even/rb if/in better/jjr resources/nns become/vbp available/jj ./punct
+enabling/vbg opportunistic/jj migration/nn requires/vbz ,/punct again/rb ,/punct the/dt ability/nn to/to specify/vb to/to the/dt scheduler/nn what/wdt better/jjr resources/nns are/vbp (/punct faster/jjr ,/punct with/in a/dt certain/jj minimal/jj bandwidth/nn )/punct and/cc receiving/vbg notifications/nns when/wrb such/jj resources/nns become/vbp available/jj ./punct
+existing/vbg grid/nn schedulers/nns such/jj as/in gram/nn from/in the/dt globus/nnp toolkit/nnp (/punct 11/cd )/punct do/vbp not/rb support/vb such/jj functionality/nn ./punct
+the/dt developers/nns of/in the/dt koala/nn metascheduler/nn (/punct 15/cd )/punct have/vbp recently/rb started/vbn a/dt project/nn whose/wp$ goal/nn is/vbz to/to provide/vb support/nn for/in adaptive/jj applications/nns ./punct
+we/prp are/vbp currently/rb discussing/vbg with/in them/prp the/dt possibility/nn of/in providing/vbg the/dt functionalities/nns required/vbn by/in us/prp ,/punct aiming/vbg to/to extend/vb our/prp$ adaptivity/nn egy/nn to/to support/vb opportunistic/jj migration/nn and/cc to/to improve/vb the/dt initial/jj resource/nn selection/nn ./punct
+we/prp incorporated/vbd our/prp$ adaptation/nn mechanism/nn into/in satin/nn -/punct a/dt java/nnp framework/nn for/in creating/vbg grid-enabled/jj divide-and-conquer/jj applications/nns ./punct
+with/in satin/nnp ,/punct the/dt programmer/nn annotates/vbz the/dt sequential/jj code/nn with/in divide-and-conquer/jj primitives/nns and/cc compiles/vbz the/dt annotated/jj code/nn with/in a/dt special/jj satin/nn compiler/nn that/wdt generates/vbz the/dt necessary/jj communication/nn and/cc load/nn balancing/nn code/nn ./punct
+satin/nnp uses/vbz a/dt very/rb efficient/jj ,/punct grid-aware/jj load/nn balancing/vbg algorithm/nn -/punct cluster-aware/jj random/jj work/nn stealing/vbg (/punct crs/nnp )/punct (/punct 19/cd )/punct ,/punct which/wdt hides/vbz wide-area/jj latencies/nns by/in overlapping/vbg local/jj and/cc remote/jj stealing/nn ./punct
+satin/nnp also/rb provides/vbz transparent/jj fault/nn tolerance/nn and/cc malleability/nn (/punct 23/cd )/punct ./punct
+with/in satin/nnp ,/punct removing/vbg and/cc adding/vbg processors/nns from/to/vbp an/dt ongoing/jj computation/nn incurs/vbz little/jj overhead/nn ./punct
+we/prp instrumented/vbd the/dt satin/nnp runtime/nn system/nn to/to collect/vb runtime/nn statistics/nns and/cc send/vb them/prp to/to the/dt adaptation/nn coordinator/nn ./punct
+the/dt coordinator/nn is/vbz implemented/vbn as/in a/dt separate/jj process/nn ./punct
+both/dt coordinator/nn and/cc satin/nn are/vbp implemented/vbn entirely/rb in/in java/nnp on/in top/nn of/in the/dt ibis/nnp communication/nn library/nn (/punct 21/cd )/punct ./punct
+the/dt core/nn of/in ibis/nnp is/vbz also/rb implemented/vbn in/in java/nnp ./punct
+the/dt resulting/vbg system/nn therefore/rb is/vbz highly/rb portable/jj (/punct due/jj to/to java/nnp ''/'' s/vbz write/vb once/rb ,/punct run/vbp anywhere/rb property/nn )/punct allowing/vbg the/dt software/nn to/to run/vb unmodified/jj on/in a/dt heterogeneous/jj grid/nn ./punct
+ibis/nnp also/rb provides/vbz the/dt ibis/nnp registry/nnp ./punct
+the/dt registry/nn provides/vbz ,/punct among/in others/nns ,/punct a/dt membership/nn service/nn to/to the/dt processors/nns taking/vbg part/nn in/in the/dt computation/nn ./punct
+the/dt adaptation/nn coordinator/nn uses/vbz the/dt registry/nn to/to discover/vb the/dt application/nn processes/nns ,/punct and/cc the/dt application/nn processes/nns use/vbp this/dt service/nn to/to discover/vb each/dt other/jj ./punct
+the/dt registry/nn also/rb offers/vbz fault/nn detection/nn (/punct additional/jj to/to the/dt fault/nn detection/nn provided/vbn by/in the/dt communication/nn channels/nns )/punct ./punct
+finally/rb ,/punct the/dt registry/nn provides/vbz the/dt possibility/nn to/to send/vb signals/nns to/to application/nn processes/nns ./punct
+the/dt coordinator/nn uses/vbz this/dt functionality/nn to/to notify/vb the/dt processors/nns that/in they/prp need/vbp to/to leave/vb the/dt computation/nn ./punct
+currently/rb the/dt registry/nn is/vbz implemented/vbn as/in a/dt centralized/jj server/nn ./punct
+for/in requesting/vbg new/jj nodes/nns ,/punct the/dt zorilla/nnp (/punct 9/cd )/punct system/nn is/vbz used/vbn -/punct a/dt peer-to-peer/jj supercomputing/nn middleware/nn which/wdt allows/vbz straightforward/jj allocation/nn of/in processors/nns in/in multiple/jj clusters/nns and/or/jj supercomputers/nns ./punct
+zorilla/nnp provides/vbz locality-aware/jj scheduling/nn ,/punct which/wdt tries/vbz to/to allocate/vb processors/nns that/wdt are/vbp located/jj close/rb to/to each/dt other/jj in/in terms/nns of/in communication/nn latency/nn ./punct
+in/in the/dt future/nn ,/punct zorilla/nnp will/md also/rb support/vb bandwidth-aware/jj scheduling/nn ,/punct which/wdt tries/vbz to/to maximize/vb the/dt total/jj bandwidth/nn in/in the/dt system/nn ./punct
+zorilla/nnp can/md be/vb easily/rb replaced/vbn with/in another/dt grid/nn scheduler/nn ./punct
+in/in the/dt future/nn ,/punct we/prp are/vbp planning/vbg to/to integrate/vb our/prp$ adaptation/nn component/nn with/in gat/nn (/punct 3/cd )/punct which/wdt is/vbz becoming/vbg a/dt standard/nn in/in the/dt grid/nn community/nn and/cc koala/nn (/punct 15/cd )/punct a/dt scheduler/nn that/wdt provides/vbz co-allocation/nn on/in top/nn of/in standard/jj grid/nn middleware/nn ,/punct such/jj as/in the/dt globus/nnp toolkit/nnp (/punct 11/cd )/punct ./punct
+in/in this/dt section/nn ,/punct we/prp will/md evaluate/vb our/prp$ approach/nn ./punct
+we/prp will/md demonstrate/vb the/dt performance/nn of/in our/prp$ mechanism/nn in/in a/dt few/jj scenarios/nns ./punct
+the/dt first/jj reasonable/jj set/nn of/in nodes/nns (/punct i.e./fw ,/punct such/jj that/in the/dt efficiency/nn is/vbz around/in 50/cd %/punct )/punct and/cc no/dt problems/nns such/jj as/in overloaded/jj networks/nns and/cc processors/nns ,/punct crashing/vbg processors/nns etc/fw ./punct
+occur/vb ./punct
+this/dt scenario/nn allows/vbz us/prp to/to measure/vb the/dt overhead/nn of/in the/dt adaptation/nn support/nn ./punct
+the/dt remaining/vbg scenarios/nns are/vbp typical/jj for/in grid/nn environments/nns and/cc demonstrate/vbp that/in with/in our/prp$ adaptation/nn support/vbp the/dt application/nn can/md avoid/vb serious/jj performance/nn bottlenecks/nns such/jj as/in overloaded/jj processors/nns or/cc network/nn links/nns ./punct
+for/in each/dt scenario/nn ,/punct we/prp compare/vbp the/dt performance/nn of/in an/dt application/nn with/in adaptation/nn support/nn to/to a/dt non-adaptive/jj version/nn ./punct
+in/in the/dt non-adaptive/jj version/nn ,/punct the/dt coordinator/nn does/vbz not/rb collect/vb statistics/nns and/cc no/dt benchmarking/nn (/punct for/in measuring/vbg processor/nn speeds/nns )/punct is/vbz performed/vbn ./punct
+in/in the/dt ideal/jj scenario/nn ,/punct all/pdt the/dt experiments/nns were/vbd carried/vbn out/rp on/in the/dt das-2/nn wide-area/nn system/nn (/punct 8/cd )/punct ,/punct which/wdt consists/vbz of/in five/cd clusters/nns located/jj at/in five/cd dutch/jj nodes/nns ./punct
+each/dt node/nn contains/vbz two/cd 1/cd ghz/nnp pentium/nnp processors/nns ./punct
+within/in a/dt cluster/nn ,/punct the/dt nodes/nns are/vbp connected/vbn by/in fast/jj ethernet/nn ./punct
+the/dt clusters/nns are/vbp connected/vbn by/in the/dt dutch/jj university/nn internet/nn backbone/nn ./punct
+in/in our/prp$ experiments/nns ,/punct we/prp used/vbd the/dt barnes-hut/nnp n-body/nn simulation/nn ./punct
+barneshut/nnp simulates/vbz the/dt evolution/nn of/in a/dt large/jj set/nn of/in bodies/nns under/in influence/nn is/vbz simulated/jj in/in iterations/nns of/in discrete/jj time/nn steps/nns ./punct
+are/vbp equally/rb divided/vbn over/in 3/cd clusters/nns (/punct 12/cd nodes/nns in/in each/dt cluster/nn )/punct ./punct
+on/in this/dt number/nn of/in nodes/nns ,/punct the/dt application/nn runs/vbz with/in 50/cd %/punct efficiency/nn ,/punct so/rb in/in this/dt scenario/nn we/prp measured/vbd three/cd runtimes/nns :/punct the/dt runtime/nn of/in the/dt application/nn without/in adaptation/nn support/nn (/punct runtime/nn 1/cd )/punct ,/punct the/dt runtime/nn with/in adaptation/nn support/nn (/punct runtime/nn 2/cd )/punct and/cc the/dt runtime/nn with/in monitoring/nn (/punct i.e./fw ,/punct collection/nn of/in statistics/nns and/cc benchmarking/vbg )/punct turned/vbd on/rp but/cc without/in allowing/vbg it/prp to/to change/vb the/dt number/nn of/in nodes/nns (/punct runtime/nn 3/cd )/punct ./punct
+those/dt runtimes/nns are/vbp shown/vbn in/in figure/nn 2/cd ,/punct first/jj group/nn of/in bars/nns ./punct
+the/dt comparison/nn between/in runtime/nn 3/cd and/cc 1/cd shows/vbz the/dt overhead/nn of/in adaptation/nn support/nn ./punct
+in/in this/dt experiment/nn it/prp is/vbz around/in 15/cd %/punct ./punct
+almost/rb all/dt overhead/nn comes/vbz from/in benchmarking/vbg ./punct
+the/dt benchmark/nn is/vbz run/vbn 1-2/cd times/nns per/in monitoring/nn period/nn ./punct
+this/dt overhead/nn can/md be/vb made/vbn smaller/jjr by/in increasing/vbg the/dt length/nn of/in the/dt monitoring/nn period/nn and/cc decreasing/vbg the/dt benchmarking/nn frequency/nn ./punct
+the/dt monitoring/nn period/nn we/prp used/vbd (/punct 3/cd minutes/nns )/punct is/vbz relatively/rb short/jj ,/punct because/in the/dt runtime/nn of/in the/dt application/nn was/vbd also/rb relatively/rb short/jj (/punct 30-60/cd minutes/nns )/punct ./punct
+using/vbg longer/jjr running/vbg applications/nns would/md not/rb allow/vb us/prp to/to finish/vb the/dt experimentation/nn in/in a/dt reasonable/jj time/nn ./punct
+however/rb ,/punct real-world/jj grid/nn applications/nns typically/rb need/vbp hours/nns ,/punct days/nns or/cc even/rb weeks/nns to/to complete/vb ./punct
+for/in such/jj applications/nns ,/punct a/dt much/rb longer/jjr monitoring/nn period/nn can/md be/vb used/vbn and/cc the/dt adaptation/nn overhead/nn can/md be/vb kept/vbn much/rb lower/jjr ./punct
+for/in example/nn ,/punct with/in the/dt barnes-hut/nnp application/nn ,/punct if/in the/dt 6/cd %/punct ./punct
+note/vb that/in combining/vbg benchmarking/vbg with/in monitoring/vbg processor/nn load/nn (/punct as/in described/vbn in/in section/nn 3.2/cd )/punct would/md reduce/vb the/dt benchmarking/nn overhead/nn to/to almost/rb zero/cd :/punct since/in the/dt processor/nn load/nn is/vbz not/rb changing/vbg ,/punct computation/nn ./punct
+in/in this/dt scenario/nn ,/punct the/dt application/nn is/vbz started/vbn on/in fewer/jjr nodes/nns than/in the/dt application/nn can/md efficiently/rb use/vb ./punct
+this/dt may/md happen/vb because/in the/dt user/nn does/vbz not/rb know/vb the/dt right/jj number/nn of/in nodes/nns or/cc because/in insufficient/jj nodes/nns were/vbd available/jj at/in the/dt moment/nn the/dt application/nn was/vbd started/vbn ./punct
+we/prp each/dt of/in the/dt three/cd sub-scenarios/nns ,/punct the/dt application/nn gradually/rb expanded/vbd application/nn runtimes/nns by/in 50/cd %/punct (/punct scenario/nn 1a/nn )/punct ,/punct 35/cd %/punct (/punct scenario/nn 1b/nn )/punct and/cc 12/cd %/punct (/punct scenario/nn 1c/nn )/punct with/in respect/nn to/to the/dt non-adaptive/jj version/nn ./punct
+those/dt application/nn ,/punct we/prp also/rb measured/vbd the/dt time/nn of/in each/dt iteration/nn ,/punct as/in shown/vbn (/punct scenario/nn 1a/nn )/punct ,/punct 1.7/cd (/punct scenario/nn 1b/nn )/punct and/cc 1.2/cd (/punct scenario/nn 1c/nn )/punct which/wdt allows/vbz bigger/jjr if/in the/dt application/nn were/vbd run/vbn longer/rb than/in for/in 15/cd iterations/nns ./punct
+in/in this/dt scenario/nn ,/punct we/prp started/vbd the/dt application/nn on/in 36/cd nodes/nns in/in 3/cd clusters/nns ./punct
+after/in 200/cd seconds/nns ,/punct we/prp introduced/vbd a/dt heavy/jj ,/punct artificial/jj load/nn on/in the/dt processors/nns in/in one/cd of/in the/dt clusters/nns ./punct
+such/pdt a/dt situation/nn may/md happen/vb when/wrb resources/nns ./punct
+figure/nnp 4/cd shows/vbz the/dt iteration/nn durations/nns of/in both/cc the/dt adaptive/jj and/cc non-adaptive/jj versions/nns ./punct
+after/in introducing/vbg the/dt load/nn ,/punct the/dt iteration/nn in/in this/dt scenario/nn ,/punct we/prp ran/vbd the/dt application/nn on/in 36/cd nodes/nns in/in 3/cd clusters/nns ./punct
+we/prp simulated/jj that/in the/dt uplink/nn to/to one/cd of/in the/dt clusters/nns was/vbd overloaded/vbn and/cc the/dt bandwidth/nn on/in this/dt uplink/nn was/vbd reduced/vbn to/to approximately/rb 100/cd kb/s/nns ./punct
+to/to simulate/vb low/jj bandwidth/nn we/prp use/vbp the/dt traffic-shaping/jj techniques/nns described/vbn in/in (/punct 6/cd )/punct ./punct
+the/dt iteration/nn durations/nns in/in this/dt experiment/nn are/vbp shown/vbn in/in figure/nnp 5/cd ./punct
+the/dt iteration/nn durations/nns of/in the/dt nonadaptive/jj version/nn exhibit/vbp enormous/jj variation/nn :/punct from/in 170/cd to/to 890/cd seconds/nns ./punct
+the/dt adaptive/jj version/nn removed/vbd the/dt badly/rb connected/jj cluster/nn after/in the/dt first/jj monitoring/nn period/nn ./punct
+as/in a/dt result/nn ,/punct the/dt weighted/jj average/jj efficiency/nn rose/vbd to/to around/in 35/cd %/punct and/cc new/jj nodes/nns were/vbd gradually/rb added/vbn until/in their/prp$ number/nn reached/vbd 38/cd ./punct
+this/dt brought/vbd the/dt iteration/nn times/nns down/in to/to around/in 100/cd seconds/nns ./punct
+the/dt total/jj runtime/nn was/vbd reduced/vbn by/in 60/cd %/punct (/punct figure/nn 2/cd )/punct ./punct
+in/in this/dt scenario/nn ,/punct we/prp ran/vbd the/dt application/nn on/in 36/cd nodes/nns in/in 3/cd clusters/nns ./punct
+again/rb ,/punct we/prp simulated/jj an/dt overloaded/jj uplink/nn to/to one/cd of/in the/dt clusters/nns ./punct
+additionally/rb ,/punct we/prp simulated/jj processors/nns with/in heterogeneous/jj speeds/nns of/in the/dt remaining/vbg clusters/nns ./punct
+the/dt iteration/nn durations/nns are/vbp shown/vbn in/in there/ex were/vbd faster/jjr nodes/nns available/jj in/in the/dt system/nn ./punct
+if/in these/dt nodes/nns were/vbd added/vbn to/to the/dt application/nn (/punct which/wdt could/md trigger/vb removing/vbg the/dt slower/jjr nodes/nns )/punct the/dt iteration/nn duration/nn could/md be/vb reduced/vbn even/rb further/rbr ./punct
+still/rb ,/punct the/dt adaptation/nn reduced/vbd the/dt total/jj runtime/nn by/in 30/cd %/punct (/punct figure/nn 2/cd )/punct ./punct

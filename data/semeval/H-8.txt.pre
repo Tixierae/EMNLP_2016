@@ -1,0 +1,227 @@
+low-cost/jj methods/nns for/in acquiring/vbg relevance/nn judgments/nns can/md be/vb a/dt boon/nn to/to researchers/nns who/wp need/vbp to/to evaluate/vb new/jj retrieval/nn tasks/nns or/cc topics/nns but/cc do/vbp not/rb have/vb the/dt resources/nns to/to make/vb thousands/nns of/in judgments/nns ./punct
+while/in these/dt judgments/nns are/vbp very/rb useful/jj for/in a/dt one-time/jj evaluation/nn ,/punct it/prp is/vbz not/rb clear/jj that/in they/prp can/md be/vb trusted/vbn when/wrb re-used/vbn to/to evaluate/vb new/jj systems/nns ./punct
+in/in this/dt work/nn ,/punct we/prp formally/rb define/vbp what/wp it/prp means/vbz for/in judgments/nns to/to be/vb reusable/jj :/punct the/dt confidence/nn in/in an/dt evaluation/nn of/in new/jj systems/nns can/md be/vb accurately/rb assessed/vbn from/in an/dt existing/vbg set/nn of/in relevance/nn judgments/nns ./punct
+we/prp then/rb present/vbp a/dt method/nn for/in augmenting/vbg a/dt set/nn of/in relevance/nn judgments/nns with/in relevance/nn estimates/vbz that/in require/vbp no/dt additional/jj assessor/nn effort/nn ./punct
+using/vbg this/dt method/nn practically/rb guarantees/vbz reusability/nn :/punct with/in as/rb few/jj as/in five/cd judgments/nns per/in topic/nn taken/vbn from/in only/rb two/cd systems/nns ,/punct we/prp can/md reliably/rb evaluate/vb a/dt larger/jjr set/nn of/in ten/cd systems/nns ./punct
+even/rb the/dt smallest/jjs sets/nns of/in judgments/nns can/md be/vb useful/jj for/in evaluation/nn of/in new/jj systems/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp :/punct h.3/nnp information/nnp storage/nnp and/cc retrieval/nnp ;/punct h.3.4/nnp systems/nnps and/cc software/nnp :/punct performance/nnp evaluation/nn general/nnp terms/nns :/punct experimentation/nn ,/punct measurement/nnp ,/punct reliability/nn 1/cd ./punct
+introduction/nnp consider/vb an/dt information/nn retrieval/nn researcher/nn who/wp has/vbz invented/vbn a/dt new/jj retrieval/nn task/nn ./punct
+she/prp has/vbz built/vbn a/dt system/nn to/to perform/vb the/dt task/nn and/cc wants/vbz to/to evaluate/vb it/prp ./punct
+since/in the/dt task/nn is/vbz new/jj ,/punct it/prp is/vbz unlikely/jj that/in there/ex are/vbp any/dt extant/jj relevance/nn judgments/nns ./punct
+she/prp does/vbz not/rb have/vb the/dt time/nn or/cc resources/nns to/to judge/vb every/dt document/nn ,/punct or/cc even/rb every/dt retrieved/vbn document/nn ./punct
+she/prp can/md only/rb judge/vb the/dt documents/nns that/in seem/vbp to/to be/vb the/dt most/rbs informative/jj and/cc stop/vb when/wrb she/prp has/vbz a/dt reasonable/jj degree/nn of/in confidence/nn in/in her/prp$ conclusions/nns ./punct
+but/cc what/wp happens/vbz when/wrb she/prp develops/vbz a/dt new/jj system/nn and/cc needs/vbz to/to evaluate/vb it/prp ?/punct
+or/cc another/dt research/nn group/nn decides/vbz to/to implement/vb a/dt system/nn to/to perform/vb the/dt task/nn ?/punct
+can/md they/prp reliably/rb reuse/vbp the/dt original/jj judgments/nns ?/punct
+can/md they/prp evaluate/vb without/in more/jjr relevance/nn judgments/nns ?/punct
+evaluation/nn is/vbz an/dt important/jj aspect/nn of/in information/nn retrieval/nn research/nn ,/punct but/cc it/prp is/vbz only/rb a/dt semi-solved/jj problem/nn :/punct for/in most/jjs retrieval/nn tasks/nns ,/punct it/prp is/vbz impossible/jj to/to judge/vb the/dt relevance/nn of/in every/dt document/nn ;/punct there/ex are/vbp simply/rb too/rb many/jj of/in them/prp ./punct
+the/dt solution/nn used/vbn by/in nist/nnp at/in trec/nnp (/punct text/nnp retrieval/nnp conference/nnp )/punct is/vbz the/dt pooling/vbg method/nn [/punct 19/cd ,/punct 20/cd ]/punct :/punct all/dt competing/vbg systems/nns contribute/vbp n/nn documents/nns to/to a/dt pool/nn ,/punct and/cc every/dt document/nn in/in that/dt pool/nn is/vbz judged/vbn ./punct
+this/dt method/nn creates/vbz large/jj sets/nns of/in judgments/nns that/wdt are/vbp reusable/jj for/in training/nn or/cc evaluating/vbg new/jj systems/nns that/wdt did/vbd not/rb contribute/vb to/to the/dt pool/nn [/punct 21/cd ]/punct ./punct
+this/dt solution/nn is/vbz not/rb adequate/jj for/in our/prp$ hypothetical/jj researcher/nn ./punct
+the/dt pooling/vbg method/nn gives/vbz thousands/nns of/in relevance/nn judgments/nns ,/punct but/cc it/prp requires/vbz many/jj hours/nns of/in (/punct paid/vbd )/punct annotator/jj time/nn ./punct
+as/in a/dt result/nn ,/punct there/ex have/vbp been/vbn a/dt slew/nn of/in recent/jj papers/nns on/in reducing/vbg annotator/nn effort/nn in/in producing/vbg test/nn collections/nns :/punct cormack/nnp et/fw al/fw ./punct
+[/punct 11/cd ]/punct ,/punct zobel/nnp [/punct 21/cd ]/punct ,/punct sanderson/nnp and/cc joho/nnp [/punct 17/cd ]/punct ,/punct carterette/nnp et/fw al/fw ./punct
+[/punct 8/cd ]/punct ,/punct and/cc aslam/nnp et/fw al/fw ./punct
+[/punct 4/cd ]/punct ,/punct among/in others/nns ./punct
+as/in we/prp will/md see/vb ,/punct the/dt judgments/nns these/dt methods/nns produce/vbp can/md significantly/rb bias/nn the/dt evaluation/nn of/in a/dt new/jj set/nn of/in systems/nns ./punct
+returning/vbg to/to our/prp$ hypothetical/jj resesarcher/nn ,/punct can/md she/prp reuse/vb her/prp$ relevance/nn judgments/nns ?/punct
+first/rb we/prp must/md formally/rb define/vb what/wp it/prp means/vbz to/to be/vb reusable/jj ./punct
+in/in previous/jj work/nn ,/punct reusability/nn has/vbz been/vbn tested/vbn by/in simply/rb assessing/vbg the/dt accuracy/nn of/in a/dt set/nn of/in relevance/nn judgments/nns at/in evaluating/vbg unseen/jj systems/nns ./punct
+while/in we/prp can/md say/vb that/in it/prp was/vbd right/jj 75/cd %/punct of/in the/dt time/nn ,/punct or/cc that/in it/prp had/vbd a/dt rank/nn correlation/nn of/in 0.8/cd ,/punct these/dt numbers/nns do/vbp not/rb have/vb any/dt predictive/jj power/nn :/punct they/prp do/vbp not/rb tell/vb us/prp which/wdt systems/nns are/vbp likely/jj to/to be/vb wrong/jj or/cc how/wrb confident/jj we/prp should/md be/vb in/in any/dt one/cd ./punct
+we/prp need/vbp a/dt more/jjr careful/jj definition/nn of/in reusability/nn ./punct
+specifically/rb ,/punct the/dt question/nn of/in reusability/nn is/vbz not/rb how/wrb accurately/rb we/prp can/md evaluate/vb new/jj systems/nns ./punct
+a/dt malicious/jj adversary/nn can/md always/rb produce/vb a/dt new/jj ranked/vbd list/nn that/wdt has/vbz not/rb retrieved/vbn any/dt of/in the/dt judged/vbn documents/nns ./punct
+the/dt real/jj question/nn is/vbz how/wrb much/jj confidence/nn we/prp have/vbp in/in our/prp$ evaluations/nns ,/punct and/cc ,/punct more/rbr importantly/rb ,/punct whether/in we/prp can/md trust/vb our/prp$ estimates/nns of/in confidence/nn ./punct
+even/rb if/in confidence/nn is/vbz not/rb high/jj ,/punct as/rb long/rb as/in we/prp can/md trust/vb it/prp ,/punct we/prp can/md identify/vb which/wdt systems/nns need/vbp more/jjr judgments/nns in/in order/nn to/to increase/vb confidence/nn ./punct
+any/dt set/nn of/in judgments/nns ,/punct no/dt matter/nn how/wrb small/jj ,/punct becomes/vbz reusable/jj to/to some/dt degree/nn ./punct
+small/jj ,/punct reusable/jj test/nn collections/nns could/md have/vb a/dt huge/jj impact/nn on/in information/nn retrieval/nn research/nn ./punct
+research/nnp groups/nns would/md be/vb able/jj to/to share/vb the/dt relevance/nn judgments/nns they/prp have/vbp done/vbn in-house/jj for/in pilot/nn studies/nns ,/punct new/jj tasks/nns ,/punct or/cc new/jj topics/nns ./punct
+the/dt amount/nn of/in data/nns available/jj to/to researchers/nns would/md grow/vb exponentially/rb over/in time/nn ./punct
+2/ls ./punct
+robust/jj evaluation/nn above/in we/prp gave/vbd an/dt intuitive/jj definition/nn of/in reusability/nn :/punct a/dt collection/nn is/vbz reusable/jj if/in we/prp can/md trust/vb our/prp$ estimates/nns of/in confidence/nn in/in an/dt evaluation/nn ./punct
+by/in that/dt we/prp mean/vbp that/in if/in we/prp have/vbp made/vbn some/dt relevance/nn judgments/nns and/cc have/vbp ,/punct for/in example/nn ,/punct 75/cd %/punct confidence/nn that/wdt system/nn a/nn is/vbz better/jjr than/in system/nn b/nn ,/punct we/prp would/md like/vb there/rb to/to be/vb no/rb more/jjr than/in 25/cd %/punct chance/nn that/wdt our/prp$ assessment/nn of/in the/dt relative/jj quality/nn of/in the/dt systems/nns will/md change/vb as/in we/prp continue/vbp to/to judge/vb documents/nns ./punct
+our/prp$ evaluation/nn should/md be/vb robust/jj to/to missing/vbg judgments/nns ./punct
+in/in our/prp$ previous/jj work/nn ,/punct we/prp defined/vbd confidence/nn as/in the/dt probability/nn that/in the/dt difference/nn in/in an/dt evaluation/nn measure/nn calculated/vbn for/in two/cd systems/nns is/vbz less/jjr than/in zero/cd [/punct 8/cd ]/punct ./punct
+this/dt notion/nn of/in confidence/nn is/vbz defined/vbn in/in the/dt context/nn of/in a/dt particular/jj evaluation/nn task/nn that/in we/prp call/vbp comparative/jj evaluation/nn :/punct determining/vbg the/dt sign/nn of/in the/dt difference/nn in/in an/dt evaluation/nn measure/nn ./punct
+other/jj evaluation/nn tasks/nns could/md be/vb defined/vbn ;/punct estimating/vbg the/dt magnitude/nn of/in the/dt difference/nn or/cc the/dt values/nns of/in the/dt measures/nns themselves/prp are/vbp examples/nns that/wdt entail/vbp different/jj notions/nns of/in confidence/nn ./punct
+we/prp therefore/rb see/vbp confidence/nn as/in a/dt probability/nn estimate/nn ./punct
+one/cd of/in the/dt questions/nns we/prp must/md ask/vb about/in a/dt probability/nn estimate/nn is/vbz what/wp it/prp means/vbz ./punct
+what/wp does/vbz it/prp mean/vb to/to have/vb 75/cd %/punct confidence/nn that/wdt system/nn a/nn is/vbz better/jjr than/in system/nn b/nn ?/punct
+as/in described/vbn above/in ,/punct we/prp want/vbp it/prp to/to mean/vb that/in if/in we/prp continue/vbp to/to judge/vb documents/nns ,/punct there/ex will/md only/rb be/vb a/dt 25/cd %/punct chance/nn that/wdt our/prp$ assessment/nn will/md change/vb ./punct
+if/in this/dt is/vbz what/wp it/prp means/vbz ,/punct we/prp can/md trust/vb the/dt confidence/nn estimates/nns ./punct
+but/cc do/vbp we/prp know/vb it/prp has/vbz that/dt meaning/nn ?/punct
+our/prp$ calculation/nn of/in confidence/nn rested/vbd on/in an/dt assumption/nn about/in the/dt probability/nn of/in relevance/nn of/in unjudged/jj documents/nns ,/punct specifically/rb that/in each/dt unjudged/jj document/nn was/vbd equally/rb likely/jj to/to be/vb relevant/jj or/cc nonrelevant/jj ./punct
+this/dt assumption/nn is/vbz almost/rb certainly/rb not/rb realistic/jj in/in most/jjs ir/nnp applications/nns ./punct
+as/in it/prp turns/vbz out/rp ,/punct it/prp is/vbz this/dt assumption/nn that/in determines/vbz whether/in the/dt confidence/nn estimates/nns can/md eb/vb trusted/vbn ./punct
+before/in elaborating/vbg on/in this/dt ,/punct we/prp formally/rb define/vbp confidence/nn ./punct
+average/jj precision/nn (/punct ap/nn )/punct is/vbz a/dt standard/jj evaluation/nn metric/jj that/in captures/vbz both/cc the/dt ability/nn of/in a/dt system/nn to/to rank/vb relevant/jj documents/nns highly/rb (/punct precision/nn )/punct as/rb well/rb as/in its/prp$ ability/nn to/to retrieve/vb relevant/jj documents/nns (/punct recall/nn )/punct ./punct
+it/prp is/vbz typically/rb written/vbn as/in the/dt mean/nn precision/nn at/in the/dt ranks/nns of/in relevant/jj documents/nns :/punct j=1/nn xj/nn ./punct
+average/jj precision/nn then/rb becomes/vbz the/dt quadratic/jj equation/nn where/wrb aij/nn =/punct 1//cd max/nn {/punct r/nn (/punct i/fw )/punct ,/punct r/nn (/punct j/nn )/punct }/punct ./punct
+using/vbg aij/nn instead/rb of/in 1/i/nn allows/vbz us/prp to/to number/nn the/dt documents/nns arbitrarily/rb ./punct
+to/to see/vb why/wrb affect/vb the/dt computation/nn ./punct
+we/prp can/md now/rb see/vb average/jj precision/nn itself/prp is/vbz a/dt random/jj variable/nn with/in a/dt distribution/nn over/in all/dt possible/jj assignments/nns of/in relevance/nn to/to all/dt documents/nns ./punct
+this/dt random/jj variable/nn has/vbz an/dt expectation/nn ,/punct a/dt variance/nn ,/punct confidence/nn intervals/nns ,/punct and/cc a/dt certain/jj probability/nn of/in being/vbg less/jjr than/in or/cc equal/jj to/to a/dt given/vbn value/nn ./punct
+all/dt of/in these/dt are/vbp dependent/jj on/in the/dt probability/nn that/wdt previous/jj example/nn we/prp do/vbp not/rb know/vb the/dt relevance/nn judgments/nns ,/punct )/punct =/punct 0.2/cd ·/nn 0.4/cd ·/nn 0.7/cd =/punct 0.056/cd ./punct
+summing/vbg over/in all/dt possibilities/nns ,/punct we/prp can/md compute/vb ap/nn asymptotically/rb converges/vbz to/to a/dt normal/jj distribution/nn with/in expectation/nn and/cc variance/nn as/in defined/vbn above.1/nn for/in our/prp$ comparative/jj evaluation/nn task/nn we/prp are/vbp interested/jj in/in the/dt sign/nn of/in the/dt difference/nn in/in two/cd average/jj precisions/nns :/punct δap/nn =/punct a/dt closed/jj form/nn when/wrb documents/nns are/vbp ordered/vbn arbitrarily/rb :/punct where/wrb bij/nn is/vbz defined/vbn analogously/rb to/to aij/vb for/in the/dt second/jj we/prp can/md use/vb the/dt normal/jj cumulative/jj density/nn function/nn to/to zero/cd ./punct
+since/in topics/nns are/vbp independent/jj ,/punct we/prp can/md easily/rb extend/vb this/dt to/to mean/vb average/jj precision/nn (/punct map/nn )/punct ./punct
+map/nn is/vbz also/rb normally/rb distributed/vbn ;/punct its/prp$ expectation/nn and/cc variance/nn are/vbp :/punct confidence/nn can/md then/rb be/vb estimated/vbn by/in calculating/vbg the/dt expectation/nn and/cc variance/nn and/cc using/vbg the/dt normal/jj density/nn function/nn to/to find/vb p/nn (/punct δmap/nn </punct 0/cd )/punct ./punct
+having/vbg defined/vbn confidence/nn ,/punct we/prp turn/vbp back/rb to/to the/dt issue/nn of/in trust/nn in/in confidence/nn estimates/nns ,/punct and/cc show/vb how/wrb it/prp ties/vbz into/in the/dt robustness/nn of/in the/dt collection/nn to/to missing/vbg judgments/nns ./punct
+these/dt are/vbp actually/rb approximations/nns to/to the/dt true/jj expectation/nn and/cc variance/nn ,/punct but/cc the/dt error/nn is/vbz a/dt negligible/jj o/nn (/punct n2−n/nn )/punct ./punct
+=/punct {/punct x1/nn ,/punct x2/nn ,/punct .../: ,/punct xm/nn }/punct (/punct using/vbg small/jj x/nn rather/rb than/in capital/nn x/nn to/to distinguish/vb between/in judged/vbn and/cc unjudged/jj documents/nns )/punct ;/punct these/dt are/vbp the/dt judgments/nns against/in which/wdt we/prp compute/vbp do/vb ,/punct we/prp can/md trust/vb the/dt confidence/nn estimates/nns ;/punct our/prp$ evaluation/nn will/md be/vb robust/jj to/to missing/vbg judgments/nns ./punct
+if/in our/prp$ confidence/nn estimates/nns are/vbp based/vbn on/in unrealistic/jj assumptions/nns ,/punct we/prp can/md not/rb expect/vb them/prp to/to be/vb accurate/jj ./punct
+the/dt assumptions/nns they/prp are/vbp based/vbn on/in are/vbp the/dt probabilities/nns of/in relevance/nn pi/nn ./punct
+we/prp need/vbp these/dt to/to be/vb realistic/jj ./punct
+we/prp argue/vbp that/in the/dt best/jjs possible/jj distribution/nn of/in relevance/nn p/nn (/punct xi/nn )/punct is/vbz the/dt one/cd that/wdt explains/vbz all/dt of/in the/dt data/nns (/punct all/dt of/in the/dt observations/nns made/vbd about/in the/dt retrieval/nn systems/nns )/punct while/in at/in the/dt same/jj time/nn making/vbg no/dt unwarranted/jj assumptions/nns ./punct
+this/dt is/vbz known/vbn as/in the/dt principle/nn of/in maximum/nn entropy/nn ./punct
+the/dt entropy/nn of/in a/dt random/jj variable/nn x/nn with/in distribution/nn p/nn (/punct x/nn )/punct is/vbz defined/vbn as/in h/nn (/punct p/nn )/punct =/punct −/cd i/fw p/nn (/punct x/nn =/punct i/fw )/punct log/nn p/nn (/punct x/nn =/punct i/fw )/punct ./punct
+this/dt has/vbz found/vbn a/dt wide/jj array/nn of/in uses/nns in/in computer/nn science/nn and/cc information/nn retrieval/nn ./punct
+the/dt maximum/nn entropy/jj distribution/nn is/vbz the/dt one/cd that/wdt maximizes/vbz h./nnp this/dt distribution/nn is/vbz unique/jj and/cc has/vbz an/dt exponential/jj form/nn ./punct
+the/dt following/vbg theorem/nn shows/vbz the/dt utility/nn of/in a/dt maximum/nn entropy/jj distribution/nn for/in relevance/nn when/wrb estimating/vbg confidence/nn ./punct
+is/vbz the/dt set/nn of/in relevance/nn judgments/nns defined/vbn above/in ,/punct relevance/nn of/in ,/punct and/cc i/prp is/vbz some/dt information/nn about/in the/dt documents/nns (/punct unspecified/jj as/in of/in now/rb )/punct ./punct
+we/prp forgo/vbp the/dt proof/nn for/in the/dt time/nn being/vbg ,/punct but/cc it/prp is/vbz quite/rb simple/jj ./punct
+this/dt says/vbz that/in the/dt better/jjr the/dt estimates/nns of/in relevance/nn ,/punct the/dt more/rbr accurate/jj the/dt evaluation/nn ./punct
+the/dt task/nn of/in creating/vbg a/dt reusable/jj test/nn collection/nn thus/rb becomes/vbz the/dt task/nn of/in estimating/vbg the/dt relevance/nn of/in unjudged/jj documents/nns ./punct
+the/dt theorem/nn and/cc its/prp$ proof/nn say/vbp nothing/nn whatsoever/rb about/in the/dt evaluation/nn metric/nn ./punct
+the/dt probability/nn estimates/nns are/vbp entirely/rb indepedent/nn of/in the/dt measure/nn we/prp are/vbp interested/jj in/in ./punct
+this/dt means/vbz the/dt same/jj probability/nn estimates/nns can/md tell/vb us/prp about/in average/jj precision/nn as/rb well/rb as/in precision/nn ,/punct recall/nn ,/punct bpref/nn ,/punct etc/fw ./punct
+furthermore/rb ,/punct we/prp could/md assume/vb that/in the/dt relevance/nn of/in documents/nns i/fw and/cc j/fw is/vbz independent/jj and/cc achieve/vb the/dt same/jj result/nn ,/punct the/dt task/nn therefore/rb becomes/vbz the/dt imputation/nn of/in the/dt missing/vbg values/nns of/in relevance/nn ./punct
+the/dt theorem/nn implies/vbz that/in the/dt closer/jjr we/prp get/vbp to/to the/dt maximum/nn entropy/jj distribution/nn of/in relevance/nn ,/punct the/dt closer/jjr we/prp get/vbp to/to robustness/nn ./punct
+information/nn i/cd unspecified/jj ./punct
+one/cd of/in the/dt advantages/nns of/in our/prp$ confidence/nn estimates/nns is/vbz that/in they/prp admit/vbp information/nn from/in a/dt wide/jj variety/nn of/in sources/nns ;/punct essentially/rb anything/nn that/wdt can/md be/vb modeled/vbn can/md be/vb used/vbn as/in information/nn for/in predicting/vbg relevance/nn ./punct
+a/dt natural/jj source/nn of/in information/nn is/vbz the/dt retrieval/nn systems/nns themselves/prp :/punct how/wrb they/prp ranked/vbd the/dt judged/vbn documents/nns ,/punct how/wrb often/rb they/prp failed/vbd to/to rank/vb relevant/jj documents/nns ,/punct how/wrb they/prp perform/vbp information/nn retrieval/nn expert/nn providing/vbg an/dt opinion/nn about/in the/dt relevance/nn of/in each/dt document/nn ,/punct the/dt problem/nn becomes/vbz one/cd of/in expert/jj opinion/nn aggregation/nn ./punct
+this/dt is/vbz similar/jj to/to the/dt metasearch/nn or/cc data/nns fusion/nn problem/nn into/in a/dt single/jj ranking/nn ./punct
+aslam/nnp et/fw al/fw ./punct
+previously/rb identified/vbn a/dt connection/nn between/in evaluation/nn and/cc metasearch/nn ./punct
+our/prp$ can/md plug/vb into/in eq/nn ./punct
+1/cd ;/punct metasearch/nn algorithms/nns have/vbp no/dt such/jj requirement/nn ./punct
+proceed/vb with/in the/dt evaluation/nn and/cc are/vbp able/jj to/to re-estimate/vb relevance/nn given/vbn each/dt new/jj judgment/nn ./punct
+expert/nn combination/nn ./punct
+suppose/vb that/in each/dt expert/nn j/nn provides/vbz a/dt probability/nn of/in relevance/nn qij/nn =/punct pj/nn (/punct xi/nn =/punct 1/cd )/punct ./punct
+the/dt information/nn about/in the/dt pi/nn =/punct p/nn (/punct xi/nn =/punct 1|qi/cd )/punct ./punct
+as/in it/prp turns/vbz out/rp ,/punct finding/vbg the/dt maximum/nn entropy/nn model/nn is/vbz equivalent/jj to/to finding/vbg the/dt parameters/nns that/wdt maximize/vbp the/dt likelihood/nn ./punct
+blower/nnp explicitly/rb shows/vbz that/in finding/vbg the/dt maximum/nn entropy/nn model/nn for/in a/dt binary/jj variable/nn is/vbz equivalent/jj to/to training/nn data/nns is/vbz highly/rb biased/vbn ./punct
+this/dt model/nn has/vbz the/dt advantage/nn of/in including/vbg the/dt statistical/jj dependence/nn between/in the/dt experts/nns ./punct
+a/dt model/nn of/in the/dt same/jj aggregating/nn expert/nn probabilities/nns ./punct
+a/dt similar/jj maximumentropy-motivated/jj approach/nn has/vbz been/vbn used/vbn for/in expert/nn aggregation/nn ./punct
+aslam/nnp &/punct montague/nnp used/vbd a/dt similar/jj model/nn for/in metasearch/nn ,/punct but/cc assumed/vbd independence/nn among/in experts/nns ./punct
+where/wrb do/vbp the/dt qij/nn s/nns come/vbp from/in ?/punct
+using/vbg raw/jj ,/punct uncalibrated/jj scores/nns as/in predictors/nns will/md not/rb work/vb because/in score/nn distributions/nns vary/vbp too/rb much/jj between/in topics/nns ./punct
+a/dt language/nn modeling/nn ranker/nn ,/punct for/in instance/nn ,/punct will/md typically/rb give/vb a/dt much/rb higher/jjr score/nn to/to the/dt top/jj retrieved/vbn document/nn for/in a/dt short/jj query/nn than/in to/to the/dt top/jj retrieved/vbn document/nn for/in a/dt long/jj query/nn ./punct
+we/prp could/md train/vb a/dt separate/jj predicting/vbg model/nn for/in each/dt topic/nn ,/punct but/cc that/dt does/vbz not/rb take/vb advantage/nn of/in all/dt of/in the/dt information/nn we/prp not/rb enough/rb to/to train/vb a/dt model/nn to/to any/dt confidence/nn ./punct
+furthermore/rb ,/punct predictions/nns for/in one/cd topic/nn ,/punct it/prp will/md make/vb good/jj predictions/nns for/in other/jj topics/nns as/rb well/rb ./punct
+we/prp could/md use/vb a/dt hierarchical/jj model/nn ,/punct but/cc that/dt will/md not/rb generalize/vb to/to unseen/jj topics/nns ./punct
+instead/rb ,/punct we/prp will/md calibrate/vb the/dt scores/nns of/in each/dt expert/nn individually/rb so/rb that/in scores/nns can/md be/vb compared/vbn both/dt within/in topic/nn and/cc between/in topic/nn ./punct
+thus/rb our/prp$ model/nn takes/vbz into/in account/nn not/rb only/rb the/dt dependence/nn between/in experts/nns ,/punct but/cc also/rb the/dt dependence/nn between/in experts/nns ''/'' performances/nns on/in different/jj tasks/nns (/punct topics/nns )/punct ./punct
+each/dt expert/nn gives/vbz us/prp a/dt score/nn and/cc a/dt rank/nn for/in each/dt document/nn ./punct
+convert/vb scores/nns into/in probabilities/nns of/in relevance/nn ./punct
+the/dt pairwise/jj preference/nn method/nn of/in carterette/nnp &/punct petkova/nnp could/md also/rb be/vb used/vbn ,/punct interpeting/vbg the/dt ranking/nn of/in one/cd document/nn over/in another/dt as/in an/dt expression/nn of/in preference/nn ./punct
+ij/nn be/vb expert/jj j/nn ''/'' s/nns self-reported/jj probability/nn that/wdt is/vbz unranked/jj (/punct the/dt expert/nn did/vbd not/rb believe/vb it/prp to/to be/vb relevant/jj )/punct ./punct
+the/dt pairwise/jj preference/nn model/nn can/md handle/vb these/dt two/cd requirements/nns easily/rb ,/punct so/in we/prp will/md use/vb it/prp ./punct
+let/vb θrj/nn (/punct i/fw )/punct be/vb the/dt relevance/nn the/dt θs/nns that/wdt maximize/vbp the/dt likelihood/nn function/nn :/punct we/prp again/rb include/vbp a/dt beta/nn prior/rb on/in p/nn (/punct θrj/nn (/punct i/fw )/punct )/punct with/in parameters/nns relevant/jj and/cc nonrelevant/jj documents/nns respectively/rb ./punct
+using/vbg these/dt as/in prior/jj parameters/nns ensures/vbz that/in the/dt resulting/vbg probabilities/nns will/md be/vb concentrated/vbn around/in the/dt ratio/nn of/in relevant/jj documents/nns that/wdt have/vbp been/vbn discovered/vbn for/in topic/nn t./nn this/dt means/vbz that/in the/dt probability/nn estimates/vbz decrease/nn by/in rank/nn and/cc are/vbp higher/jjr for/in topics/nns that/wdt have/vbp more/rbr relevant/jj documents/nns ./punct
+after/in finding/vbg the/dt θ/nn that/wdt maximizes/vbz the/dt likelihood/nn ,/punct we/prp have/vbp probability/nn that/in an/dt unranked/jj document/nn is/vbz relevant/jj is/vbz 0./cd retrieved/vbd rather/rb than/in the/dt identity/nn of/in the/dt document/nn itself/prp ,/punct the/dt probabilities/nns are/vbp identical/jj from/in expert/nn to/to expert/nn ,/punct e.g/nn ./punct
+we/prp only/rb have/vbp to/to solve/vb this/dt once/rb for/in each/dt topic/nn ./punct
+the/dt above/jj model/nn gives/vbz topic-independent/jj probabilities/nns for/in each/dt document/nn ./punct
+but/cc suppose/vb an/dt expert/nn who/wp reports/vbz 90/cd %/punct probability/nn is/vbz only/rb right/jj 50/cd %/punct of/in the/dt time/nn ./punct
+its/prp$ opinion/nn should/md be/vb discounted/vbn based/vbn on/in its/prp$ observed/vbn performance/nn ./punct
+that/wdt will/md ensure/vb that/in the/dt predicted/vbn probabilities/nns are/vbp tuned/vbn to/to the/dt expert/nn ''/'' s/nns ability/nn to/to retrieve/vb relevant/jj documents/nns given/vbn the/dt judgments/nns that/wdt have/vbp been/vbn made/vbn to/to this/dt point/nn ./punct
+platt/nnp ''/'' s/vbz svm/nnp calibration/nn method/nn fits/vbz a/dt sigmoid/nn ij/nn and/cc the/dt relevance/nn judgments/nns to/to obtain/vb qij/nn =/punct we/prp only/rb need/vbp to/to learn/vb one/cd calibration/nn function/nn for/in each/dt expert/nn ./punct
+adjust/vbp the/dt experts/nns ''/'' predictions/nns to/to their/prp$ actual/jj performance/nn ./punct
+the/dt calibrated/vbn probabilities/nns are/vbp plugged/vbn into/in model/nn (/punct 2/cd )/punct to/to find/vb the/dt document/nn probabilities/nns ./punct
+our/prp$ model/nn has/vbz three/cd components/nns that/wdt differ/vbp by/in the/dt data/nns they/prp take/vbp as/rb input/nn and/cc what/wp they/prp produce/vbp as/in output/nn ./punct
+a/dt conceptual/jj diagram/nn is/vbz shown/vbn in/in figure/nnp 1/cd ./punct
+1./ls ranks/vbz →/nn probabilities/nns (/punct per/in system/nn per/in topic/nn )/punct ./punct
+this/dt ij/nn ,/punct expert/nn j/nn ''/'' s/nns self-reported/jj probability/nn of/in the/dt it/prp to/to set/vb prior/jj parameters/nns )/punct ./punct
+2./ls probabilities/nns →/rb calibrated/vbd probabilities/nns (/punct per/in system/nn )/punct ./punct
+semisupervised/vbn ;/punct we/prp have/vbp relevance/nn judgments/nns at/in some/dt ranks/nns other/jj ranks/nns ./punct
+3./ls calibrated/vbn probabilities/nns →/cd document/nn probabilities/nns ./punct
+this/dt of/in document/nn i/fw given/vbn calibrated/vbn expert/jj probabilities/nns qij/nn ./punct
+judged/vbn documents/nns and/cc use/vb those/dt to/to estimate/vb the/dt relevance/nn of/in the/dt unjudged/jj documents/nns ./punct
+although/in the/dt model/nn appears/vbz rather/rb complex/jj ,/punct it/prp is/vbz really/rb just/rb three/cd successive/jj applications/nns of/in logistic/jj regression/nn ./punct
+as/in (/punct conjugate/nn )/punct priors/nns ensures/vbz that/in no/dt expensive/jj computational/jj methods/nns such/jj as/in mcmc/nn are/vbp necessary/jj ,/punct so/in the/dt model/nn is/vbz trained/vbn and/cc applied/vbn fast/rb enough/rb to/to be/vb used/vbn on-line/jj ./punct
+our/prp$ code/nn is/vbz available/jj at/in http/nn :/punct //ciir.cs.umass.edu/~carteret//nn ./punct
+three/cd hypotheses/nns are/vbp under/in consideration/nn ./punct
+the/dt first/jj ,/punct and/cc most/rbs important/jj ,/punct is/vbz that/in using/vbg our/prp$ expert/nn aggregation/nn model/nn to/to predict/vb relevance/nn produces/vbz test/nn collections/nns that/wdt are/vbp robust/jj confidence/nn when/wrb we/prp evaluate/vbp systems/nns that/wdt did/vbd not/rb contribute/vb any/dt judgments/nns to/to the/dt pool/nn ./punct
+the/dt other/jj two/cd hypotheses/nns relate/vbp to/to the/dt improvement/nn we/prp previous/jj work/nn ./punct
+these/dt are/vbp that/in (/punct a/dt )/punct it/prp takes/vbz fewer/jjr relevance/nn track/nn no/dt ./punct
+topics/nns no/dt ./punct
+runs/nns no/dt ./punct
+judged/vbn no/dt ./punct
+rel/nn judgments/nns to/to reach/vb 95/cd %/punct confidence/nn and/cc (/punct b/nn )/punct the/dt accuracy/nn of/in pi/nn =/punct 0.5/cd for/in all/dt unjudged/jj documents/nns ./punct
+we/prp obtained/vbd full/jj ad-hoc/jj runs/nns submitted/vbn to/to trecs/nns 3/cd through/in 8/cd ./punct
+each/dt run/nn ranks/vbz at/in most/jjs 1000/cd documents/nns for/in 50/cd topics/nns (/punct 49/cd topics/nns for/in trec/nn 4/cd )/punct ./punct
+additionally/rb ,/punct we/prp obtained/vbd all/dt runs/nns from/in the/dt web/nn track/nn of/in trec/nn 13/cd ,/punct the/dt robust2/nn of/in trec/nn 14/cd ,/punct and/cc the/dt terabyte/nnp (/punct ad-hoc/jj )/punct track/nn of/in trec/nn 14/cd ./punct
+these/dt are/vbp the/dt tracks/nns that/wdt have/vbp replaced/vbn the/dt ad-hoc/jj track/nn since/in its/prp$ end/nn in/in 1999/cd ./punct
+statistics/nns are/vbp shown/vbn in/in table/nnp 1/cd ./punct
+we/prp set/vbd aside/rb the/dt trec/nn 4/cd (/punct ad-hoc/jj 95/cd )/punct set/vbn for/in training/nn ,/punct trecs/nns 3/cd and/cc 5-8/cd (/punct ad-hoc/jj 94/cd and/cc 96-99/cd )/punct for/in primary/jj testing/nn ,/punct and/cc the/dt remaining/vbg sets/nns for/in additional/jj testing/nn ./punct
+we/prp use/vbp the/dt qrels/nns files/nns assembled/vbn by/in nist/nnp as/in truth/nn ./punct
+the/dt number/nn of/in relevance/nn judgments/nns made/vbn and/cc relevant/jj documents/nns found/vbn for/in each/dt track/nn are/vbp listed/vbn in/in table/nnp 1/cd ./punct
+for/in computational/jj reasons/nns ,/punct we/prp truncate/vbp ranked/vbd lists/nns at/in deeper/jjr ,/punct but/cc calculating/vbg variance/nn is/vbz o/nn (/punct n3/nn timeconsuming/nn ./punct
+because/in of/in the/dt reciprocal/jj rank/nn nature/nn of/in ap/nn ,/punct we/prp do/vbp not/rb lose/vb much/jj information/nn by/in truncating/jj at/in rank/nn 100/cd ./punct
+we/prp will/md compare/vb three/cd algorithms/nns for/in acquiring/vbg relevance/nn judgments/nns ./punct
+the/dt baseline/nn is/vbz a/dt variation/nn of/in trec/nn pooling/vbg that/in we/prp will/md call/vb incremental/jj pooling/vbg (/punct ip/nnp )/punct ./punct
+this/dt algorithm/nn takes/vbz not/rb estimate/vb the/dt relevance/nn of/in unjudged/jj documents/nns ;/punct it/prp simply/rb assumes/vbz any/dt unjudged/jj document/nn is/vbz nonrelevant/jj ./punct
+the/dt second/jj algorithm/nn is/vbz that/in presented/vbn in/in carterette/nnp et/fw al/fw ./punct
+(/punct algorithm/nn 1/cd )/punct ./punct
+documents/nns are/vbp selected/vbn based/vbn on/in how/wrb interesting/jj they/prp are/vbp in/in determining/vbg whether/in a/dt difference/nn in/in mean/jj average/jj precision/nn exists/vbz ./punct
+for/in this/dt approach/nn pi/nn =/punct 0.5/cd this/dt mtc/nn for/in minimal/jj test/nn collection/nn ./punct
+the/dt third/jj algorithm/nn augments/vbz mtc/nn with/in updated/vbn estimates/nns of/in probabilities/nns of/in relevance/nn ./punct
+we/prp will/md call/vb this/dt rtc/nnp except/in that/dt every/dt 10th/jj iteration/nn we/prp estimate/vbp pi/nn for/in all/dt unjudged/jj documents/nns i/fw using/vbg the/dt expert/nn aggregation/nn model/nn of/in section/nn 3/cd ./punct
+rtc/nnp has/vbz smoothing/vbg (/punct prior/jj distribution/nn )/punct parameters/nns that/wdt robust/rb here/rb means/vbz robust/jj retrieval/nn ;/punct this/dt is/vbz different/jj from/in our/prp$ goal/nn of/in robust/jj evaluation/nn ./punct
+algorithm/nn 1/cd (/punct mtc/nn )/punct given/vbn two/cd ranked/vbd lists/nns and/cc confidence/nn level/nn α/nn ,/punct predict/vbp the/dt sign/nn of/in δmap/nn ./punct
+3/cd :/punct calculate/vb weight/nn wi/nn for/in all/dt unjudged/jj documents/nns i/fw the/dt search/nn to/to uniform/jj priors/nns with/in relatively/rb high/jj variance/nn ./punct
+for/in expert/jj aggregation/nn ,/punct the/dt prior/jj parameters/nns are/vbp α/nn =/punct β/nn =/punct 1./cd of/in relevance/nn judgments/nns with/in a/dt set/nn of/in relevance/nn probabilities/nns 1/cd ./punct
+pick/vb a/dt random/jj subset/nn of/in k/nn runs/nns ./punct
+2/ls ./punct
+from/in those/dt k/nn ,/punct pick/vbp an/dt initial/jj c/nn </punct k/nn to/to evaluate/vb ./punct
+3/ls ./punct
+run/nnp rtc/nnp to/to 95/cd %/punct confidence/nn on/in the/dt initial/jj c/nn ./punct
+4/ls ./punct
+using/vbg the/dt model/nn from/in section/nn 3/cd ,/punct estimate/vbp the/dt probabilities/nns of/in relevance/nn for/in all/dt documents/nns retrieved/vbn by/in all/dt k/nn runs/vbz ./punct
+for/in all/dt pairs/nns of/in runs/nns ./punct
+we/prp do/vbp the/dt same/jj for/in mtc/nnp ,/punct but/cc omit/vb step/nn 4/cd ./punct
+note/vb that/in after/in evaluating/vbg the/dt first/jj c/nn systems/nns ,/punct we/prp make/vbp no/dt additional/jj relevance/nn judgments/nns ./punct
+build/vb a/dt set/nn of/in judgments/nns from/in evaluating/vbg only/rb two/cd initial/jj which/wdt those/dt two/cd are/vbp a/dt subset/nn )/punct ./punct
+all/dt three/cd of/in our/prp$ hypotheses/nns ./punct
+the/dt predictions/nns it/prp makes/vbz is/vbz at/in least/jjs its/prp$ estimated/vbn confidence/nn ./punct
+confidence/nn ,/punct then/rb calculate/vb the/dt accuracy/nn over/in all/pdt the/dt pairs/nns in/in each/dt confidence/nn score/nn in/in the/dt bin/nn ,/punct but/cc preferably/rb higher/jjr ./punct
+since/in summary/nn statistics/nns are/vbp useful/jj ,/punct we/prp devised/vbd the/dt following/vbg metric/nn ./punct
+suppose/vb we/prp are/vbp a/dt bookmaker/nn taking/vbg bets/nns dollar/nn ./punct
+otherwise/rb ,/punct we/prp pay/vbp out/rp o./nnp if/in our/prp$ confidence/nn estimates/nns are/vbp perfectly/rb accurate/jj ,/punct we/prp break/vbp even/rb ./punct
+if/in confidence/nn is/vbz greater/jjr than/in confidence/nn ./punct
+counterintuitively/rb ,/punct the/dt most/rbs desirable/jj outcome/nn is/vbz breaking/vbg even/rb :/punct if/in we/prp lose/vbp money/nn ,/punct we/prp can/md not/rb trust/vb the/dt confidence/nn estimates/nns ,/punct but/cc if/in we/prp win/vbp money/nn ,/punct we/prp have/vbp either/cc underestimated/vbd confidence/nn or/cc judged/vbn more/rbr documents/nns than/in necessary/jj ./punct
+however/rb ,/punct the/dt cost/nn of/in not/rb being/vbg able/jj to/to trust/vb the/dt confidence/nn estimates/vbz is/vbz higher/jjr than/in the/dt cost/nn of/in extra/jj relevance/nn judgments/nns ,/punct so/in we/prp will/md treat/vb positive/jj outcomes/nns as/in good/jj ./punct
+the/dt amount/nn we/prp win/vbp on/in each/dt pairwise/jj comparison/nn i/fw is/vbz :/punct 0/cd )/punct ./punct
+the/dt summary/nn statistic/nn is/vbz w/nnp ,/punct the/dt mean/nn of/in wi/nn ./punct
+note/vb that/dt as/in pi/nn increases/nns ,/punct we/prp lose/vbp more/rbr for/in being/vbg wrong/jj ./punct
+missing/vbg the/dt high/jj probability/nn predictions/nns ./punct
+however/rb ,/punct since/in our/prp$ losses/nns grow/vbp without/in bound/vbn as/in predictions/nns approach/vbp certainty/nn ,/punct we/prp cap/vbp −wi/nns at/in 100/cd ./punct
+for/in our/prp$ hypothesis/nn that/in rtc/nnp requires/vbz fewer/jjr judgments/nns than/in mtc/nnp ,/punct we/prp are/vbp interested/jj in/in the/dt number/nn of/in judgments/nns needed/vbn to/to reach/vb 95/cd %/punct confidence/nn on/in the/dt first/jj pair/nn of/in systems/nns ./punct
+the/dt median/nn is/vbz more/rbr interesting/jj than/in the/dt mean/nn :/punct most/rbs pairs/nns require/vbp a/dt few/jj hundred/cd judgments/nns ,/punct but/cc a/dt few/jj pairs/nns require/vbp several/jj thousand/cd ./punct
+the/dt distribution/nn is/vbz therefore/rb highly/rb skewed/jj ,/punct and/cc the/dt mean/nn strongly/rb affected/vbn by/in those/dt outliers/nns ./punct
+finally/rb ,/punct for/in our/prp$ hypothesis/nn that/in rtc/nnp is/vbz more/rbr accurate/jj than/in mtc/nnp ,/punct we/prp will/md look/vb at/in kendall/nnp ''/'' s/vbz τ/nn correlation/nn between/in true/jj ranking/nn using/vbg the/dt full/jj set/nn of/in judgments/nns ./punct
+kendall/nnp ''/'' s/vbz τ/nn ,/punct a/dt nonparametric/jj statistic/nn based/vbn on/in pairwise/jj swaps/nns between/in two/cd lists/nns ,/punct is/vbz a/dt standard/jj evaluation/nn for/in this/dt type/nn of/in study/nn ./punct
+identical/jj )/punct ,/punct with/in 0/cd meaning/nn that/wdt half/nn of/in the/dt pairs/nns are/vbp swapped/vbn ./punct
+measure/nn like/in rank/nn correlation/nn is/vbz not/rb a/dt good/jj evaluation/nn of/in reusability/nn ./punct
+we/prp include/vbp it/prp for/in completeness/nn ./punct
+running/vbg multiple/jj trials/nns allows/vbz the/dt use/nn of/in statistical/jj hypothesis/nn testing/nn to/to compare/vb algorithms/nns ./punct
+using/vbg the/dt same/jj sets/nns of/in systems/nns allows/vbz the/dt use/nn of/in paired/jj tests/nns ./punct
+number/nn of/in judgments/nns than/in the/dt mean/nn ./punct
+a/dt test/nn for/in difference/nn in/in median/nn is/vbz the/dt wilcoxon/nnp sign/nn rank/nn test/nn ./punct
+we/prp can/md also/rb use/vb a/dt paired/jj t-test/nn to/to test/vb for/in a/dt difference/nn in/in mean/nn ./punct
+for/in rank/nn correlation/nn ,/punct we/prp can/md use/vb a/dt paired/jj t-test/nn to/to test/vb for/in a/dt difference/nn in/in τ./nn the/dt comparison/nn between/in mtc/nnp and/cc rtc/nnp is/vbz shown/vbn in/in recall/vb from/in section/nn 1/cd that/in we/prp can/md not/rb require/vb (/punct or/cc even/rb expect/vbp )/punct systems/nns ./punct
+more/rbr detailed/jj results/nns for/in both/dt algorithms/nns are/vbp shown/vbn in/in each/dt bin/nn contains/vbz over/in 1,000/cd trials/nns from/in the/dt adhoc/nn 3/cd ,/punct 5-8/cd sets/nns ./punct
+rtc/nnp is/vbz much/rb more/rbr robust/jj than/in mtc/nnp ./punct
+w/nn is/vbz defined/vbn in/in section/nn 4.4/cd ;/punct closer/jjr to/to 0/cd is/vbz better/rbr ./punct
+median/jj judged/vbn is/vbz the/dt number/nn of/in judgments/nns to/to reach/vb 95/cd %/punct confidence/nn on/in the/dt first/jj two/cd systems/nns ./punct
+mean/nn τ/nn is/vbz the/dt average/jj rank/nn correlation/nn for/in all/dt 10/cd systems/nns ./punct
+algorithms/nns are/vbp well/rb above/in the/dt line/nn up/in to/to around/in confidence/nn 7./ls very/rb little/jj work/nn ./punct
+number/nn of/in judgments/nnp :/punct the/dt median/jj number/nn of/in judgments/nns required/vbn by/in mtc/nn to/to reach/vb 95/cd %/punct confidence/nn on/in the/dt first/jj required/vbn by/in rtc/nnp is/vbz 235/cd ,/punct about/in 4.7/cd per/in topic/nn ./punct
+although/in the/dt numbers/nns are/vbp close/rb ,/punct rtc/nnp ''/'' s/vbz median/nn is/vbz significantly/rb lower/jjr by/in a/dt paired/jj wilcoxon/nnp test/nn (/punct p/nn </punct 0.0001/cd )/punct ./punct
+for/in comparison/nn ,/punct a/dt pool/nn for/in each/dt pair/nn ./punct
+the/dt difference/nn in/in means/nns is/vbz much/rb greater/jjr ./punct
+mtc/nn required/vbd a/dt mean/nn of/in 823/cd judgments/nns ,/punct 16/cd per/in topic/nn ,/punct while/in rtc/nnp required/vbd a/dt mean/nn of/in 502/cd ,/punct 10/cd per/in topic/nn ./punct
+(/punct recall/vb that/dt means/nns are/vbp strongly/rb skewed/vbn by/in a/dt few/jj pairs/nns that/wdt take/vbp thousands/nns of/in judgments/nns ./punct
+)/punct this/dt difference/nn is/vbz significant/jj by/in a/dt paired/jj t-test/nn (/punct p/nn </punct 0.0001/cd )/punct ./punct
+ten/cd percent/nn of/in the/dt sets/nns resulted/vbd in/in 100/cd or/cc fewer/jjr judgments/nns (/punct less/jjr than/in two/cd per/in topic/nn )/punct ./punct
+performance/nnp on/in these/dt is/vbz very/rb high/jj :/punct 9/cd ./punct

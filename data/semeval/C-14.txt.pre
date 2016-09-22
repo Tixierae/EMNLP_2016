@@ -1,0 +1,127 @@
+in/in order/nn to/to monitor/vb a/dt region/nn for/in traffic/nn traversal/nn ,/punct sensors/nns can/md be/vb deployed/vbn to/to perform/vb collaborative/jj target/nn detection/nn ./punct
+such/pdt a/dt sensor/nn network/nn achieves/vbz a/dt certain/jj level/nn of/in detection/nn performance/nn with/in an/dt associated/vbn cost/nn of/in deployment/nn ./punct
+this/dt paper/nn addresses/nns this/dt problem/nn by/in proposing/vbg path/nn exposure/nn as/in a/dt measure/nn of/in the/dt goodness/nn of/in a/dt deployment/nn and/cc presents/vbz an/dt approach/nn for/in sequential/jj deployment/nn in/in steps/nns ./punct
+it/prp illustrates/vbz that/in the/dt cost/nn of/in deployment/nn can/md be/vb minimized/vbn to/to achieve/vb the/dt desired/vbn detection/nn performance/nn by/in appropriately/rb choosing/vbg the/dt number/nn of/in sensors/nns deployed/vbn in/in each/dt step/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp c.2.4/nn [/punct computer-communication/nnp networks/nnp ]/punct :/punct distributed/vbn systems-distributed/jj applications/nns ;/punct c.3/nn [/punct special-purpose/nn and/cc application-based/jj systems/nnps ]/punct :/punct [/punct signal/nn processing/nn systems/nns ]/punct general/nnp terms/nns algorithms/nns ,/punct design/nn ,/punct performance/nnp 1/cd ./punct
+introduction/nnp recent/jj advances/nns in/in computing/vbg hardware/nn and/cc software/nn are/vbp responsible/jj for/in the/dt emergence/nn of/in sensor/nn networks/nns capable/jj of/in observing/vbg the/dt environment/nn ,/punct processing/vbg the/dt data/nns and/cc making/vbg decisions/nns based/vbn on/in the/dt observations/nns ./punct
+such/pdt a/dt network/nn can/md be/vb used/vbn to/to monitor/vb the/dt environment/nn ,/punct detect/vb ,/punct classify/vb and/cc locate/vb specific/jj events/nns ,/punct and/cc track/nn targets/nns over/in a/dt specific/jj region/nn ./punct
+examples/nns of/in such/jj systems/nns are/vbp in/in surveillance/nn ,/punct monitoring/nn of/in pollution/nn ,/punct traffic/nn ,/punct agriculture/nn or/cc civil/jj infrastructures/nns [/punct 6/cd ]/punct ./punct
+the/dt deployment/nn of/in sensor/nn networks/nns varies/vbz with/in the/dt application/nn considered/vbn ./punct
+it/prp can/md be/vb predetermined/vbn when/wrb the/dt environment/nn is/vbz sufficiently/rb known/vbn and/cc under/in control/nn ,/punct in/in which/wdt case/nn the/dt sensors/nns can/md be/vb strategically/rb hand/nn placed/vbn ./punct
+the/dt deployment/nn can/md also/rb be/vb a/dt priori/fw undetermined/jj when/wrb the/dt environment/nn is/vbz unknown/jj or/cc hostile/jj in/in which/wdt case/nn the/dt sensors/nns may/md be/vb airdropped/vbn from/in an/dt aircraft/nn or/cc deployed/vbn by/in other/jj means/nns ,/punct generally/rb resulting/vbg in/in a/dt random/jj placement/nn ./punct
+this/dt paper/nn investigates/vbz deployment/nn strategies/nns for/in sensor/nn networks/nns performing/vbg target/nn detection/nn over/in a/dt region/nn of/in interest/nn ./punct
+in/in order/nn to/to detect/vb a/dt target/nn moving/vbg through/in the/dt region/nn ,/punct sensors/nns have/vbp to/to make/vb local/jj observations/nns of/in the/dt environment/nn and/cc collaborate/vbp to/to produce/vb a/dt global/jj decision/nn that/wdt reflects/vbz the/dt status/nn of/in the/dt region/nn covered/vbd [/punct 2/cd ]/punct ./punct
+this/dt collaboration/nn requires/vbz local/jj processing/nn of/in the/dt observations/nns ,/punct communication/nn between/in different/jj nodes/nns ,/punct and/cc information/nn fusion/nn [/punct 7/cd ]/punct ./punct
+since/in the/dt local/jj observations/nns made/vbn by/in the/dt sensors/nns depend/vbp on/in their/prp$ position/nn ,/punct the/dt performance/nn of/in the/dt detection/nn algorithm/nn is/vbz a/dt function/nn of/in the/dt deployment/nn ./punct
+one/cd possible/jj measure/nn of/in the/dt goodness/nn of/in deployment/nn for/in target/nn detection/nn is/vbz called/vbn path/nn exposure/nn ./punct
+it/prp is/vbz a/dt measure/nn of/in the/dt likelihood/nn of/in detecting/vbg a/dt target/nn traversing/vbg the/dt region/nn using/vbg a/dt given/vbn path/nn ./punct
+the/dt higher/jjr the/dt path/nn exposure/nn ,/punct the/dt better/jjr the/dt deployment/nn ./punct
+the/dt set/nn of/in paths/nns to/to be/vb considered/vbn may/md be/vb constrained/vbn by/in the/dt environment/nn ./punct
+for/in example/nn ,/punct if/in the/dt target/nn is/vbz expected/vbn to/to be/vb following/vbg a/dt road/nn ,/punct only/rb the/dt paths/nns consisting/vbg of/in the/dt roads/nns need/vbp to/to be/vb considered/vbn ./punct
+in/in this/dt study/nn ,/punct the/dt deployment/nn is/vbz assumed/vbn to/to be/vb random/jj which/wdt corresponds/vbz to/to many/jj practical/jj applications/nns where/wrb the/dt region/nn to/to be/vb monitored/vbn is/vbz not/rb accessible/jj for/in precise/jj placement/nn of/in sensors/nns ./punct
+the/dt focus/nn of/in this/dt paper/nn is/vbz to/to determine/vb the/dt number/nn of/in sensors/nns to/to be/vb deployed/vbn to/to carry/vb out/rp target/nn detection/nn in/in a/dt region/nn of/in interest/nn ./punct
+the/dt tradeoffs/nns lie/vbp between/in the/dt network/nn performance/nn ,/punct the/dt cost/nn of/in the/dt sensors/nns deployed/vbn ,/punct and/cc the/dt cost/nn of/in deploying/vbg the/dt sensors/nns ./punct
+this/dt paper/nn is/vbz organized/vbn as/in follows/vbz ./punct
+in/in section/nn 2/cd ,/punct a/dt definition/nn for/in path/nn exposure/nn is/vbz proposed/vbn and/cc a/dt method/nn to/to evaluate/vb the/dt exposure/nn of/in a/dt given/vbn path/nn is/vbz developed/vbn ./punct
+in/in section/nn 3/cd ,/punct the/dt problem/nn of/in random/jj deployment/nn is/vbz formulated/vbn and/cc several/jj solutions/nns are/vbp presented/vbn ./punct
+an/dt analytical/jj study/nn of/in these/dt solutions/nns is/vbz given/vbn in/in section/nn 4/cd and/cc section/nn 5/cd presents/vbz simulation/nn results/nns that/wdt are/vbp used/vbn in/in section/nn 6/cd to/to determine/vb the/dt optimum/jj solution/nn for/in a/dt given/vbn environment/nn ./punct
+the/dt paper/nn concludes/vbz with/in section/nn 7/cd ./punct
+2/ls ./punct
+path/nn exposure/nn in/in this/dt section/nn ,/punct a/dt model/nn for/in sensor/nn network/nn target/nn detection/nn is/vbz proposed/vbn ,/punct a/dt definition/nn of/in path/nn exposure/nn is/vbz presented/vbn and/cc expressions/nns for/in evaluating/vbg this/dt path/nn exposure/nn are/vbp developed/vbn ./punct
+consider/vb a/dt rectangular/jj sensor/nn field/nn with/in n/nn sensors/nns signal/nn from/in the/dt target/nn decays/vbz as/in a/dt polynomial/nn of/in the/dt distance/nn ./punct
+is/vbz the/dt geometric/jj distance/nn between/in the/dt target/nn and/cc the/dt sensor/nn ./punct
+depending/vbg on/in the/dt environment/nn the/dt value/nn k/nn typically/rb ranges/vbz from/in 2.0/cd to/to 5.0/cd ./punct
+energy/nnp measurements/nns at/in a/dt sensor/nn are/vbp usually/rb corrupted/vbn particular/jj measurement/nn ,/punct then/rb the/dt total/jj energy/nn measured/vbn at/in +/punct ni/nn ./punct
+basic/jj approaches/nns for/in reaching/vbg this/dt consensus/nn :/punct value/nnp fusion/nn and/cc decision/nn fusion/nn ./punct
+in/in value/nn fusion/nn ,/punct one/cd of/in the/dt sensors/nns gathers/vbz the/dt energy/nn measurements/nns from/in the/dt other/jj sensors/nns ,/punct totals/vbz up/rp the/dt energy/nn and/cc compares/vbz the/dt sum/nn to/to a/dt threshold/nn the/dt threshold/nn ,/punct then/rb the/dt consensus/nn decision/nn is/vbz that/in a/dt target/nn is/vbz present/jj ./punct
+in/in contrast/nn ,/punct in/in decision/nn fusion/nn ,/punct each/dt individual/jj sensor/nn compares/vbz its/prp$ energy/nn measurement/nn to/to a/dt threshold/nn to/to arrive/vb at/in a/dt local/jj decision/nn as/in to/to whether/in a/dt target/nn is/vbz present/jj ./punct
+the/dt local/jj decisions/nns (/punct 1/cd for/in target/nn present/jj and/cc 0/cd otherwise/rb )/punct from/in the/dt sensors/nns are/vbp totaled/vbn at/in a/dt sensor/nn and/cc the/dt sum/nn is/vbz compared/vbn to/to another/dt threshold/nn to/to arrive/vb at/in the/dt consensus/nn decision/nn ./punct
+in/in some/dt situations/nns ,/punct value/nn fusion/nn outperforms/vbz decision/nn fusion/nn and/cc vice/nn versa/rb ./punct
+the/dt probability/nn of/in consensus/nn target/nn detection/nn when/wrb the/dt where/wrb η/nn is/vbz the/dt value/nn fusion/nn threshold/nn ./punct
+if/in the/dt noise/nn processes/vbz at/in the/dt sensors/nns are/vbp independent/jj ,/punct then/rb the/dt probability/nn density/nn the/dt noise/nn process/nn at/in each/dt sensor/nn is/vbz additive/jj white/nnp gaussian/nnp of/in degree/nn n./nn due/jj to/to the/dt presence/nn of/in noise/nn ,/punct the/dt sensors/nns may/md incorrectly/rb target/vb in/in the/dt field/nn ./punct
+the/dt probability/nn of/in a/dt consensus/nn false/jj target/nn as/in above/rb ,/punct if/in the/dt noise/nn processes/vbz at/in the/dt sensors/nns are/vbp independent/jj and/cc awgn/nn ,/punct then/rb the/dt false/jj alarm/nn probability/nn can/md be/vb computed/vbn from/in the/dt chi-square/jj distribution/nn of/in degree/nn n./nn for/in decision/nn fusion/nn ,/punct the/dt probability/nn of/in consensus/nn target/nn =/punct 1/cd −/cd prob/nnp [/punct hd/nn ,/punct i/fw (/punct u/fw )/punct =/punct 1/cd ]/punct ./punct
+can/md be/vb computed/vbn from/in chi-square/jj distribution/nn of/in degree/nn 1/cd for/in awgn/nn noise/nn process/nn ./punct
+prob/nnp [/punct gd/nn ,/punct i/fw =/punct 0/cd ]/punct =/punct 1/cd −/cd prob/nnp [/punct gd/nn ,/punct i/fw =/punct 1/cd ]/punct ./punct
+therefore/rb ,/punct the/dt probability/nn of/in consensus/nn false/jj target/nn detection/nn the/dt above/in equations/nns serve/vbp as/in an/dt analytic/jj basis/nn for/in evaluating/vbg exposure/nn as/in defined/vbn in/in the/dt following/vbg subsection/nn ./punct
+note/vb that/in in/in value/nn and/cc decision/nn fusion/nn the/dt knowledge/nn of/in the/dt sensors/nns location/nn can/md be/vb used/vbn to/to make/vb the/dt detection/nn decision/nn ./punct
+for/in example/nn ,/punct a/dt sensor/nn can/md report/vb values/nns that/wdt differ/vbp substantially/rb from/in its/prp$ neighbors/nns values/nns ./punct
+this/dt discrepancy/nn can/md be/vb analyzed/vbn to/to avoid/vb false/jj alarms/nns or/cc misses/vbz and/cc therefore/rb improve/vb the/dt detection/nn performance/nn ./punct
+however/rb ,/punct such/jj algorithms/nns are/vbp not/rb considered/vbn in/in this/dt paper/nn ./punct
+target/nn or/cc an/dt intruder/nn carrying/vbg out/rp the/dt unauthorized/jj activity/nn ,/punct where/wrb the/dt activity/nn depends/vbz on/in the/dt problem/nn under/in consideration/nn ./punct
+in/in this/dt paper/nn ,/punct the/dt activity/nn considered/vbn is/vbz the/dt unauthorized/nnp traversal/nnp (/punct ut/nnp )/punct as/in defined/vbn below/in ./punct
+unauthorized/jj traversal/jj (/punct ut/nn )/punct problem/nnp :/punct we/prp are/vbp given/vbn let/vb p/nn denote/vbp a/dt path/nn from/in the/dt west/nn to/to the/dt east/jj periphery/nn through/in the/dt sensor/nn field/nn ./punct
+a/dt target/nn that/wdt traverses/vbz the/dt when/wrb assuming/vbg that/in the/dt target/nn traverses/vbz the/dt field/nn at/in a/dt constant/jj speed/nn ./punct
+the/dt detection/nn attempts/nns are/vbp based/vbn on/in energy/nn measured/vbn over/in a/dt period/nn of/in time/nn t/nn during/in which/wdt the/dt target/nn is/vbz moving/vbg ./punct
+therefore/rb ,/punct the/dt detection/nn probability/nn associated/vbn with/in each/dt point/nn u/nn reflects/vbz the/dt measurements/nns performed/vbn during/in time/nn t./fw considering/vbg the/dt path/nn ,/punct the/dt net/jj probability/nn of/in not/rb detecting/vbg a/dt target/nn traversing/vbg the/dt field/nn using/vbg p/nn is/vbz the/dt product/nn of/in the/dt probabilities/nns of/in no/dt detection/nn at/in each/dt point/nn u/nn ∈/cd p./nnp that/dt is/vbz ,/punct if/in g/nn (/punct p/nn )/punct denotes/vbz the/dt net/jj probability/nn of/in not/rb detecting/vbg where/wrb d/nn (/punct u/nn )/punct is/vbz either/cc dv/nnp (/punct u/nn )/punct of/in dd/nn (/punct u/nn )/punct depending/vbg on/in whether/in equivalently/rb the/dt path/nn that/wdt minimizes/vbz |/punct log/nn g/nn (/punct p/nn )/punct |1/nn ./punct
+fairly/rb arbitrary/jj in/in shape/nn ./punct
+the/dt proposed/vbn solution/nn does/vbz not/rb exactly/rb compute/vb this/dt path/nn ./punct
+instead/rb ,/punct we/prp rely/vbp on/in the/dt following/vbg approximation/nn ./punct
+we/prp first/rb divide/vbp the/dt sensor/nn field/nn into/in a/dt fine/jj grid/nn and/cc then/rb assume/vb that/in the/dt target/nn only/rb moves/vbz along/in this/dt that/wdt minimizes/vbz |/punct log/nn g/nn (/punct p/nn )/punct |/punct ./punct
+note/vb that/in ,/punct the/dt finer/nn the/dt grid/nn the/dt closer/jjr the/dt approximation/nn ./punct
+also/rb ,/punct one/prp can/md use/vb higher/jjr order/nn in/in this/dt paper/nn ./punct
+the/dt higher/jjr order/nn grids/nns change/vbp the/dt runtime/nn of/in the/dt algorithm/nn but/cc the/dt approach/nn is/vbz the/dt same/jj as/in with/in the/dt rectangular/jj grid/nn ./punct
+note/vb that/in ,/punct g/nn (/punct p/nn )/punct lies/vbz between/in 0/cd and/cc 1/cd and/cc thus/rb log/nn g/nn (/punct p/nn )/punct is/vbz negative/jj ./punct
+1/ls ./punct
+generate/vb a/dt suitably/rb fine/jj rectangular/jj grid/nn ./punct
+2/ls ./punct
+for/in each/dt line/nn segment/nn l/nn between/in adjacent/jj grid/nn points/nns 10/cd ./punct
+let/vb w/nn equal/jj the/dt total/jj weight/nn of/in p/nn ./punct
+11/cd ./punct
+return/nn p/nn as/in the/dt least/jjs exposure/nn path/nn with/in an/dt ./punct
+two/cd adjacent/jj grid/nn points/nns of/in p./nnp we/prp therefore/rb subdivide/vbp any/dt the/dt line/nn segment/nn between/in v1/nn and/cc v2/nn ./punct
+also/rb ,/punct let/vb ml/nn denote/vbp the/dt probability/nn of/in not/rb detecting/vbg a/dt target/nn traveling/vbg between/in the/dt probability/nn ml/nn can/md be/vb evaluated/vbn by/in finding/vbg the/dt detection/nn between/in 0/cd and/cc 1/cd and/cc ,/punct therefore/rb ,/punct log/nn ml/nn is/vbz negative/jj ./punct
+to/to find/vb the/dt least/jjs exposed/vbn path/nn ,/punct a/dt non-negative/jj weight/nn equal/jj to/to |/punct log/nn ml|/nn is/vbz assigned/vbn to/to each/dt segment/nn l/nn on/in this/dt grid/nn ./punct
+these/dt line/nn segments/nns ./punct
+similarly/rb ,/punct a/dt fictitious/jj point/nn b/nn is/vbz created/vbn is/vbz assigned/vbn to/to each/dt of/in these/dt line/nn segments/nns ./punct
+the/dt problem/nn of/in finding/vbg the/dt least/jjs exposed/vbn path/nn from/in west/jj periphery/nn to/to east/jj periphery/nn is/vbz then/rb equivalent/jj to/to the/dt problem/nn a/dt path/nn can/md be/vb efficiently/rb determined/vbn using/vbg the/dt dijkstra/nnp ''/'' s/vbz shortest/jjs path/nn algorithm/nn ./punct
+a/dt pseudo-code/nn of/in the/dt overall/jj algorithm/nn is/vbz shown/vbn in/in figure/nn 2/cd ./punct
+example/nn :/punct figure/nnp 3/cd shows/vbz a/dt sensor/nn field/nn with/in eight/cd sensors/nns at/in locations/nns marked/vbn by/in dark/jj circles/nns ./punct
+assume/vb the/dt noise/nn process/nn at/in each/dt sensor/nn is/vbz additive/jj white/nnp gaussian/jj with/in mean/jj 0/cd and/cc variance/nn 1/cd ./punct
+further/rb assume/vb that/in the/dt sensors/nns use/vbp value/nn fusion/nn to/to arrive/vb at/in a/dt consensus/nn decision/nn ./punct
+then/rb ,/punct from/in probability/nn of/in 0.187/cd %/punct ./punct
+the/dt field/nn has/vbz been/vbn divided/vbn into/in a/dt energy/nn decay/nn factor/nn is/vbz 2/cd ./punct
+the/dt figure/nn shows/vbz the/dt weight/nn assigned/vbn to/to each/dt line/nn segment/nn in/in the/dt grid/nn as/in described/vbn above/in ./punct
+the/dt least/jjs exposure/nn path/nn found/vbn by/in the/dt dijkstra/nnp ''/'' s/vbz algorithm/nn for/in this/dt weighted/jj grid/nn is/vbz highlighted/vbn ./punct
+the/dt probability/nn of/in threshold/nn =/punct 3.0/cd ,/punct detection/nn probability/nn of/in the/dt path/nn =/punct 0.926/cd tecting/vbg the/dt target/nn traversing/vbg the/dt field/nn using/vbg the/dt highlighted/vbn path/nn is/vbz 0.926/cd ./punct
+in/in this/dt section/nn ,/punct the/dt problem/nn of/in sensor/nn deployment/nn for/in unauthorized/jj traversal/jj detection/nn is/vbz formulated/vbn and/cc solutions/nns are/vbp identified/vbn ./punct
+consider/vb a/dt region/nn to/to be/vb monitored/vbn for/in unauthorized/jj traversal/nn using/vbg a/dt sensor/nn network/nn ./punct
+the/dt target/nn to/to traverse/vb the/dt sensor/nn field/nn emits/vbz a/dt given/vbn energy/nn level/nn k/nn and/cc the/dt stochastic/jj of/in the/dt over/in the/dt region/nn in/in a/dt random/jj fashion/nn where/wrb the/dt sensors/nns locations/nns in/in the/dt region/nn are/vbp a/dt priori/fw undetermined/jj and/cc only/rb the/dt performance/nn level/nn in/in unauthorized/jj traversal/jj monitoring/nn of/in the/dt region/nn ./punct
+this/dt performance/nn is/vbz measured/vbn by/in the/dt false/jj alarm/nn probability/nn and/cc the/dt path/nn exposure/nn defined/vbn in/in section/nn 2/cd ./punct
+the/dt false/jj alarm/nn probability/nn does/vbz not/rb depend/vb on/in the/dt sensor/nn placement/nn and/cc is/vbz only/rb determined/vbn by/in the/dt number/nn of/in sensors/nns deployed/vbn and/cc the/dt thresholds/nns used/vbn in/in the/dt detection/nn algorithms/nns ./punct
+it/prp is/vbz of/in maximizing/vbg the/dt exposure/nn at/in constant/jj false/jj alarm/nn rate/nn ./punct
+since/in targets/nns can/md traverse/vb the/dt region/nn through/in any/dt path/nn ,/punct the/dt exposed/vbn path/nn in/in the/dt region/nn ./punct
+obviously/rb ,/punct the/dt minimum/jj exposure/nn in/in the/dt region/nn increases/vbz (/punct if/in false/jj alarm/nn rate/nn is/vbz kept/vbn constant/jj )/punct as/in more/jjr sensors/nns are/vbp deployed/vbn in/in the/dt region/nn ./punct
+however/rb ,/punct since/in the/dt deployment/nn is/vbz random/jj ,/punct there/ex are/vbp no/dt guarantees/nns that/in the/dt desired/vbn exposure/nn level/nn is/vbz achieved/vbn for/in a/dt given/vbn number/nn of/in sensors/nns ./punct
+indeed/rb some/dt sensor/nn placements/nns can/md result/vb in/in very/rb poor/jj detection/nn ability/nn ,/punct in/in particular/jj when/wrb the/dt sensors/nns are/vbp all/dt deployed/vbn in/in the/dt same/jj vicinity/nn ./punct
+a/dt study/nn of/in the/dt statistical/jj distribution/nn of/in exposure/nn for/in varying/vbg sensor/nn placement/nn for/in a/dt given/vbn number/nn of/in sensors/nns can/md provide/vb a/dt confidence/nn level/nn that/in the/dt desired/vbn detection/nn level/nn is/vbz achieved/vbn ./punct
+in/in practical/jj situations/nns ,/punct only/rb a/dt limited/jj number/nn of/in sensors/nns are/vbp available/jj for/in deployment/nn and/cc only/rb a/dt limited/jj detection/nn level/nn with/in associated/vbn confidence/nn level/nn is/vbz achievable/jj at/in a/dt given/vbn false/jj alarm/nn rate/nn ./punct
+based/vbn on/in the/dt above/jj discussion/nn ,/punct we/prp develop/vbp a/dt solution/nn method/nn can/md be/vb used/vbn ./punct
+deploying/vbg the/dt m/nn sensors/nns results/vbz in/in the/dt maximum/nn achievable/jj detection/nn level/nn but/cc is/vbz not/rb optimal/jj when/wrb considering/vbg the/dt cost/nn of/in sensors/nns ./punct
+to/to reduce/vb the/dt number/nn of/in sensors/nns deployed/vbn ,/punct only/rb part/nn of/in the/dt available/jj sensors/nns can/md be/vb deployed/vbn first/rb and/cc the/dt sensors/nns can/md then/rb report/vb their/prp$ position/nn ./punct
+the/dt random/jj sensor/nn placement/nn obtained/vbn can/md be/vb analyzed/vbn to/to does/vbz not/rb ,/punct additional/jj sensors/nns can/md be/vb deployed/vbn until/in the/dt desired/vbn exposure/nn level/nn is/vbz reached/vbn or/cc until/in the/dt all/dt m/nn available/jj sensors/nns are/vbp deployed/vbn ./punct
+the/dt number/nn of/in sensors/nns used/vbn in/in this/dt strategy/nn can/md be/vb usually/rb associated/vbn with/in each/dt deployment/nn of/in sensors/nns and/cc cost/nn of/in deployment/nn is/vbz sufficiently/rb large/jj with/in respect/nn to/to the/dt sensors/nns and/cc deployment/nn ,/punct the/dt optimal/jj number/nn of/in sensors/nns to/to be/vb deployed/vbn at/in first/jj and/cc thereafter/rb can/md be/vb determined/vbn ./punct
+in/in the/dt next/jj section/nn ,/punct we/prp develop/vbp analytical/jj expressions/nns for/in finding/vbg the/dt optimal/jj solution/nn ./punct
+in/in general/jj ,/punct the/dt optimal/jj cost/nn solution/nn is/vbz neither/cc deploying/vbg one/cd sensor/nn at/in a/dt time/nn nor/cc deploying/vbg all/pdt the/dt sensors/nns at/in a/dt time/nn ./punct
+in/in this/dt section/nn ,/punct we/prp derive/vbp an/dt analytical/jj model/nn for/in the/dt cost/nn of/in deployment/nn ./punct
+let/vb ed/nnp be/vb the/dt desired/vbn minimum/nn exposure/nn for/in sensors/nns are/vbp available/jj for/in deployment/nn ./punct
+the/dt position/nn of/in sensors/nns ber/nn of/in sensors/nns n/nn ,/punct the/dt least/jjs exposure/nn e/sym is/vbz a/dt random/jj variable/nn ./punct
+let/vb fn/nnp (/punct x/cc )/punct denote/vbp the/dt cumulative/jj distribution/nn function/nn of/in e/ls ,/punct are/vbp deployed/vbn ./punct
+guarantee/nn that/in the/dt exposure/nn ed/vbd will/md be/vb obtained/vbn when/wrb or/cc more/jjr is/vbz 1−fm/nn (/punct ed/vbd )/punct ./punct
+for/in the/dt proposed/vbn solution/nn ,/punct we/prp assume/vbp that/in the/dt position/nn of/in the/dt sensors/nns obtained/vbn after/in a/dt deployment/nn minimum/nn exposure/nn ed/vbd is/vbz not/rb reached/vbn ./punct
+to/to evaluate/vb the/dt probability/nn that/in the/dt exposure/nn ed/vbd is/vbz reached/vbn after/in additional/jj sensor/nn deployment/nn ,/punct we/prp make/vbp the/dt following/vbg approximation/nn :/punct the/dt exposure/nn corresponding/vbg to/to k/nn of/in these/dt n/nn sensors/nns ,/punct 1/cd ≤/nn k/nn ≤/cd n/nn −/nn 1/cd ./punct
+this/dt is/vbz an/dt approximation/nn since/in the/dt exposure/nn obtained/vbn with/in n/nn sensors/nns is/vbz always/rb higher/jjr than/in the/dt exposure/nn obtained/vbn with/in that/in the/dt re-deployment/nn of/in just/rb a/dt few/jj sensors/nns can/md substantially/rb modify/vb the/dt coverage/nn of/in the/dt region/nn ,/punct for/in example/nn when/wrb filling/vbg empty/jj spaces/nns ./punct
+the/dt approximation/nn is/vbz also/rb justified/vbn by/in the/dt loose/jj relation/nn between/in exposure/nn and/cc sensors/nns positions/nns ./punct
+indeed/rb ,/punct a/dt given/vbn minimum/nn exposure/nn can/md correspond/vb to/to many/jj different/jj deployment/nn positions/nns ,/punct some/dt of/in which/wdt can/md be/vb easily/rb improved/vbn by/in deploying/vbg a/dt few/jj additional/jj sensors/nns (/punct e.g/nn ./punct
+when/wrb can/md only/rb be/vb improved/vbn by/in deploying/vbg many/jj additional/jj sensors/nns (/punct e.g/nn ./punct
+when/wrb the/dt sensors/nns are/vbp evenly/rb distributed/vbn on/in the/dt region/nn )/punct ./punct
+of/in deploying/vbg the/dt sensors/nns in/in steps/nns until/in the/dt desired/vbn exposure/nn number/nn of/in sensors/nns deployed/vbn after/in each/dt step/nn i/fw for/in a/dt maximum/nn cost/nn of/in each/dt sensor/nn ./punct
+if/in the/dt desired/vbn exposure/nn is/vbz obtained/vbn after/in event/nn happens/vbz with/in probability/nn 1/cd −/cd fn1/nn (/punct ed/vbd )/punct ./punct
+considering/vbg all/pdt the/dt possible/jj events/nns ,/punct the/dt expected/vbn cost/nn is/vbz given/vbn by/in note/nn that/in a/dt different/jj expression/nn is/vbz needed/vbn for/in the/dt cost/nn of/in step/nn s/nn since/in no/dt additional/jj sensors/nns are/vbp deployed/vbn after/in this/dt step/nn even/rb when/wrb the/dt desired/vbn exposure/nn is/vbz not/rb obtained/vbn ./punct
+in/in this/dt section/nn ,/punct we/prp present/vbp results/nns of/in simulations/nns that/wdt were/vbd conducted/vbn to/to collect/vb the/dt exposure/nn distribution/nn function/nn of/in the/dt number/nn of/in sensors/nns deployed/vbn ./punct
+the/dt exposure/nn distribution/nn is/vbz obtained/vbn by/in collecting/vbg statistics/nns on/in the/dt exposure/nn when/wrb deploying/vbg sensors/nns randomly/rb in/in a/dt predefined/jj region/nn ./punct
+the/dt random/jj deployment/nn is/vbz assumed/vbn to/to be/vb uniformly/rb distributed/vbn over/in the/dt region/nn ,/punct which/wdt is/vbz a/dt local/jj approximation/nn ./punct
+for/in every/dt deployment/nn ,/punct the/dt minimum/jj exposure/nn is/vbz found/vbn using/vbg a/dt simulator/nn implementing/vbg the/dt algorithm/nn by/in targets/nns (/punct cf/nn equation/nn 1/cd )/punct ./punct
+the/dt region/nn monitored/vbn is/vbz of/in size/nn coming/vbg from/in the/dt target/nn is/vbz covered/vbn by/in noise/nn when/wrb the/dt target/nn is/vbz 8/cd or/cc more/jjr units/nns length/nn away/rb from/in a/dt sensor/nn ./punct
+the/dt sensors/nns use/vbp value/nn fusion/nn to/to collaborate/vb when/wrb making/vbg a/dt common/jj decision/nn to/to give/vb a/dt constant/jj false/jj alarm/nn probability/nn ./punct
+the/dt false/jj alarm/nn probability/nn for/in each/dt detection/nn attempt/nn is/vbz chosen/vbn so/in that/in the/dt the/dt sensors/nns )/punct is/vbz 5/cd %/punct ./punct
+three/cd different/jj cost/nn assignments/nns ./punct

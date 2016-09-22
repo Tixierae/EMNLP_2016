@@ -1,0 +1,242 @@
+distributed/vbn applications/nns require/vbp distributed/vbn techniques/nns for/in efficient/jj resource/nn allocation/nn ./punct
+these/dt techniques/nns need/vbp to/to take/vb into/in account/nn the/dt heterogeneity/nn and/cc potential/jj unreliability/nn of/in resources/nns and/cc resource/nn consumers/nns in/in a/dt distributed/vbn environments/nns ./punct
+in/in this/dt paper/nn we/prp propose/vbp a/dt distributed/vbn algorithm/nn that/wdt solves/vbz the/dt resource/nn allocation/nn problem/nn in/in distributed/vbn multiagent/jj systems/nns ./punct
+our/prp$ solution/nn is/vbz based/vbn on/in the/dt self-organisation/nn of/in agents/nns ,/punct which/wdt does/vbz not/rb require/vb any/dt facilitator/nn or/cc management/nn layer/nn ./punct
+the/dt resource/nn allocation/nn in/in the/dt system/nn is/vbz a/dt purely/rb emergent/jj effect/nn ./punct
+we/prp present/vbp results/nns of/in the/dt proposed/vbn resource/nn allocation/nn mechanism/nn in/in the/dt simulated/jj static/jj and/cc dynamic/jj multi-server/jj environment/nn ./punct
+categories/nns and/cc subject/nnp descriptors/nnp i.2.11/nn [/punct distributed/vbn artificial/nnp intelligence/nnp ]/punct :/punct coherence/nn and/cc coordination/nn general/nnp terms/nns algorithms/nns 1/cd ./punct
+introduction/nn with/in the/dt increasing/vbg popularity/nn of/in distributed/vbn computing/nn technologies/nns such/jj as/in grid/nnp [/punct 12/cd ]/punct and/cc web/nn services/nns [/punct 20/cd ]/punct ,/punct the/dt internet/nn is/vbz becoming/vbg a/dt powerful/jj computing/nn platform/nn where/wrb different/jj software/nn peers/nns (/punct e.g./fw ,/punct agents/nns )/punct can/md use/vb existing/vbg computing/nn resources/nns to/to perform/vb tasks/nns ./punct
+in/in this/dt sense/nn ,/punct each/dt agent/nn is/vbz a/dt resource/nn consumer/nn that/wdt acquires/vbz a/dt certain/jj amount/nn of/in resources/nns for/in the/dt execution/nn of/in its/prp$ tasks/nns ./punct
+it/prp is/vbz difficult/jj for/in a/dt central/jj resource/nn allocation/nn mechanism/nn to/to collect/vb and/cc manage/vb the/dt information/nn about/in all/dt shared/vbn resources/nns and/cc resource/nn consumers/nns to/to effectively/rb perform/vb the/dt allocation/nn of/in resources/nns ./punct
+hence/rb ,/punct distributed/vbn solutions/nns of/in the/dt resource/nn allocation/nn problem/nn are/vbp required/vbn ./punct
+researchers/nns have/vbp recognised/vbn these/dt requirements/nns [/punct 10/cd ]/punct and/cc proposed/vbd techniques/nns for/in distributed/vbn resource/nn allocation/nn ./punct
+a/dt promising/jj kind/nn of/in such/jj distributed/vbn approaches/nns are/vbp based/vbn on/in economic/jj market/nn models/nns [/punct 4/cd ]/punct ,/punct inspired/vbn by/in principles/nns of/in real/jj stock/nn markets/nns ./punct
+even/rb if/in those/dt approaches/nns are/vbp distributed/vbn ,/punct they/prp usually/rb require/vbp a/dt facilitator/nn for/in pricing/nn ,/punct resource/nn discovery/nn and/cc dispatching/vbg jobs/nns to/to resources/nns [/punct 5/cd ,/punct 9/cd ]/punct ./punct
+another/dt mainly/rb unsolved/jj problem/nn of/in those/dt approaches/nns is/vbz the/dt fine-tuning/nn of/in price/nn and/cc time/nn ,/punct budget/nn constraints/nns to/to enable/vb efficient/jj resource/nn allocation/nn in/in large/jj ,/punct dynamic/jj systems/nns [/punct 22/cd ]/punct ./punct
+in/in this/dt paper/nn we/prp propose/vbp a/dt distributed/vbn solution/nn of/in the/dt resource/nn allocation/nn problem/nn based/vbn on/in self-organisation/nn of/in the/dt resource/nn consumers/nns in/in a/dt system/nn with/in limited/jj resources/nns ./punct
+in/in our/prp$ approach/nn ,/punct agents/nns dynamically/rb allocate/vbp tasks/nns to/to servers/nns that/wdt provide/vbp a/dt limited/jj amount/nn of/in resources/nns ./punct
+in/in our/prp$ approach/nn ,/punct agents/nns select/jj autonomously/rb the/dt execution/nn platform/nn for/in the/dt task/nn rather/rb than/in ask/vb a/dt resource/nn broker/nn to/to do/vb the/dt allocation/nn ./punct
+all/dt control/nn needed/vbn for/in our/prp$ algorithm/nn is/vbz distributed/vbn among/in the/dt agents/nns in/in the/dt system/nn ./punct
+they/prp optimise/vbp the/dt resource/nn allocation/nn process/nn continuously/rb over/in their/prp$ lifetime/nn to/to changes/nns in/in the/dt availability/nn of/in shared/vbn resources/nns by/in learning/vbg from/in past/jj allocation/nn decisions/nns ./punct
+the/dt only/jj information/nn available/jj to/to all/dt agents/nns are/vbp resource/nn load/nn and/cc allocation/nn success/nn information/nn from/in past/jj resource/nn allocations/nns ./punct
+additional/jj resource/nn load/nn information/nn about/in servers/nns is/vbz not/rb disseminated/vbn ./punct
+the/dt basic/jj concept/nn of/in our/prp$ solution/nn is/vbz inspired/vbn by/in inductive/jj reasoning/nn and/cc bounded/vbd rationality/nn introduced/vbn by/in w./nnp brian/nnp arthur/nnp [/punct 2/cd ]/punct ./punct
+the/dt proposed/vbn mechanism/nn does/vbz not/rb require/vb a/dt central/jj controlling/vbg authority/nn ,/punct resource/nn management/nn layer/nn or/cc introduce/vb additional/jj communication/nn between/in agents/nns to/to decide/vb which/wdt task/nn is/vbz allocated/vbn on/in which/wdt server/nn ./punct
+we/prp demonstrate/vbp that/in this/dt mechanism/nn performs/vbz well/rb dynamic/jj systems/nns with/in a/dt large/jj number/nn of/in tasks/nns and/cc can/md easily/rb be/vb adapted/vbn to/to various/jj system/nn sizes/nns ./punct
+in/in addition/nn ,/punct the/dt overall/jj system/nn performance/nn is/vbz not/rb affected/vbn in/in case/nn agents/nns or/cc servers/nns fail/vbp or/cc become/vbp unavailable/jj ./punct
+the/dt proposed/vbn approach/nn provides/vbz an/dt easy/jj way/nn to/to implement/vb distributed/vbn resource/nn allocation/nn and/cc takes/vbz into/in account/nn multi-agent/jj system/nn tendencies/nns toward/in autonomy/nn ,/punct heterogeneity/nn and/cc unreliability/nn of/in resources/nns and/cc agents/nns ./punct
+this/dt proposed/vbn technique/nn can/md be/vb easily/rb supplemented/vbn by/in techniques/nns for/in queuing/vbg or/cc rejecting/vbg resource/nn allocation/nn requests/nns of/in agents/nns [/punct 11/cd ]/punct ./punct
+such/jj self-managing/jj capabilities/nns of/in software/nn agents/nns allow/vbp a/dt reliable/jj resource/nn allocation/nn even/rb in/in an/dt environment/nn with/in unreliable/jj resource/nn providers/nns ./punct
+this/dt can/md be/vb achieved/vbn by/in the/dt mutual/jj interactions/nns between/in agents/nns by/in applying/vbg techniques/nns from/in complex/jj system/nn theory/nn ./punct
+selforganisation/nn of/in all/dt agents/nns leads/vbz to/to a/dt self-organisation/nn of/in the/dt 74/cd 978-81-904262-7-5/cd (/punct rps/vbz )/punct c/nn 2007/cd ifaamas/nnp system/nn resources/nns and/cc is/vbz an/dt emergent/jj property/nn of/in the/dt system/nn [/punct 21/cd ]/punct ./punct
+the/dt remainder/nn of/in the/dt paper/nn is/vbz structured/vbn as/in follows/vbz :/punct the/dt next/jj section/nn gives/vbz an/dt overview/nn of/in the/dt related/jj work/nn already/rb done/vbn in/in the/dt area/nn of/in load/nn balancing/nn ,/punct resource/nn allocation/nn or/cc scheduling/nn ./punct
+section/nn 3/cd describes/vbz the/dt model/nn of/in a/dt multi-agent/jj environment/nn that/wdt was/vbd used/vbn to/to conduct/vb simulations/nns for/in a/dt performance/nn evaluation/nn ./punct
+sections/nns 4/cd and/cc 5/cd describe/vbp the/dt distributed/vbn resource/nn allocation/nn algorithm/nn and/cc presents/vbz various/jj experimental/jj results/nns ./punct
+a/dt summary/nn ,/punct conclusion/nn and/cc outlook/nn to/to future/jj work/nn finish/nn this/dt paper/nn ./punct
+2/ls ./punct
+related/jj work/vbp resource/nnp allocation/nn is/vbz an/dt important/jj problem/nn in/in the/dt area/nn of/in computer/nn science/nn ./punct
+over/in the/dt past/jj years/nns ,/punct solutions/nns based/vbn on/in different/jj assumptions/nns and/cc constraints/nns have/vbp been/vbn proposed/vbn by/in different/jj research/nn groups/nns [/punct 7/cd ,/punct 3/cd ,/punct 15/cd ,/punct 10/cd ]/punct ./punct
+generally/rb speaking/vbg ,/punct resource/nn allocation/nn is/vbz a/dt mechanism/nn or/cc policy/nn for/in the/dt efficient/jj and/cc effective/jj management/nn of/in the/dt access/nn to/to a/dt limited/jj resource/nn or/cc set/nn of/in resources/nns by/in its/prp$ consumers/nns ./punct
+in/in the/dt simplest/jjs case/nn ,/punct resource/nn consumers/nns ask/vbp a/dt central/jj broker/nn or/cc dispatcher/nn for/in available/jj resources/nns where/wrb the/dt resource/nn consumer/nn will/md be/vb allocated/vbn ./punct
+the/dt broker/nn usually/rb has/vbz full/jj knowledge/nn about/in all/dt system/nn resources/nns ./punct
+all/dt incoming/jj requests/nns are/vbp directed/vbn to/to the/dt broker/nn who/wp is/vbz the/dt solely/rb decision/nn maker/nn ./punct
+in/in those/dt approaches/nns ,/punct the/dt resource/nn consumer/nn can/md not/rb influence/vb the/dt allocation/nn decision/nn process/nn ./punct
+load/nn balancing/nn [/punct 3/cd ]/punct is/vbz a/dt special/jj case/nn of/in the/dt resource/nn allocation/nn problem/nn using/vbg a/dt broker/nn that/wdt tries/vbz to/to be/vb fair/jj to/to all/dt resources/nns by/in balancing/vbg the/dt system/nn load/nn equally/rb among/in all/dt resource/nn providers/nns ./punct
+this/dt mechanism/nn works/vbz best/jjs in/in a/dt homogeneous/jj system/nn ./punct
+a/dt simple/jj distributed/vbn technique/nn for/in resource/nn management/nn is/vbz capacity/nn planning/nn by/in refusing/vbg or/cc queuing/vbg incoming/jj agents/nns to/to avoid/vb resource/nn overload/nn [/punct 11/cd ]/punct ./punct
+from/in the/dt resource/nn owner/nn perspective/nn ,/punct this/dt technique/nn is/vbz important/jj to/to prevent/vb overload/nn at/in the/dt resource/nn but/cc it/prp is/vbz not/rb sufficient/jj for/in effective/jj resource/nn allocation/nn ./punct
+this/dt technique/nn can/md only/rb provide/vb a/dt good/jj supplement/nn for/in distributed/vbn resource/nn allocation/nn mechanisms/nns ./punct
+most/jjs of/in today/nn ''/'' s/nns techniques/nns for/in resource/nn allocation/nn in/in grid/nn computing/nn toolkits/nns like/in globus/nnp [/punct 12/cd ]/punct or/cc condor-g/nn [/punct 13/cd ]/punct coordinate/vb the/dt resource/nn allocation/nn with/in an/dt auctioneer/nn ,/punct arbitrator/nn ,/punct dispatcher/nn ,/punct scheduler/nn or/cc manager/nn ./punct
+those/dt coordinators/nns usually/rb need/vbp to/to have/vb global/jj knowledge/nn on/in the/dt state/nn of/in all/dt system/nn resources/nns ./punct
+an/dt example/nn of/in a/dt dynamic/jj resource/nn allocation/nn algorithm/nn is/vbz the/dt cactus/nnp project/nn [/punct 1/cd ]/punct for/in the/dt allocation/nn of/in computational/jj very/rb expensive/jj jobs/nns ./punct
+the/dt value/nn of/in distributed/vbn solutions/nns for/in the/dt resource/nn allocation/nn problem/nn has/vbz been/vbn recognised/vbn by/in research/nn [/punct 10/cd ]/punct ./punct
+inspired/vbn by/in the/dt principles/nns in/in stock/nn markets/nns ,/punct economic/jj market/nn models/nns have/vbp been/vbn developed/vbn for/in trading/nn resources/nns for/in the/dt regulation/nn of/in supply/nn and/cc demand/nn in/in the/dt grid/nn ./punct
+these/dt approaches/nns use/vbp different/jj pricing/nn strategies/nns such/jj as/in posted/vbn price/nn models/nns ,/punct different/jj auction/nn methods/nns or/cc a/dt commodity/nn market/nn model/nn ./punct
+users/nns try/vbp to/to purchase/vb cheap/jj resources/nns required/vbn to/to run/vb the/dt job/nn while/in providers/nns try/vbp to/to make/vb as/rb much/jj profit/nn as/in possible/jj and/cc operate/vbp the/dt available/jj resources/nns at/in full/jj capacity/nn ./punct
+a/dt collection/nn of/in different/jj distributed/vbn resource/nn allocation/nn techniques/nns based/vbn on/in market/nn models/nns is/vbz presented/vbn in/in clearwater/nnp [/punct 10/cd ]/punct ./punct
+buyya/nnp et/fw al/fw ./punct
+developed/vbd a/dt resource/nn allocation/nn framework/nn based/vbn on/in the/dt regulation/nn of/in supply/nn and/cc demand/nn [/punct 4/cd ]/punct for/in nimrod-g/nn [/punct 6/cd ]/punct with/in the/dt main/jj focus/nn on/in job/nn deadlines/nns and/cc budget/nn constraints/nns ./punct
+the/dt agent/nnp based/vbn resource/nnp allocation/nnp model/nnp (/punct aram/nnp )/punct for/in grids/nns is/vbz designed/vbn to/to schedule/vb computational/jj expensive/jj jobs/nns using/vbg agents/nns ./punct
+drawback/nn of/in this/dt model/nn is/vbz the/dt extensive/jj use/nn of/in message/nn exchange/nn between/in agents/nns for/in periodic/jj monitoring/nn and/cc information/nn exchange/nn within/in the/dt hierarchical/jj structure/nn ./punct
+subtasks/nns of/in a/dt job/nn migrate/vb through/in the/dt network/nn until/in they/prp find/vbp a/dt resource/nn that/wdt meets/vbz the/dt price/nn constraints/nns ./punct
+the/dt job/nn ''/'' s/nns migration/nn itinerary/nn is/vbz determined/vbn by/in the/dt resources/nns in/in connecting/vbg them/prp in/in different/jj topologies/nns [/punct 17/cd ]/punct ./punct
+the/dt proposed/vbn mechanism/nn in/in this/dt paper/nn eliminates/vbz the/dt need/nn of/in periodic/jj information/nn exchange/nn about/in resource/nn loads/nns and/cc does/vbz not/rb need/vb a/dt connection/nn topology/nn between/in the/dt resources/nns ./punct
+there/ex has/vbz been/vbn considerable/jj work/nn on/in decentralised/jj resource/nn allocation/nn techniques/nns using/vbg game/nn theory/nn published/vbn over/in recent/jj years/nns ./punct
+most/jjs of/in them/prp are/vbp formulated/vbn as/in repetitive/jj games/nns in/in an/dt idealistic/jj and/cc simplified/vbd environment/nn ./punct
+for/in example/nn ,/punct arthur/nnp [/punct 2/cd ]/punct introduced/vbd the/dt so/rb called/vbn el/nnp farol/nnp bar/nn problem/nn that/wdt does/vbz not/rb allow/vb a/dt perfect/jj ,/punct logical/jj and/cc rational/jj solution/nn ./punct
+it/prp is/vbz an/dt ill-defined/jj decision/nn problem/nn that/wdt assumes/vbz and/cc models/nns inductive/jj reasoning/nn ./punct
+it/prp is/vbz probably/rb one/cd of/in the/dt most/rbs studied/vbn examples/nns of/in complex/jj adaptive/jj systems/nns derived/vbn from/in the/dt human/jj way/nn of/in deciding/vbg ill-defined/jj problems/nns ./punct
+a/dt variation/nn of/in the/dt el/nnp farol/nnp problem/nn is/vbz the/dt so/rb called/vbn minority/nn game/nn [/punct 8/cd ]/punct ./punct
+in/in this/dt repetitive/jj decision/nn game/nn ,/punct an/dt odd/jj number/nn of/in agents/nns have/vbp to/to choose/vb between/in two/cd resources/nns based/vbn on/in past/jj success/nn information/nn trying/vbg to/to allocate/vb itself/prp at/in the/dt resource/nn with/in the/dt minority/nn ./punct
+galstyan/nnp et/fw al/fw ./punct
+[/punct 14/cd ]/punct studied/vbd a/dt variation/nn with/in more/jjr than/in two/cd resources/nns ,/punct changing/vbg resource/nn capacities/nns and/cc information/nn from/in neighbour/jj agents/nns ./punct
+they/prp showed/vbd that/in agents/nns can/md adapt/vb effectively/rb to/to changing/vbg capacities/nns in/in this/dt environment/nn using/vbg a/dt set/nn of/in simple/jj look-up/jj tables/nns (/punct strategies/nns )/punct per/in agent/nn ./punct
+another/dt distributed/vbn technique/nn that/wdt is/vbz employed/vbn for/in solving/vbg the/dt resource/nn allocation/nn problem/nn is/vbz based/vbn on/in reinforcement/nn learning/nn [/punct 18/cd ]/punct ./punct
+similar/jj to/to our/prp$ approach/nn ,/punct a/dt set/nn of/in agents/nns compete/vbp for/in a/dt limited/jj number/nn of/in resources/nns based/vbn only/rb on/in prior/jj individual/jj experience/nn ./punct
+in/in this/dt paper/nn ,/punct the/dt system/nn objective/nn is/vbz to/to maximise/vb system/nn throughput/nn while/in ensuring/vbg fairness/nn to/to resources/nns ,/punct measured/vbn as/in the/dt average/jj processing/nn time/nn per/in job/nn unit/nn ./punct
+a/dt resource/nn allocation/nn approach/nn for/in sensor/nn networks/nns based/vbn on/in self-organisation/nn techniques/nns and/cc reinforcement/nn learning/nn is/vbz presented/vbn in/in [/punct 16/cd ]/punct with/in main/jj focus/nn on/in the/dt optimisation/nn of/in energy/nn consumption/nn of/in network/nn nodes/nns ./punct
+we/prp [/punct 19/cd ]/punct proposed/vbd a/dt self-organising/jj load/nn balancing/vbg approach/nn for/in a/dt single/jj server/nn with/in focus/nn on/in optimising/vbg the/dt communication/nn costs/nns of/in mobile/jj agents/nns ./punct
+a/dt mobile/jj agent/nn will/md reject/vb a/dt migration/nn to/to a/dt remote/jj agent/nn server/nn ,/punct if/in it/prp expects/vbz the/dt destination/nn server/nn to/to be/vb already/rb overloaded/vbn by/in other/jj agents/nns or/cc server/nn tasks/nns ./punct
+agents/nns make/vbp their/prp$ decisions/nns themselves/prp based/vbn on/in forecasts/nns of/in the/dt server/nn utilisation/nn ./punct
+in/in this/dt paper/nn a/dt solution/nn for/in a/dt multi-server/jj environment/nn is/vbz presented/vbn without/in consideration/nn of/in communication/nn or/cc migration/nn costs/nns ./punct
+3/ls ./punct
+model/nn description/nn we/prp model/vbp a/dt distributed/vbn multi-agent/jj system/nn as/in a/dt network/nn of/in servers/nns l/nn =/punct {/punct l1/nn ,/punct ./punct
+./punct
+./punct
+,/punct lm/nn }/punct ,/punct agents/nns a/nn =/punct {/punct a1/nn ,/punct ./punct
+./punct
+./punct
+,/punct an/dt }/punct and/cc tasks/nns t/nn =/punct {/punct t1/nn ,/punct .../: ,/punct tm/nn }/punct ./punct
+each/dt agent/nn has/vbz a/dt number/nn of/in tasks/nns ti/nnp that/in needs/vbz to/to be/vb executed/vbn during/in its/prp$ lifetime/nn ./punct
+a/dt task/nn ti/nn requires/vbz u/nnp (/punct ti/nnp ,/punct t/nn )/punct resources/nns for/in its/prp$ execution/nn at/in time/nn t/nn independent/jj from/in its/prp$ execution/nn server/nn ./punct
+resources/nnps for/in the/dt execution/nn of/in tasks/nns are/vbp provided/vbn by/in each/dt server/nn li/nn ./punct
+the/dt task/nn ''/'' s/nns execution/nn location/nn in/in general/jj is/vbz specified/vbn by/in the/dt map/nn l/nn :/punct t/nn ×t/nn →/cd l./nnp an/dt agent/nn has/vbz to/to know/vb about/in the/dt existence/nn of/in server/nn resources/nns in/in order/nn to/to allocate/vb tasks/nns at/in those/dt resources/nns ./punct
+we/prp write/vbp ls/nn (/punct ai/vbp )/punct the/dt sixth/nnp intl/nnp ./punct
+joint/nnp conf/nnp ./punct
+on/in autonomous/nnp agents/nnps and/cc multi-agent/nnp systems/nnp (/punct aamas/nnp 07/cd )/punct 75/cd sysytem/nnp resources/nnps host/nnp l4host/nn l3host/nn l2/nn 2a/nn 3a/nn 4a/nn a/dt host/nnp l1/nn 1a/nn 6a5/cd t1/nn t2/nn t3/nn t4/nn t5/nn t6/nn figure/nn 1/cd :/punct an/dt illustration/nn of/in our/prp$ multi-server/jj model/nn with/in exclusive/jj and/cc shared/jj resources/nns for/in the/dt agent/nn execution/nn ./punct
+to/to address/vb the/dt set/nn of/in resources/nns known/vbn by/in agent/nn ai/vbp ./punct
+resources/nnps in/in the/dt system/nn can/md be/vb used/vbn by/in all/dt agents/nns for/in the/dt execution/nn of/in tasks/nns ./punct
+the/dt amount/nn of/in provided/vbn resources/nns c/nn (/punct li/nns ,/punct t/nn )/punct of/in each/dt server/nn can/md vary/vb over/in time/nn ./punct
+the/dt resource/nn utilisation/nn of/in a/dt server/nn li/nn at/in time/nn t/nn is/vbz calculated/vbn using/vbg equation/nn 1/cd ,/punct by/in adding/vbg the/dt resource/nn consumption/nn u/nnp (/punct tj/nnp ,/punct t/nn )/punct of/in each/dt task/nn tj/nn that/wdt is/vbz executed/vbn at/in the/dt resource/nn at/in time/nn t./nn all/dt resource/nn units/nns used/vbn in/in our/prp$ model/nn represent/vbp real/jj metrics/nns such/jj as/in memory/nn or/cc processor/nn cycles/nns ./punct
+u/nnp (/punct li/nns ,/punct t/nn )/punct =/punct n/nn j=1/nn u/nnp (/punct tj/nnp ,/punct t/nn )/punct |/punct l/nn (/punct tj/nn ,/punct t/nn )/punct =/punct li/nns (/punct 1/cd )/punct additional/jj to/to the/dt case/nn that/in the/dt total/jj amount/nn of/in system/nn resources/nns is/vbz enough/rb to/to execute/vb all/dt tasks/nns ,/punct we/prp are/vbp also/rb interested/jj in/in the/dt case/nn that/in not/rb enough/jj system/nn resources/nns are/vbp provided/vbn to/to fulfil/vb all/dt allocation/nn requests/nns ./punct
+that/dt is/vbz ,/punct the/dt overall/jj shared/jj resource/nn capacity/nn is/vbz lower/jjr than/in the/dt amount/nn of/in requested/vbn resources/nns by/in agents/nns ./punct
+in/in this/dt case/nn ,/punct some/dt agents/nns must/md wait/vb with/in their/prp$ allocation/nn request/nn until/in free/jj resources/nns are/vbp expected/vbn ./punct
+the/dt multi-agent/jj system/nn model/nn used/vbn for/in our/prp$ simulations/nns is/vbz illustrated/vbn in/in fig/nn ./punct
+1/ls ./punct
+4/ls ./punct
+self-organising/nn resource/nn allocation/nn the/dt resource/nn allocation/nn algorithm/nn as/in described/vbn in/in this/dt section/nn is/vbz integrated/vbn in/in each/dt agent/nn ./punct
+the/dt only/jj information/nn required/vbn in/in order/nn to/to make/vb a/dt resource/nn allocation/nn decision/nn for/in a/dt task/nn is/vbz the/dt server/nn utilisation/nn from/in completed/vbn task/nn allocations/nns at/in those/dt servers/nns ./punct
+there/ex is/vbz no/dt additional/jj information/nn dissemination/nn about/in server/nn resource/nn utilisation/nn or/cc information/nn about/in free/jj resources/nns ./punct
+our/prp$ solution/nn demonstrates/vbz that/in agents/nns can/md self-organise/vb in/in a/dt dynamic/jj environment/nn without/in active/jj monitoring/nn information/nn that/wdt causes/vbz a/dt lot/nn of/in network/nn traffic/nn overhead/nn ./punct
+additionally/rb ,/punct we/prp do/vbp not/rb have/vb any/dt central/jj controlling/vbg authority/nn ./punct
+all/dt behaviour/nn that/wdt leads/vbz to/to the/dt resource/nn allocation/nn is/vbz created/vbn by/in the/dt effective/jj competition/nn of/in the/dt agents/nns for/in shared/vbn resources/nns and/cc is/vbz a/dt purely/rb emergent/jj effect/nn ./punct
+the/dt agents/nns in/in our/prp$ multi-agent/jj system/nn compete/vb for/in resources/nns or/cc a/dt set/nn of/in resources/nns to/to execute/vb tasks/nns ./punct
+the/dt collective/jj action/nn of/in these/dt agents/nns change/vbp the/dt environment/nn and/cc ,/punct as/in time/nn goes/vbz by/in ,/punct they/prp have/vbp to/to adapt/vb to/to these/dt changes/nns to/to compete/vb more/rbr effectively/rb in/in the/dt newly/rb created/vbn environment/nn ./punct
+our/prp$ approach/nn is/vbz based/vbn on/in different/jj agent/nn beliefs/nns ,/punct represented/vbn by/in predictors/nns and/cc different/jj information/nn about/in their/prp$ environment/nn ./punct
+agents/nns prefer/vbp a/dt task/nn allocation/nn at/in a/dt server/nn with/in free/jj resources/nns ./punct
+however/rb ,/punct there/ex is/vbz no/dt way/nn to/to be/vb sure/jj of/in the/dt amount/nn of/in free/jj server/nn resources/nns in/in advance/nn ./punct
+all/dt agents/nns have/vbp the/dt same/jj preferences/nns and/cc a/dt agent/nn will/md allocate/vb a/dt task/nn on/in a/dt server/nn if/in it/prp expects/vbz enough/rb free/jj resources/nns for/in its/prp$ execution/nn ./punct
+there/ex is/vbz no/dt communication/nn between/in agents/nns ./punct
+actions/nns taken/vbn by/in agents/nns influence/vbp the/dt actions/nns of/in other/jj agents/nns indirectly/rb ./punct
+the/dt applied/vbn mechanism/nn is/vbz inspired/vbn by/in inductive/jj reasoning/nn and/cc bounded/vbd rationality/nn principles/nns [/punct 2/cd ]/punct ./punct
+it/prp is/vbz derived/vbn from/in the/dt human/jj way/nn of/in deciding/vbg ill-defined/jj problems/nns ./punct
+humans/nns tend/vbp to/to keep/vb in/in mind/nn many/jj hypotheses/nns and/cc act/vb on/in the/dt most/rbs plausible/jj one/cd ./punct
+therefore/rb ,/punct each/dt agent/nn keeps/vbz track/nn of/in the/dt performance/nn of/in a/dt private/jj collection/nn of/in its/prp$ predictors/nns and/cc selects/vbz the/dt one/cd that/wdt is/vbz currently/rb most/rbs promising/jj for/in decision/nn making/nn ./punct
+this/dt section/nn describes/vbz the/dt decision/nn mechanism/nn for/in our/prp$ selforganising/vbg resource/nn allocation/nn ./punct
+all/dt necessary/jj control/nn is/vbz integrated/vbn in/in the/dt agents/nns themselves/prp ./punct
+there/ex is/vbz no/dt higher/jjr controlling/vbg authority/nn ,/punct management/nn layer/nn for/in decision/nn support/nn or/cc information/nn distribution/nn ./punct
+all/dt agents/nns have/vbp a/dt set/nn of/in predictors/nns for/in each/dt resource/nn to/to forecast/vb the/dt future/jj resource/nn utilisation/nn of/in these/dt servers/nns for/in potential/jj task/nn allocation/nn ./punct
+to/to do/vb so/rb ,/punct agents/nns use/vbp historical/jj information/nn from/in past/jj task/nn allocations/nns at/in those/dt resources/nns ./punct
+based/vbn on/in the/dt forecasted/vbn resource/nn utilisation/nn ,/punct the/dt agent/nn will/md make/vb its/prp$ resource/nn allocation/nn decision/nn ./punct
+after/in the/dt task/nn has/vbz finished/vbn its/prp$ execution/nn and/cc returned/vbd the/dt results/nns back/rb to/to the/dt agent/nn ,/punct the/dt predictor/nn performances/nns are/vbp evaluated/vbn and/cc history/nn information/nn is/vbz updated/vbn ./punct
+algorithm/nn 1/cd shows/vbz the/dt resource/nn allocation/nn algorithm/nn for/in each/dt agent/nn ./punct
+the/dt agent/nn first/rb predicts/vbz the/dt next/jj step/nn ''/'' s/nns resource/nn load/nn for/in each/dt server/nn with/in historical/jj information/nn (/punct line/nn 3-7/cd )/punct ./punct
+if/in the/dt predicted/vbn resource/nn load/nn plus/cc the/dt task/nn ''/'' s/nns resource/nn consumption/nn is/vbz below/in the/dt last/jj known/jj server/nn capacity/nn ,/punct this/dt server/nn is/vbz added/vbn to/to the/dt list/nn of/in candidates/nns for/in the/dt allocation/nn ./punct
+the/dt agent/nn then/rb evaluates/vbz if/in any/dt free/jj shared/jj resources/nns for/in the/dt task/nn allocation/nn are/vbp expected/vbn ./punct
+in/in the/dt case/nn ,/punct no/dt free/jj resources/nns are/vbp expected/vbn (/punct line/nn 9/cd )/punct ,/punct the/dt agent/nn will/md explore/vb resources/nns by/in allocating/vbg the/dt task/nn at/in a/dt randomly/rb selected/vbn server/nn from/in all/dt not/rb predictable/jj servers/nns to/to gather/vb resource/nn load/nn information/nn ./punct
+this/dt is/vbz the/dt standard/jj case/nn at/in the/dt beginning/nn of/in the/dt agent/nn life-cycle/nn as/in there/ex is/vbz no/dt information/nn about/in the/dt environment/nn available/jj ./punct
+the/dt resource/nn load/nn prediction/nn itself/prp uses/vbz a/dt set/nn of/in r/nn the/dt next/jj steps/nns resource/nn load/nn ./punct
+each/dt predictor/nn is/vbz a/dt function/nn a/dt non-negative/jj integer/nn ,/punct which/wdt is/vbz the/dt forecasted/vbn value/nn ./punct
+for/in example/nn ,/punct a/dt predictor/nn could/md forecast/vb a/dt resource/nn load/nn equal/jj to/to the/dt average/jj amount/nn of/in occupied/jj resources/nns during/in the/dt last/jj comprising/vbg the/dt observation/nn date/nn xi/nn and/cc the/dt observed/vbn value/nn yi/nn ./punct
+the/dt most/rbs recent/jj history/nn item/nn is/vbz h0/nn ./punct
+our/prp$ algorithm/nn uses/vbz a/dt set/nn of/in predictors/nns rather/rb than/in only/rb one/cd ,/punct to/to avoid/vb that/in all/dt agents/nns make/vbp the/dt same/jj decision/nn based/vbn beliefs/nns ./punct
+imagine/vb that/in only/rb one/cd shared/jj resource/nn is/vbz known/vbn by/in a/dt number/nn of/in agents/nns using/vbg one/cd predictor/nn forecasting/nn the/dt same/jj value/nn as/in the/dt last/jj known/jj server/nn resource/nn utilisation/nn ./punct
+all/dt agents/nns that/wdt allocated/vbd a/dt task/nn at/in a/dt server/nn that/wdt was/vbd slightly/rb overloaded/vbn would/md dismiss/vb another/dt allocation/nn at/in this/dt server/nn the/dt predictions/nns ./punct
+as/in the/dt result/nn ,/punct the/dt server/nn would/md have/vb a/dt large/jj amount/nn of/in free/jj resources/nns ./punct
+a/dt set/nn of/in different/jj predictors/nns that/wdt predict/vbp different/jj values/nns avoids/vbz this/dt situation/nn of/in invalidating/vbg the/dt beliefs/nns of/in the/dt agents/nns ./punct
+an/dt example/nn of/in a/dt collected/vbn resource/nn load/nn information/nn from/in seen/vbn in/in fig/nn ./punct
+2/cd (/punct a/dt )/punct ./punct
+it/prp shows/vbz that/in the/dt resource/nn was/vbd visited/vbn frequently/rb ,/punct which/wdt means/vbz free/jj resources/nns for/in execution/nn were/vbd available/jj and/cc an/dt exploration/nn of/in other/jj servers/nns was/vbd unnecessary/jj ./punct
+this/dt may/md change/vb in/in the/dt future/nn as/in the/dt resource/nn load/nn has/vbz significantly/rb increased/vbn recently/rb ./punct
+in/in the/dt case/nn where/wrb the/dt set/nn of/in servers/nns predicted/vbd having/vbg free/jj resources/nns available/jj is/vbz not/rb empty/jj (/punct line/nn 13/cd )/punct ,/punct the/dt agent/nn selects/vbz one/cd of/in those/dt for/in allocation/nn ./punct
+we/prp have/vbp implemented/vbn two/cd alternative/jj algorithms/nns for/in the/dt selection/nn of/in a/dt server/nn for/in the/dt task/nn allocation/nn ./punct
+algorithm/nn 1/cd resource/nnp allocation/nnp algorithm/nn of/in an/dt agent/nn 14/cd allocationserver/nn ←/cd serverselection/nn (/punct l/nn )/punct algorithm/nn 2/cd shows/vbz the/dt first/jj method/nn ,/punct which/wdt is/vbz a/dt non-deterministic/jj selection/nn according/vbg to/to the/dt predictability/nn of/in the/dt server/nn resource/nn utilisation/nn ./punct
+a/dt probability/nn distribution/nn is/vbz calculated/vbn from/in the/dt confidence/nn levels/nns of/in the/dt resource/nn predictions/nns ./punct
+the/dt confidence/nn level/nn depends/vbz on/in three/cd factors/nns :/punct the/dt accuracy/nn of/in the/dt active/jj predictor/nn ,/punct the/dt amount/nn of/in historical/jj information/nn about/in the/dt server/nn and/cc the/dt average/jj age/nn of/in the/dt history/nn information/nn (/punct see/vbp eq/nn ./punct
+3/ls ./punct
+the/dt server/nn with/in the/dt highest/jjs confidence/nn level/nn has/vbz the/dt biggest/jjs chance/nn to/to be/vb selected/vbn as/in the/dt active/jj server/nn ./punct
+algorithm/nn 2/cd serverselection/nn (/punct l/nn )/punct -/punct best/jjs predictable/jj server/nn 4/cd transform/vbp all/dt g/nn (/punct p/nn )/punct into/in a/dt probability/nn distribution/nn algorithm/nn 3/cd serverselection/nn (/punct l/nn )/punct -/punct most/rbs free/jj resources/nns the/dt second/jj alternative/jj selection/nn method/nn of/in a/dt server/nn from/in the/dt set/nn of/in predicted/vbn servers/nns with/in free/jj resources/nns is/vbz deterministic/jj and/cc shown/vbn in/in algorithm/nn 3/cd ./punct
+the/dt server/nn with/in most/jjs expected/vbn free/jj resources/nns from/in the/dt set/vbn l/nn of/in server/nn with/in expected/vbn free/jj resources/nns is/vbz chosen/vbn ./punct
+in/in the/dt case/nn where/wrb all/dt agents/nns predict/vbp the/dt most/rbs free/jj resources/nns for/in one/cd particular/jj server/nn ,/punct all/dt agents/nns will/md allocate/vb the/dt task/nn at/in this/dt server/nn ,/punct which/wdt would/md invalidate/vb the/dt agent/nn ''/'' s/nns beliefs/nns ./punct
+however/rb ,/punct our/prp$ experiments/nns show/vbp that/in different/jj individual/jj history/nn information/nn and/cc the/dt non-deterministic/jj active/jj predictor/nn selection/nn usually/rb prevent/vbp this/dt situation/nn ./punct
+in/in the/dt case/nn ,/punct the/dt resource/nn allocation/nn algorithm/nn does/vbz not/rb return/vb any/dt server/nn (/punct alg/nn ./punct
+1/cd ,/punct line/nn 16/cd )/punct ,/punct the/dt allocation/nn at/in a/dt resource/nn in/in not/rb recommended/vbn ./punct
+the/dt agent/nn will/md not/rb allocate/vb the/dt task/nn prediction/nn for/in all/dt servers/nns is/vbz possible/jj but/cc no/dt free/jj resources/nns are/vbp expected/vbn ./punct
+after/in the/dt agent/nn execution/nn has/vbz finished/vbn ,/punct the/dt evaluation/nn divided/vbn into/in three/cd cases/nns ./punct
+first/rb ,/punct the/dt task/nn was/vbd not/rb allocated/vbn decision/nn not/rb to/to allocate/vb the/dt task/nn was/vbd correct/jj or/cc not/rb ./punct
+the/dt agent/nn then/rb removes/vbz old/jj historical/jj data/nns ./punct
+this/dt is/vbz necessary/jj for/in a/dt successful/jj adaptation/nn in/in the/dt future/nn ./punct
+if/in the/dt agent/nn would/md not/rb delete/vb old/jj historical/jj information/nn ,/punct the/dt prediction/nn would/md always/rb forecast/vb that/in no/dt free/jj resources/nns are/vbp available/jj ./punct
+the/dt the/dt future/nn ./punct
+old/jj historical/jj information/nn is/vbz removed/vbn from/in the/dt agent/nn ''/'' s/nns resource/nn history/nn using/vbg a/dt decay/nn rate/nn ./punct
+the/dt decay/nn rate/nn is/vbz a/dt cumulative/jj distribution/nn function/nn that/wdt calculates/vbz the/dt probability/nn the/dt second/jj case/nn in/in the/dt evaluation/nn process/nn (/punct alg/nn ./punct
+4/cd ,/punct line/nn 5/cd )/punct describes/vbz the/dt actions/nns taken/vbn after/in a/dt server/nn was/vbd visited/vbn the/dt first/jj time/nn ./punct
+the/dt agent/nn creates/vbz a/dt new/jj predictor/nn set/vbn for/in this/dt server/nn and/cc records/nns the/dt historical/jj information/nn ./punct
+all/dt predictors/nns for/in this/dt set/nn are/vbp chosen/vbn randomly/rb from/in some/dt predefined/jj set/nn ./punct
+the/dt general/jj case/nn (/punct alg/nn ./punct
+4/cd ,/punct line/nn 8/cd )/punct is/vbz the/dt evaluation/nn after/in the/dt agent/nn allocated/vbd the/dt task/nn at/in a/dt resource/nn ./punct
+the/dt agent/nn evaluates/vbz all/dt predictors/nns of/in the/dt predictor/nn set/vbn for/in this/dt resource/nn by/in predicting/vbg the/dt resource/nn load/nn with/in all/dt predictors/nns based/vbn on/in the/dt old/jj historical/jj data/nns ./punct
+predictors/nns that/wdt made/vbd a/dt correct/jj prediction/nn meaning/vbg the/dt resource/nn allocation/nn was/vbd correct/jj ,/punct will/md receive/vb a/dt positive/jj rating/nn ./punct
+this/dt is/vbz the/dt case/nn that/in the/dt resource/nn was/vbd not/rb overloaded/vbn and/cc free/jj resources/nns for/in execution/nn were/vbd predicted/vbn ,/punct or/cc the/dt resource/nn was/vbd overloaded/vbn and/cc this/dt predictor/nn would/md have/vb prevented/vbn the/dt allocation/nn ./punct
+all/dt predictors/nns that/wdt predicted/vbd values/nns which/wdt would/md lead/vb to/to wrong/jj decisions/nns will/md receive/vb negative/jj ratings/nns ./punct
+in/in all/dt other/jj cases/nns ,/punct which/wdt includes/vbz that/in no/dt prediction/nn was/vbd possible/jj ,/punct a/dt neutral/jj rating/nn is/vbz given/vbn to/to the/dt predictors/nns ./punct
+based/vbn on/in these/dt performance/nn ratings/nns ,/punct the/dt confidence/nn levels/nns are/vbp calculated/vbn using/vbg equation/nn 4/cd ./punct
+the/dt confidence/nn for/in all/dt predictors/nns that/wdt can/md not/rb predict/vb with/in the/dt current/jj historical/jj information/nn about/in the/dt server/nn is/vbz set/vbn to/to zero/cd to/to prevent/vb the/dt selection/nn of/in those/dt as/in the/dt new/jj active/jj predictor/nn ./punct
+these/dt values/nns are/vbp transformed/vbn into/in a/dt probability/nn distribution/nn ./punct
+according/vbg to/to this/dt probability/nn distribution/nn the/dt new/jj active/jj predictor/nn is/vbz chosen/vbn ,/punct implemented/vbd as/in a/dt roulette/nn wheel/nn selection/nn ./punct
+figure/nn 2/cd (/punct b/nn )/punct have/vbp been/vbn calculated/vbn from/in the/dt predictor/nn confidence/nn levels/nns ./punct
+even/rb if/in predictor/nn 9/cd has/vbz the/dt highest/jjs selection/nn probability/nn ,/punct its/prp$ was/vbd not/rb chosen/vbn by/in roulette/nn wheel/nn selection/nn process/nn as/in the/dt active/jj predictor/nn ./punct
+this/dt non-deterministic/jj predictor/nn selection/nn prevents/vbz the/dt invalidation/nn of/in the/dt agents/nns ''/'' beliefs/nns in/in case/nn agents/nns have/vbp the/dt same/jj set/nn of/in predictors/nns ./punct
+the/dt prediction/nn accuracy/nn that/wdt is/vbz the/dt error/nn of/in the/dt prediction/nn compared/vbn to/to the/dt observed/vbn value/nn is/vbz not/rb taken/vbn into/in consideration/nn ./punct
+suppose/vb the/dt active/jj predictor/nn predicts/vbz slightly/rb above/jj resources/nns ./punct
+in/in fact/nn ,/punct enough/jj resources/nns for/in the/dt execution/nn would/md be/vb available/jj ./punct
+a/dt less/jjr accurate/jj prediction/nn which/wdt is/vbz far/rb below/in the/dt capacity/nn would/md lead/vb to/to the/dt correct/jj decision/nn and/cc is/vbz therefore/rb preferred/vbn ./punct
+the/dt last/jj action/nn of/in the/dt evaluation/nn algorithm/nn (/punct alg/nn ./punct
+4/cd ,/punct line/nn 22/cd )/punct updates/nns the/dt history/nn with/in the/dt latest/jjs resource/nn load/nn information/nn of/in the/dt server/nn ./punct
+the/dt oldest/jjs history/nn data/nns is/vbz overwritten/jj if/in already/rb m/nn history/nn values/nns are/vbp recorded/vbn for/in the/dt server/nn ./punct
+20/cd transform/vb all/dt g/nn (/punct p/nn )/punct into/in a/dt probability/nn distribution/nn our/prp$ prediction/nn mechanism/nn uses/vbz a/dt number/nn of/in different/jj types/nns of/in simple/jj predictors/nns rather/rb than/in of/in one/cd sophisticated/jj predictor/nn ./punct
+this/dt method/nn assures/vbz that/in agents/nns can/md compete/vb more/rbr effectively/rb in/in a/dt changing/vbg environment/nn ./punct
+different/jj types/nns of/in predictors/nns are/vbp suitable/jj for/in different/jj situations/nns and/cc environments/nns ./punct
+therefore/rb ,/punct all/dt predictors/nns are/vbp being/vbg evaluated/vbn after/in each/dt decision/nn and/cc the/dt active/jj predictor/nn is/vbz selected/vbn ./punct
+this/dt nondeterministic/jj of/in the/dt new/jj active/jj predictor/nn supports/vbz that/in the/dt agents/nns ''/'' beliefs/nns will/md not/rb be/vb invalidated/vbn ,/punct which/wdt happens/vbz in/in the/dt case/nn that/in all/dt predictors/nns are/vbp making/vbg the/dt same/jj decision/nn ./punct
+especially/rb if/in there/ex is/vbz only/rb one/cd shared/jj resource/nn available/jj and/cc all/dt agents/nns have/vbp only/rb the/dt choice/nn to/to go/vb the/dt this/dt one/cd shared/vbn resource/nn or/cc not/rb ./punct
+our/prp$ self-organising/jj approach/nn is/vbz robust/jj against/in failures/nns of/in the/dt system/nn can/md self-organise/vb quickly/rb and/cc adapts/vbz to/to the/dt new/jj conditions/nns ./punct
+there/ex is/vbz no/dt classical/jj bottleneck/nn or/cc single/jj point/nn of/in failure/nn like/in in/in centralised/jj mechanisms/nns ./punct
+the/dt limitations/nns are/vbp the/dt reliance/nn on/in historical/jj resource/nn utilisation/nn information/nn about/in other/jj servers/nns ./punct
+a/dt forecast/nn of/in the/dt resource/nn utilisation/nn of/in historical/jj information/nn about/in a/dt shared/jj resource/nn ./punct
+if/in the/dt to/to gather/vb historical/jj information/nn about/in remote/jj servers/nns ./punct
+this/dt problem/nn occurs/vbz if/in the/dt amount/nn of/in provided/vbn shared/jj resources/nns is/vbz limited/vbn and/cc not/rb enough/rb for/in all/dt resource/nn consumers/nns ./punct
+in/in this/dt case/nn ,/punct the/dt an/dt agent/nn would/md randomly/rb try/vb all/dt known/jj servers/nns the/dt worst/jjs case/nn ,/punct by/in the/dt time/nn for/in trying/vbg all/dt servers/nns ,/punct historical/jj information/nn of/in the/dt servers/nns is/vbz already/rb outdated/vbn ./punct
+the/dt first/jj part/nn of/in this/dt section/nn gives/vbz a/dt short/jj overview/nn of/in the/dt setup/nn of/in our/prp$ simulation/nn environment/nn ./punct
+in/in the/dt rest/nn of/in the/dt section/nn ,/punct results/nns of/in the/dt experiments/nns are/vbp presented/vbn and/cc discussed/vbn ./punct
+all/dt experiments/nns are/vbp conducted/vbn in/in a/dt special/jj testbed/nn that/wdt simulates/vbz and/cc models/nns a/dt multi-agent/jj system/nn ./punct
+we/prp have/vbp implemented/vbn this/dt test-bed/nn in/in the/dt java/nnp programming/nn language/nn ,/punct independent/jj from/in any/dt specific/jj agent/nn toolkit/nn ./punct
+it/prp dynamic/jj environments/nns with/in a/dt configurable/jj number/nn of/in agents/nns ,/punct tasks/nns and/cc servers/nns ./punct
+an/dt event-driven/jj model/nn is/vbz used/vbn to/to trigger/vb all/dt activities/nns in/in the/dt system/nn ./punct
+for/in all/dt simulations/nns ,/punct we/prp limited/vbd the/dt number/nn of/in history/nn data/nns for/in each/dt server/nn to/to 10/cd ,/punct the/dt number/nn of/in performance/nn ratings/nns per/in set/nn for/in each/dt agent/nn ./punct
+all/dt predictors/nns are/vbp chosen/vbn randomly/rb from/in type/nn ./punct
+predictors/nns differ/vbp in/in different/jj cycles/nns or/cc window/nn sizes/nns ./punct
+-/punct n-cycle/nn predictor/nn :/punct p/nn (/punct n/nn )/punct =/punct yn/nn uses/vbz the/dt nth/nn -/punct n-linear/jj regression/nn predictor/nn :/punct p/nn (/punct n/nn ,/punct t/nn )/punct =/punct a·t+b/nn uses/vbz the/dt linear/jj regression/nn value/nn from/in the/dt last/jj n/nn history/nn values/nns where/wrb a/dt ,/punct b/nn are/vbp calculated/vbn using/vbg linear/jj regression/nn with/in least/jjs squares/nns fitting/jj under/in consideration/nn of/in the/dt last/jj n/nn history/nn data/nns ./punct
+-/punct n-distribution/nn predictor/nn :/punct uses/vbz a/dt random/jj value/nn from/in the/dt frequency/nn distribution/nn of/in the/dt n/nn last/jj history/nn values/nns image/nn around/in the/dt mean/nn of/in all/dt history/nn values/nns of/in the/dt nth/jj the/dt efficiency/nn of/in our/prp$ proposed/vbn self-organising/jj resource/nn allocation/nn is/vbz assessed/vbn by/in the/dt resource/nn load/nn development/nn of/in each/dt server/nn over/in the/dt simulation/nn as/rb well/rb as/in the/dt total/jj resource/nn load/nn development/nn cumulated/vbd over/in all/dt shared/vbn resources/nns ./punct
+resource/nnp loads/nns for/in each/dt server/nn are/vbp calculated/vbn using/vbg equation/nn 1/cd as/in the/dt sum/nn of/in the/dt resource/nn consumption/nn of/in all/dt currently/rb executed/vbn agents/nns at/in this/dt server/nn ./punct
+the/dt total/jj resource/nn load/nn of/in the/dt system/nn is/vbz calculated/vbn as/in the/dt sum/nn of/in the/dt resources/nns load/nn of/in all/dt resources/nns ./punct
+the/dt self-organising/jj resource/nn allocation/nn algorithm/nn has/vbz random/jj elements/nns ./punct
+therefore/rb ,/punct the/dt presented/vbn results/nns show/vbp mean/jj values/nns and/cc standard/jj derivation/nn calculated/vbn over/in 100/cd repeated/vbn experiments/nns ./punct
+the/dt following/vbg parameters/nns have/vbp an/dt impact/nn on/in the/dt resource/nn allocation/nn process/nn ./punct
+we/prp give/vbp an/dt overview/nn of/in the/dt parameters/nns and/cc a/dt short/jj description/nn ./punct
+-/punct agents/nns :/punct the/dt number/nn of/in agents/nns involved/vbn in/in the/dt resource/nn allocation/nn ./punct
+this/dt number/nn varies/vbz in/in the/dt experiments/nns between/in 650/cd and/cc 750/cd dependent/jj on/in the/dt total/jj amount/nn of/in available/jj system/nn resources/nns ./punct
+-/punct resource/nnp consumption/nn :/punct each/dt task/nn consumes/vbz server/nn resources/nns for/in its/prp$ execution/nn ./punct
+the/dt resource/nn consumption/nn is/vbz assigned/vbn randomly/rb to/to each/dt task/nn prior/rb to/to its/prp$ allocation/nn from/in an/dt interval/nn ./punct
+resource/nnp consumption/nn is/vbz specified/vbn in/in resource/nn units/nns which/wdt corresponds/vbz to/to real/jj world/nn metrics/nns like/in memory/nn or/cc processor/nn cycles/nns ./punct
+-/punct agent/nnp home/nn server/nn :/punct all/dt agents/nns are/vbp located/jj on/in a/dt home/nn agent/nn server/nn ./punct
+the/dt resources/nns of/in those/dt servers/nns not/rb considered/vbn in/in our/prp$ simulation/nn and/cc does/vbz not/rb affect/vb the/dt resource/nn allocation/nn performance/nn ./punct
+-/punct server/nn resources/nns :/punct experiments/nns use/vbp servers/nns with/in different/jj amount/nn of/in available/jj shared/jj resources/nns ./punct
+the/dt first/jj experiment/nn is/vbz conducted/vbn in/in a/dt static/jj server/nn environment/nn that/wdt provides/vbz the/dt same/jj amount/nn of/in shared/vbn resources/nns ,/punct while/in the/dt other/jj experiment/nn varies/vbz the/dt available/jj server/nn resource/nn during/in the/dt simulation/nn ./punct
+the/dt total/jj amount/nn of/in resources/nns remains/vbz constant/jj in/in both/cc experiments/nns ./punct
+-/punct execution/nn time/nn :/punct the/dt execution/nn time/nn of/in a/dt task/nn for/in the/dt execution/nn ,/punct independent/jj from/in the/dt execution/nn platform/nn ./punct
+for/in this/dt time/nn the/dt task/nn consumes/vbz the/dt assigned/vbn amount/nn of/in server/nn resources/nns ./punct
+this/dt parameter/nn is/vbz randomly/rb assigned/vbn before/in the/dt execution/nn ./punct
+-/punct task/nnp creation/nn time/nn :/punct the/dt time/nn before/in the/dt next/jj task/nn is/vbz created/vbn after/in successful/jj or/cc unsuccessful/jj completion/nn ./punct
+this/dt parameter/nn influences/vbz the/dt age/nn of/in the/dt historical/jj information/nn about/in resources/nns and/cc has/vbz a/dt major/jj influence/nn on/in the/dt length/nn of/in the/dt initial/jj adaptation/nn phase/nn ./punct
+this/dt parameter/nn is/vbz randomly/rb assigned/vbn after/in the/dt task/nn was/vbd completed/vbn ./punct

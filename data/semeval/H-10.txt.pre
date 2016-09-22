@@ -1,0 +1,179 @@
+in/in recent/jj years/nns ,/punct document/nn clustering/nn has/vbz been/vbn receiving/vbg more/rbr and/cc more/rbr attentions/nns as/in an/dt important/jj and/cc fundamental/jj technique/nn for/in unsupervised/jj document/nn organization/nn ,/punct automatic/jj topic/nn extraction/nn ,/punct and/cc fast/jj information/nn retrieval/nn or/cc filtering/vbg ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp a/dt novel/jj method/nn for/in clustering/nn documents/nns using/vbg regularization/nn ./punct
+unlike/in traditional/jj globally/rb regularized/vbn clustering/nn methods/nns ,/punct our/prp$ method/nn first/rb construct/vb a/dt local/jj regularized/jj linear/jj label/nn predictor/nn for/in each/dt document/nn vector/nn ,/punct and/cc then/rb combine/vbp all/pdt those/dt local/jj regularizers/nns with/in a/dt global/jj smoothness/nn regularizer/nn ./punct
+so/in we/prp call/vbp our/prp$ algorithm/nn clustering/vbg with/in local/jj and/cc global/jj regularization/nn (/punct clgr/nn )/punct ./punct
+we/prp will/md show/vb that/in the/dt cluster/nn memberships/nns of/in the/dt documents/nns can/md be/vb achieved/vbn by/in eigenvalue/nn decomposition/nn of/in a/dt sparse/jj symmetric/jj matrix/nn ,/punct which/wdt can/md be/vb efficiently/rb solved/vbn by/in iterative/jj methods/nns ./punct
+finally/rb our/prp$ experimental/jj evaluations/nns on/in several/jj datasets/nns are/vbp presented/vbn to/to show/vb the/dt superiorities/nns of/in clgr/nn over/in traditional/jj document/nn clustering/nn methods/nns ./punct
+categories/nns and/cc subject/nnp descriptors/nnp h.3.3/nn [/punct information/nnp storage/nnp and/cc retrieval/nnp ]/punct :/punct information/nnp search/vb and/cc retrieval-clustering/nn ;/punct i.2.6/nn [/punct artificial/nnp intelligence/nnp ]/punct :/punct learning-concept/nnp learning/nnp general/nnp terms/nns algorithms/nns 1/cd ./punct
+introduction/nnp document/nnp clustering/nn has/vbz been/vbn receiving/vbg more/rbr and/cc more/rbr attentions/nns as/in an/dt important/jj and/cc fundamental/jj technique/nn for/in unsupervised/jj document/nn organization/nn ,/punct automatic/jj topic/nn extraction/nn ,/punct and/cc fast/jj information/nn retrieval/nn or/cc filtering/vbg ./punct
+a/dt good/jj document/nn clustering/nn approach/nn can/md assist/vb the/dt computers/nns to/to automatically/rb organize/vb the/dt document/nn corpus/nn into/in a/dt meaningful/jj cluster/nn hierarchy/nn for/in efficient/jj browsing/vbg and/cc navigation/nn ,/punct which/wdt is/vbz very/rb valuable/jj for/in complementing/vbg the/dt deficiencies/nns of/in traditional/jj information/nn retrieval/nn technologies/nns ./punct
+as/in pointed/vbn out/rp by/in [/punct 8/cd ]/punct ,/punct the/dt information/nn retrieval/nn needs/vbz can/md be/vb expressed/vbn by/in a/dt spectrum/nn ranged/vbd from/in narrow/jj keyword-matching/jj based/vbn search/nn to/to broad/jj information/nn browsing/vbg such/jj as/in what/wp are/vbp the/dt major/jj international/jj events/nns in/in recent/jj months/nns ./punct
+traditional/jj document/nn retrieval/nn engines/nns tend/vbp to/to fit/vb well/rb with/in the/dt search/nn end/nn of/in the/dt spectrum/nn ,/punct i.e/nn ./punct
+they/prp usually/rb provide/vbp specified/jj search/nn for/in documents/nns matching/vbg the/dt user/nn ''/'' s/nns query/nn ,/punct however/rb ,/punct it/prp is/vbz hard/jj for/in them/prp to/to meet/vb the/dt needs/nns from/in the/dt rest/nn of/in the/dt spectrum/nn in/in which/wdt a/dt rather/rb broad/jj or/cc vague/jj information/nn is/vbz needed/vbn ./punct
+in/in such/jj cases/nns ,/punct efficient/jj browsing/vbg through/in a/dt good/jj cluster/nn hierarchy/nn will/md be/vb definitely/rb helpful/jj ./punct
+generally/rb ,/punct document/nn clustering/nn methods/nns can/md be/vb mainly/rb categorized/vbn into/in two/cd classes/nns :/punct hierarchical/jj methods/nns and/cc partitioning/vbg methods/nns ./punct
+the/dt hierarchical/jj methods/nns group/nn the/dt data/nns points/nns into/in a/dt hierarchical/jj tree/nn structure/nn using/vbg bottom-up/jj or/cc top-down/jj approaches/nns ./punct
+for/in example/nn ,/punct hierarchical/jj agglomerative/jj clustering/nn (/punct hac/nn )/punct [/punct 13/cd ]/punct is/vbz a/dt typical/jj bottom-up/jj hierarchical/jj clustering/nn method/nn ./punct
+it/prp takes/vbz each/dt data/nns point/nn as/in a/dt single/jj cluster/nn to/to start/vb off/rp with/in and/cc then/rb builds/vbz bigger/jjr and/cc bigger/jjr clusters/nns by/in grouping/vbg similar/jj data/nns points/nns together/rb until/in the/dt entire/jj dataset/nn is/vbz encapsulated/vbn into/in one/cd final/jj cluster/nn ./punct
+on/in the/dt other/jj hand/nn ,/punct partitioning/vbg methods/nns decompose/vbp the/dt dataset/nn into/in a/dt number/nn of/in disjoint/nn clusters/nns which/wdt are/vbp usually/rb optimal/jj in/in terms/nns of/in some/dt predefined/vbn criterion/nn functions/nns ./punct
+for/in instance/nn ,/punct k-means/jj [/punct 13/cd ]/punct is/vbz a/dt typical/jj partitioning/nn method/nn which/wdt aims/vbz to/to minimize/vb the/dt sum/nn of/in the/dt squared/vbn distance/nn between/in the/dt data/nns points/nns and/cc their/prp$ corresponding/jj cluster/nn centers/nns ./punct
+in/in this/dt paper/nn ,/punct we/prp will/md focus/vb on/in the/dt partitioning/nn methods/nns ./punct
+as/in we/prp know/vbp that/in there/ex are/vbp two/cd main/jj problems/nns existing/vbg in/in partitioning/vbg methods/nns (/punct like/in kmeans/nnps and/cc gaussian/nnp mixture/nnp model/nnp (/punct gmm/nnp )/punct [/punct 16/cd ]/punct )/punct :/punct (/punct 1/cd )/punct the/dt predefined/jj criterion/nn is/vbz usually/rb non-convex/jj which/wdt causes/vbz many/jj local/jj optimal/jj solutions/nns ;/punct (/punct 2/cd )/punct the/dt iterative/jj procedure/nn (/punct e.g/nn ./punct
+the/dt expectation/nnp maximization/nn (/punct em/nn )/punct algorithm/nn )/punct for/in optimizing/vbg the/dt criterions/nns usually/rb makes/vbz the/dt final/jj solutions/nns heavily/rb depend/vbp on/in the/dt initializations/nns ./punct
+in/in the/dt last/jj decades/nns ,/punct many/jj methods/nns have/vbp been/vbn proposed/vbn to/to overcome/vb the/dt above/jj problems/nns of/in the/dt partitioning/nn methods/nns [/punct 19/cd ]/punct [/punct 28/cd ]/punct ./punct
+recently/rb ,/punct another/dt type/nn of/in partitioning/vbg methods/nns based/vbn on/in clustering/nn on/in data/nns graphs/nns have/vbp aroused/vbn considerable/jj interests/nns in/in the/dt machine/nn learning/nn and/cc data/nns mining/nn community/nn ./punct
+the/dt basic/jj idea/nn behind/in these/dt methods/nns is/vbz to/to first/jj model/nn the/dt whole/jj dataset/nn as/in a/dt weighted/jj graph/nn ,/punct in/in which/wdt the/dt graph/nn nodes/nns represent/vbp the/dt data/nns points/nns ,/punct and/cc the/dt weights/nns on/in the/dt edges/nns correspond/vbp to/to the/dt similarities/nns between/in pairwise/jj points/nns ./punct
+then/rb the/dt cluster/nn assignments/nns of/in the/dt dataset/nn can/md be/vb achieved/vbn by/in optimizing/vbg some/dt criterions/nns defined/vbn on/in the/dt graph/nn ./punct
+for/in example/nn spectral/jj clustering/nn is/vbz one/cd kind/nn of/in the/dt most/rbs representative/jj graph-based/jj clustering/nn approaches/nns ,/punct it/prp generally/rb aims/vbz to/to optimize/vb some/dt cut/nn value/nn (/punct e.g/nn ./punct
+normalized/jj cut/nnp [/punct 22/cd ]/punct ,/punct ratio/nnp cut/nnp [/punct 7/cd ]/punct ,/punct min-max/nnp cut/nnp [/punct 11/cd ]/punct )/punct defined/vbn on/in an/dt undirected/jj graph/nn ./punct
+after/in some/dt relaxations/nns ,/punct these/dt criterions/nns can/md usually/rb be/vb optimized/vbn via/in eigen-decompositions/nns ,/punct which/wdt is/vbz guaranteed/vbn to/to be/vb global/jj optimal/jj ./punct
+in/in this/dt way/nn ,/punct spectral/jj clustering/nn efficiently/rb avoids/vbz the/dt problems/nns of/in the/dt traditional/jj partitioning/nn methods/nns as/in we/prp introduced/vbd in/in last/jj paragraph/nn ./punct
+in/in this/dt paper/nn ,/punct we/prp propose/vbp a/dt novel/jj document/nn clustering/nn algorithm/nn that/wdt inherits/vbz the/dt superiority/nn of/in spectral/jj clustering/nn ,/punct i.e/nn ./punct
+the/dt final/jj cluster/nn results/nns can/md also/rb be/vb obtained/vbn by/in exploit/vb the/dt eigen-structure/nn of/in a/dt symmetric/jj matrix/nn ./punct
+however/rb ,/punct unlike/in spectral/jj clustering/nn ,/punct which/wdt just/rb enforces/vbz a/dt smoothness/nn constraint/nn on/in the/dt data/nns labels/nns over/in the/dt whole/jj data/nns manifold/nn [/punct 2/cd ]/punct ,/punct our/prp$ method/nn first/rb construct/vb a/dt regularized/jj linear/jj label/nn predictor/nn for/in each/dt data/nns point/nn from/in its/prp$ neighborhood/nn as/in in/in [/punct 25/cd ]/punct ,/punct and/cc then/rb combine/vbp the/dt results/nns of/in all/pdt these/dt local/jj label/nn predictors/nns with/in a/dt global/jj label/nn smoothness/nn regularizer/nn ./punct
+so/in we/prp call/vbp our/prp$ method/nn clustering/nn with/in local/jj and/cc global/jj regularization/nn (/punct clgr/nn )/punct ./punct
+the/dt idea/nn of/in incorporating/vbg both/cc local/jj and/cc global/jj information/nn into/in label/nn prediction/nn is/vbz inspired/vbn by/in the/dt recent/jj works/nns on/in semi-supervised/jj learning/nn [/punct 31/cd ]/punct ,/punct and/cc our/prp$ experimental/jj evaluations/nns on/in several/jj real/jj document/nn datasets/nns show/vbp that/in clgr/nn performs/vbz better/jjr than/in many/jj state-of-the-art/jj clustering/nn methods/nns ./punct
+the/dt rest/nn of/in this/dt paper/nn is/vbz organized/vbn as/in follows/vbz :/punct in/in section/nn 2/cd we/prp will/md introduce/vb our/prp$ clgr/nn algorithm/nn in/in detail/nn ./punct
+the/dt experimental/jj results/nns on/in several/jj datasets/nns are/vbp presented/vbn in/in section/nn 3/cd ,/punct followed/vbn by/in the/dt conclusions/nns and/cc discussions/nns in/in section/nn 4/cd ./punct
+2/ls ./punct
+the/dt proposed/nnp algorithm/nnp in/in this/dt section/nn ,/punct we/prp will/md introduce/vb our/prp$ clustering/vbg with/in local/jj and/cc global/jj regularization/nn (/punct clgr/nn )/punct algorithm/nn in/in detail/nn ./punct
+first/rb let/vb ''/'' s/nns see/vbp the/dt how/wrb the/dt documents/nns are/vbp represented/vbn throughout/in this/dt paper/nn ./punct
+in/in our/prp$ work/nn ,/punct all/pdt the/dt documents/nns are/vbp represented/vbn by/in the/dt be/vb the/dt complete/jj vocabulary/nn set/nn of/in the/dt document/nn corpus/nn (/punct which/wdt is/vbz preprocessed/vbn by/in the/dt stopwords/nns removal/nn and/cc words/nns stemming/vbg operations/nns )/punct ./punct
+the/dt term-frequency/nn vector/nn xi/nn of/in of/in the/dt document/nn corpus/nn ,/punct idfk/nn is/vbz the/dt number/nn of/in documents/nns that/in contain/vbp word/nn wk/nn ./punct
+in/in this/dt way/nn ,/punct xi/nn is/vbz also/rb called/vbn the/dt tfidf/nn representation/nn of/in document/nn di/fw ./punct
+furthermore/rb ,/punct we/prp also/rb that/in each/dt document/nn is/vbz represented/vbn by/in a/dt normalized/vbn tf-idf/nn vector/nn ./punct
+as/in its/prp$ name/nn suggests/vbz ,/punct clgr/nn is/vbz composed/vbn of/in two/cd parts/nns :/punct local/jj regularization/nn and/cc global/jj regularization/nn ./punct
+in/in this/dt subsection/nn we/prp will/md introduce/vb the/dt local/jj regularization/nn part/nn in/in detail/nn ./punct
+techniques/nns ,/punct it/prp aims/vbz to/to organize/vb the/dt dataset/nn in/in a/dt reasonable/jj way/nn ./punct
+function/nn estimation/nn ,/punct from/in which/wdt we/prp can/md get/vb a/dt good/jj classification/nn function/nn that/wdt will/md assign/vb labels/nns to/to the/dt training/nn dataset/nn and/cc even/rb the/dt unseen/jj testing/nn dataset/nn with/in some/dt cost/nn minimized/vbn ./punct
+for/in example/nn ,/punct in/in the/dt two-class/jj classification/nn (/punct in/in which/wdt we/prp exactly/rb know/vbp the/dt label/nn of/in each/dt document/nn )/punct ,/punct a/dt linear/jj classifier/nn with/in least/jjs square/jj fit/nn aims/vbz to/to learn/vb a/dt column/nn vector/nn w/nn such/jj that/in the/dt squared/vbn cost/nn which/wdt can/md further/rb be/vb written/vbn in/in its/prp$ matrix/nn form/nn as/in document/nn t/nn ,/punct we/prp can/md determine/vb its/prp$ label/nn by/in where/wrb sign/nn (/punct ·/nn )/punct is/vbz the/dt sign/nn function/nn ./punct
+a/dt natural/jj problem/nn in/in eq/nn ./punct
+(/punct 3/cd )/punct is/vbz that/in the/dt matrix/nn xxt/nn be/vb singular/jj and/cc thus/rb not/rb invertable/jj (/punct e.g/nn ./punct
+when/wrb m/nn n/nn )/punct ./punct
+to/to avoid/vb such/pdt a/dt problem/nn ,/punct we/prp can/md add/vb a/dt regularization/nn term/nn and/cc where/wrb λ/nn is/vbz a/dt regularization/nn parameter/nn ./punct
+then/rb the/dt optimal/jj that/in the/dt regularized/vbn linear/jj classifier/nn can/md achieve/vb very/rb good/jj results/nns on/in text/nn classification/nn problems/nns ./punct
+however/rb ,/punct despite/in its/prp$ empirical/jj success/nn ,/punct the/dt regularized/vbn estimated/vbn using/vbg the/dt whole/jj training/nn set/nn ./punct
+according/vbg to/to ,/punct this/dt enough/jj for/in predicting/vbg the/dt labels/nns of/in the/dt whole/jj input/nn space/nn ./punct
+in/in order/nn to/to get/vb better/jjr predictions/nns ,/punct proposed/vbn to/to train/vb classifiers/nns locally/rb and/cc use/vb them/prp to/to classify/vb the/dt testing/nn points/nns ./punct
+for/in example/nn ,/punct a/dt testing/nn point/nn will/md be/vb classified/vbn by/in the/dt local/jj classifier/nn trained/vbn using/vbg the/dt training/nn points/nns located/jj in/in the/dt vicinity/nn in/in the/dt following/vbg discussions/nns we/prp all/dt assume/vbp that/in the/dt documents/nns coming/vbg from/in only/rb two/cd classes/nns ./punct
+the/dt generalizations/nns of/in our/prp$ method/nn to/to multi-class/jj cases/nns will/md be/vb discussed/vbn in/in section/nn 2.5./cd of/in it/prp ./punct
+although/in this/dt method/nn seems/vbz slow/jj and/cc stupid/jj ,/punct it/prp is/vbz reported/vbn that/in it/prp can/md get/vb better/jjr performances/nns than/in using/vbg a/dt unique/jj global/jj classifier/nn on/in certain/jj tasks/nns ./punct
+inspired/vbn by/in their/prp$ success/nn ,/punct we/prp proposed/vbd to/to apply/vb the/dt local/jj learning/nn algorithms/nns for/in clustering/nn ./punct
+the/dt basic/jj idea/nn is/vbz that/in ,/punct for/in predictor/nn based/vbn on/in its/prp$ k-nearest/jj neighborhood/nn ni/nn ,/punct and/cc then/rb all/pdt those/dt local/jj predictors/nns by/in minimizing/vbg the/dt sum/nn of/in their/prp$ prediction/nn errors/nns ./punct
+in/in this/dt subsection/nn we/prp will/md introduce/vb how/wrb to/to construct/vb those/dt local/jj predictors/nns ./punct
+due/jj to/to the/dt simplicity/nn and/cc effectiveness/nn of/in the/dt regularized/vbn linear/jj classifier/nn that/in we/prp have/vbp introduced/vbn in/in section/nn 2.2.1/cd ,/punct we/prp choose/vbp it/prp to/to be/vb our/prp$ local/jj label/nn predictor/nn ,/punct such/jj that/in for/in each/dt document/nn xi/nn ,/punct the/dt following/vbg criterion/nn is/vbz minimized/vbn cluster/nn membership/nn of/in xj/nn ./punct
+then/rb using/vbg eq/nn ./punct
+(/punct 6/cd )/punct ,/punct we/prp can/md get/vb the/dt qik/nn representing/vbg the/dt cluster/nn assignment/nn of/in xik/nn ./punct
+the/dt problem/nn i/fw is/vbz an/dt m/nn ×/nn m/nn matrix/nn with/in m/nn ni/nns ,/punct i.e/nn ./punct
+every/dt document/nn vector/nn ,/punct which/wdt is/vbz computationally/rb prohibited/vbn ./punct
+fortunately/rb ,/punct we/prp have/vbp the/dt following/vbg theorem/nn :/punct qi/nns ./punct
+predictor/nn ./punct
+moreover/rb ,/punct for/in a/dt new/jj testing/nn point/nn u/nn that/wdt falls/vbz into/in qi/nn ./punct
+this/dt is/vbz an/dt attractive/jj expression/nn since/in we/prp can/md determine/vb the/dt cluster/nn assignment/nn of/in u/nn by/in using/vbg the/dt inner-products/nns between/in a/dt proper/jj kernel/nn function/nn ./punct
+after/in all/pdt the/dt local/jj predictors/nns having/vbg been/vbn constructed/vbn ,/punct we/prp will/md combine/vb them/prp together/rb by/in minimizing/vbg which/wdt stands/vbz for/in the/dt sum/nn of/in the/dt prediction/nn errors/nns for/in all/pdt the/dt local/jj predictors/nns ./punct
+combining/vbg eq/nn ./punct
+(/punct 10/cd )/punct with/in eq/nn ./punct
+(/punct 6/cd )/punct ,/punct we/prp can/md get/vb ./punct
+till/in now/rb we/prp can/md write/vb the/dt criterion/nn of/in clustering/nn by/in combining/vbg locally/rb regularized/vbn linear/jj label/nn predictors/nns jl/nn in/in an/dt explicit/jj mathematical/jj form/nn ,/punct and/cc we/prp can/md minimize/vb it/prp directly/rb using/vbg some/dt standard/jj optimization/nn techniques/nns ./punct
+however/rb ,/punct the/dt results/nns may/md not/rb be/vb good/jj enough/rb since/in we/prp only/rb exploit/vbp the/dt local/jj informations/nns of/in the/dt dataset/nn ./punct
+in/in the/dt next/jj subsection/nn ,/punct we/prp will/md introduce/vb a/dt global/jj regularization/nn criterion/nn and/cc combine/vbp local-global/jj way/nn ./punct
+in/in data/nns clustering/nn ,/punct we/prp usually/rb require/vbp that/in the/dt cluster/nn assignments/nns of/in the/dt data/nns points/nns should/md be/vb sufficiently/rb smooth/jj with/in respect/nn to/to the/dt underlying/vbg data/nns manifold/nn ,/punct which/wdt implies/vbz (/punct 1/cd )/punct the/dt nearby/jj points/nns tend/vbp to/to have/vb the/dt same/jj cluster/nn assignments/nns ;/punct (/punct 2/cd )/punct the/dt points/nns on/in the/dt same/jj structure/nn (/punct e.g/nn ./punct
+submanifold/jj or/cc cluster/nn )/punct tend/vbp to/to have/vb the/dt same/jj cluster/nn assignments/nns ./punct
+without/in the/dt loss/nn of/in generality/nn ,/punct we/prp assume/vbp that/in the/dt data/nns points/nns reside/vbp (/punct roughly/rb )/punct on/in a/dt low-dimensional/jj manifold/nn m2/nn and/cc q/nn is/vbz the/dt cluster/nn assignment/nn function/nn defined/vbn on/in m/nn ,/punct i.e/nn ./punct
+we/prp believe/vbp that/in the/dt text/nn data/nns are/vbp also/rb sampled/vbn from/in some/dt low/jj dimensional/jj manifold/nn ,/punct since/in it/prp is/vbz impossible/jj for/in them/prp to/to and/cc the/dt integral/jj is/vbz taken/vbn with/in respect/nn to/to the/dt standard/jj it/prp turns/vbz out/rp that/in finding/vbg the/dt smoothest/jjs function/nn minimizing/vbg d/nn [/punct q/nn ]/punct reduces/vbz to/to finding/vbg the/dt eigenfunctions/nns of/in the/dt laplace/nnp beltrami/nnp operator/nn l/nn ,/punct which/wdt is/vbz defined/vbn as/in where/wrb div/nn is/vbz the/dt divergence/nn of/in a/dt vector/nn field/nn ./punct
+generally/rb ,/punct the/dt graph/nn can/md be/vb viewed/vbn as/in the/dt discretized/jj form/nn undirected/jj graph/nn as/in in/in spectral/jj clustering/nn ,/punct where/wrb the/dt graph/nn nodes/nns are/vbp just/rb the/dt data/nns points/nns ,/punct and/cc the/dt weights/nns on/in the/dt edges/nns represent/vbp the/dt similarities/nns between/in pairwise/jj points/nns ./punct
+then/rb it/prp can/md be/vb shown/vbn that/in minimizing/vbg eq/nn ./punct
+(/punct 13/cd )/punct corresponds/vbz to/to under/in certain/jj conditions/nns ,/punct such/pdt a/dt form/nn of/in wij/nn to/to determine/vb the/dt weights/nns on/in graph/nn edges/vbz leads/vbz to/to the/dt convergence/nn of/in graph/nn laplacian/nn to/to the/dt laplace/nnp beltrami/nnp operator/nn ./punct
+in/in summary/nn ,/punct using/vbg eq/nn ./punct
+(/punct 15/cd )/punct with/in exponential/jj weights/nns can/md effectively/rb measure/vb the/dt smoothness/nn of/in the/dt data/nns assignments/nns with/in respect/nn to/to the/dt intrinsic/jj data/nns manifold/nn ./punct
+thus/rb we/prp adopt/vb predicted/vbn data/nns assignments/nns ./punct
+combining/vbg the/dt contents/nns we/prp have/vbp introduced/vbn in/in section/nn 2.2/cd and/cc section/nn 2.3/cd we/prp can/md derive/vb the/dt clustering/nn criterion/nn is/vbz parameter/nn to/to trade/vb off/rp jl/nn and/cc jg/nn ./punct
+however/rb ,/punct the/dt discrete/jj fill/nn in/in the/dt whole/jj high-dimensional/jj sample/nn space/nn ./punct
+and/cc it/prp has/vbz been/vbn shown/vbn that/in the/dt manifold/nn based/vbn methods/nns can/md achieve/vb good/jj results/nns on/in text/nn classification/nn tasks/nns ./punct
+n/nn (/punct xj/nn )/punct or/cc xj/nn ∈/cd n/nn (/punct xi/nn )/punct ./punct
+programming/nn problem/nn ./punct
+a/dt natural/jj way/nn for/in making/vbg the/dt problem/nn continuous/jj ,/punct then/rb the/dt objective/nn that/in we/prp aims/vbz to/to minimize/vb becomes/vbz using/vbg the/dt lagrangian/nn method/nn ,/punct we/prp can/md derive/vb that/in the/dt optimal/jj solution/nn q/nn corresponds/vbz to/to the/dt smallest/jjs eigenvector/nn of/in classified/vbn as/in class/nn 2/cd ./punct
+in/in the/dt above/in we/prp have/vbp introduced/vbn the/dt basic/jj framework/nn of/in clustering/vbg with/in local/jj and/cc global/jj regularization/nn (/punct clgr/nn )/punct for/in the/dt two-class/jj clustering/nn problem/nn ,/punct and/cc we/prp will/md extending/vbg it/prp to/to multi-class/jj clustering/nn in/in this/dt subsection/nn ./punct
+first/rb we/prp assume/vbp that/in all/pdt the/dt documents/nns belong/vbp to/to c/nn classes/nns some/dt proper/jj discretization/nn methods/nns that/in we/prp will/md introduce/vb later/rb ./punct
+therefore/rb ,/punct in/in this/dt multi-class/jj case/nn ,/punct for/in each/dt document/nn xi/nn (/punct 1/cd i/fw n/nn )/punct ,/punct we/prp will/md construct/vb c/nn locally/rb linear/jj regularized/vbn label/nn (/punct xik/nn )/punct ./punct
+xi/nn returns/vbz the/dt predicted/vbn confidence/nn of/in xi/nn belonging/vbg to/to class/nn c./nn hence/rb the/dt local/jj prediction/nn error/nn for/in class/nn and/cc the/dt total/jj local/jj prediction/nn error/nn becomes/vbz similarly/rb we/prp can/md define/vb the/dt global/jj smoothness/nn regularizer/nn then/rb the/dt criterion/nn to/to be/vb minimized/vbn for/in clgr/nn in/in multi-class/jj of/in q./nnp then/rb our/prp$ optimization/nn problem/nn becomes/vbz from/in the/dt ky/nnp fan/nn theorem/nn ,/punct we/prp know/vbp the/dt optimal/jj solution/nn k-th/jj smallest/jjs eigenvalue/nn of/in matrix/nn (/punct p/nn −/cd i/prp )/punct t/nn to/to get/vb the/dt cluster/nn assignments/nns of/in all/pdt the/dt data/nns points/nns ./punct
+there/ex are/vbp mainly/rb two/cd approaches/nns to/to achieve/vb this/dt goal/nn :/punct traditional/jj clustering/nn methods/nns like/in kmeans/nns to/to clustering/nn these/dt embeddings/nns into/in c/nn clusters/nns ./punct
+./punct
+the/dt detailed/jj algorithm/nn can/md be/vb referred/vbn to/to ./punct
+the/dt detailed/jj algorithm/nn procedure/nn for/in clgr/nn is/vbz summarized/vbn in/in table/nn 1/cd ./punct
+in/in this/dt section/nn ,/punct experiments/nns are/vbp conducted/vbn to/to empirically/rb compare/vb the/dt clustering/nn results/nns of/in clgr/nn with/in other/jj 8/cd representitive/jj document/nn clustering/nn algorithms/nns on/in 5/cd datasets/nns ./punct
+first/rb we/prp will/md introduce/vb the/dt basic/jj informations/nns of/in those/dt datasets/nns ./punct
+used/vbn in/in the/dt information/nn retrieval/nn research/nn ./punct
+table/nnp 2/cd summarizes/vbz the/dt characteristics/nns of/in the/dt datasets/nns ./punct
+ij/nn =/punct 1/cd ./punct
+1/ls ./punct
+construct/vb the/dt k/nnp nearest/jjs neighborhoods/nns for/in each/dt 2/cd ./punct
+construct/vb the/dt matrix/nn p/nn using/vbg eq/nn ./punct
+(/punct 12/cd )/punct ;/punct 3/ls ./punct
+construct/vb the/dt laplacian/jj matrix/nn l/nn using/vbg eq/nn ./punct
+(/punct 16/cd )/punct ;/punct 6/cd ./punct
+output/nn the/dt cluster/nn assignments/nns of/in each/dt data/nns point/nn ./punct
+webkb/nn ./punct
+the/dt webkb/nn dataset/nn contains/vbz webpages/nns gathered/vbn from/in university/nn computer/nn science/nn departments/nns ./punct
+there/ex are/vbp about/in 8280/cd documents/nns and/cc they/prp are/vbp divided/vbn into/in 7/cd categories/nns :/punct student/nn ,/punct faculty/nn ,/punct staff/nn ,/punct course/nn ,/punct project/nn ,/punct department/nn and/cc other/jj ./punct
+the/dt raw/jj text/nn is/vbz about/in 27mb/nn ./punct
+among/in these/dt 7/cd categories/nns ,/punct student/nn ,/punct faculty/nn ,/punct course/nn and/cc project/nn are/vbp four/cd most/rbs populous/jj entity-representing/jj categories/nns ./punct
+the/dt associated/vbn subset/nn is/vbz typically/rb called/vbn webkb4/nn ./punct
+reuters/nnp ./punct
+the/dt reuters-21578/nn text/nn categorization/nn test/nn collection/nn contains/vbz documents/nns collected/vbn from/in the/dt reuters/nnp benchmark/nn and/cc contains/vbz 135/cd categories/nns ./punct
+in/in our/prp$ experiments/nns ,/punct we/prp use/vbp a/dt subset/nn of/in the/dt data/nns collection/nn which/wdt includes/vbz the/dt 10/cd most/rbs frequent/jj categories/nns among/in the/dt 135/cd topics/nns and/cc we/prp call/vbp it/prp reuters-top/jj 10/cd ./punct
+webace/nn ./punct
+the/dt webace/nn dataset/nn was/vbd from/in webace/nn project/nn and/cc has/vbz been/vbn used/vbn for/in document/nn clustering/nn ./punct
+the/dt webace/nn dataset/nn contains/vbz 2340/cd documents/nns consisting/vbg news/nn articles/nns from/in reuters/nnp new/jj service/nn via/in the/dt web/nn in/in october/nnp 1997/cd ./punct
+these/dt documents/nns are/vbp divided/vbn into/in 20/cd classes/nns ./punct
+news4/nn ./punct
+the/dt news4/nn dataset/nn used/vbn in/in our/prp$ experiments/nns are/vbp selected/vbn from/in the/dt famous/jj 20-newsgroups/jj dataset5/nn rec/nn containing/vbg autos/nns ,/punct motorcycles/nns ,/punct baseball/nn and/cc hockey/nn was/vbd selected/vbn from/in the/dt version/nn 20news-18828/nn ./punct
+the/dt news4/nn dataset/nn contains/vbz 3970/cd document/nn vectors/nns ./punct
+http/nn :/punct //people.csail.mit.edu/jrennie/20newsgroups//nn to/to pre-process/vb the/dt datasets/nns ,/punct we/prp remove/vbp the/dt stop/nn words/nns using/vbg a/dt standard/jj stop/nn list/nn ,/punct all/dt html/nnp tags/nns are/vbp skipped/vbn and/cc all/dt header/nn fields/nns except/in subject/jj and/cc organization/nn of/in the/dt posted/vbn articles/nns are/vbp ignored/vbn ./punct
+in/in all/dt our/prp$ experiments/nns ,/punct we/prp first/rb select/vb the/dt top/jj 1000/cd words/nns by/in mutual/jj information/nn with/in class/nn labels/nns ./punct
+in/in the/dt experiments/nns ,/punct we/prp set/vbd the/dt number/nn of/in clusters/nns equal/jj to/to the/dt true/jj number/nn of/in classes/nns c/nn for/in all/pdt the/dt clustering/nn algorithms/nns ./punct
+to/to evaluate/vb their/prp$ performance/nn ,/punct we/prp compare/vbp the/dt clusters/nns generated/vbn by/in these/dt algorithms/nns with/in the/dt true/jj classes/nns by/in computing/vbg the/dt following/vbg two/cd performance/nn measures/nns ./punct
+clustering/nn accuracy/nn (/punct acc/nnp )/punct ./punct
+the/dt first/jj performance/nn measure/nn is/vbz the/dt clustering/nnp accuracy/nnp ,/punct which/wdt discovers/vbz the/dt one-toone/jj relationship/nn between/in clusters/nns and/cc classes/nns and/cc measures/vbz the/dt extent/nn to/to which/wdt each/dt cluster/nn contained/vbd data/nns points/nns from/in the/dt corresponding/jj class/nn ./punct
+it/prp sums/vbz up/rp the/dt whole/jj matching/nn degree/nn between/in all/dt pair/nn class-clusters/nns ./punct
+clustering/nn accuracy/nn can/md where/wrb ck/nnp denotes/vbz the/dt k-th/jj cluster/nn in/in the/dt final/jj results/nns ,/punct and/cc lm/nn is/vbz the/dt true/jj m-th/jj class/nn ./punct
+t/nn (/punct ck/nn ,/punct lm/nn )/punct is/vbz the/dt number/nn of/in entities/nns which/wdt belong/vbp to/to class/nn m/nn are/vbp assigned/vbn to/to cluster/vb k./nnp accuracy/nnp computes/vbz the/dt maximum/nn sum/nn of/in t/nn (/punct ck/nn ,/punct lm/nn )/punct for/in all/dt pairs/nns of/in clusters/nns and/cc classes/nns ,/punct and/cc these/dt pairs/nns have/vbp no/dt overlaps/vbz ./punct
+the/dt greater/jjr clustering/nn accuracy/nn means/vbz the/dt better/jjr clustering/nn performance/nn ./punct
+normalized/vbn mutual/jj information/nn (/punct nmi/nnp )/punct ./punct
+another/dt evaluation/nn metric/nn we/prp adopt/vbp here/rb is/vbz the/dt normalized/nnp mutual/nnp information/nnp nmi/nnp ,/punct which/wdt is/vbz widely/rb used/vbn for/in determining/vbg the/dt quality/nn of/in clusters/nns ./punct
+for/in two/cd random/jj variable/jj x/nn and/cc y/nn ,/punct where/wrb i/prp (/punct x/nn ,/punct y/nn )/punct is/vbz the/dt mutual/jj information/nn between/in x/nn and/cc maximal/jj possible/jj value/nn of/in nmi/nnp ./punct
+given/vbn a/dt clustering/nn result/nn ,/punct where/wrb nk/nn denotes/vbz the/dt number/nn of/in data/nns contained/vbn in/in the/dt cluster/nn m-th/jj class/nn (/punct 1/cd m/nn c/nn )/punct ,/punct and/cc nk/nn ,/punct m/nn denotes/vbz the/dt number/nn of/in data/nns that/wdt are/vbp in/in the/dt intersection/nn between/in the/dt cluster/nn ck/nn and/cc the/dt m-th/jj class/nn ./punct
+the/dt value/nn calculated/vbn in/in eq/nn ./punct
+(/punct 31/cd )/punct is/vbz used/vbn as/in a/dt performance/nn measure/nn for/in the/dt given/vbn clustering/nn result/nn ./punct
+the/dt larger/jjr this/dt value/nn ,/punct the/dt better/jjr the/dt clustering/nn performance/nn ./punct
+we/prp have/vbp conducted/vbn comprehensive/jj performance/nn evaluations/nns by/in testing/vbg our/prp$ method/nn and/cc comparing/vbg it/prp with/in 8/cd other/jj representative/jj data/nns clustering/nn methods/nns using/vbg the/dt same/jj data/nns corpora/nn ./punct
+the/dt algorithms/nns that/in we/prp evaluated/vbd are/vbp listed/vbn below/rb ./punct
+1/ls ./punct
+traditional/jj k-means/nns (/punct km/nn )/punct ./punct
+2/ls ./punct
+spherical/jj k-means/nns (/punct skm/nns )/punct ./punct
+the/dt implementation/nn is/vbz based/vbn on/in ./punct
+3/ls ./punct
+gaussian/jj mixture/nn model/nnp (/punct gmm/nnp )/punct ./punct
+the/dt implementation/nn is/vbz based/vbn on/in ./punct
+4/ls ./punct
+spectral/jj clustering/nn with/in normalized/jj cuts/nns (/punct ncut/jj )/punct ./punct
+the/dt implementation/nn is/vbz based/vbn on/in ,/punct and/cc the/dt variance/nn of/in the/dt gaussian/jj similarity/nn is/vbz determined/vbn by/in local/jj scaling/vbg ./punct
+note/vb that/in the/dt criterion/nn that/wdt ncut/nnp aims/vbz to/to minimize/vb is/vbz just/rb the/dt global/jj regularizer/nn in/in our/prp$ clgr/nn algorithm/nn except/in that/dt ncut/nnp used/vbd the/dt normalized/vbn laplacian/nn ./punct
+5/cd ./punct
+clustering/nn using/vbg pure/nnp local/nnp regularization/nn (/punct cplr/nn )/punct ./punct
+and/cc the/dt clustering/nn results/vbz can/md be/vb obtained/vbn by/in doing/vbg eigenvalue/jj decomposition/nn on/in matrix/nn (/punct i/prp −/vbp p/nn )/punct t/nn with/in some/dt proper/jj discretization/nn methods/nns ./punct
+6/cd ./punct
+adaptive/jj subspace/nnp iteration/nnp (/punct asi/nnp )/punct ./punct
+the/dt implementation/nn is/vbz based/vbn on/in ./punct
+7/cd ./punct
+nonnegative/jj matrix/nnp factorization/nn (/punct nmf/nn )/punct ./punct
+the/dt implementation/nn is/vbz based/vbn on/in ./punct
+8/cd ./punct
+tri-factorization/nn nonnegative/jj matrix/nnp factorization/nn (/punct tnmf/nn )/punct ./punct
+the/dt implementation/nn is/vbz based/vbn on/in ./punct
+for/in computational/jj efficiency/nn ,/punct in/in the/dt implementation/nn of/in cplr/nn and/cc our/prp$ clgr/nn algorithm/nn ,/punct we/prp have/vbp set/vbn all/pdt the/dt local/jj set/vbn by/in grid/nn search/nn from/in {/punct 0.1/cd ,/punct 1/cd ,/punct 10/cd }/punct ./punct
+the/dt size/nn of/in the/dt k-nearest/jjs neighborhoods/nns is/vbz set/vbn by/in grid/nn search/nn from/in {/punct 20/cd ,/punct 40/cd ,/punct 80/cd }/punct ./punct
+for/in the/dt clgr/nn method/nn ,/punct its/prp$ global/jj regularization/nn parameter/nn is/vbz set/vbn by/in grid/nn search/nn from/in {/punct 0.1/cd ,/punct 1/cd ,/punct 10/cd }/punct ./punct
+when/wrb constructing/vbg the/dt global/jj regularizer/nn ,/punct we/prp have/vbp adopted/vbn the/dt local/jj scaling/nn method/nn to/to construct/vb the/dt laplacian/jj matrix/nn ./punct
+the/dt final/jj discretization/nn method/nn adopted/vbn in/in these/dt two/cd methods/nns is/vbz the/dt same/jj as/in in/in ,/punct since/in our/prp$ experiments/nns show/vbp that/in using/vbg such/jj method/nn can/md achieve/vb better/jjr results/nns than/in using/vbg kmeans/nns based/vbn methods/nns as/in in/in ./punct
